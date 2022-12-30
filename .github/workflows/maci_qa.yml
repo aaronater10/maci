@@ -1,0 +1,53 @@
+# maci: QA Tests
+
+# This workflow will install python and dependencies, and run tests with a range of supported Python versions against different operating systems.
+
+# Python versions being tested: 3.6 - 3.10
+# OSes being tested: Windows2019-2022, MacOS11-12, Ubuntu20-22
+# Triggered by Push, PR, or Manual run against "main" repo
+
+
+### Workflow ###
+
+# Workflow Name
+name: QA-Testing
+
+# Trigger on Push, PR, and Manual
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+    branches:
+      - '**'
+
+# Build Test Environment, then Run Tests
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.9", "3.8", "3.7"]
+        os: [ubuntu-20.04, ubuntu-22.04, windows-2019, windows-2022, macos-11, macos-12]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install Dependencies
+      run: |
+        python3 -m pip install --upgrade pip
+        python3 -m pip install -r "requirements-dev.txt"
+
+    - name: Test with pytest Framework
+      run: |
+        python3 -B -m pytest tests/

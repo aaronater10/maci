@@ -1,0 +1,23 @@
+data_list = [
+    1,
+    2,
+    3
+]
+data_dict = {
+    'k1': 1,
+    'k2': 2,
+    'k3': 3
+}
+data_tuple = (
+    1,
+    2,
+    3
+)
+data_set = {
+    1,
+    2,
+    3
+}
+
+# Value already pre-declared
+data_list = 'changed data'

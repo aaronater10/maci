@@ -1,0 +1,15 @@
+string_data: "data"
+int_data: 256
+array_data: [1,2,3]
+"bool_data": true
+"null_data": null
+"nested_data": {
+"k1": 1,
+"k2": 2,
+"k3": 3
+}
+list:
+  - 1
+  - 2
+  - 3
+

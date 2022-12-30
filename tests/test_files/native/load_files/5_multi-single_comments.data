@@ -1,0 +1,24 @@
+# Comment
+data_bool = True # Comment
+data_list = [ # Comment
+    1,
+    2,
+    3 # Comment
+]
+data_str = "data" #Comment
+# Comment
+data_tuple = ( #Comment
+    1,
+    2, #Comment
+    3
+) # Comment
+# Comment
+data_none = None # Comment
+data_bytes = b'data' # Comment
+# Comment
+data_set = { # Comment
+    1,
+    2, #Comment
+    3
+} #Comment
+# Comment

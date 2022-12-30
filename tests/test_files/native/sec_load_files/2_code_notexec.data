@@ -1,0 +1,4 @@
+data1 = True
+data2 = 2
+print('mean code')
+data3 = 3
