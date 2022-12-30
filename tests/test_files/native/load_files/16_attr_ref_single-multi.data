@@ -1,0 +1,16 @@
+data_int = 1
+data_list_multi == data_int # Comment Test
+data_dict = {
+    'k1': 1,
+    'k2': 2,
+    'k3': 3
+}
+data_float == data_dict# Comment Test
+data_bool == data_float#Comment Test
+data_list = [1,2,3]
+data_tuple = (
+    1,
+    2,
+    3
+)
+data_set == data_tuple #Comment Test

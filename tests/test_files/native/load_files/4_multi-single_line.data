@@ -1,0 +1,19 @@
+data_bool = True
+data_list = [
+    1,
+    2,
+    3
+]
+data_str = "data"
+data_tuple = (
+    1,
+    2,
+    3
+)
+data_none = None
+data_bytes = b'data'
+data_set = {
+    1,
+    2,
+    3
+}
