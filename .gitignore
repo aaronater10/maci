@@ -1,0 +1,16 @@
+# Cache
+.cache/
+*.pyc
+__pycache__
+.pytest_cache/
+
+# VS Code
+.vscode/
+
+# Local Test Dirs and Files
+priv_tests/
+temp_old/
+main.py
+
+# Local Tools
+const_test.cmd
