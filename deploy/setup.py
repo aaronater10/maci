@@ -35,7 +35,7 @@ setup(
     keywords=[PIP_NAME, CODE_AUTHOR, 'python', 'py', 'config', 'file', 'export', 'parse', 'text file', 'cfg', 'conf', 'save file', 'config file', 'db', 'database', 'simple', 'configuration', 'alternative', 'safe', 'ini', 'json', 'xml', 'yml', 'data', 'import'],
     license = 'MIT',
     classifiers=[
-        "Development Status :: 5 - Production/Stable",
+        "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
