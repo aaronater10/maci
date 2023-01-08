@@ -9,7 +9,6 @@ test_file_path = './tests/test_files/native/load_files/'
 ################################################################
 # TESTS
 
-# New testing methods since v1.2.0
 class TestLoad(unittest.TestCase):
 
     # 1. Basic File Import - Importing an Empty File
