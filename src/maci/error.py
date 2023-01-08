@@ -10,7 +10,7 @@ class MaciError(Exception):
         self.item = str(item)
 
     def __str__(self) -> str:
-        return f'[Error] {self.msg} {self.item}'
+        return f'{self.msg} {self.item}'
 
 
 # Module Exceptions
