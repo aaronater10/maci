@@ -16,6 +16,7 @@ class TestNamesExist(unittest.TestCase):
         maci.loadraw
         maci.loadattrs
         maci.dump
+        maci.dumpstr
         maci.dumpraw
         maci.cleanformat
         maci.builddata
@@ -54,6 +55,7 @@ class TestNamesExist(unittest.TestCase):
         maci.error.LoadRaw
         maci.error.LoadAttrs
         maci.error.Dump
+        maci.error.DumpStr
         maci.error.DumpRaw
         maci.error.CleanFormat
         # HASH
