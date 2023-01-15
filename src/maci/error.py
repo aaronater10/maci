@@ -20,6 +20,7 @@ class GeneralError(MaciError): __module__ = 'maci.error'
 
 # Native
 class Load(MaciError): __module__ = 'maci.error'
+class LoadStr(MaciError): __module__ = 'maci.error'
 class LoadRaw(MaciError): __module__ = 'maci.error'
 class LoadAttrs(MaciError): __module__ = 'maci.error'
 class Dump(MaciError): __module__ = 'maci.error'
