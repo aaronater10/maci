@@ -20,7 +20,7 @@ from . import error
 
 # Native Lib
 from .__native.load import load
-#from .__native.loadstr import loadstr
+from .__native.loadstr import loadstr
 from .__native.loadraw import loadraw
 from .__native.loadattrs import loadattrs
 from .__native.dump import dump
