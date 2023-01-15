@@ -24,7 +24,7 @@ from .__native.loadstr import loadstr
 from .__native.loadraw import loadraw
 from .__native.loadattrs import loadattrs
 from .__native.dump import dump
-#from .__native.dumpstr import dumpstr
+from .__native.dumpstr import dumpstr
 from .__native.dumpraw import dumpraw
 from .__native.cleanformat import cleanformat
 from .__native.builddata import builddata

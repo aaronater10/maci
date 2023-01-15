@@ -24,6 +24,7 @@ class LoadStr(MaciError): __module__ = 'maci.error'
 class LoadRaw(MaciError): __module__ = 'maci.error'
 class LoadAttrs(MaciError): __module__ = 'maci.error'
 class Dump(MaciError): __module__ = 'maci.error'
+class DumpStr(MaciError): __module__ = 'maci.error'
 class DumpRaw(MaciError): __module__ = 'maci.error'
 class CleanFormat(MaciError): __module__ = 'maci.error'
 
