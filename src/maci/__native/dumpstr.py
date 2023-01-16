@@ -18,6 +18,7 @@ def dumpstr(
     filename: str, 
     data: __Union['__MaciFileData', dict, '__MaciDummy.Class'], 
     write_mode: str = 'w',
+    *,
     indent_level: int = 1,
     indentation_on: bool = True,
     verify_if_class_instantiated = True

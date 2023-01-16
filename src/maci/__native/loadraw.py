@@ -6,7 +6,7 @@ from ..error import LoadRaw
 
 #########################################################################################################
 # Import raw data from file
-def loadraw(filename: str, byte_data: bool=False) -> str:
+def loadraw(filename: str, *, byte_data: bool=False) -> str:
     """
     Imports any raw data from a file.
 

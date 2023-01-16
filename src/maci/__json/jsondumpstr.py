@@ -7,7 +7,7 @@ from typing import Union
 
 #########################################################################################################
 # Export json str
-def jsondumpstr(data: Union[str, int, float, bool, list, dict, tuple, None], indent_level: int=4) -> str:
+def jsondumpstr(data: Union[str, int, float, bool, list, dict, tuple, None], *, indent_level: int=4) -> str:
     """
     Exports python data type to json string
 

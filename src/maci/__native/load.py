@@ -255,7 +255,7 @@ class MaciFileData:
             self.__assignment_reference_attribs.pop(_name, None)
 
 
-def load(filename: str, attrib_name_dedup: bool=True) -> 'MaciFileData':
+def load(filename: str, *, attrib_name_dedup: bool=True) -> 'MaciFileData':
     """
     Imports saved python data from any text file.
 

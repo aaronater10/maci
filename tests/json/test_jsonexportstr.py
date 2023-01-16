@@ -30,7 +30,7 @@ def test1_json_str_export():
 
     # Test Not Exist, Create, Exist, Data and it's Type
     assert not path.exists(filepath)
-    json_str = maci.jsondumpstr(json_data, 12)
+    json_str = maci.jsondumpstr(json_data, indent_level=12)
     maci.dumpraw(filepath, json_str)
     assert path.exists(filepath)
     json_import = maci.jsonload(filepath)
