@@ -9,7 +9,19 @@ from ..error import Load, GeneralError
 #########################################################################################################
 # Import py Data from File
 class MaciFileData:
-    def __init__(self, filename: str, attrib_name_dedup: bool, __is_build_request: bool = False):
+    def __init__(
+        self,
+        filename: str,
+        *,
+        attrib_name_dedup: bool,
+        _is_build_request: bool = False,
+        _is_str_parse_request: bool = False,
+        _str_data: str = '',
+        _py_syntax_err_msg: str = '',
+        _name_preexists_err_msg: str = '',
+        _name_reference_does_not_exist_msg: str = '',
+        _assignment_locked_atrribs_err_msg: str = '',
+    ) -> None:
         # '__assignment_locked_attribs' MUST BE FIRST INIT ASSIGNMENT
         self.__assignment_locked_attribs = []
         self.__assignment_reference_attribs = {}
@@ -20,19 +32,26 @@ class MaciFileData:
         self.__maci_file_format_id__ = "48448910-fa49-45ca-bd3e-38d7af136af5-7bcece52-e5ee-4272-989d-103f07aa6c0f"
 
         # Syntax/Usage Error Messages
-        __py_syntax_err_msg = "Must have valid Python data types to import, or file's syntax is not formatted correctly"
-        __name_preexists_err_msg = "Name already preexists. Must give unique attribute names in file"
-        __name_reference_does_not_exist = "Name reference does not exist! Must reference attribute names in file that have been defined"
-        self.__assignment_locked_atrribs_err_msg = "Value Locked! Attribute cannot be reassigned"
+        py_syntax_err_msg = _py_syntax_err_msg
+        name_preexists_err_msg = _name_preexists_err_msg
+        name_reference_does_not_exist = _name_reference_does_not_exist_msg
+        self.__assignment_locked_atrribs_err_msg = _assignment_locked_atrribs_err_msg
 
-        # BUILD REQUEST: If this is a object build request,
+        # BUILD REQUEST: If this is an object build request,
         # then end the INIT here with above self.attributes intact
-        if __is_build_request: return None
+        if _is_build_request: return None
 
-        # Open and Import Config File into Class Object then return the object        
-        with open(filename, 'r') as f:
-            f = f.read().splitlines()
+        # STR PARSE REQUEST: If this is a str parse request,
+        # then set 'file_data' to process the string same as a file would
+        if _is_str_parse_request:
+            file_data = _str_data.splitlines()
         
+        # PARSE FILE: Assume this is a normal file parse if not string parse
+        else:
+            # Open and Import Config File Data into Object
+            with open(filename, 'r') as file_data:
+                file_data = file_data.read().splitlines()
+
         # Data Build Setup and Switches        
         __is_building_data_sw = False
         __body_build_data_sw = False
@@ -44,10 +63,10 @@ class MaciFileData:
         __end_markers = (']','}',')')
         __skip_markers = ('',' ','#','\n')
         __assignment_operator_markers = ('=', '$=', '==', '$==')
-        __eof_marker = f[-1]
+        __eof_marker = file_data[-1]
 
         # Main File Loop
-        for __file_data_line in f:
+        for __file_data_line in file_data:
 
             # Set Skip Marker
             try: __skip_marker = __file_data_line[0]
@@ -90,7 +109,7 @@ class MaciFileData:
                 and not (is_attr_reference_operator):
                     
                     if (self.__attrib_name_dedup) and (hasattr(self, __var_token)):
-                            raise Load(__name_preexists_err_msg, f'\nFILE: "{filename}" \nATTRIB_NAME: {__var_token}')
+                            raise Load(name_preexists_err_msg, f'\nFILE: "{filename}" \nATTRIB_NAME: {__var_token}')
 
                     __build_data = __value_token
                     
@@ -112,7 +131,7 @@ class MaciFileData:
                         if __current_assignment_operator == __assignment_operator_markers[1]:
                             self.__assignment_locked_attribs.append(__var_token)
 
-                    except SyntaxError: raise Load(__py_syntax_err_msg, f'\nFILE: "{filename}" \nATTRIB_NAME: {__var_token}')
+                    except SyntaxError: raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nATTRIB_NAME: {__var_token}')
 
                     # Turn OFF Data Build Switches
                     __is_building_data_sw = False
@@ -130,7 +149,7 @@ class MaciFileData:
                     try:
                         # Check if Attr Dedup
                         if (self.__attrib_name_dedup) and (hasattr(self, __var_token)):
-                            raise Load(__name_preexists_err_msg, f'\nFILE: "{filename}" \nATTRIB_NAME: {__var_token}')
+                            raise Load(name_preexists_err_msg, f'\nFILE: "{filename}" \nATTRIB_NAME: {__var_token}')
                         
                         # Check if Attr is a Reference to Another Attr's Value for Assignment. Ignore Comments
                         if __current_assignment_operator == __assignment_operator_markers[2]:
@@ -153,16 +172,16 @@ class MaciFileData:
                         if __current_assignment_operator == __assignment_operator_markers[1]:
                             self.__assignment_locked_attribs.append(__var_token)
                         
-                    except ValueError: raise Load(__py_syntax_err_msg, f'\nFILE: "{filename}" \nATTRIB_NAME: {__var_token}')
+                    except ValueError: raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nATTRIB_NAME: {__var_token}')
                     except AttributeError:
                         # REF_NAME: Ignores Comments to Display Attr Reference Name
                         raise Load(
-                            __name_reference_does_not_exist,
+                            name_reference_does_not_exist,
                             f'\nFILE: "{filename}" \nATTRIB_NAME: {__var_token} \nREF_NAME: {f"{__value_token} "[:__value_token.find(__skip_markers[2])].rstrip()}'
                         )
-                    except SyntaxError: raise Load(__py_syntax_err_msg, f'\nFILE: "{filename}" \nATTRIB_NAME: {__var_token}')
+                    except SyntaxError: raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nATTRIB_NAME: {__var_token}')
 
-            else: raise Load(__py_syntax_err_msg, f'\nFILE: "{filename}"')
+            else: raise Load(py_syntax_err_msg, f'\nFILE: "{filename}"')
     
 
     def __setattr__(self, _name: str, _new_value: _Any) -> None:
@@ -283,5 +302,13 @@ def load(filename: str, *, attrib_name_dedup: bool=True) -> 'MaciFileData':
             return None
     except FileNotFoundError as __err_msg: raise Load(__err_msg, f'\nFILE: "{filename}"')
 
+    # Syntax/Usage Error Messages
+    __err_messages = {
+        '_py_syntax_err_msg': "Must have valid Python data types to import, or file's syntax is not formatted correctly",
+        '_name_preexists_err_msg': "Name already preexists. Must give unique attribute names in file",
+        '_name_reference_does_not_exist_msg': "Name reference does not exist! Must reference attribute names in file that have been defined",
+        '_assignment_locked_atrribs_err_msg': "Value Locked! Attribute cannot be reassigned"
+    }
+
     # Return Final Import
-    return MaciFileData(filename, attrib_name_dedup)
+    return MaciFileData(filename, attrib_name_dedup=attrib_name_dedup, **__err_messages)
