@@ -1,4 +1,4 @@
-# appendfile - Tests
+# dumpraw append - Tests
 from src import maci
 from os import path, remove
 import time
