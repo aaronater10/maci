@@ -4,6 +4,7 @@
 from ast import literal_eval as __literal_eval__
 from typing import Union as __Union
 from typing import Any as __Any
+from typing import NewType as __NewType
 from ..error import Dump, DumpRaw
 from .load import MaciFileData as __MaciFileData
 from .dumpraw import dumpraw as __dumpraw
@@ -11,12 +12,13 @@ from .cleanformat import cleanformat as __cleanformat
 
 #########################################################################################################
 # Save Data to File
-class __MaciDummy:
-    class Class: """dummy class for hinting"""
+
+# Hinting reference name for "CustomClass" to denote a CustomClass can be used to dump data
+CustomClass = __NewType('CustomClass', object)
 
 def dump(
     filename: str, 
-    data: __Union['__MaciFileData', dict, '__MaciDummy.Class'], 
+    data: __Union['__MaciFileData', dict, CustomClass], 
     *,
     write_mode: str = 'w',
     indent_level: int = 1,

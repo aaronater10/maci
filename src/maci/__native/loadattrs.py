@@ -1,16 +1,18 @@
 # loadattrs
 #########################################################################################################
 # Imports
+from typing import NewType as __NewType
 from ..error import LoadAttrs, Load
 from .load import load as __load
 from .load import MaciFileData as __MaciFileData
 
 #########################################################################################################
 # Import Attributes from File
-class __MaciDummy:
-    class Class: """dummy class for hinting"""
 
-def loadattrs(filename: str, class_object: '__MaciDummy.Class') -> None:
+# Hinting reference name for "CustomClass" to denote a CustomClass can be used to dump data
+CustomClass = __NewType('CustomClass', object)
+
+def loadattrs(filename: str, class_object: CustomClass) -> None:
     """
     Import saved attributes from file back into a custom class. This is done in-place
 

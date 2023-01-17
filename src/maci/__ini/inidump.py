@@ -2,18 +2,16 @@
 #########################################################################################################
 # Imports
 from configparser import ConfigParser as __ConfigParser
+from typing import NewType as __NewType
 from ..error import IniDump
 
 #########################################################################################################
 # Export ini file
 
-# Create hollow reference name for "ini_data" to denote ini data needs to be exported for hinting exports
-class __dummy_ini:
-    """Not meant to be used"""
-    class ini_data:
-        """Not meant to be used"""
+# Hinting reference name for "ini_data" to denote ini data needs to be dumped
+IniData = __NewType('ini_data', __ConfigParser)
 
-def inidump(filename: str, data: __dummy_ini.ini_data) -> None:
+def inidump(filename: str, data: IniData) -> None:
     """
     Exports a new file from a ini data (ConfigParser) obj
     
