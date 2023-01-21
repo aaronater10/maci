@@ -1,6 +1,6 @@
 # error - Contains exception names and handling
 """
-Contains exception names and handling
+Contains exception names for handling
 """
 
 # Base Exception
