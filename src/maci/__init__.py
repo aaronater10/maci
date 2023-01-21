@@ -18,6 +18,9 @@ Source Code: https://github.com/aaronater10/maci
 # Base Exceptions
 from . import error
 
+# Hints
+from . import hints
+
 # Native Lib
 from .__native.load import load
 from .__native.loadstr import loadstr
