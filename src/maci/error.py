@@ -1,4 +1,7 @@
 # error - Contains exception names and handling
+"""
+Contains exception names and handling
+"""
 
 # Base Exception
 class MaciError(Exception):

@@ -1,1 +1,0 @@
-# hints - Contains hints for data objects

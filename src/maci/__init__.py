@@ -19,7 +19,7 @@ Source Code: https://github.com/aaronater10/maci
 from . import error
 
 # Hints
-from . import hints
+from . import hint
 
 # Native Lib
 from .__native.load import load
