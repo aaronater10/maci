@@ -2,9 +2,9 @@
 """
 Contains objects for hinting
 """
+# Native
 from .data import MaciDataObj as __MaciDataObj
 
-# Native
 __hint_settings = {
     'filename': '',
     'attrib_name_dedup': True,
@@ -12,3 +12,7 @@ __hint_settings = {
 }
 
 MaciDataObj = type(__MaciDataObj(**__hint_settings))
+
+
+# INI
+from configparser import ConfigParser
