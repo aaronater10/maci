@@ -21,6 +21,9 @@ class MaciError(Exception):
 # General Error
 class GeneralError(MaciError): __module__ = 'maci.error'
 
+# Hints
+class Hint(MaciError): __module__ = 'maci.error'
+
 # Native
 class Load(MaciError): __module__ = 'maci.error'
 class LoadStr(MaciError): __module__ = 'maci.error'
