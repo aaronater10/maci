@@ -2,15 +2,13 @@
 """
 Contains objects for hinting
 """
-from .__native.load import MaciFileData as __MaciFileData
+from .data import MaciDataObj as __MaciDataObj
 
 # Native
-class MaciFileData(__MaciFileData):
-    def __init__(self) -> None:
-        """
-        MaciFileData stub object. Only meant for hinting
-        """
-        return None
+__hint_settings = {
+    'filename': '',
+    'attrib_name_dedup': True,
+    '_is_hint_request': True,
+}
 
-
-
+MaciDataObj = type(__MaciDataObj(**__hint_settings))
