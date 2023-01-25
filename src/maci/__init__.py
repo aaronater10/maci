@@ -12,6 +12,8 @@ See tutorials and docs here for more info: https://docs.macilib.org
 
 Source Code: https://github.com/aaronater10/maci
 """
+__version__ = '0.1.0'
+
 #########################################################################################################
 # Imports
 
