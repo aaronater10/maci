@@ -73,10 +73,10 @@ def dumpstr(
     # Save Data to File
     __build_data_output = ""
     __assignment_operators = ('=', '$=', '==', '$==')
-    __skip_object_key = ('_MaciDataObj', '__maci_file_format_id')
+    __skip_object_key = ('_MaciDataObjConstructor', '__maci_file_format_id')
     __non_instance_names = ['__module__', '__init__']
-    __locked_attr_list_key =  '_MaciDataObj__assignment_locked_attribs'
-    __reference_attr_list_key =  '_MaciDataObj__assignment_reference_attribs'
+    __locked_attr_list_key =  '_MaciDataObjConstructor__assignment_locked_attribs'
+    __reference_attr_list_key =  '_MaciDataObjConstructor__assignment_reference_attribs'
     __maci_file_format_id_match = "48448910-fa49-45ca-bd3e-38d7af136af5-7bcece52-e5ee-4272-989d-103f07aa6c0f"
 
 
