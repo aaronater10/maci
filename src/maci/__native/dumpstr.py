@@ -6,7 +6,7 @@ from typing import Union as __Union
 from typing import Any as __Any
 from typing import NewType as __NewType
 from ..error import Dump, DumpRaw
-from .load import MaciFileData as __MaciFileData
+from ..data import MaciDataObj as __MaciDataObj
 from .dumpraw import dumpraw as __dumpraw
 from .cleanformat import cleanformat as __cleanformat
 
@@ -18,7 +18,7 @@ CustomClass = __NewType('CustomClass', object)
 
 def dumpstr(
     filename: str, 
-    data: __Union['__MaciFileData', dict, CustomClass], 
+    data: __Union['__MaciDataObj', dict, CustomClass], 
     write_mode: str = 'w',
     *,
     indent_level: int = 1,
@@ -28,7 +28,7 @@ def dumpstr(
     """
     Saves your Attr or Key/Value pair data to a file with the new data.
 
-    Enter filename as str, Pass MaciFileData, dict, or custom class data type for output to file.
+    Enter filename as str, Pass MaciDataObj, dict, or custom class data type for output to file.
 
     [Importing Data Back] Functions:
 
@@ -73,17 +73,17 @@ def dumpstr(
     # Save Data to File
     __build_data_output = ""
     __assignment_operators = ('=', '$=', '==', '$==')
-    __skip_object_key = ('_MaciFileData', '__maci_file_format_id')
+    __skip_object_key = ('_MaciDataObj', '__maci_file_format_id')
     __non_instance_names = ['__module__', '__init__']
-    __locked_attr_list_key =  '_MaciFileData__assignment_locked_attribs'
-    __reference_attr_list_key =  '_MaciFileData__assignment_reference_attribs'
+    __locked_attr_list_key =  '_MaciDataObj__assignment_locked_attribs'
+    __reference_attr_list_key =  '_MaciDataObj__assignment_reference_attribs'
     __maci_file_format_id_match = "48448910-fa49-45ca-bd3e-38d7af136af5-7bcece52-e5ee-4272-989d-103f07aa6c0f"
 
 
-    ### MACI FILE DATA: Check if MaciFileData ###
+    ### MACI FILE DATA: Check if MaciDataObj ###
 
     # Build Out Data
-    if (isinstance(data, __MaciFileData)) and (data.__maci_file_format_id__ == __maci_file_format_id_match):
+    if (isinstance(data, __MaciDataObj)) and (data.__maci_file_format_id__ == __maci_file_format_id_match):
         for key,value in data.__dict__.items():
             # If Match Prefixes, Skip
             if not key.startswith(__skip_object_key):

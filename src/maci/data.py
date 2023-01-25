@@ -29,7 +29,7 @@ class _MaciDataObjConstructor:
         self.__is_hint_request = _is_hint_request
 
         # One Time Generated using UUID4 mode from UUID Library.
-        # This helps authenticity of MaciFileData Object for Development aid
+        # This helps authenticity of MaciDataObj Object for Development aid
         self.__maci_file_format_id__ = "48448910-fa49-45ca-bd3e-38d7af136af5-7bcece52-e5ee-4272-989d-103f07aa6c0f"
 
         # Syntax/Usage Error Messages
@@ -294,17 +294,22 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
         filename: str,
         *,
         attrib_name_dedup: bool,
-        _py_syntax_err_msg: str = '',
-        _name_preexists_err_msg: str = '',
-        _name_reference_does_not_exist_msg: str = '',
-        _assignment_locked_atrribs_err_msg: str = '',
-        _is_str_parse_request: bool = False,
-        _str_data: str = '',
-        _is_build_request: bool = False,
-        _is_hint_request: bool = False,
+        _py_syntax_err_msg: str='',
+        _name_preexists_err_msg: str='',
+        _name_reference_does_not_exist_msg: str='',
+        _assignment_locked_atrribs_err_msg: str='',
+        _is_str_parse_request: bool=False,
+        _str_data: str='',
+        _is_load_request: bool=False,
+        _is_build_request: bool=False,
+        _is_hint_request: bool=False,
     )-> None:
         __constructor_locked = True
-        __constructor_locked = False if (_is_build_request or _is_hint_request) else True
+        __constructor_locked = False if (
+                                        _is_load_request            
+                                        or _is_build_request
+                                        or _is_hint_request
+                                    ) else True
 
         # Error Messages
         _init_request_err_msg = "Unusable 'MaciDataObj' object. Only meant for hinting and not to be instantiated"

@@ -4,10 +4,10 @@
 from ..data import MaciDataObj
 
 #########################################################################################################
-# Build manual MaciFileData (python data)
+# Build manual MaciDataObj (python data)
 def builddata() -> 'MaciDataObj':
     """
-    Returns an empty MaciFileData obj to manually build python data with maci features
+    Returns an empty MaciDataObj obj to manually build python data with maci features
     
     Assign the output to var
 

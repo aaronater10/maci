@@ -1,12 +1,12 @@
 # loadstr
 #########################################################################################################
 # Imports
-from .load import MaciFileData
+from ..data import MaciDataObj
 from ..error import LoadStr, Load
 
 #########################################################################################################
 # Import py Data from String
-def loadstr(py_str_data: str, *, attrib_name_dedup: bool=True) -> 'MaciFileData':
+def loadstr(py_str_data: str, *, attrib_name_dedup: bool=True) -> 'MaciDataObj':
     """
     Imports python data from a string.
 
@@ -39,8 +39,9 @@ def loadstr(py_str_data: str, *, attrib_name_dedup: bool=True) -> 'MaciFileData'
 
     # Return final import
     try:
-        return MaciFileData(
+        return MaciDataObj(
                 '',
+                _is_load_request=True,
                 _str_data=py_str_data,
                 _is_str_parse_request=True,
                 attrib_name_dedup=attrib_name_dedup,
