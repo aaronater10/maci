@@ -50,5 +50,7 @@ def loadattrs(filename: str, class_object: CustomClass) -> None:
             setattr(class_object, key, value)
     except Load as __err_msg:
         raise LoadAttrs(__err_msg, '')
+    except TypeError as __err_msg:
+        raise LoadAttrs(__err_msg_type_class_obj, f'\n"{__err_msg}"\nDATA: {class_object}')
 
     return None
