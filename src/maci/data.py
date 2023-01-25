@@ -307,11 +307,12 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
         __constructor_locked = False if (_is_build_request or _is_hint_request) else True
 
         # Error Messages
-        _init_request_err_msg = 'Unusable MaciFileData object. Only meant for hinting and not to be instantiated'
+        _init_request_err_msg = "Unusable 'MaciDataObj' object. Only meant for hinting and not to be instantiated"
+        _init_request_err_msg_help = "Use 'maci.hint.MaciDataObj' to hint type correctly"
 
         # Hint Error Report
         if __constructor_locked:
-            raise Hint(_init_request_err_msg)
+            raise Hint(_init_request_err_msg, f'\nFor hinting: {_init_request_err_msg_help}')
 
         # NORMAL REQUEST
         if not __constructor_locked:

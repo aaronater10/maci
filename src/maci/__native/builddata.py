@@ -1,11 +1,11 @@
 # builddata
 #########################################################################################################
 # Imports
-from .load import MaciFileData
+from ..data import MaciDataObj
 
 #########################################################################################################
 # Build manual MaciFileData (python data)
-def builddata() -> 'MaciFileData':
+def builddata() -> 'MaciDataObj':
     """
     Returns an empty MaciFileData obj to manually build python data with maci features
     
@@ -21,4 +21,4 @@ def builddata() -> 'MaciFileData':
 
     More information on object features: https://docs.macilib.org/docs/tools/build-data/python-data-build
     """
-    return MaciFileData('', attrib_name_dedup=True, _is_build_request=True)
+    return MaciDataObj('', attrib_name_dedup=True, _is_build_request=True)
