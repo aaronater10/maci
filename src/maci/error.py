@@ -8,7 +8,7 @@ class MaciError(Exception):
     """
     maci base exception
     """
-    def __init__(self, msg: str, item: str = '') -> None:
+    def __init__(self, msg: str, item: str='') -> None:
         self.msg = str(msg)
         self.item = str(item)
 
