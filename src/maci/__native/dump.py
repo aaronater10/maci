@@ -20,10 +20,10 @@ def dump(
     filename: str, 
     data: __Union['__MaciDataObj', dict, CustomClass], 
     *,
-    write_mode: str = 'w',
-    indent_level: int = 1,
-    indentation_on: bool = True,
-    verify_if_class_instantiated = True
+    write_mode: str='w',
+    indent_level: int=1,
+    indentation_on: bool=True,
+    verify_if_class_instantiated=True
     ) -> None:
     """
     Saves your Attr or Key/Value pair data to a file with the new data.

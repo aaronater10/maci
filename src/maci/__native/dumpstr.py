@@ -19,11 +19,11 @@ CustomClass = __NewType('CustomClass', object)
 def dumpstr(
     filename: str, 
     data: __Union['__MaciDataObj', dict, CustomClass], 
-    write_mode: str = 'w',
+    write_mode: str='w',
     *,
-    indent_level: int = 1,
-    indentation_on: bool = True,
-    verify_if_class_instantiated = True
+    indent_level: int=1,
+    indentation_on: bool=True,
+    verify_if_class_instantiated=True
     ) -> str:
     """
     Saves your Attr or Key/Value pair data to a file with the new data.
