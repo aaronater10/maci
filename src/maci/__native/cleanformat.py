@@ -28,7 +28,7 @@ def cleanformat(datatype: __Union[dict,list,tuple,set], indent_level: int=1) -> 
     # Set indent level
     if not isinstance(indent_level, int):
         raise CleanFormat(__err_indent, f'"{indent_level}"')
-    indent_level = '\t'*indent_level
+    indent_level = '    '*indent_level
 
     # Format Data Type and Return as str
     __build_data = ""
