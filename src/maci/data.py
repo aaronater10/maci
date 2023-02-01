@@ -24,12 +24,11 @@ class _MaciDataObjConstructor:
         _is_build_request: bool=False,
         _is_hint_request: bool=False,
     ) -> None:
-        # '__assignment_locked_attribs' MUST BE FIRST INIT ASSIGNMENT
+        # Setup: Reference Lists should be first assignment
         self.__assignment_locked_attribs = []
         self.__assignment_hard_locked_attribs = ()
         self.__assignment_reference_attribs = {}
         self.__attrib_name_dedup = attr_name_dedup
-        self.__is_hint_request = _is_hint_request
 
         # One Time Generated using UUID4 mode from UUID Library.
         # This helps authenticity of MaciDataObj Object for Development aid
@@ -207,8 +206,8 @@ class _MaciDataObjConstructor:
 
         # If attr was added to lock/hard_lock list after first assignment, assign orig value back, and raise exception
         # Exception can be caught/bypassed, setting original value is vital to protect value
-        
-        # Normal Lock Protection
+
+        # General Lock Protection
         if hasattr(self, '_MaciDataObjConstructor__assignment_locked_attribs'):
             if _name in self.__assignment_locked_attribs:
                 # PROTECT ORIGINAL VALUE
@@ -255,6 +254,7 @@ class _MaciDataObjConstructor:
         __err_msg_attr_name_str = "Only str is allowed for attr_name"
         __err_msg_attr_name_exist = "Hard locked attribute name does not exist! Must be created first to lock"
         __err_msg_attr_name_locked = "Attribute name already hard locked! Cannot be re-locked once locked"
+        __err_msg_attr_name_other_lock = "Attribute name exists with other lock (lock_attr) already! Cannot be locked with multiple locks"
 
         if not isinstance(attr_name, str): raise GeneralError(__err_msg_attr_name_str, f'\nATTR_NAME: "{attr_name}"')
         if not attr_name in self.__dict__: raise GeneralError(__err_msg_attr_name_exist, f'\nATTR_NAME: "{attr_name}"')
@@ -262,6 +262,9 @@ class _MaciDataObjConstructor:
         # Assign Attr to Locked Tuple if Does Not Preexist
         if attr_name in self.__assignment_hard_locked_attribs:
             raise GeneralError(__err_msg_attr_name_locked, f'\nATTR_NAME: "{attr_name}"')
+        if attr_name in self.__assignment_locked_attribs:
+            raise GeneralError(__err_msg_attr_name_other_lock, f'\nATTR_NAME: "{attr_name}"')
+
         self.__assignment_hard_locked_attribs = (*self.__assignment_hard_locked_attribs, attr_name)
 
 
@@ -272,11 +275,18 @@ class _MaciDataObjConstructor:
         # Error Checks
         __err_msg_attr_name_str = "Only str is allowed for attr_name"
         __err_msg_attr_name_exist = "Locked attribute name does not exist! Must be created first to lock"
+        __err_msg_attr_name_locked = "Attribute name already locked! Cannot be re-locked once locked"
+        __err_msg_attr_name_other_lock = "Attribute name exists with other lock (hard_lock_attr) already! Cannot be locked with multiple locks"
 
         if not isinstance(attr_name, str): raise GeneralError(__err_msg_attr_name_str, f'\nATTR_NAME: "{attr_name}"')
         if not attr_name in self.__dict__: raise GeneralError(__err_msg_attr_name_exist, f'\nATTR_NAME: "{attr_name}"')
 
-        # Assign Attr to Locked List
+        # Assign Attr to Locked List if Does Not Preexist
+        if attr_name in self.__assignment_locked_attribs:
+            raise GeneralError(__err_msg_attr_name_locked, f'\nATTR_NAME: "{attr_name}"')
+        if attr_name in self.__assignment_hard_locked_attribs:
+            raise GeneralError(__err_msg_attr_name_other_lock, f'\nATTR_NAME: "{attr_name}"')
+
         self.__assignment_locked_attribs.append(attr_name)
 
 
