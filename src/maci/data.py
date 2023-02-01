@@ -3,6 +3,7 @@
 # Imports
 from ast import literal_eval as __literal_eval__
 from typing import Any as _Any
+from typing import NoReturn as _NoReturn
 from .error import Load, GeneralError, Hint
 
 #########################################################################################################
@@ -199,7 +200,7 @@ class _MaciDataObjConstructor:
             
         # Release Attribute Reference if Name is Re-Assigned
         if _name in self.__dict__:
-            self.__reference_deletion_check(_name)
+            self.__reference_deletion_check(_name, _ref_list=True)
 
         # Always Assign Value 
         self.__dict__[_name] = _new_value
@@ -237,6 +238,10 @@ class _MaciDataObjConstructor:
         if _name in self.__assignment_hard_locked_attribs:
             # RAISE EXCEPTION
             raise GeneralError(self.__assignment_hard_locked_atrribs_err_msg, f'\nATTRIB_NAME: "{_name}"')
+
+        # Release Attribute from Lock & Reference List if Name is Deleted
+        if hasattr(self, _name):
+            self.__reference_deletion_check(_name, _ref_list=True, _lock_list=True)
 
         # Allow Normal Deletion
         super().__delattr__(_name)
@@ -320,13 +325,20 @@ class _MaciDataObjConstructor:
         self.__assignment_reference_attribs[attr_name] = reference_name
 
 
-    def __reference_deletion_check(self, _name: str):
+    def __reference_deletion_check(self, _name: str, *, _ref_list: bool=False, _lock_list: bool=False) -> _NoReturn:
         """
         Internal method: check if reference requires deletion from reference list
         if attribute is attempted to be re-assigned
         """
-        if _name in self.__assignment_reference_attribs.keys():
-            self.__assignment_reference_attribs.pop(_name, None)
+        # Reference Attrs
+        if _ref_list:
+            if _name in self.__assignment_reference_attribs.keys():
+                self.__assignment_reference_attribs.pop(_name, None)
+
+        # General Lock Attrs
+        if _lock_list:
+            if _name in self.__assignment_locked_attribs:
+                self.__assignment_locked_attribs.remove(_name)
 
 
 #########################################################################################################
