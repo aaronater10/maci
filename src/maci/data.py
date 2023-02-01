@@ -200,9 +200,20 @@ class _MaciDataObjConstructor:
         # Release Attribute Reference if Name is Re-Assigned
         if _name in self.__dict__:
             self.__reference_deletion_check(_name, _ref_list=True)
+        
+        # Protect Internal List/Reference Attrs from Re-Assignment
+        _internal_check_lists = (
+            '_MaciDataObjConstructor__assignment_hard_locked_attribs',
+            '_MaciDataObjConstructor__assignment_locked_attribs',
+            '_MaciDataObjConstructor__assignment_reference_attribs'
+        )
+        if hasattr(self, _name) and (_name in _internal_check_lists):
+            raise GeneralError('Cannot re-assign internal MaciDataObj attribute!')
+
 
         # Always Assign Value 
         self.__dict__[_name] = _new_value
+
 
         # If attr was added to lock/hard_lock list after first assignment, assign orig value back, and raise exception
         # Exception can be caught/bypassed, setting original value is vital to protect value
@@ -231,7 +242,8 @@ class _MaciDataObjConstructor:
             '_MaciDataObjConstructor__assignment_locked_attribs',
             '_MaciDataObjConstructor__assignment_reference_attribs'
         )
-        if _name in _internal_check_lists: return None
+        if _name in _internal_check_lists:
+            raise GeneralError('Cannot delete internal MaciDataObj attribute!')
 
         # Protect Hard Locked Attr from Deletion
         if _name in self.__assignment_hard_locked_attribs:
@@ -265,7 +277,7 @@ class _MaciDataObjConstructor:
         if attr_name in self.__assignment_locked_attribs:
             raise GeneralError(__err_msg_attr_name_other_lock, f'\nATTR_NAME: "{attr_name}"')
 
-        self.__assignment_hard_locked_attribs = (*self.__assignment_hard_locked_attribs, attr_name)
+        self.__dict__['_MaciDataObjConstructor__assignment_hard_locked_attribs'] = (*self.__assignment_hard_locked_attribs, attr_name)
 
 
     def lock_attr(self, attr_name: str) -> None:
