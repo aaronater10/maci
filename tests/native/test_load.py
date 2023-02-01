@@ -202,7 +202,7 @@ class TestLoad(unittest.TestCase):
         filepath = test_file_path + filename
 
         # Test Turn OFF Attr Dedup Protection
-        file_import = maci.load(filepath, attrib_name_dedup=False)
+        file_import = maci.load(filepath, attr_name_dedup=False)
 
         # Test Attributes and Types - Confirm data and it's type was in fact changed inside file
         assert (file_import.data_dict == "changed data") and (isinstance(file_import.data_dict, str))
@@ -213,7 +213,7 @@ class TestLoad(unittest.TestCase):
         filepath = test_file_path + filename
 
         # Test Turn OFF Attr Dedup Protection
-        file_import = maci.load(filepath, attrib_name_dedup=False)
+        file_import = maci.load(filepath, attr_name_dedup=False)
 
         # Test Attributes and Types - Confirm data and it's type was in fact changed inside file
         assert (file_import.data_list == "changed data") and (isinstance(file_import.data_list, str))

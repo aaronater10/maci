@@ -12,7 +12,7 @@ class _MaciDataObjConstructor:
         self,
         filename: str,
         *,
-        attrib_name_dedup: bool,
+        attr_name_dedup: bool,
         _py_syntax_err_msg: str='',
         _name_preexists_err_msg: str='',
         _name_reference_does_not_exist_msg: str='',
@@ -25,7 +25,7 @@ class _MaciDataObjConstructor:
         # '__assignment_locked_attribs' MUST BE FIRST INIT ASSIGNMENT
         self.__assignment_locked_attribs = []
         self.__assignment_reference_attribs = {}
-        self.__attrib_name_dedup = attrib_name_dedup
+        self.__attrib_name_dedup = attr_name_dedup
         self.__is_hint_request = _is_hint_request
 
         # One Time Generated using UUID4 mode from UUID Library.
@@ -293,7 +293,7 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
         self,
         filename: str,
         *,
-        attrib_name_dedup: bool,
+        attr_name_dedup: bool,
         _py_syntax_err_msg: str='',
         _name_preexists_err_msg: str='',
         _name_reference_does_not_exist_msg: str='',
@@ -325,7 +325,7 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
         if not __constructor_locked:
             super().__init__(
                 filename,
-                attrib_name_dedup=attrib_name_dedup,
+                attr_name_dedup=attr_name_dedup,
                 _py_syntax_err_msg=_py_syntax_err_msg,
                 _name_preexists_err_msg=_name_preexists_err_msg,
                 _name_reference_does_not_exist_msg=_name_reference_does_not_exist_msg,

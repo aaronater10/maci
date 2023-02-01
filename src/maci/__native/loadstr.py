@@ -6,7 +6,7 @@ from ..error import LoadStr, Load
 
 #########################################################################################################
 # Import py Data from String
-def loadstr(py_str_data: str, *, attrib_name_dedup: bool=True) -> 'MaciDataObj':
+def loadstr(py_str_data: str, *, attr_name_dedup: bool=True) -> 'MaciDataObj':
     """
     Imports python data from a string.
 
@@ -23,11 +23,11 @@ def loadstr(py_str_data: str, *, attrib_name_dedup: bool=True) -> 'MaciDataObj':
     loadstr("data1 = 'value1'\\ndata2 = "value2")
     """
     __err_msg_py_str = 'Invalid data type or nothing specified for "py_str_data"'
-    __err_msg_attrib = 'Invalid data type or nothing specified for "attrib_name_dedup"'
+    __err_msg_attrib = 'Invalid data type or nothing specified for "attr_name_dedup"'
 
     # Error Checks
     if not isinstance(py_str_data, str): raise LoadStr(__err_msg_py_str, f'\nDATA: "{py_str_data}"')
-    if not isinstance(attrib_name_dedup, bool): raise LoadStr(__err_msg_attrib, f'\nDATA: {attrib_name_dedup}')
+    if not isinstance(attr_name_dedup, bool): raise LoadStr(__err_msg_attrib, f'\nDATA: {attr_name_dedup}')
 
     # Syntax/Usage Error Messages
     __err_messages = {
@@ -44,7 +44,7 @@ def loadstr(py_str_data: str, *, attrib_name_dedup: bool=True) -> 'MaciDataObj':
                 _is_load_request=True,
                 _str_data=py_str_data,
                 _is_str_parse_request=True,
-                attrib_name_dedup=attrib_name_dedup,
+                attr_name_dedup=attr_name_dedup,
                 **__err_messages,
             )
     except Load as __err_msg:

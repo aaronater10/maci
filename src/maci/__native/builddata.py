@@ -30,7 +30,7 @@ def builddata() -> 'MaciDataObj':
     }
     return MaciDataObj(
                 '',
-                attrib_name_dedup=True,
+                attr_name_dedup=True,
                 _is_build_request=True,
                 **__err_messages,
             )

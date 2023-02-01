@@ -9,7 +9,7 @@ from ..error import Load, GeneralError
 
 #########################################################################################################
 # Import py Data from File
-def load(filename: str, *, attrib_name_dedup: bool=True) -> 'MaciDataObj':
+def load(filename: str, *, attr_name_dedup: bool=True) -> 'MaciDataObj':
     """
     Imports saved python data from any text file.
 
@@ -25,11 +25,11 @@ def load(filename: str, *, attrib_name_dedup: bool=True) -> 'MaciDataObj':
     load('filename.data' or 'path/to/filename.data')
     """
     __err_msg_file = 'Invalid data type or nothing specified for filename:'
-    __err_msg_attrib = 'Invalid data type or nothing specified for attrib_name_dedup:'
+    __err_msg_attrib = 'Invalid data type or nothing specified for attr_name_dedup:'
     
     # Error Checks
     if not isinstance(filename, str): raise Load(__err_msg_file, f'\nFILE: "{filename}"')
-    if not isinstance(attrib_name_dedup, bool): raise Load(__err_msg_attrib, f'\nDATA: {attrib_name_dedup}')
+    if not isinstance(attr_name_dedup, bool): raise Load(__err_msg_attrib, f'\nDATA: {attr_name_dedup}')
 
     # Check if file empty. Returns None if empty
     try:
@@ -49,6 +49,6 @@ def load(filename: str, *, attrib_name_dedup: bool=True) -> 'MaciDataObj':
     return MaciDataObj(
                 filename,
                 _is_load_request=True,
-                attrib_name_dedup=attrib_name_dedup,
+                attr_name_dedup=attr_name_dedup,
                 **__err_messages
             )

@@ -7,7 +7,7 @@ from .data import MaciDataObj as __MaciDataObj
 
 __hint_settings = {
     'filename': '',
-    'attrib_name_dedup': True,
+    'attr_name_dedup': True,
     '_is_hint_request': True,
 }
 
