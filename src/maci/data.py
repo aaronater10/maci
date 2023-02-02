@@ -260,7 +260,7 @@ class _MaciDataObjConstructor:
 
     def hard_lock_attr(self, attr_name: str) -> None:
         """
-        Hard lock's a attribute name from re-assignment, deletion, and cannot be unlocked
+        Hard lock's an attribute name from re-assignment, deletion, and cannot be unlocked
         """
         # Error Checks
         __err_msg_attr_name_str = "Only str is allowed for attr_name"
@@ -282,7 +282,7 @@ class _MaciDataObjConstructor:
 
     def lock_attr(self, attr_name: str) -> None:
         """
-        Lock's a attribute name from re-assignment
+        Lock's an attribute name from re-assignment
         """
         # Error Checks
         __err_msg_attr_name_str = "Only str is allowed for attr_name"
