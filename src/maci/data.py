@@ -194,7 +194,7 @@ class _MaciDataObjConstructor:
 
     def __setattr__(self, _name: str, _new_value: _Any) -> None:
         # Check if Attr Already Exists, if so, Collect Original Value
-        if _name in self.__dict__:
+        if hasattr(self, _name):
             _orig_value = self.__dict__.get(_name)
             
         # Release Attribute Reference if Name is Re-Assigned
