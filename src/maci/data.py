@@ -198,9 +198,9 @@ class _MaciDataObjConstructor:
             _orig_value = self.__dict__.get(_name)
             
         # Release Attribute Reference if Name is Re-Assigned
-        if _name in self.__dict__:
+        if hasattr(self, _name):
             self.__reference_deletion_check(_name, _ref_list=True)
-        
+
         # Protect Internal List/Reference Attrs from Re-Assignment
         _internal_check_lists = (
             '_MaciDataObjConstructor__assignment_hard_locked_attribs',
@@ -352,15 +352,19 @@ class _MaciDataObjConstructor:
         Internal method: check if reference requires deletion from reference list
         if attribute is attempted to be re-assigned
         """
-        # Reference Attrs
-        if _ref_list:
-            if _name in self.__assignment_reference_attribs.keys():
-                self.__assignment_reference_attribs.pop(_name, None)
-
         # General Lock Attrs
         if _lock_list:
             if _name in self.__assignment_locked_attribs:
                 self.__assignment_locked_attribs.remove(_name)
+
+        # Reference Attrs - Must maintain reference map if attr in any locks
+        if _ref_list:
+            if _name in self.__assignment_reference_attribs.keys():
+                _is_locked = _name in self.__assignment_locked_attribs
+                _is_hard_locked = _name in self.__assignment_hard_locked_attribs
+                
+                if not (_is_locked or _is_hard_locked):
+                    self.__assignment_reference_attribs.pop(_name, None)
 
 
 #########################################################################################################
