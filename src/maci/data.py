@@ -24,7 +24,7 @@ class _MaciDataObjConstructor:
         _is_build_request: bool=False,
         _is_hint_request: bool=False,
     ) -> None:
-        # Setup: Reference Lists should be first assignment
+        # Setup: Reference lists and maps should be first assignment
         self.__assignment_locked_attribs = []
         self.__assignment_hard_locked_attribs = ()
         self.__assigned_src_reference_attr_map = {}
@@ -165,12 +165,14 @@ class _MaciDataObjConstructor:
                             __value_token = f"{__value_token} "[:__value_token.find(__skip_markers[2])].rstrip()
                             setattr(self, __var_token, getattr(self, __value_token))
                             self.__assigned_src_reference_attr_map[__var_token] = __value_token
+                            self.__assigned_dst_reference_attr_map[__value_token] = __var_token
                             continue
                         # Check if Attr is a Reference to Another Attr's Value for Assignment and Locked from Re-Assignment. Ignore Comments
                         if __current_assignment_operator == __assignment_operator_markers[3]:
                             __value_token = f"{__value_token} "[:__value_token.find(__skip_markers[2])].rstrip()
                             setattr(self, __var_token, getattr(self, __value_token))
                             self.__assigned_src_reference_attr_map[__var_token] = __value_token
+                            self.__assigned_dst_reference_attr_map[__value_token] = __var_token
                             self.__assignment_locked_attribs.append(__var_token)
                             continue
 
@@ -349,8 +351,9 @@ class _MaciDataObjConstructor:
         # Set Value to Reference Value
         setattr(self, attr_name, getattr(self, reference_name))
     
-        # Assign Attr Name to Reference Name in Reference Dict
+        # Assign Attr Name to Reference Name in Reference Maps
         self.__assigned_src_reference_attr_map[attr_name] = reference_name
+        self.__assigned_dst_reference_attr_map[reference_name] = attr_name
 
 
     def __reference_deletion_check(self, _name: str, *, _ref_list: bool=False, _lock_list: bool=False) -> _NoReturn:
@@ -370,7 +373,8 @@ class _MaciDataObjConstructor:
                 _is_hard_locked = _name in self.__assignment_hard_locked_attribs
                 
                 if not (_is_locked or _is_hard_locked):
-                    self.__assigned_src_reference_attr_map.pop(_name, None)
+                    dst_ref_name: str = self.__assigned_src_reference_attr_map.pop(_name)
+                    self.__assigned_dst_reference_attr_map.pop(dst_ref_name)
 
 
 #########################################################################################################
