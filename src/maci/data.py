@@ -4,6 +4,7 @@
 from ast import literal_eval as __literal_eval__
 from typing import Any as _Any
 from typing import NoReturn as _NoReturn
+from typing import Dict as _Dict
 from .error import Load, GeneralError, Hint
 
 #########################################################################################################
@@ -28,7 +29,7 @@ class _MaciDataObjConstructor:
         self.__assignment_locked_attribs = []
         self.__assignment_hard_locked_attribs = ()
         self.__assigned_src_reference_attr_map = {}
-        self.__assigned_dst_reference_attr_map = {}
+        self.__assigned_dst_reference_attr_map: _Dict[str, _Dict[str, str]] = {}
         self.__attrib_name_dedup = attr_name_dedup
 
         # One Time Generated using UUID4 mode from UUID Library.
@@ -165,14 +166,14 @@ class _MaciDataObjConstructor:
                             __value_token = f"{__value_token} "[:__value_token.find(__skip_markers[2])].rstrip()
                             setattr(self, __var_token, getattr(self, __value_token))
                             self.__assigned_src_reference_attr_map[__var_token] = __value_token
-                            self.__assigned_dst_reference_attr_map[__value_token] = __var_token
+                            self.__assigned_dst_reference_attr_map.setdefault(__value_token, {}).setdefault(__var_token, __value_token)
                             continue
                         # Check if Attr is a Reference to Another Attr's Value for Assignment and Locked from Re-Assignment. Ignore Comments
                         if __current_assignment_operator == __assignment_operator_markers[3]:
                             __value_token = f"{__value_token} "[:__value_token.find(__skip_markers[2])].rstrip()
                             setattr(self, __var_token, getattr(self, __value_token))
                             self.__assigned_src_reference_attr_map[__var_token] = __value_token
-                            self.__assigned_dst_reference_attr_map[__value_token] = __var_token
+                            self.__assigned_dst_reference_attr_map.setdefault(__value_token, {}).setdefault(__var_token, __value_token)
                             self.__assignment_locked_attribs.append(__var_token)
                             continue
 
@@ -202,7 +203,7 @@ class _MaciDataObjConstructor:
             
         # Release Attribute Reference if Name is Re-Assigned
         if hasattr(self, _name):
-            self.__reference_deletion_check(_name, _ref_list=True)
+            self.__reference_deletion_check(_name, _src_ref_list=True)
 
         # Protect Internal List/Reference Attrs from Re-Assignment
         _internal_check_lists = (
@@ -237,10 +238,19 @@ class _MaciDataObjConstructor:
                 # RAISE EXCEPTION
                 raise GeneralError(self.__assignment_hard_locked_atrribs_err_msg, f'\nATTRIB_NAME: "{_name}"')
         
-        # Always Re-Reference Attr New Value
-        if hasattr(self, '_MaciDataObjConstructor__assigned_src_reference_attr_map'):
-            if _name in self.__assigned_src_reference_attr_map.values():
-                ...
+        # Always Re-Reference Attr New Value if Source not Locked
+        if hasattr(self, '_MaciDataObjConstructor__assigned_dst_reference_attr_map'):
+            if _name in self.__assigned_dst_reference_attr_map:
+                for key in self.__assigned_dst_reference_attr_map[_name]:
+                    
+                    # If Source is Locked, Block Update
+                    _is_locked = key in self.__assignment_locked_attribs
+                    _is_hard_locked = key in self.__assignment_hard_locked_attribs
+                    if _is_locked: raise GeneralError(self.__assignment_locked_atrribs_err_msg, f'\nATTRIB_NAME: "{key}"')
+                    if _is_hard_locked: raise GeneralError(self.__assignment_hard_locked_atrribs_err_msg, f'\nATTRIB_NAME: "{key}"')
+
+                    # Update Reference to New Value
+                    self.__dict__[key] = _new_value
     
     
     def __delattr__(self, _name: str) -> None:
@@ -260,7 +270,7 @@ class _MaciDataObjConstructor:
 
         # Release Attribute from Lock & Reference List if Name is Deleted
         if hasattr(self, _name):
-            self.__reference_deletion_check(_name, _ref_list=True, _lock_list=True)
+            self.__reference_deletion_check(_name, _src_ref_list=True, _dst_ref_list=True, _lock_list=True)
 
         # Allow Normal Deletion
         super().__delattr__(_name)
@@ -353,10 +363,10 @@ class _MaciDataObjConstructor:
     
         # Assign Attr Name to Reference Name in Reference Maps
         self.__assigned_src_reference_attr_map[attr_name] = reference_name
-        self.__assigned_dst_reference_attr_map[reference_name] = attr_name
+        self.__assigned_dst_reference_attr_map.setdefault(reference_name, {}).setdefault(attr_name, reference_name)
 
 
-    def __reference_deletion_check(self, _name: str, *, _ref_list: bool=False, _lock_list: bool=False) -> _NoReturn:
+    def __reference_deletion_check(self, _name: str, *, _src_ref_list: bool=False, _dst_ref_list: bool=False, _lock_list: bool=False) -> _NoReturn:
         """
         Internal method: check if reference requires deletion from reference list
         if attribute is attempted to be re-assigned
@@ -367,14 +377,34 @@ class _MaciDataObjConstructor:
                 self.__assignment_locked_attribs.remove(_name)
 
         # Reference Attrs - Must maintain reference map if attr in any locks
-        if _ref_list:
+        
+        # Source Reference List
+        if _src_ref_list:
             if _name in self.__assigned_src_reference_attr_map:
                 _is_locked = _name in self.__assignment_locked_attribs
                 _is_hard_locked = _name in self.__assignment_hard_locked_attribs
                 
                 if not (_is_locked or _is_hard_locked):
-                    dst_ref_name: str = self.__assigned_src_reference_attr_map.pop(_name)
-                    self.__assigned_dst_reference_attr_map.pop(dst_ref_name)
+                    # Release Source & Destination Reference
+                    _dst_ref_name: str = self.__assigned_src_reference_attr_map.pop(_name)
+                    self.__assigned_dst_reference_attr_map[_dst_ref_name].pop(_name)
+                    _verify_mapping_empty = self.__assigned_dst_reference_attr_map[_dst_ref_name]
+                    # Release Destination Reference if Empty
+                    if bool(_verify_mapping_empty) == False:
+                        self.__assigned_dst_reference_attr_map.pop(_dst_ref_name)
+
+        # Destination Reference List
+        if _dst_ref_list:
+            if _name in self.__assigned_dst_reference_attr_map:
+                _is_locked = _name in self.__assignment_locked_attribs
+                _is_hard_locked = _name in self.__assignment_hard_locked_attribs
+                
+                if not (_is_locked or _is_hard_locked):
+                    # Release Source References
+                    for key in self.__assigned_dst_reference_attr_map[_name]:
+                        self.__assigned_src_reference_attr_map.pop(key)
+                    # Release Destination Reference
+                    self.__assigned_dst_reference_attr_map.pop(_name)                    
 
 
 #########################################################################################################
