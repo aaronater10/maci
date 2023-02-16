@@ -72,7 +72,7 @@ class _MaciDataObjConstructor:
         __start_markers = ('[','{','(')
         __end_markers = (']','}',')')
         __skip_markers = ('',' ','#','\n')
-        __assignment_operator_markers = ('=', '$=', '==', '$==')
+        __assignment_operator_markers = ('=', '$=', '==', '$==', '$$=', '$$==')
         __eof_marker = file_data[-1]
 
         # Main File Loop
@@ -141,6 +141,10 @@ class _MaciDataObjConstructor:
                         if __current_assignment_operator == __assignment_operator_markers[1]:
                             self.__assignment_locked_attribs.append(__var_token)
 
+                        # Check if Attr is Hard Locked from Re-Assignment
+                        if __current_assignment_operator == __assignment_operator_markers[4]:
+                            self.__dict__['_MaciDataObjConstructor__assignment_hard_locked_attribs'] = (*self.__assignment_hard_locked_attribs, __var_token)
+
                     except SyntaxError: raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nATTRIB_NAME: {__var_token}')
 
                     # Turn OFF Data Build Switches
@@ -183,6 +187,10 @@ class _MaciDataObjConstructor:
                         # Check if Attr is Locked from Re-Assignment
                         if __current_assignment_operator == __assignment_operator_markers[1]:
                             self.__assignment_locked_attribs.append(__var_token)
+
+                        # Check if Attr is Hard Locked from Re-Assignment
+                        if __current_assignment_operator == __assignment_operator_markers[4]:
+                            self.__dict__['_MaciDataObjConstructor__assignment_hard_locked_attribs'] = (*self.__assignment_hard_locked_attribs, __var_token)
                         
                     except ValueError: raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nATTRIB_NAME: {__var_token}')
                     except AttributeError:
