@@ -172,6 +172,7 @@ class _MaciDataObjConstructor:
                             self.__assigned_src_reference_attr_map[__var_token] = __value_token
                             self.__assigned_dst_reference_attr_map.setdefault(__value_token, {}).setdefault(__var_token, __value_token)
                             continue
+                        
                         # Check if Attr is a Reference to Another Attr's Value for Assignment and Locked from Re-Assignment. Ignore Comments
                         if __current_assignment_operator == __assignment_operator_markers[3]:
                             __value_token = f"{__value_token} "[:__value_token.find(__skip_markers[2])].rstrip()
@@ -179,6 +180,15 @@ class _MaciDataObjConstructor:
                             self.__assigned_src_reference_attr_map[__var_token] = __value_token
                             self.__assigned_dst_reference_attr_map.setdefault(__value_token, {}).setdefault(__var_token, __value_token)
                             self.__assignment_locked_attribs.append(__var_token)
+                            continue
+                        
+                        # Check if Attr is a Reference to Another Attr's Value for Assignment and Hard Locked from Re-Assignment. Ignore Comments
+                        if __current_assignment_operator == __assignment_operator_markers[5]:
+                            __value_token = f"{__value_token} "[:__value_token.find(__skip_markers[2])].rstrip()
+                            setattr(self, __var_token, getattr(self, __value_token))
+                            self.__assigned_src_reference_attr_map[__var_token] = __value_token
+                            self.__assigned_dst_reference_attr_map.setdefault(__value_token, {}).setdefault(__var_token, __value_token)
+                            self.__dict__['_MaciDataObjConstructor__assignment_hard_locked_attribs'] = (*self.__assignment_hard_locked_attribs, __var_token)
                             continue
 
                         # Assign Attr
