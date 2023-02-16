@@ -119,7 +119,7 @@ class _MaciDataObjConstructor:
                 and not (is_attr_reference_operator):
                     
                     if (self.__attrib_name_dedup) and (hasattr(self, __var_token)):
-                            raise Load(name_preexists_err_msg, f'\nFILE: "{filename}" \nATTRIB_NAME: {__var_token}')
+                            raise Load(name_preexists_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')
 
                     __build_data = __value_token
                     
@@ -145,7 +145,7 @@ class _MaciDataObjConstructor:
                         if __current_assignment_operator == __assignment_operator_markers[4]:
                             self.__dict__['_MaciDataObjConstructor__assignment_hard_locked_attribs'] = (*self.__assignment_hard_locked_attribs, __var_token)
 
-                    except SyntaxError: raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nATTRIB_NAME: {__var_token}')
+                    except SyntaxError: raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')
 
                     # Turn OFF Data Build Switches
                     __is_building_data_sw = False
@@ -163,7 +163,7 @@ class _MaciDataObjConstructor:
                     try:
                         # Check if Attr Dedup
                         if (self.__attrib_name_dedup) and (hasattr(self, __var_token)):
-                            raise Load(name_preexists_err_msg, f'\nFILE: "{filename}" \nATTRIB_NAME: {__var_token}')
+                            raise Load(name_preexists_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')
                         
                         # Check if Attr is a Reference to Another Attr's Value for Assignment. Ignore Comments
                         if __current_assignment_operator == __assignment_operator_markers[2]:
@@ -202,14 +202,14 @@ class _MaciDataObjConstructor:
                         if __current_assignment_operator == __assignment_operator_markers[4]:
                             self.__dict__['_MaciDataObjConstructor__assignment_hard_locked_attribs'] = (*self.__assignment_hard_locked_attribs, __var_token)
                         
-                    except ValueError: raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nATTRIB_NAME: {__var_token}')
+                    except ValueError: raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')
                     except AttributeError:
                         # REF_NAME: Ignores Comments to Display Attr Reference Name
                         raise Load(
                             name_reference_does_not_exist,
-                            f'\nFILE: "{filename}" \nATTRIB_NAME: {__var_token} \nREF_NAME: {f"{__value_token} "[:__value_token.find(__skip_markers[2])].rstrip()}'
+                            f'\nFILE: "{filename}" \nATTR_NAME: {__var_token} \nREF_NAME: {f"{__value_token} "[:__value_token.find(__skip_markers[2])].rstrip()}'
                         )
-                    except SyntaxError: raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nATTRIB_NAME: {__var_token}')
+                    except SyntaxError: raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')
 
             else: raise Load(py_syntax_err_msg, f'\nFILE: "{filename}"')
     
@@ -246,7 +246,7 @@ class _MaciDataObjConstructor:
                 # PROTECT ORIGINAL VALUE
                 self.__dict__[_name] = _orig_value
                 # RAISE EXCEPTION
-                raise GeneralError(self.__assignment_locked_atrribs_err_msg, f'\nATTRIB_NAME: "{_name}"')
+                raise GeneralError(self.__assignment_locked_atrribs_err_msg, f'\nATTR_NAME: "{_name}"')
 
         # Hard Lock Protection
         if hasattr(self, '_MaciDataObjConstructor__assignment_hard_locked_attribs'):
@@ -254,7 +254,7 @@ class _MaciDataObjConstructor:
                 # PROTECT ORIGINAL VALUE
                 self.__dict__[_name] = _orig_value
                 # RAISE EXCEPTION
-                raise GeneralError(self.__assignment_hard_locked_atrribs_err_msg, f'\nATTRIB_NAME: "{_name}"')
+                raise GeneralError(self.__assignment_hard_locked_atrribs_err_msg, f'\nATTR_NAME: "{_name}"')
         
         # Always Re-Reference Attr New Value if Source not Locked
         if hasattr(self, '_MaciDataObjConstructor__assigned_dst_reference_attr_map'):
@@ -264,8 +264,8 @@ class _MaciDataObjConstructor:
                     # If Source is Locked, Block Update
                     _is_locked = key in self.__assignment_locked_attribs
                     _is_hard_locked = key in self.__assignment_hard_locked_attribs
-                    if _is_locked: raise GeneralError(self.__assignment_locked_atrribs_err_msg, f'\nATTRIB_NAME: "{key}"')
-                    if _is_hard_locked: raise GeneralError(self.__assignment_hard_locked_atrribs_err_msg, f'\nATTRIB_NAME: "{key}"')
+                    if _is_locked: raise GeneralError(self.__assignment_locked_atrribs_err_msg, f'\nATTR_NAME: "{key}"')
+                    if _is_hard_locked: raise GeneralError(self.__assignment_hard_locked_atrribs_err_msg, f'\nATTR_NAME: "{key}"')
 
                     # Update Reference to New Value
                     self.__dict__[key] = _new_value
@@ -284,7 +284,7 @@ class _MaciDataObjConstructor:
         # Protect Hard Locked Attr from Deletion
         if _name in self.__assignment_hard_locked_attribs:
             # RAISE EXCEPTION
-            raise GeneralError(self.__assignment_hard_locked_atrribs_err_msg, f'\nATTRIB_NAME: "{_name}"')
+            raise GeneralError(self.__assignment_hard_locked_atrribs_err_msg, f'\nATTR_NAME: "{_name}"')
 
         # Release Attribute from Lock & Reference List if Name is Deleted
         if hasattr(self, _name):

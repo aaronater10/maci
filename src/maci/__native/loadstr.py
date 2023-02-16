@@ -34,7 +34,7 @@ def loadstr(py_str_data: str, *, attr_name_dedup: bool=True) -> 'MaciDataObj':
         '_py_syntax_err_msg': "Must have valid Python data types to import, or string's syntax is not formatted correctly",
         '_name_preexists_err_msg': "Name already preexists. Must give unique attribute names in string",
         '_name_reference_does_not_exist_msg': "Name reference does not exist! Must reference attribute names in string that have been defined",
-        '_assignment_locked_atrribs_err_msg': "Value Locked! Attribute cannot be reassigned"
+        '_assignment_locked_atrribs_err_msg': "Attribute Name Locked! Cannot be reassigned"
     }
 
     # Return final import
