@@ -75,9 +75,10 @@ def dump(
 
     # Save Data to File
     __build_data_output = ""
-    __assignment_operators = ('=', '$=', '==', '$==')
+    __assignment_operators = ('=', '$=', '==', '$==', '$$=', '$$==')
     __skip_object_key = ('_MaciDataObjConstructor', '__maci_file_format_id')
     __locked_attr_list_key =  '_MaciDataObjConstructor__assignment_locked_attribs'
+    __hard_locked_attr_list_key =  '_MaciDataObjConstructor__assignment_hard_locked_attribs'
     __reference_attr_list_key =  '_MaciDataObjConstructor__assigned_src_reference_attr_map'
     __maci_file_format_id_match = "48448910-fa49-45ca-bd3e-38d7af136af5-7bcece52-e5ee-4272-989d-103f07aa6c0f"
 
@@ -95,6 +96,10 @@ def dump(
                 if (key in data.__dict__[__reference_attr_list_key]) and (key in data.__dict__[__locked_attr_list_key]):
                     __build_data_output += f'{key} {__assignment_operators[3]} {data.__dict__[__reference_attr_list_key][key]}\n'
                     continue
+                # Reference Name and Hard Locked
+                if (key in data.__dict__[__reference_attr_list_key]) and (key in data.__dict__[__hard_locked_attr_list_key]):
+                    __build_data_output += f'{key} {__assignment_operators[5]} {data.__dict__[__reference_attr_list_key][key]}\n'
+                    continue
                 # Reference Name Only
                 if key in data.__dict__[__reference_attr_list_key]:
                     __build_data_output += f'{key} {__assignment_operators[2]} {data.__dict__[__reference_attr_list_key][key]}\n'
@@ -105,6 +110,13 @@ def dump(
                         value = __cleanformat(value, indent_level)
                         __build_data_output += f'{key} {__assignment_operators[1]} {value}\n'
                     else: __build_data_output += f'{key} {__assignment_operators[1]} {repr(value)}\n'
+                    continue
+                # Hard Locked Only
+                if key in data.__dict__[__hard_locked_attr_list_key]:
+                    if __multiline_check(value) and indentation_on:
+                        value = __cleanformat(value, indent_level)
+                        __build_data_output += f'{key} {__assignment_operators[4]} {value}\n'
+                    else: __build_data_output += f'{key} {__assignment_operators[4]} {repr(value)}\n'
                     continue
                 # Normal Assignment
                 if __multiline_check(value) and indentation_on:
