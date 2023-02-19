@@ -275,6 +275,7 @@ class _MaciDataObjConstructor:
                             other_ref_name = other_child_ref_name_track.pop()
                         else: break
 
+                    # Assign New Value to All Child or Chained References and Verify None are Locked
                     for ref_name in collected_references:
                         # If Source is Locked, Block Update
                         _is_locked = ref_name in self.__assignment_locked_attribs
