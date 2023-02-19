@@ -260,15 +260,30 @@ class _MaciDataObjConstructor:
         if hasattr(self, '_MaciDataObjConstructor__assigned_dst_reference_attr_map'):
             if _name in self.__assigned_dst_reference_attr_map:
                 for key in self.__assigned_dst_reference_attr_map[_name]:
-                    
-                    # If Source is Locked, Block Update
-                    _is_locked = key in self.__assignment_locked_attribs
-                    _is_hard_locked = key in self.__assignment_hard_locked_attribs
-                    if _is_locked: raise GeneralError(self.__assignment_locked_atrribs_err_msg, f'\nATTR_NAME: "{key}"')
-                    if _is_hard_locked: raise GeneralError(self.__assignment_hard_locked_atrribs_err_msg, f'\nATTR_NAME: "{key}"')
+                    collected_references = []
+                    collected_references.append(key)
 
-                    # Update Reference to New Value
-                    self.__dict__[key] = _new_value
+                    # Check if the Child Reference is Parent of Other Child References
+                    other_ref_name = key
+                    other_child_ref_name_track = []
+                    while other_ref_name in self.__assigned_dst_reference_attr_map:
+                        for other_child_ref_name in self.__assigned_dst_reference_attr_map[other_ref_name]:
+                            collected_references.append(other_child_ref_name)
+                            other_child_ref_name_track.append(other_child_ref_name)
+                        
+                        if any(other_child_ref_name_track):
+                            other_ref_name = other_child_ref_name_track.pop()
+                        else: break
+
+                    for ref_name in collected_references:
+                        # If Source is Locked, Block Update
+                        _is_locked = ref_name in self.__assignment_locked_attribs
+                        _is_hard_locked = ref_name in self.__assignment_hard_locked_attribs
+                        if _is_locked: raise GeneralError(self.__assignment_locked_atrribs_err_msg, f'\nATTR_NAME: "{ref_name}"')
+                        if _is_hard_locked: raise GeneralError(self.__assignment_hard_locked_atrribs_err_msg, f'\nATTR_NAME: "{ref_name}"')
+
+                        # Update Reference(s) to New Value
+                        self.__dict__[ref_name] = _new_value
     
     
     def __delattr__(self, _name: str) -> None:
