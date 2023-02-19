@@ -483,3 +483,8 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
                 _is_build_request=_is_build_request,
                 _is_hint_request=_is_hint_request
             )
+    
+    def __repr__(self) -> str:
+        skip_name_keys = ('_MaciDataObjConstructor', '__maci_file_format_id')
+        build_repr = ', '.join([f"{name}={value!r}" for name,value in vars(self).items() if not name.startswith(skip_name_keys)])
+        return f"{type(self).__name__}({build_repr})"
