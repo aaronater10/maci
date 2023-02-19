@@ -19,7 +19,7 @@ class TestNamesExist(unittest.TestCase):
         maci.dumpstr
         maci.dumpraw
         maci.cleanformat
-        maci.builddata
+        maci.build
         # HASH
         maci.createfilehash
         maci.comparefilehash

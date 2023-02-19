@@ -1,11 +1,11 @@
-# builddata
+# build
 #########################################################################################################
 # Imports
 from ..data import MaciDataObj
 
 #########################################################################################################
 # Build manual MaciDataObj (python data)
-def builddata() -> 'MaciDataObj':
+def build() -> 'MaciDataObj':
     """
     Returns an empty MaciDataObj obj to manually build python data with maci features
     

@@ -32,7 +32,7 @@ from .__native.dump import dump
 from .__native.dumpstr import dumpstr
 from .__native.dumpraw import dumpraw
 from .__native.cleanformat import cleanformat
-from .__native.builddata import builddata
+from .__native.build import build
 
 # Hash Lib
 from .__hash.createfilehash import createfilehash

@@ -1,4 +1,4 @@
-# builddata - Tests
+# build - Tests
 from src import maci
 from os import path, remove
 import time
@@ -18,7 +18,7 @@ class TestBuildData(unittest.TestCase):
         filepath = test_file_path + filename
 
         # Build Data
-        build_data = maci.builddata()
+        build_data = maci.build()
         build_data.data_str = "data"
         build_data.data_int = 1
         build_data.data_float = 1.0
@@ -59,7 +59,7 @@ class TestBuildData(unittest.TestCase):
         filepath = test_file_path + filename
 
         # Build Data
-        build_data = maci.builddata()
+        build_data = maci.build()
         build_data.data_str = "data"
         build_data.data_int = 1
         build_data.data_float = 1.0
