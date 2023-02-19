@@ -72,7 +72,7 @@ class _MaciDataObjConstructor:
         __start_markers = ('[','{','(')
         __end_markers = (']','}',')')
         __skip_markers = ('',' ','#','\n')
-        __assignment_operator_markers = ('=', '$=', '==', '$==', '$$=', '$$==')
+        __assignment_glyphs = ('=', '$=', '==', '$==', '$$=', '$$==')
         __eof_marker = file_data[-1]
 
         # Main File Loop
@@ -85,38 +85,38 @@ class _MaciDataObjConstructor:
             # Skip Any Comments, Blanks, and New Lines
             if (__is_building_data_sw == False) and (__skip_marker in __skip_markers): continue
 
-            # Set Assignment Operator
+            # Set Assignment Glyph
             try: 
-                __assignment_operator = __file_data_line.split()[1]
-            except IndexError: __assignment_operator = ''
+                __assignment_glyph = __file_data_line.split()[1]
+            except IndexError: __assignment_glyph = ''
 
             # Basic Syntax Check, or if in a Multiline Build
-            if (__assignment_operator in __assignment_operator_markers) or (__is_building_data_sw):
+            if (__assignment_glyph in __assignment_glyphs) or (__is_building_data_sw):
 
                 if not __is_building_data_sw:
-                    __current_assignment_operator = __assignment_operator
-                    __var_token = __file_data_line.split(__assignment_operator)[0].strip()
-                    __value_token = __file_data_line.split(__assignment_operator)[1].strip()
-                    __value_token_multi = __file_data_line.split(__assignment_operator)[1].split()[0].strip()
-                    __last_token = __file_data_line.split(__assignment_operator)[-1].strip()
-                    try: __start_skip_token = __file_data_line.split(__assignment_operator)[1].split()[1][0].strip()
+                    __current_assignment_glyph = __assignment_glyph
+                    __var_token = __file_data_line.split(__assignment_glyph)[0].strip()
+                    __value_token = __file_data_line.split(__assignment_glyph)[1].strip()
+                    __value_token_multi = __file_data_line.split(__assignment_glyph)[1].split()[0].strip()
+                    __last_token = __file_data_line.split(__assignment_glyph)[-1].strip()
+                    try: __start_skip_token = __file_data_line.split(__assignment_glyph)[1].split()[1][0].strip()
                     except IndexError: __start_skip_token = ''
                     
                 if __is_building_data_sw:
                     try: __end_token = __file_data_line[0]
                     except IndexError: __end_token = ''
                 
-                # Verify Assignment Operator is Not Attr Reference for Multiline Build Check
-                is_attr_reference_operator = False
-                if (__current_assignment_operator == __assignment_operator_markers[2]) \
-                or (__current_assignment_operator == __assignment_operator_markers[3]):
-                    is_attr_reference_operator = True
+                # Verify Assignment Glyph is Not Attr Reference for Multiline Build Check
+                is_attr_reference_glyph = False
+                if (__current_assignment_glyph == __assignment_glyphs[2]) \
+                or (__current_assignment_glyph == __assignment_glyphs[3]):
+                    is_attr_reference_glyph = True
                 
                 # START BUILD: Check if value in file line is only Start Marker. Check if Multiline or Single Line
                 if (__value_token_multi in __start_markers) \
                 and ((__last_token in __start_markers) or (__start_skip_token[0] in __skip_markers)) \
                 and (__is_building_data_sw == False) \
-                and not (is_attr_reference_operator):
+                and not (is_attr_reference_glyph):
                     
                     if (self.__attrib_name_dedup) and (hasattr(self, __var_token)):
                             raise Load(name_preexists_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')
@@ -138,11 +138,11 @@ class _MaciDataObjConstructor:
                         setattr(self, __var_token, __literal_eval__(__build_data))
 
                         # Check if Attr is Locked from Re-Assignment
-                        if __current_assignment_operator == __assignment_operator_markers[1]:
+                        if __current_assignment_glyph == __assignment_glyphs[1]:
                             self.__assignment_locked_attribs.append(__var_token)
 
                         # Check if Attr is Hard Locked from Re-Assignment
-                        if __current_assignment_operator == __assignment_operator_markers[4]:
+                        if __current_assignment_glyph == __assignment_glyphs[4]:
                             self.__dict__['_MaciDataObjConstructor__assignment_hard_locked_attribs'] = (*self.__assignment_hard_locked_attribs, __var_token)
 
                     except SyntaxError: raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')
@@ -166,7 +166,7 @@ class _MaciDataObjConstructor:
                             raise Load(name_preexists_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')
                         
                         # Check if Attr is a Reference to Another Attr's Value for Assignment. Ignore Comments
-                        if __current_assignment_operator == __assignment_operator_markers[2]:
+                        if __current_assignment_glyph == __assignment_glyphs[2]:
                             __value_token = f"{__value_token} "[:__value_token.find(__skip_markers[2])].rstrip()
                             setattr(self, __var_token, getattr(self, __value_token))
                             self.__assigned_src_reference_attr_map[__var_token] = __value_token
@@ -174,7 +174,7 @@ class _MaciDataObjConstructor:
                             continue
                         
                         # Check if Attr is a Reference to Another Attr's Value for Assignment and Locked from Re-Assignment. Ignore Comments
-                        if __current_assignment_operator == __assignment_operator_markers[3]:
+                        if __current_assignment_glyph == __assignment_glyphs[3]:
                             __value_token = f"{__value_token} "[:__value_token.find(__skip_markers[2])].rstrip()
                             setattr(self, __var_token, getattr(self, __value_token))
                             self.__assigned_src_reference_attr_map[__var_token] = __value_token
@@ -183,7 +183,7 @@ class _MaciDataObjConstructor:
                             continue
                         
                         # Check if Attr is a Reference to Another Attr's Value for Assignment and Hard Locked from Re-Assignment. Ignore Comments
-                        if __current_assignment_operator == __assignment_operator_markers[5]:
+                        if __current_assignment_glyph == __assignment_glyphs[5]:
                             __value_token = f"{__value_token} "[:__value_token.find(__skip_markers[2])].rstrip()
                             setattr(self, __var_token, getattr(self, __value_token))
                             self.__assigned_src_reference_attr_map[__var_token] = __value_token
@@ -195,11 +195,11 @@ class _MaciDataObjConstructor:
                         setattr(self, __var_token, __literal_eval__(__value_token))
 
                         # Check if Attr is Locked from Re-Assignment
-                        if __current_assignment_operator == __assignment_operator_markers[1]:
+                        if __current_assignment_glyph == __assignment_glyphs[1]:
                             self.__assignment_locked_attribs.append(__var_token)
 
                         # Check if Attr is Hard Locked from Re-Assignment
-                        if __current_assignment_operator == __assignment_operator_markers[4]:
+                        if __current_assignment_glyph == __assignment_glyphs[4]:
                             self.__dict__['_MaciDataObjConstructor__assignment_hard_locked_attribs'] = (*self.__assignment_hard_locked_attribs, __var_token)
                         
                     except ValueError: raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')
@@ -483,7 +483,7 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
                 _is_build_request=_is_build_request,
                 _is_hint_request=_is_hint_request
             )
-    
+
     def __repr__(self) -> str:
         skip_name_keys = ('_MaciDataObjConstructor', '__maci_file_format_id')
         build_repr = ', '.join([f"{name}={value!r}" for name,value in vars(self).items() if not name.startswith(skip_name_keys)])
