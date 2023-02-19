@@ -24,7 +24,7 @@ def createhash(data_to_hash: Union[str, bytes, int, List[int], Tuple[int], Set[i
     This is using the hashlib library shipped with the python standard library. For more
     information on hashlib, visit: https://docs.python.org/3/library/hashlib.html
     """
-    __ALGO_OPTIONS = ('sha256', 'sha512', 'sha384', 'sha1', 'md5')
+    ALGO_OPTIONS = ('sha256', 'sha512', 'sha384', 'sha1', 'md5')
 
     # Error checks
     err_msg_data = f"Only str | bytes | int | List[int] | Tuple[int] | Set[int] | range | bool is allowed for 'data_to_hash'"
@@ -42,14 +42,14 @@ def createhash(data_to_hash: Union[str, bytes, int, List[int], Tuple[int], Set[i
             raise CreateHash(err_msg_data, f'\nGot: {repr(data_to_hash)}')
 
     if not isinstance(hash_algorithm, str): raise CreateHash(err_msg_str_hash, f'\nGot: {repr(hash_algorithm)}')
-    if not hash_algorithm in __ALGO_OPTIONS: raise CreateHash(err_msg_hash, f'\nGot: {repr(hash_algorithm)}')
+    if not hash_algorithm in ALGO_OPTIONS: raise CreateHash(err_msg_hash, f'\nGot: {repr(hash_algorithm)}')
 
     # Generate Hash Type
-    if hash_algorithm == __ALGO_OPTIONS[0]: hash_type = _hashlib.sha256() # sha256
-    if hash_algorithm == __ALGO_OPTIONS[1]: hash_type = _hashlib.sha512() # sha512
-    if hash_algorithm == __ALGO_OPTIONS[2]: hash_type = _hashlib.sha384() # sha384
-    if hash_algorithm == __ALGO_OPTIONS[3]: hash_type = _hashlib.sha1() # sha1
-    if hash_algorithm == __ALGO_OPTIONS[4]: hash_type = _hashlib.md5() # md5
+    if hash_algorithm == ALGO_OPTIONS[0]: hash_type = _hashlib.sha256() # sha256
+    if hash_algorithm == ALGO_OPTIONS[1]: hash_type = _hashlib.sha512() # sha512
+    if hash_algorithm == ALGO_OPTIONS[2]: hash_type = _hashlib.sha384() # sha384
+    if hash_algorithm == ALGO_OPTIONS[3]: hash_type = _hashlib.sha1() # sha1
+    if hash_algorithm == ALGO_OPTIONS[4]: hash_type = _hashlib.md5() # md5
 
     # Check and Convert data to bytes and update hash
     if isinstance(data_to_hash, str): byte_data = data_to_hash.encode()
