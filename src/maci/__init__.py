@@ -37,6 +37,7 @@ from .__native.builddata import builddata
 # Hash Lib
 from .__hash.createfilehash import createfilehash
 from .__hash.comparefilehash import comparefilehash
+from .__hash.createhash import createhash
 
 # JSON Lib
 from .__json.jsonload import jsonload
