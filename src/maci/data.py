@@ -468,8 +468,7 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
         _is_hint_request: bool=False,
     )-> None:
         __constructor_locked = True
-        __constructor_locked = False if (
-                                        _is_load_request            
+        __constructor_locked = False if (_is_load_request
                                         or _is_build_request
                                         or _is_hint_request
                                     ) else True
