@@ -7,6 +7,7 @@ from typing import Any as _Any
 from typing import NoReturn as _NoReturn
 from typing import Dict as _Dict
 from typing import List as _List
+from typing import Union as _Union
 from .error import Load, GeneralError, Hint
 
 #########################################################################################################
@@ -468,7 +469,7 @@ class _MaciDataObjConstructor:
         return list(self.__assignment_hard_locked_attribs)
     
 
-    def get_reference_maps(self) -> _Dict[str, _Dict[str, str]]:
+    def get_reference_maps(self) -> _Dict[str, _Dict[str, _Union[str, _Dict[str, str]]]]:
         """
         Reference maps
 
