@@ -223,15 +223,20 @@ class _MaciDataObjConstructor:
         if hasattr(self, _name):
             self.__reference_deletion_check(_name, _src_ref_list=True)
 
-        # Protect Internal List/Reference Attrs from Re-Assignment
+        # Protect Internal List/Reference Attrs and Methods from Re-Assignment
         _internal_check_lists = (
             '_MaciDataObjConstructor__assignment_hard_locked_attribs',
             '_MaciDataObjConstructor__assignment_locked_attribs',
             '_MaciDataObjConstructor__assigned_src_reference_attr_map',
-            '_MaciDataObjConstructor__assigned_dst_reference_attr_map'
+            '_MaciDataObjConstructor__assigned_dst_reference_attr_map',
+            '_MaciDataObjConstructor__reference_deletion_check',
+            'hard_lock_attr',
+            'lock_attr',
+            'unlock_attr',
+            'reference_attr'
         )
         if hasattr(self, _name) and (_name in _internal_check_lists):
-            raise GeneralError('Cannot re-assign internal MaciDataObj attribute!')
+            raise GeneralError('Cannot re-assign internal MaciDataObj attribute or method name!', f'\nATTR_NAME: "{_name}"')
 
 
         # Always Assign Value 
@@ -297,7 +302,7 @@ class _MaciDataObjConstructor:
             '_MaciDataObjConstructor__assigned_dst_reference_attr_map'
         )
         if _name in _internal_check_lists:
-            raise GeneralError('Cannot delete internal MaciDataObj attribute!')
+            raise GeneralError('Cannot delete internal MaciDataObj attribute name!', f'\nATTR_NAME: "{_name}"')
 
         # Protect Hard Locked Attr from Deletion
         if _name in self.__assignment_hard_locked_attribs:
