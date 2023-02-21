@@ -227,7 +227,8 @@ class _MaciDataObjConstructor:
         _internal_check_lists = (
             '_MaciDataObjConstructor__assignment_hard_locked_attribs',
             '_MaciDataObjConstructor__assignment_locked_attribs',
-            '_MaciDataObjConstructor__assigned_src_reference_attr_map'
+            '_MaciDataObjConstructor__assigned_src_reference_attr_map',
+            '_MaciDataObjConstructor__assigned_dst_reference_attr_map'
         )
         if hasattr(self, _name) and (_name in _internal_check_lists):
             raise GeneralError('Cannot re-assign internal MaciDataObj attribute!')
@@ -292,7 +293,8 @@ class _MaciDataObjConstructor:
         _internal_check_lists = (
             '_MaciDataObjConstructor__assignment_hard_locked_attribs',
             '_MaciDataObjConstructor__assignment_locked_attribs',
-            '_MaciDataObjConstructor__assigned_src_reference_attr_map'
+            '_MaciDataObjConstructor__assigned_src_reference_attr_map',
+            '_MaciDataObjConstructor__assigned_dst_reference_attr_map'
         )
         if _name in _internal_check_lists:
             raise GeneralError('Cannot delete internal MaciDataObj attribute!')
