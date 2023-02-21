@@ -12,7 +12,7 @@ from ..data import MaciDataObj as __MaciDataObj
 # Hinting reference name for "CustomClass" to denote a CustomClass can be used to dump data
 CustomClass = __NewType('CustomClass', object)
 
-def loadattrs(filename: str, class_object: CustomClass) -> None:
+def loadattrs(filename: str, class_object: CustomClass, *, attr_name_dedup: bool=True) -> None:
     """
     Import saved attributes from file back into a custom class. This is done in-place
 
@@ -21,6 +21,12 @@ def loadattrs(filename: str, class_object: CustomClass) -> None:
     [Example Use]
 
     loadattrs('path/of/filename', 'class_object')
+
+    [Warning]
+    Turning OFF 'attr_name_dedup' is not recommended as you gain the ability to overwrite
+    your attribute names that already preexist. This also may affect MaciDataObj behavior
+    including the ability to overwrite internal dunder names. This feature is meant to protect you from accidentally
+    duplicating an attribute name in a file that has already been created.
     """
     # Error Checks
     __err_msg_type_str_filename = "Only str is allowed for filename"
@@ -44,7 +50,7 @@ def loadattrs(filename: str, class_object: CustomClass) -> None:
 
     # Import Attrs
     try:
-        __imported_data = __load(filename)
+        __imported_data = __load(filename, attr_name_dedup=attr_name_dedup)
         for key,value in __imported_data.__dict__.items():
             if key.startswith(__skip_object_key): continue
             setattr(class_object, key, value)
