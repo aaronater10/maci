@@ -2,9 +2,11 @@
 #########################################################################################################
 # Imports
 from ast import literal_eval as __literal_eval__
+from copy import deepcopy
 from typing import Any as _Any
 from typing import NoReturn as _NoReturn
 from typing import Dict as _Dict
+from typing import List as _List
 from .error import Load, GeneralError, Hint
 
 #########################################################################################################
@@ -445,7 +447,34 @@ class _MaciDataObjConstructor:
                     for key in self.__assigned_dst_reference_attr_map[_name]:
                         self.__assigned_src_reference_attr_map.pop(key)
                     # Release Destination Reference
-                    self.__assigned_dst_reference_attr_map.pop(_name)                    
+                    self.__assigned_dst_reference_attr_map.pop(_name)
+
+
+    def get_locked_list(self) -> _List[str]:
+        """
+        General locked list
+
+        Returns a copy of the current list of locked attributes
+        """
+        return self.__assignment_locked_attribs.copy()
+    
+
+    def get_hard_locked_list(self) -> _List[str]:
+        """
+        Hard locked list
+
+        Returns a new list of the current hard locked attributes
+        """
+        return list(self.__assignment_hard_locked_attribs)
+    
+
+    def get_reference_maps(self) -> _Dict[str, _Dict[str, str]]:
+        """
+        Reference maps
+
+        Returns a new dict of the current source and destination reference maps
+        """
+        return {'src_map': deepcopy(self.__assigned_src_reference_attr_map), 'dst_map': deepcopy(self.__assigned_dst_reference_attr_map)}
 
 
 #########################################################################################################
