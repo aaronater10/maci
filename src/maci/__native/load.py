@@ -23,6 +23,12 @@ def load(filename: str, *, attr_name_dedup: bool=True) -> 'MaciDataObj':
 
     [Example Use]
     load('filename.data' or 'path/to/filename.data')
+
+    [Warning]
+    Turning OFF 'attr_name_dedup' is not recommended as you gain the ability to overwrite
+    your attribute names that already preexist. This also may affect MaciDataObj behavior
+    including the ability to overwrite internal dunder names. This feature is meant to protect you from accidentally
+    duplicating an attribute name in a file that has already been created.
     """
     __err_msg_file = 'Invalid data type or nothing specified for filename:'
     __err_msg_attrib = 'Invalid data type or nothing specified for attr_name_dedup:'
