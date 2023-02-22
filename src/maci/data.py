@@ -112,7 +112,8 @@ class _MaciDataObjConstructor:
                 # Verify Assignment Glyph is Not Attr Reference for Multiline Build Check
                 is_attr_reference_glyph = False
                 if (__current_assignment_glyph == __assignment_glyphs[2]) \
-                or (__current_assignment_glyph == __assignment_glyphs[3]):
+                or (__current_assignment_glyph == __assignment_glyphs[3]) \
+                or (__current_assignment_glyph == __assignment_glyphs[5]):
                     is_attr_reference_glyph = True
                 
                 # START BUILD: Check if value in file line is only Start Marker. Check if Multiline or Single Line
