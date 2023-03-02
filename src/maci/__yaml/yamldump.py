@@ -2,12 +2,13 @@
 #########################################################################################################
 # Imports
 from typing import Any as __Any
+from typing import Union as __Union
 import yaml as __yaml
 from ..error import YamlDump
 
 #########################################################################################################
 # Export yaml file
-def yamldump(filename: str, data: __Any) -> None:
+def yamldump(filename: str, data: __Any, *, encoding: __Union[str, None]=None) -> None:
     """
     Exports a new file from python data type to yaml data.
     
@@ -24,7 +25,7 @@ def yamldump(filename: str, data: __Any) -> None:
     """
     # Export data to yaml file
     try:
-        with open(filename, 'w') as f:
+        with open(filename, 'w', encoding=encoding) as f:
             __yaml.safe_dump(data, f)
     except __yaml.representer.RepresenterError as __err_msg: raise YamlDump(__err_msg, f'\nFILE: "{filename}" \nDATA: {data}')
     except TypeError as __err_msg: raise YamlDump(__err_msg, f'\nFILE: "{filename}" \nDATA: {data}')

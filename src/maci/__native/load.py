@@ -4,12 +4,13 @@
 from ast import literal_eval as __literal_eval__
 from os import path as __path
 from typing import Any as _Any
+from typing import Union as __Union
 from ..data import MaciDataObj
 from ..error import Load, GeneralError
 
 #########################################################################################################
 # Import py Data from File
-def load(filename: str, *, attr_name_dedup: bool=True) -> 'MaciDataObj':
+def load(filename: str, *, attr_name_dedup: bool=True, encoding: __Union[str, None]=None) -> 'MaciDataObj':
     """
     Imports saved python data from any text file.
 
@@ -57,5 +58,6 @@ def load(filename: str, *, attr_name_dedup: bool=True) -> 'MaciDataObj':
                 filename,
                 _is_load_request=True,
                 attr_name_dedup=attr_name_dedup,
+                encoding=encoding,
                 **__err_messages
             )

@@ -1,13 +1,14 @@
 # iniload
 #########################################################################################################
 # Imports
+from typing import Union as __Union
 from configparser import ConfigParser as __ConfigParser
 from configparser import ExtendedInterpolation as __ExtendedInterpolation
 from ..error import IniLoad
 
 #########################################################################################################
 # Import ini file
-def iniload(filename: str) -> __ConfigParser:
+def iniload(filename: str, *, encoding: __Union[str, None]=None) -> __ConfigParser:
     """
     Imports ini data from a file.
 
@@ -24,7 +25,7 @@ def iniload(filename: str) -> __ConfigParser:
     visit: https://docs.python.org/3/library/configparser.html
     """
     try:
-        with open(filename, 'r') as f: pass
+        with open(filename, 'r', encoding=encoding) as f: pass
     except TypeError as __err_msg: raise IniLoad(__err_msg, f'\nFILE: "{filename}"')
     except ValueError as __err_msg: raise IniLoad(__err_msg, f'\nFILE: "{filename}"')
     except FileNotFoundError as __err_msg: raise IniLoad(__err_msg, f'\nFILE: "{filename}"')

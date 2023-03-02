@@ -2,6 +2,7 @@
 #########################################################################################################
 # Imports
 from typing import NewType as __NewType
+from typing import Union as __Union
 from ..error import LoadAttrs, Load
 from .load import load as __load
 from ..data import MaciDataObj as __MaciDataObj
@@ -12,7 +13,7 @@ from ..data import MaciDataObj as __MaciDataObj
 # Hinting reference name for "CustomClass" to denote a CustomClass can be used to dump data
 CustomClass = __NewType('CustomClass', object)
 
-def loadattrs(filename: str, class_object: CustomClass, *, attr_name_dedup: bool=True) -> None:
+def loadattrs(filename: str, class_object: CustomClass, *, attr_name_dedup: bool=True, encoding: __Union[str, None]=None) -> None:
     """
     Import saved attributes from file back into a custom class. This is done in-place
 
@@ -50,7 +51,7 @@ def loadattrs(filename: str, class_object: CustomClass, *, attr_name_dedup: bool
 
     # Import Attrs
     try:
-        __imported_data = __load(filename, attr_name_dedup=attr_name_dedup)
+        __imported_data = __load(filename, attr_name_dedup=attr_name_dedup, encoding=encoding)
         for key,value in __imported_data.__dict__.items():
             if key.startswith(__skip_object_key): continue
             setattr(class_object, key, value)

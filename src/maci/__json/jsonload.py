@@ -7,7 +7,7 @@ from typing import Union
 
 #########################################################################################################
 # Import json file
-def jsonload(filename: str) -> Union[list, dict, str, int, float, bool, None]:
+def jsonload(filename: str, *, encoding: Union[str, None]=None) -> Union[list, dict, str, int, float, bool, None]:
     """
     Imports json data from a file
 
@@ -24,7 +24,7 @@ def jsonload(filename: str) -> Union[list, dict, str, int, float, bool, None]:
     """
     # Import json file
     try:
-        with open(filename, 'r') as f:
+        with open(filename, 'r', encoding=encoding) as f:
             return __json.load(f)
     except FileNotFoundError as __err_msg: raise JsonLoad(__err_msg, f'\nFILE: "{filename}"')
     except OSError as __err_msg: raise JsonLoad(__err_msg, f'\nFILE: "{filename}"')

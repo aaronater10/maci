@@ -3,6 +3,7 @@
 # Imports
 from configparser import ConfigParser as __ConfigParser
 from typing import NewType as __NewType
+from typing import Union as __Union
 from ..error import IniDump
 
 #########################################################################################################
@@ -11,7 +12,7 @@ from ..error import IniDump
 # Hinting reference name for "ini_data" to denote ini data needs to be dumped
 IniData = __NewType('ini_data', __ConfigParser)
 
-def inidump(filename: str, data: IniData) -> None:
+def inidump(filename: str, data: IniData, *, encoding: __Union[str, None]=None) -> None:
     """
     Exports a new file from a ini data (ConfigParser) obj
     
@@ -29,7 +30,7 @@ def inidump(filename: str, data: IniData) -> None:
     if not isinstance(data, __ConfigParser):
         raise IniDump(__err_msg_parser, f'\nFILE: "{filename}" \nDATA: {data}')
     try:
-        with open(filename, 'w') as f:
+        with open(filename, 'w', encoding=encoding) as f:
             data.write(f)
     except TypeError as __err_msg: raise IniDump(__err_msg, f'\nFILE: "{filename}" \nDATA: {data}')
     except ValueError as __err_msg: raise IniDump(__err_msg, f'\nFILE: "{filename}" \nDATA: {data}')

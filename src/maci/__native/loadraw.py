@@ -1,12 +1,13 @@
 # loadraw
 #########################################################################################################
 # Imports
+from typing import Union as __Union
 from os import path as __path
 from ..error import LoadRaw
 
 #########################################################################################################
 # Import raw data from file
-def loadraw(filename: str, *, byte_data: bool=False) -> str:
+def loadraw(filename: str, *, byte_data: bool=False, encoding: __Union[str, None]=None) -> str:
     """
     Imports any raw data from a file.
 
@@ -22,7 +23,7 @@ def loadraw(filename: str, *, byte_data: bool=False) -> str:
     # Validate file exists. Import File then return the raw data
     if not byte_data:
         try:
-            with open(filename, 'r') as f:
+            with open(filename, 'r', encoding=encoding) as f:
                 if __path.getsize(filename) == 0:
                     return ''
                 return f.read()

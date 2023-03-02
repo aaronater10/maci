@@ -2,12 +2,13 @@
 #########################################################################################################
 # Imports
 from typing import Any as __Any
+from typing import Union as __Union
 from os import path as __path
 from ..error import DumpRaw
 
 #########################################################################################################
 # Export Data to File
-def dumpraw(filename: str, *data: __Any, mode: str='w', byte_data: bool=False):
+def dumpraw(filename: str, *data: __Any, mode: str='w', byte_data: bool=False, encoding: __Union[str, None]=None):
     """
     Exports a new file with the new data.
     
@@ -39,7 +40,7 @@ def dumpraw(filename: str, *data: __Any, mode: str='w', byte_data: bool=False):
     # Raw Data to File
     if (mode == 'w') and (not byte_data):
         try:
-            with open(filename, 'w') as f:
+            with open(filename, 'w', encoding=encoding) as f:
                 for data_to_write in data:
                     f.writelines(str(data_to_write))
         except FileNotFoundError as __err_msg: raise DumpRaw(__err_msg, f'\nFILE: "{filename}"')
@@ -65,7 +66,7 @@ def dumpraw(filename: str, *data: __Any, mode: str='w', byte_data: bool=False):
             if __path.getsize(filename) == 0: __new_line = ''
         except FileNotFoundError as __err_msg: raise DumpRaw(__err_msg, f'\nFILE: "{filename}"')
 
-        with open(filename, 'a') as f:
+        with open(filename, 'a', encoding=encoding) as f:
             for data_to_write in data:
                 f.writelines(f"{__new_line}{data_to_write}")
 

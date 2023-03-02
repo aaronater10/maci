@@ -7,7 +7,7 @@ from ..error import CreateHash
 
 #########################################################################################################
 # Create file hash
-def createhash(data_to_hash: Union[str, bytes, int, List[int], Tuple[int], Set[int], range, bool], hash_algorithm: str='sha256') -> str:
+def createhash(data_to_hash: Union[str, bytes, int, List[int], Tuple[int], Set[int], range, bool], hash_algorithm: str='sha256', *, encoding: str='utf-8') -> str:
     """
     Creates a hash of the provided data
 
@@ -52,7 +52,7 @@ def createhash(data_to_hash: Union[str, bytes, int, List[int], Tuple[int], Set[i
     if hash_algorithm == ALGO_OPTIONS[4]: hash_type = _hashlib.md5() # md5
 
     # Check and Convert data to bytes and update hash
-    if isinstance(data_to_hash, str): byte_data = data_to_hash.encode()
+    if isinstance(data_to_hash, str): byte_data = data_to_hash.encode(encoding=encoding)
     if isinstance(data_to_hash, bytes): byte_data = data_to_hash
     if isinstance(data_to_hash, int): byte_data = bytes(data_to_hash) # catches bool as well
     if isinstance(data_to_hash, valid_seq_of_int_types): byte_data = bytes(data_to_hash)

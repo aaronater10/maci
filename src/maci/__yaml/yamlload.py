@@ -2,12 +2,13 @@
 #########################################################################################################
 # Imports
 from typing import Any as __Any
+from typing import Union as __Union
 import yaml as __yaml
 from ..error import YamlLoad
 
 #########################################################################################################
 # Import yaml file
-def yamlload(filename: str) -> __Any:
+def yamlload(filename: str, *, encoding: __Union[str, None]=None) -> __Any:
     """
     Imports yaml data from a file.
 
@@ -25,7 +26,7 @@ def yamlload(filename: str) -> __Any:
     """
     # Import yaml file
     try:
-        with open(filename, 'r') as f:
+        with open(filename, 'r', encoding=encoding) as f:
             return __yaml.safe_load(f)
     except FileNotFoundError as __err_msg: raise YamlLoad(__err_msg, f'\nFILE: "{filename}"')
     except OSError as __err_msg: raise YamlLoad(__err_msg, f'\nFILE: "{filename}"')

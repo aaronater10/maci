@@ -1,13 +1,14 @@
 # comparefilehash
 #########################################################################################################
 # Imports
+from typing import Union as __Union
 from .createfilehash import createfilehash
 from ..__native.load import load
 from ..error import CompareFileHash
 
 #########################################################################################################
 # Compare file hashes
-def comparefilehash(file_to_hash: str, stored_hash_file: str, hash_algorithm: str='sha256') -> bool:
+def comparefilehash(file_to_hash: str, stored_hash_file: str, hash_algorithm: str='sha256', *, encoding: __Union[str, None]=None) -> bool:
     """
     Compares hash of any file by importing the previously stored hash file data from using "createfilehash"
 
@@ -38,8 +39,8 @@ def comparefilehash(file_to_hash: str, stored_hash_file: str, hash_algorithm: st
     if not isinstance(stored_hash_file, str): raise CompareFileHash(__err_msg_hash_file, f'"{stored_hash_file}"')
     if not isinstance(hash_algorithm, str): raise CompareFileHash(__err_msg_str_hash, f'"{hash_algorithm}"')
     if not hash_algorithm in __ALGO_OPTIONS: raise CompareFileHash(__err_msg_hash, f'"{hash_algorithm}"')
-    
+
     # Collect hash data, then return result
     __hash_data = createfilehash(file_to_hash, False, hash_algorithm)
-    __stored_hash_data = load(stored_hash_file)
+    __stored_hash_data = load(stored_hash_file, encoding=encoding)
     return (__hash_data == __stored_hash_data.hash_data)

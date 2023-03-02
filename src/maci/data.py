@@ -18,6 +18,7 @@ class _MaciDataObjConstructor:
         filename: str,
         *,
         attr_name_dedup: bool,
+        encoding: _Union[str, None],
         _py_syntax_err_msg: str='',
         _name_preexists_err_msg: str='',
         _name_reference_does_not_exist_msg: str='',
@@ -62,7 +63,7 @@ class _MaciDataObjConstructor:
         # PARSE FILE: Assume this is a normal file parse if not string parse
         else:
             # Open and Import Config File Data into Object
-            with open(filename, 'r') as file_data:
+            with open(filename, 'r', encoding=encoding) as file_data:
                 file_data = file_data.read().splitlines()
 
         # Data Build Setup and Switches        
@@ -494,6 +495,7 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
         filename: str,
         *,
         attr_name_dedup: bool,
+        encoding: _Union[str, None],
         _py_syntax_err_msg: str='',
         _name_preexists_err_msg: str='',
         _name_reference_does_not_exist_msg: str='',
@@ -526,6 +528,7 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
             super().__init__(
                 filename,
                 attr_name_dedup=attr_name_dedup,
+                encoding=encoding,
                 _py_syntax_err_msg=_py_syntax_err_msg,
                 _name_preexists_err_msg=_name_preexists_err_msg,
                 _name_reference_does_not_exist_msg=_name_reference_does_not_exist_msg,

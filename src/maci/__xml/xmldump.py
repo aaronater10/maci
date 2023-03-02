@@ -1,6 +1,7 @@
 # xmldump
 #########################################################################################################
 # Imports
+from typing import Union as __Union
 from ..__native.dumpraw import dumpraw
 from .xmldumpstr import xmldumpstr
 import xml.etree.ElementTree as __xml_etree
@@ -8,7 +9,7 @@ from ..error import XmlDump
 
 #########################################################################################################
 # Export xml file
-def xmldump(filename: str, data: __xml_etree.Element) -> None:
+def xmldump(filename: str, data: __xml_etree.Element, *, encoding: __Union[str, None]=None) -> None:
     """
     Exports a new file from xml Element obj as xml data
     
@@ -31,5 +32,5 @@ def xmldump(filename: str, data: __xml_etree.Element) -> None:
     # Export Data
     try:
         data = xmldumpstr(data)
-        dumpraw(filename, data)
+        dumpraw(filename, data, encoding=encoding)
     except FileNotFoundError as __err_msg: raise XmlDump(__err_msg, f'\nFILE: "{filename}"')

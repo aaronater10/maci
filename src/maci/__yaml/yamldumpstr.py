@@ -2,12 +2,13 @@
 #########################################################################################################
 # Imports
 from typing import Any as __Any
+from typing import Union as __Union
 import yaml as __yaml
 from ..error import YamlDumpStr
 
 #########################################################################################################
 # Export yaml str
-def yamldumpstr(data: __Any) -> str:
+def yamldumpstr(data: __Any, *, encoding: __Union[str, None]=None) -> str:
     """
     Exports python data type to yaml string
 
@@ -24,7 +25,7 @@ def yamldumpstr(data: __Any) -> str:
     """
     # Export data to yaml str
     try:
-        return __yaml.safe_dump(data, stream=None).rstrip() # Strip trailing \n, yaml parser adds this oddly
+        return __yaml.safe_dump(data, stream=None, encoding=encoding).rstrip() # Strip trailing \n, yaml parser adds this oddly
     except __yaml.representer.RepresenterError as __err_msg: raise YamlDumpStr(__err_msg, f'\nDATA: {data}')
     except TypeError as __err_msg: raise YamlDumpStr(__err_msg, f'\nDATA: {data}')
     except ValueError as __err_msg: raise YamlDumpStr(__err_msg, f'\nDATA: {data}')

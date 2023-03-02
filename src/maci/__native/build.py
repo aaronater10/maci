@@ -33,5 +33,6 @@ def build() -> 'MaciDataObj':
                 '',
                 attr_name_dedup=True,
                 _is_build_request=True,
+                encoding=None,
                 **__err_messages,
             )

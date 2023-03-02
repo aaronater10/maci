@@ -9,7 +9,7 @@ from ..error import CreateFileHash
 
 #########################################################################################################
 # Create file hash
-def createfilehash(file_to_hash: str, file_to_store_hash: __Union[str,bool], hash_algorithm: str='sha256') -> str:
+def createfilehash(file_to_hash: str, file_to_store_hash: __Union[str,bool], hash_algorithm: str='sha256', *, encoding: __Union[str, None]=None) -> str:
     """
     Creates a hash of any file, and stores the hash data to a new created file
 
@@ -57,6 +57,6 @@ def createfilehash(file_to_hash: str, file_to_store_hash: __Union[str,bool], has
     # Store hash to file
     __hash_type = __hash_type.hexdigest()
     if bool(file_to_store_hash):
-        dumpraw(file_to_store_hash, f'hash_data = "{__hash_type}"')
+        dumpraw(file_to_store_hash, f'hash_data = "{__hash_type}"', encoding=encoding)
     # Return hash data also
     return __hash_type

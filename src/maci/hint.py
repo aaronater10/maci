@@ -11,7 +11,7 @@ __hint_settings = {
     '_is_hint_request': True,
 }
 
-MaciDataObj = type(__MaciDataObj(**__hint_settings))
+MaciDataObj = type(__MaciDataObj(**__hint_settings, encoding=None))
 
 
 # INI

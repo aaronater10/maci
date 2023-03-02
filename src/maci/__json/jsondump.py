@@ -7,7 +7,13 @@ from typing import Union
 
 #########################################################################################################
 # Export json file
-def jsondump(filename: str, data: Union[str, int, float, bool, list, dict, tuple, None], *, indent_level: int=4) -> None:
+def jsondump(
+    filename: str,
+    data: Union[str, int, float, bool, list, dict, tuple, None],
+    *,
+    indent_level: int=4,
+    encoding: Union[str, None]=None
+) -> None:
     """
     Exports a new file from python data type to json data.
     
@@ -23,7 +29,7 @@ def jsondump(filename: str, data: Union[str, int, float, bool, list, dict, tuple
     """
     try:
         # Export data to json file
-        with open(filename, 'w') as f:
+        with open(filename, 'w', encoding=encoding) as f:
             __json.dump(data, f, indent=indent_level)
     except TypeError as __err_msg: raise JsonDump(__err_msg, f'\nFILE: "{filename}" \nDATA:{data}')
     except ValueError as __err_msg: raise JsonDump(__err_msg, f'\nFILE: "{filename}" \nDATA:{data}')

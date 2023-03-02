@@ -6,7 +6,7 @@ from ..error import XmlDumpStr
 
 #########################################################################################################
 # Export xml str
-def xmldumpstr(data: __xml_etree.Element) -> str:
+def xmldumpstr(data: __xml_etree.Element, *, encoding: str='utf-8') -> str:
     """
     Exports xml Element obj to a string
 
@@ -25,4 +25,4 @@ def xmldumpstr(data: __xml_etree.Element) -> str:
     if not isinstance(data, __xml_etree.Element): raise XmlDumpStr(__err_msg_etree, f'\nDATA: {data}')
 
     # Export Data
-    return __xml_etree.tostring(data).decode()
+    return __xml_etree.tostring(data).decode(encoding=encoding)

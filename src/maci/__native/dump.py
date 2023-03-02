@@ -22,6 +22,7 @@ def dump(
     write_mode: str='w',
     indent_level: int=1,
     indentation_on: bool=True,
+    encoding: __Union[str, None]=None,
     class_attrs=False,
     private_all_under_attrs=False,
     private_init_under_attrs=False,
@@ -128,7 +129,7 @@ def dump(
         __build_data_output = __build_data_output.rstrip()
 
         # Write File Data
-        __write_file_data(filename, __build_data_output, write_mode)
+        __write_file_data(filename, __build_data_output, write_mode, encoding=encoding)
 
         return None
 
@@ -150,7 +151,7 @@ def dump(
         __build_data_output = __build_data_output.rstrip()
 
         # Write File Data
-        __write_file_data(filename, __build_data_output, write_mode)
+        __write_file_data(filename, __build_data_output, write_mode, encoding=encoding)
 
         return None
 
@@ -280,7 +281,7 @@ def dump(
         __build_data_output = __build_data_output.rstrip()
 
         # Write File Data
-        __write_file_data(filename, __build_data_output, write_mode)
+        __write_file_data(filename, __build_data_output, write_mode, encoding=encoding)
 
         return None
 
@@ -309,7 +310,7 @@ def __multiline_check(data: __Union[list, dict, tuple, set]) -> bool:
 
 
 # Write File Data
-def __write_file_data(filename: str, data: __Any, write_mode: str) -> None:
+def __write_file_data(filename: str, data: __Any, write_mode: str, *, encoding: __Union[str, None]) -> None:
     """
     Write New or Append Data to File
     """
@@ -318,10 +319,10 @@ def __write_file_data(filename: str, data: __Any, write_mode: str) -> None:
     try:
         # Write New File Mode
         if write_mode == 'w':
-            __dumpraw(filename, data)
+            __dumpraw(filename, data, encoding=encoding)
         # Append Append File Mode
         if write_mode == 'a':
-            __dumpraw(filename, data, mode='a')        
+            __dumpraw(filename, data, mode='a', encoding=encoding)        
         # Raise Exception if No Match
         if not write_mode in __write_mode_allowed_list:
             raise Dump(__err_msg_write_mode, f'\nFILE: "{filename}" \nDATA: {write_mode}')
