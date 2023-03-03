@@ -45,6 +45,7 @@ def loadstr(py_str_data: str, *, attr_name_dedup: bool=True) -> 'MaciDataObj':
                 _str_data=py_str_data,
                 _is_str_parse_request=True,
                 attr_name_dedup=attr_name_dedup,
+                encoding=None,
                 **__err_messages,
             )
     except Load as __err_msg:

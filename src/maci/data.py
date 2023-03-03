@@ -86,7 +86,7 @@ class _MaciDataObjConstructor:
             try: __skip_marker = __file_data_line[0]
             except IndexError: __skip_marker = ''
 
-            # Skip Any Comments, Blanks, and New Lines
+            # Skip Any Comments, Blanks, and New Lines. Do not skip during a muli-line build
             if (__is_building_data_sw == False) and (__skip_marker in __skip_markers): continue
 
             # Set Assignment Glyph
@@ -99,10 +99,10 @@ class _MaciDataObjConstructor:
 
                 if not __is_building_data_sw:
                     __current_assignment_glyph = __assignment_glyph
-                    __var_token = __file_data_line.split(__assignment_glyph)[0].strip()
-                    __value_token = __file_data_line.split(__assignment_glyph)[1].strip()
-                    __value_token_multi = __file_data_line.split(__assignment_glyph)[1].split()[0].strip()
-                    __last_token = __file_data_line.split(__assignment_glyph)[-1].strip()
+                    __var_token = __file_data_line.partition(__assignment_glyph)[0].strip()
+                    __value_token = __file_data_line.partition(__assignment_glyph)[2].strip()
+                    __value_token_multi = __file_data_line.partition(__assignment_glyph)[2].split()[0].strip()
+                    __last_token = __file_data_line.partition(__assignment_glyph)[2].strip()
                     try: __start_skip_token = __file_data_line.split(__assignment_glyph)[1].split()[1][0].strip()
                     except IndexError: __start_skip_token = ''
                     
