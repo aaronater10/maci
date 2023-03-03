@@ -349,8 +349,7 @@ class TestLoad(unittest.TestCase):
         filename = '18_glyph_in_value.data'
         filepath = test_file_path + filename
 
-        # Test File Import
-        assert maci.load(filepath)
+        # File Import
         file_import = maci.load(filepath)
 
         # Test Attributes and Types
@@ -360,3 +359,20 @@ class TestLoad(unittest.TestCase):
         assert (file_import.data_str4 == "data with $$= glyph")
         assert (file_import.data_str5 == "data with $== glyph")
         assert (file_import.data_str6 == "data with $$== glyph")
+
+
+# 19. Check if Error Raised on Value Empty - Import Single Line Value with Empty Value
+    def test19_raise_on_value_empty(self):
+        filename_no_spaces = '19_raise_on_value_empty_no_spaces.data'
+        filename_spaces = '19_raise_on_value_empty_spaces.data'
+
+        # File Import: No Spaces
+        filepath = test_file_path + filename_no_spaces
+        with pytest.raises(maci.error.Load):
+            maci.load(filepath)
+        
+        # File Import: Value Empty with Spaces
+        filepath = test_file_path + filename_spaces
+        with pytest.raises(maci.error.Load):
+            maci.load(filepath)
+        

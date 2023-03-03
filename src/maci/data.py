@@ -98,6 +98,11 @@ class _MaciDataObjConstructor:
             if (__assignment_glyph in __assignment_glyphs) or (__is_building_data_sw):
 
                 if not __is_building_data_sw:
+
+                    # Check if Value Empty
+                    if __file_data_line.partition(__assignment_glyph)[2].strip() == '':
+                        raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__file_data_line.partition(__assignment_glyph)[0].strip()} \nGOT: {__file_data_line}')
+                    
                     __current_assignment_glyph = __assignment_glyph
                     __var_token = __file_data_line.partition(__assignment_glyph)[0].strip()
                     __value_token = __file_data_line.partition(__assignment_glyph)[2].strip()
