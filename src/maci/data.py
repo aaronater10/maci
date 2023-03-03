@@ -133,6 +133,13 @@ class _MaciDataObjConstructor:
                 and (__is_building_data_sw == False) \
                 and not (is_attr_reference_glyph):
                     
+                    # Check if var_token is a Pythonic valid name
+                    if not __var_token.isidentifier():
+                        raise Load(
+                            'Must use valid Python name syntax to load attr name',
+                            f'\nFILE: "{filename}" \nLINE: {line_num+1} \nATTR_NAME: {__file_data_line.partition(__assignment_glyph)[0].strip()} \nGOT: {__file_data_line}'
+                        )
+                    
                     if (self.__attrib_name_dedup) and (hasattr(self, __var_token)):
                             raise Load(name_preexists_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')
 
@@ -176,6 +183,12 @@ class _MaciDataObjConstructor:
                 # IMPORT SINGLE LINE VALUES: If not multiline, assume single
                 else:
                     try:
+                        # Check if var_token is a Pythonic valid name
+                        if not __var_token.isidentifier():
+                            raise Load(
+                                'Must use valid Python name syntax to load attr name',
+                                f'\nFILE: "{filename}" \nLINE: {line_num+1} \nATTR_NAME: {__file_data_line.partition(__assignment_glyph)[0].strip()} \nGOT: {__file_data_line}'
+                            )
                         # Check if Attr Dedup
                         if (self.__attrib_name_dedup) and (hasattr(self, __var_token)):
                             raise Load(name_preexists_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')
