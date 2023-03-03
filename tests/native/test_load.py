@@ -2,12 +2,23 @@
 from src import maci
 from os import path
 import unittest
+import pytest
 
 test_file_path = './tests/test_files/native/load_files/'
 
+################################################################
+'''
+NOTICE:
+- Any new tests must not use the unittest class and instead use the pytest framework.
+- Add new tests below the "TestLoad" class
+- Old tests are still being used/kept to reference consistent functionality
+- Ensure to number tests in order
+'''
+################################################################
+
 
 ################################################################
-# TESTS
+# Tests
 
 class TestLoad(unittest.TestCase):
 
@@ -326,3 +337,26 @@ class TestLoad(unittest.TestCase):
 
         self.assertEqual(file_import.data_set, (1,2,3))
         with self.assertRaises(Exception): file_import.data_set = change_value
+
+### END OF OLD TESTS ###
+################################################################
+# SEE AT TOP ABOVE FOR THIS
+################################################################
+### NEW TESTS BELOW ###
+
+# 18. Ignore Glyph in Value Str Check - Import Single Line Value String Containing a Glyph
+    def test18_ignore_glyph_in_value_str(self):
+        filename = '18_glyph_in_value.data'
+        filepath = test_file_path + filename
+
+        # Test File Import
+        assert maci.load(filepath)
+        file_import = maci.load(filepath)
+
+        # Test Attributes and Types
+        assert (file_import.data_str1 == "data with = glyph")
+        assert (file_import.data_str2 == "data with == glyph")
+        assert (file_import.data_str3 == "data with $= glyph")
+        assert (file_import.data_str4 == "data with $$= glyph")
+        assert (file_import.data_str5 == "data with $== glyph")
+        assert (file_import.data_str6 == "data with $$== glyph")

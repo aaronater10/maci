@@ -1,0 +1,6 @@
+data_str1 = "data with = glyph"
+data_str2 = "data with == glyph"
+data_str3 = "data with $= glyph"
+data_str4 = "data with $$= glyph"
+data_str5 = "data with $== glyph"
+data_str6 = "data with $$== glyph"
