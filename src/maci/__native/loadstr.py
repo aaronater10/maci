@@ -49,4 +49,5 @@ def loadstr(py_str_data: str, *, attr_name_dedup: bool=True) -> 'MaciDataObj':
                 **__err_messages,
             )
     except Load as __err_msg:
-        raise LoadStr(__err_msg.msg, f'\nDATA: "{py_str_data}"')
+        __err_msg.item = __err_msg.item.replace('\nFILE: ""', "")
+        raise LoadStr(__err_msg.msg, f'{__err_msg.item}')

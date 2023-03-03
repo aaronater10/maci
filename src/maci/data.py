@@ -79,8 +79,10 @@ class _MaciDataObjConstructor:
         __assignment_glyphs = ('=', '$=', '==', '$==', '$$=', '$$==')
         __eof_marker = file_data[-1]
 
-        # Main File Loop
-        for __file_data_line in file_data:
+        # Main File/Str Loop
+        # To display correct line number, ensure to add +1 when ready to raise. Keeping
+        # constant +1 track will add latency to loop, so only provide as needed
+        for line_num,__file_data_line in enumerate(file_data):
 
             # Set Skip Marker
             try: __skip_marker = __file_data_line[0]
@@ -101,7 +103,10 @@ class _MaciDataObjConstructor:
 
                     # Check if Value Empty
                     if __file_data_line.partition(__assignment_glyph)[2].strip() == '':
-                        raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__file_data_line.partition(__assignment_glyph)[0].strip()} \nGOT: {__file_data_line}')
+                        raise Load(
+                            py_syntax_err_msg,
+                            f'\nFILE: "{filename}" \nLINE: {line_num+1} \nATTR_NAME: {__file_data_line.partition(__assignment_glyph)[0].strip()} \nGOT: {__file_data_line}'
+                        )
                     
                     __current_assignment_glyph = __assignment_glyph
                     __var_token = __file_data_line.partition(__assignment_glyph)[0].strip()
