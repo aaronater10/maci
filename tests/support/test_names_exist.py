@@ -90,4 +90,4 @@ def test3_macidataobj_method_names_exist():
     maci_obj.link_attr
     maci_obj.get_locked_list
     maci_obj.get_hard_locked_list
-    maci_obj.get_reference_maps
+    maci_obj.get_all_links
