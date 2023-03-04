@@ -8,6 +8,7 @@ from typing import NoReturn as _NoReturn
 from typing import Dict as _Dict
 from typing import List as _List
 from typing import Union as _Union
+from typing import Optional as _Optional
 from .error import Load, GeneralError, Hint
 
 #########################################################################################################
@@ -497,11 +498,11 @@ class _MaciDataObjConstructor:
 
     def get_all_links(self) -> _Dict[str, _Dict[str, _Union[str, _Dict[str, str]]]]:
         """
-        All Parent and Child Links
+        Get all Parent and Child Links
 
         Returns a new dict of the current parent and child link reference maps
 
-        Example Map Structure:
+        [Example Map Structure]
 
         attr_parent = 'some value'
 
@@ -516,11 +517,11 @@ class _MaciDataObjConstructor:
 
     def get_parent_links(self) -> _Dict[str, _Dict[str, str]]:
         """
-        All Parent Links
+        Get all Parent Links
 
         Returns a new dict of the current parent link reference map
 
-        Example Map Structure:
+        [Example Map Structure]
 
         attr_parent = 'some value'
 
@@ -531,13 +532,120 @@ class _MaciDataObjConstructor:
         return deepcopy(self.__assigned_dst_reference_attr_map)
 
 
+    def get_parent_chains(self, parent_attr: _Optional[str]=None, *, dup_link_check: bool=True) -> _Union[_Dict[str, _List[str]], _List[str]]:
+        """
+        Get Parent Chains
+
+        Builds and returns a new dict or list of attr name chains that are currently linked together by interconnected children with
+        the very top chain link being their parent
+
+        Chains are represented as a list with the parent being first and the children to follow
+        
+        Represented chains are built from scratch each time this method is called
+
+        [Options]
+
+        parent_attr: Optional - if specified, gets the chain of the parent name that currently has a chain. returns a list
+
+        dup_link_check: Default=True - Protects against duplicate links to the parent. If disabled and a duplicate is found, it 
+        will still return chain(s), but will cut the chain's previous links to the parent and only continue the chain from the
+        last reference to the parent and retain any chain links following the last reference (see note below to clear any concerns).
+        
+        Note: It is worth stating, this method does not break/affect the actual behavior of the attributes being linked together, as this method only fresh builds a representation
+        of the attributes linked together in the form of a chain for your reference to help understand what attribute names are connected to each other.
+        The true linking is controlled by other mechs.
+
+        [Example Chain Structure]
+
+        attr_parent = 'some value'
+
+        attr_child1 == attr_parent
+
+        attr_child2 == attr_child1
+
+        Parent chain will be -> {'attr_parent': ['attr_parent', 'attr_child1', 'attr_child2']}
+        """
+        # Error Checks
+        err_msg_parent_name_type = "Only str|None is allowed for 'parent_attr'"
+        err_msg_dup_link_chk_type = "Only bool is allowed for 'dup_link_check'"
+        err_msg_chain_conflict = f"Cannot build chain due to duplicate child name(s) already linked to parent! Disable this check with 'dup_link_check'"
+        err_msg_parent_not_found = f"Name '{parent_attr}' does not have a chain that exists!"
+
+        if not isinstance(parent_attr, (str, type(None))): raise GeneralError(err_msg_parent_name_type, f'\nGOT: {parent_attr}')
+        if not isinstance(dup_link_check, bool): raise GeneralError(err_msg_dup_link_chk_type, f'\nGOT: {dup_link_check}')
+
+        # Always use new objects
+        all_parent_chains = {}
+        chain_link_tracker = []
+
+        # Seek and Build the chains that exist
+        for child in self.__assigned_src_reference_attr_map:
+
+            # If not parent assume it is a child link
+            if child not in self.__assigned_dst_reference_attr_map:
+                # Start new chain link build and add first child
+                chain_link_build = []
+                chain_link_build.append(child)
+                parent_check = ''
+                child_check = child
+
+                # Walk up the chain to discover other links to reach parent
+                while True:
+                    parent_check = self.__assigned_src_reference_attr_map[child_check]
+
+                    # Parent NOT Specified: If enabled, verify no other child link is also linked to the same parent
+                    if ((parent_check in chain_link_tracker) and (dup_link_check)) \
+                    and (parent_attr is None):
+                        found_offenders = list(filter(lambda attr:not (attr == child_check), self.__assigned_dst_reference_attr_map[parent_check]))
+                        raise GeneralError(
+                            err_msg_chain_conflict,
+                            f"\nPARENT: {parent_check} \nLINK_ATTEMPTED: {child_check} \nALREADY_LINKED_TO_PARENT: {found_offenders}"
+                        )
+                    
+                    # Parent IS Specified: If enabled, verify no other child link is also linked to the same parent
+                    if ((parent_check in chain_link_tracker) and (dup_link_check)) \
+                    and ((parent_attr is not None) and (parent_attr == parent_check)):
+                        found_offenders = list(filter(lambda attr:not (attr == child_check), self.__assigned_dst_reference_attr_map[parent_check]))
+                        raise GeneralError(
+                            err_msg_chain_conflict,
+                            f"\nPARENT: {parent_check} \nLINK_ATTEMPTED: {child_check} \nALREADY_LINKED_TO_PARENT: {found_offenders}"
+                        )
+                    
+                    # Check if the parent is also a child
+                    if parent_check in self.__assigned_src_reference_attr_map:
+                        chain_link_build.append(parent_check)
+                        child_check = parent_check
+                    
+                    # Add parent to chain and invert order for top->down order. update tracker
+                    else:
+                        chain_link_build.append(parent_check)
+                        chain_link_tracker.extend(chain_link_build)
+                        chain_link_build.reverse()
+                        all_parent_chains[parent_check] = chain_link_build
+                        break
+
+        # Check if parent_name was specified but not found
+        if (parent_attr is not None) and (parent_attr not in all_parent_chains):
+            raise GeneralError(
+                err_msg_parent_not_found,
+                f"\nGOT: {parent_attr}"
+            )
+
+        # Return single parent chain if specified, otherwise continue build
+        if parent_attr in all_parent_chains:
+            return all_parent_chains[parent_attr]
+
+        # Return all chains if no parent specified
+        return all_parent_chains
+
+
     def get_child_links(self) -> _Dict[str, str]:
         """
-        All Child Links
+        Get all Child Links
 
         Returns a new dict of the current child link reference map
 
-        Example Map Structure:
+        [Example Map Structure]
 
         attr_parent = 'some value'
 
