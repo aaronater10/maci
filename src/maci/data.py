@@ -553,7 +553,7 @@ class _MaciDataObjConstructor:
         
         Note: It is worth stating, this method does not break/affect the actual behavior of the attributes being linked together, as this method only fresh builds a representation
         of the attributes linked together in the form of a chain for your reference to help understand what attribute names are connected to each other.
-        The true linking is controlled by other mechs.
+        The true linking is controlled by other mechs, and any real duplicate links are not affected as that is acceptable behavior.
 
         [Example Chain Structure]
 
