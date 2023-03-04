@@ -512,7 +512,41 @@ class _MaciDataObjConstructor:
         Child map will be -> 'child_link_map': {'attr_child': 'attr_parent'}
         """
         return {'parent_link_map': deepcopy(self.__assigned_dst_reference_attr_map), 'child_link_map': deepcopy(self.__assigned_src_reference_attr_map)}
-    
+
+
+    def get_parent_links(self) -> _Dict[str, _Dict[str, str]]:
+        """
+        All Parent Links
+
+        Returns a new dict of the current parent link reference map
+
+        Example Map Structure:
+
+        attr_parent = 'some value'
+
+        attr_child == attr_parent
+
+        Parent map will be -> {'attr_parent': {'attr_child': 'attr_parent'}}
+        """
+        return deepcopy(self.__assigned_dst_reference_attr_map)
+
+
+    def get_child_links(self) -> _Dict[str, str]:
+        """
+        All Child Links
+
+        Returns a new dict of the current child link reference map
+
+        Example Map Structure:
+
+        attr_parent = 'some value'
+
+        attr_child == attr_parent
+
+        Child map will be -> {'attr_child': 'attr_parent'}
+        """
+        return deepcopy(self.__assigned_src_reference_attr_map)
+
 
     # Name compatibility aliases/deprecation from ported library
     def __getattr__(self, attr_name: str) -> object:
