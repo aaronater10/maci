@@ -91,7 +91,7 @@ class TestBuildData(unittest.TestCase):
     
         
         # REFERENCE
-        build_data.reference_attr('data_none', 'data_list')
+        build_data.link_attr('data_none', 'data_list')
 
         # Test Attribute Reference
         self.assertEqual(build_data.data_none, [1,2,3])
@@ -99,7 +99,7 @@ class TestBuildData(unittest.TestCase):
         build_data.data_none = None
 
         # REFERENCE LOCK
-        build_data.reference_attr('data_none', 'data_list')
+        build_data.link_attr('data_none', 'data_list')
         build_data.lock_attr('data_none')
 
         # Test Attribute Reference Value and Lock
@@ -118,9 +118,9 @@ class TestBuildData(unittest.TestCase):
         # Str
         build_data.lock_attr('data_str')
         # List
-        build_data.reference_attr('data_list', 'data_dict')
+        build_data.link_attr('data_list', 'data_dict')
         # Set
-        build_data.reference_attr('data_set', 'data_bool')
+        build_data.link_attr('data_set', 'data_bool')
         build_data.lock_attr('data_set')
         maci.dump(filepath, build_data)
 

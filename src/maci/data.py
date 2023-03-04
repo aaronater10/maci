@@ -406,33 +406,34 @@ class _MaciDataObjConstructor:
         except ValueError: raise GeneralError(__err_msg_attr_name_exist_unlock, f'\nATTR_NAME: "{attr_name}"')
 
 
-    def reference_attr(self, attr_name: str, reference_name: str) -> None:
+    def link_attr(self, child_attr: str, parent_attr: str) -> None:
         """
-        Create reference of attribute name to another attribute name value from this object
+        Create a link of an attribute name to another attribute name
 
-        This will also assign the value of the reference name to the attribute
+        This will auto assign/track the value of the parent attr to the child attr
 
-        Useful to maintain name references stored to a file
+        Useful to maintain references and follow values of other attributes. Similar
+        to the concept of a pointer.
         """
         # Error Checks
-        __err_msg_attr_name_str = "Only str is allowed for attr_name"
-        __err_msg_reference_name_str = "Only str is allowed for reference_name"
-        __err_msg_attr_name_exist = "Source attribute name does not exist! Must be created first to assign reference"
-        __err_msg_reference_name_exist = "Reference attribute name does not exist! Cannot assign value reference"
+        __err_msg_attr_name_str = "Only str is allowed for 'child_attr'"
+        __err_msg_reference_name_str = "Only str is allowed for 'parent_attr'"
+        __err_msg_attr_name_exist = f"Attribute name '{child_attr}' does not exist! Must be created first to assign to parent attribute"
+        __err_msg_reference_name_exist = f"Attribute name '{parent_attr}' does not exist! Cannot assign value to child attribute"
 
-        if not isinstance(attr_name, str): raise GeneralError(__err_msg_attr_name_str, f'\nATTR_NAME: "{attr_name}"')
-        if not isinstance(reference_name, str): raise GeneralError(__err_msg_reference_name_str, f'\nATTR_NAME: "{reference_name}"')
+        if not isinstance(child_attr, str): raise GeneralError(__err_msg_attr_name_str, f'\nATTR_NAME: "{child_attr}"')
+        if not isinstance(parent_attr, str): raise GeneralError(__err_msg_reference_name_str, f'\nATTR_NAME: "{parent_attr}"')
 
         # Look up if Attr or Reference Name Exists
-        if not attr_name in self.__dict__: raise GeneralError(__err_msg_attr_name_exist, f'\nATTR_NAME: "{attr_name}"')
-        if not reference_name in self.__dict__: raise GeneralError(__err_msg_reference_name_exist, f'\nATTR_NAME: "{reference_name}"')
+        if not child_attr in self.__dict__: raise GeneralError(__err_msg_attr_name_exist, f'\nATTR_NAME: "{child_attr}"')
+        if not parent_attr in self.__dict__: raise GeneralError(__err_msg_reference_name_exist, f'\nATTR_NAME: "{parent_attr}"')
 
         # Set Value to Reference Value
-        setattr(self, attr_name, getattr(self, reference_name))
+        setattr(self, child_attr, getattr(self, parent_attr))
     
         # Assign Attr Name to Reference Name in Reference Maps
-        self.__assigned_src_reference_attr_map[attr_name] = reference_name
-        self.__assigned_dst_reference_attr_map.setdefault(reference_name, {}).setdefault(attr_name, reference_name)
+        self.__assigned_src_reference_attr_map[child_attr] = parent_attr
+        self.__assigned_dst_reference_attr_map.setdefault(parent_attr, {}).setdefault(child_attr, parent_attr)
 
 
     def __reference_deletion_check(self, _name: str, *, _src_ref_list: bool=False, _dst_ref_list: bool=False, _lock_list: bool=False) -> _NoReturn:
@@ -501,6 +502,15 @@ class _MaciDataObjConstructor:
         Returns a new dict of the current source and destination reference maps
         """
         return {'src_map': deepcopy(self.__assigned_src_reference_attr_map), 'dst_map': deepcopy(self.__assigned_dst_reference_attr_map)}
+    
+
+    # Name compatibility aliases/deprecation from ported library
+    def __getattr__(self, attr_name: str) -> object:
+        if attr_name == 'reference_attr': return self.link_attr
+
+        # Raise normal error if anything else
+        raise_msg = f"'{type(self).__name__}' object has no attribute '{attr_name}'"
+        raise AttributeError(raise_msg)
 
 
 #########################################################################################################
