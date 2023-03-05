@@ -76,7 +76,7 @@ class _MaciDataObjConstructor:
         # Markers
         __start_markers = ('[', '{', '(', "'''", '"""')
         __end_markers = (']', '}', ')', "'''", '"""')
-        __skip_markers = ('',' ','#','\n')
+        __skip_markers = ('', ' ', '#', '\n')
         __assignment_glyphs = ('=', '$=', '==', '$==', '$$=', '$$==')
         __eof_marker = file_data[-1]
 
@@ -156,6 +156,10 @@ class _MaciDataObjConstructor:
                     if (self.__attrib_name_dedup) and (hasattr(self, __var_token)):
                             raise Load(name_preexists_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')
 
+                    # Check for Comment
+                    if __skip_markers[2] in __value_token:
+                        __value_token = __value_token.partition(__skip_markers[2])[0].strip()
+                    # Set First Value
                     __build_data = __value_token
                     
                     # Turn ON Data Build Switches
