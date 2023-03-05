@@ -113,12 +113,24 @@ class _MaciDataObjConstructor:
                     __var_token = __file_data_line.partition(__assignment_glyph)[0].strip()
                     __value_token = __file_data_line.partition(__assignment_glyph)[2].strip()
                     __value_token_multi = __file_data_line.partition(__assignment_glyph)[2].split()[0].strip()
-                    __last_token = __file_data_line.partition(__assignment_glyph)[2].strip()
+
+                    # Set Last Token with Accommodation to Multi-Line String
+                    if __file_data_line.partition(__assignment_glyph)[2].strip()[-3:] in __start_markers:
+                        __last_token = __file_data_line.partition(__assignment_glyph)[2].strip()[-3:]
+                    else:
+                        __last_token = __file_data_line.partition(__assignment_glyph)[2].strip()[-1]
+                    
                     try: __start_skip_token = __file_data_line.split(__assignment_glyph)[1].split()[1][0].strip()
                     except IndexError: __start_skip_token = ''
-                    
+                
+                # Collect End Token if in Build
                 if __is_building_data_sw:
-                    try: __end_token = __file_data_line[0]
+                    try:
+                        if __file_data_line[0] in __end_markers:
+                            __end_token = __file_data_line[0]
+                        elif __file_data_line[0:3] in __end_markers:
+                            __end_token = __file_data_line[0:3]
+                        else: __end_token = ''
                     except IndexError: __end_token = ''
                 
                 # Verify Assignment Glyph is Not Attr Reference for Multiline Build Check
