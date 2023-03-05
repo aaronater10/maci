@@ -22,6 +22,7 @@ def dump(
     write_mode: str='w',
     indent_level: int=1,
     indentation_on: bool=True,
+    multi_line_str: bool=False,
     encoding: __Union[str, None]=None,
     class_attrs=False,
     private_all_under_attrs=False,
@@ -93,6 +94,10 @@ def dump(
             if not key.startswith(__skip_object_key):
                 # Check Glyph Type and Build Accordingly
 
+                # Reset Values
+                is_set_start_new_line = ''
+                is_set_end_new_line = ''
+
                 # Reference Name and Locked
                 if (key in data.__dict__[__reference_attr_list_key]) and (key in data.__dict__[__locked_attr_list_key]):
                     __build_data_output += f'{key} {__assignment_glyphs[3]} {data.__dict__[__reference_attr_list_key][key]}\n'
@@ -110,6 +115,10 @@ def dump(
                     if __multiline_check(value) and indentation_on:
                         value = __cleanformat(value, indent_level)
                         __build_data_output += f'{key} {__assignment_glyphs[1]} {value}\n'
+                    elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):
+                        is_set_start_new_line = '' if value.startswith('\n') else '\n'
+                        is_set_end_new_line = '' if value.endswith('\n') else '\n'
+                        __build_data_output += f"{key} {__assignment_glyphs[1]} '''{is_set_start_new_line}{value}{is_set_end_new_line}'''\n"
                     else: __build_data_output += f'{key} {__assignment_glyphs[1]} {repr(value)}\n'
                     continue
                 # Hard Locked Only
@@ -117,12 +126,20 @@ def dump(
                     if __multiline_check(value) and indentation_on:
                         value = __cleanformat(value, indent_level)
                         __build_data_output += f'{key} {__assignment_glyphs[4]} {value}\n'
+                    elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):
+                        is_set_start_new_line = '' if value.startswith('\n') else '\n'
+                        is_set_end_new_line = '' if value.endswith('\n') else '\n'
+                        __build_data_output += f"{key} {__assignment_glyphs[4]} '''{is_set_start_new_line}{value}{is_set_end_new_line}'''\n"
                     else: __build_data_output += f'{key} {__assignment_glyphs[4]} {repr(value)}\n'
                     continue
                 # Normal Assignment
                 if __multiline_check(value) and indentation_on:
                     value = __cleanformat(value, indent_level)
                     __build_data_output += f'{key} {__assignment_glyphs[0]} {value}\n'
+                elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):
+                    is_set_start_new_line = '' if value.startswith('\n') else '\n'
+                    is_set_end_new_line = '' if value.endswith('\n') else '\n'
+                    __build_data_output += f"{key} {__assignment_glyphs[0]} '''{is_set_start_new_line}{value}{is_set_end_new_line}'''\n"
                 else: __build_data_output += f'{key} {__assignment_glyphs[0]} {repr(value)}\n'
 
         # Strip Last \n Char
