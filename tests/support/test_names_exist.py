@@ -94,3 +94,6 @@ def test3_macidataobj_method_names_exist():
     maci_obj.get_parent_links
     maci_obj.get_child_links
     maci_obj.get_parent_chains
+    maci_obj.unlink_attr
+    maci_obj.is_parent_link
+    maci_obj.is_child_link

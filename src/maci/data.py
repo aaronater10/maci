@@ -437,10 +437,77 @@ class _MaciDataObjConstructor:
         self.__assigned_dst_reference_attr_map.setdefault(parent_attr, {}).setdefault(child_attr, parent_attr)
 
 
-    def __reference_deletion_check(self, _name: str, *, _src_ref_list: bool=False, _dst_ref_list: bool=False, _lock_list: bool=False) -> _NoReturn:
+    def unlink_attr(self, attr_name: str) -> None:
+        """
+        Unlink an attribute name from another attribute name
+
+        This will detach the link between the child attr and parent attr
+
+        If it is a parent attr, all child links will be detached from that parent
+        """
+        # Error Checks
+        __err_msg_attr_name_str = "Only str is allowed for 'attr_name'"
+        __err_msg_attr_name_exist = f"Attribute name does not exist! Must be created first and linked to an attribute to unlink"
+        __err_msg_reference_name_exist = f"Attribute name is not linked to anything! Cannot unlink attribute"
+
+        if not isinstance(attr_name, str): raise GeneralError(__err_msg_attr_name_str, f'\nGOT: {repr(attr_name)}')
+
+        # Look up if Attr or Reference Name Exists at all or in Reference Maps
+        if not attr_name in self.__dict__: raise GeneralError(__err_msg_attr_name_exist, f'\nGOT: {repr(attr_name)}')
+
+        if (attr_name not in self.__assigned_src_reference_attr_map) \
+        and (attr_name not in self.__assigned_dst_reference_attr_map):
+            raise GeneralError(__err_msg_reference_name_exist, f'\nATTR_NAME: {attr_name}')
+        
+        self.__reference_deletion_check(attr_name, _src_ref_list=True, _dst_ref_list=True, _ref_removal_request=True)
+
+
+    def is_parent_link(self, attr_name: str) -> bool:
+        """
+        Check if attr is a parent link
+
+        Returns: True if Parent, and False if not
+        """
+        # Error Checks
+        __err_msg_attr_name_str = "Only str is allowed for 'attr_name'"
+        __err_msg_attr_name_exist = f"Attribute name does not exist! Must be created first to check link type"
+
+        if not isinstance(attr_name, str): raise GeneralError(__err_msg_attr_name_str, f'\nGOT: {repr(attr_name)}')
+        if not attr_name in self.__dict__: raise GeneralError(__err_msg_attr_name_exist, f'\nGOT: {repr(attr_name)}')
+
+        # Check Link Type
+        return (attr_name in self.__assigned_dst_reference_attr_map)
+    
+
+    def is_child_link(self, attr_name: str) -> bool:
+        """
+        Check if attr is a child link
+
+        Returns: True if Child, and False if not
+        """
+        # Error Checks
+        __err_msg_attr_name_str = "Only str is allowed for 'attr_name'"
+        __err_msg_attr_name_exist = f"Attribute name does not exist! Must be created first to check link type"
+
+        if not isinstance(attr_name, str): raise GeneralError(__err_msg_attr_name_str, f'\nGOT: {repr(attr_name)}')
+        if not attr_name in self.__dict__: raise GeneralError(__err_msg_attr_name_exist, f'\nGOT: {repr(attr_name)}')
+
+        # Check Link Type
+        return (attr_name in self.__assigned_src_reference_attr_map)
+
+
+    def __reference_deletion_check(
+        self,
+        _name: str,
+        *,
+        _src_ref_list: bool=False,
+        _dst_ref_list: bool=False,
+        _lock_list: bool=False,
+        _ref_removal_request: bool=False,
+    ) -> _NoReturn:
         """
         Internal method: check if reference requires deletion from reference list
-        if attribute is attempted to be re-assigned
+        if attribute is attempted to be re-assigned or deleted
         """
         # General Lock Attrs
         if _lock_list:
@@ -455,7 +522,7 @@ class _MaciDataObjConstructor:
                 _is_locked = _name in self.__assignment_locked_attribs
                 _is_hard_locked = _name in self.__assignment_hard_locked_attribs
                 
-                if not (_is_locked or _is_hard_locked):
+                if (not (_is_locked or _is_hard_locked)) or (_ref_removal_request):
                     # Release Source & Destination Reference
                     _dst_ref_name: str = self.__assigned_src_reference_attr_map.pop(_name)
                     self.__assigned_dst_reference_attr_map[_dst_ref_name].pop(_name)
@@ -470,7 +537,7 @@ class _MaciDataObjConstructor:
                 _is_locked = _name in self.__assignment_locked_attribs
                 _is_hard_locked = _name in self.__assignment_hard_locked_attribs
                 
-                if not (_is_locked or _is_hard_locked):
+                if (not (_is_locked or _is_hard_locked)) or (_ref_removal_request):
                     # Release Source References
                     for key in self.__assigned_dst_reference_attr_map[_name]:
                         self.__assigned_src_reference_attr_map.pop(key)
