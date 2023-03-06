@@ -375,4 +375,39 @@ class TestLoad(unittest.TestCase):
         filepath = test_file_path + filename_spaces
         with pytest.raises(maci.error.Load):
             maci.load(filepath)
-        
+
+
+# 20. Check if Error Raised on Value Empty - Import Single Line Value with Empty Value
+    def test20_python_assignment_syntax(self):
+        filename_no_spaces = '20_python_assignment_syntax.data'
+
+        # File Import
+        filepath = test_file_path + filename_no_spaces
+        file_import = maci.load(filepath)
+
+        # Test Attributes and Types
+
+        # Single
+        assert file_import.data_str == "data"
+        assert file_import.data_int == 1
+        assert file_import.data_float == 1.0
+        assert file_import.data_bool == True
+        assert file_import.data_list == [1,2,3]
+        assert file_import.data_dict == {'k1':1, 'k2':2, 'k3':3}
+        assert file_import.data_tuple == (1,2,3)
+        assert file_import.data_set == {1,2,3}
+        assert file_import.data_none == None
+        assert file_import.data_bytes == b'data'
+        # Multi
+        assert file_import.data_list_multi == [1,2,3]
+        assert file_import.data_dict_multi == {'k1':1, 'k2':2, 'k3':3}
+        assert file_import.data_tuple_multi == (1,2,3)
+        assert file_import.data_set_multi == {1,2,3}
+        assert file_import.data_str_multi == "\ndata1\n data2\n  data3\ndata4\n"
+        # Glyph Types
+        assert file_import.d1 == 1
+        assert file_import.d2 == 1
+        assert file_import.d3 == 1
+        assert file_import.d4 == 1
+        assert file_import.d5 == 1
+        assert file_import.d6 == 1
