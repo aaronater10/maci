@@ -81,8 +81,24 @@ class _MaciDataObjConstructor:
         __eof_marker = file_data[-1]
 
         # Assignment Glyphs
-        _Glyphs  = _NamedTuple('_Glyphs', [('ref_hard_lock', str), ('hard_lock', str), ('ref_lock', str), ('lock', str), ('ref', str), ('norm', str)])
-        __assignment_glyphs = _Glyphs('$$==', '$$=', '$==', '$=', '==', '=')
+        _Glyphs  = _NamedTuple(
+            '_Glyphs', [
+                ('ref_hard_lock', str), ('rh', str), ('hr', str),
+                ('hard_lock', str), ('h', str),
+                ('ref_lock', str), ('rl', str), ('lr', str),
+                ('lock', str), ('l', str),
+                ('ref', str), ('r', str),
+                ('norm', str)
+            ]
+        )
+        __assignment_glyphs = _Glyphs(
+            '$$==', 'rh=', 'hr=',
+            '$$=', 'h=',
+            '$==', 'rl=', 'lr=',
+            '$=', 'l=',
+            '==', 'r=',
+            '='
+        )
 
         # Main File/Str Loop
         # To display correct line number, ensure to add +1 when ready to raise. Keeping
@@ -96,16 +112,20 @@ class _MaciDataObjConstructor:
             # Skip Any Comments, Blanks, and New Lines. Do not skip during a muli-line build
             if (__is_building_data_sw == False) and (__skip_marker in __skip_markers): continue
 
-            # Set Assignment Glyph
+            # Set Assignment Glyph: Checks valid syntax, and checks if glyph is uppercase
             if (__is_building_data_sw == False):
                 for _glyph in __assignment_glyphs:
-                    if __file_data_line.partition(_glyph)[0].strip().isidentifier():
-                        __assignment_glyph = _glyph
-                        break
+                    if __file_data_line.lower().partition(_glyph)[0].strip().isidentifier():
+                        if __file_data_line.partition(_glyph)[1] == '':
+                            __assignment_glyph = _glyph.upper()
+                            break
+                        else:
+                            __assignment_glyph = _glyph
+                            break
                 else: __assignment_glyph = ''
 
             # Basic Syntax Check, or if in a Multiline Build
-            if (__assignment_glyph in __assignment_glyphs) or (__is_building_data_sw):
+            if (__assignment_glyph.lower() in __assignment_glyphs) or (__is_building_data_sw):
 
                 if not __is_building_data_sw:
 
@@ -116,7 +136,7 @@ class _MaciDataObjConstructor:
                             f'\nFILE: "{filename}" \nLINE: {line_num+1} \nATTR_NAME: {__file_data_line.partition(__assignment_glyph)[0].strip()} \nGOT: {__file_data_line}'
                         )
                     
-                    __current_assignment_glyph = __assignment_glyph
+                    __current_assignment_glyph = __assignment_glyph.lower()
                     __var_token = __file_data_line.partition(__assignment_glyph)[0].strip()
                     __value_token = __file_data_line.partition(__assignment_glyph)[2].strip()
                     __value_token_multi = __file_data_line.partition(__assignment_glyph)[2].split()[0].strip()
@@ -142,9 +162,16 @@ class _MaciDataObjConstructor:
                 
                 # Verify Assignment Glyph is Not Attr Reference for Multiline Build Check
                 is_attr_reference_glyph = False
-                if (__current_assignment_glyph == __assignment_glyphs.ref) \
-                or (__current_assignment_glyph == __assignment_glyphs.ref_lock) \
-                or (__current_assignment_glyph == __assignment_glyphs.ref_hard_lock):
+                if __current_assignment_glyph in (
+                    __assignment_glyphs.ref,
+                    __assignment_glyphs.ref_lock,
+                    __assignment_glyphs.ref_hard_lock,
+                    __assignment_glyphs.r,
+                    __assignment_glyphs.rl,
+                    __assignment_glyphs.lr,
+                    __assignment_glyphs.rh,
+                    __assignment_glyphs.hr
+                ):
                     is_attr_reference_glyph = True
                 
                 # START BUILD: Check if value in file line is only Start Marker. Check if Multiline or Single Line
@@ -184,11 +211,11 @@ class _MaciDataObjConstructor:
                         setattr(self, __var_token, __literal_eval__(__build_data))
 
                         # Check if Attr is Locked from Re-Assignment
-                        if __current_assignment_glyph == __assignment_glyphs.lock:
+                        if __current_assignment_glyph in (__assignment_glyphs.lock, __assignment_glyphs.l):
                             self.__assignment_locked_attribs.append(__var_token)
 
                         # Check if Attr is Hard Locked from Re-Assignment
-                        if __current_assignment_glyph == __assignment_glyphs.hard_lock:
+                        if __current_assignment_glyph in (__assignment_glyphs.hard_lock, __assignment_glyphs.h):
                             self.__dict__['_MaciDataObjConstructor__assignment_hard_locked_attribs'] = (*self.__assignment_hard_locked_attribs, __var_token)
 
                     except SyntaxError: raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')
@@ -218,7 +245,7 @@ class _MaciDataObjConstructor:
                             raise Load(name_preexists_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')
                         
                         # Check if Attr is a Reference to Another Attr's Value for Assignment. Ignore Comments
-                        if __current_assignment_glyph == __assignment_glyphs.ref:
+                        if __current_assignment_glyph in (__assignment_glyphs.ref, __assignment_glyphs.r):
                             __value_token = f"{__value_token} "[:__value_token.find(__skip_markers[2])].rstrip()
                             setattr(self, __var_token, getattr(self, __value_token))
                             self.__assigned_src_reference_attr_map[__var_token] = __value_token
@@ -226,7 +253,7 @@ class _MaciDataObjConstructor:
                             continue
                         
                         # Check if Attr is a Reference to Another Attr's Value for Assignment and Locked from Re-Assignment. Ignore Comments
-                        if __current_assignment_glyph == __assignment_glyphs.ref_lock:
+                        if __current_assignment_glyph in (__assignment_glyphs.ref_lock, __assignment_glyphs.rl, __assignment_glyphs.lr):
                             __value_token = f"{__value_token} "[:__value_token.find(__skip_markers[2])].rstrip()
                             setattr(self, __var_token, getattr(self, __value_token))
                             self.__assigned_src_reference_attr_map[__var_token] = __value_token
@@ -235,7 +262,7 @@ class _MaciDataObjConstructor:
                             continue
                         
                         # Check if Attr is a Reference to Another Attr's Value for Assignment and Hard Locked from Re-Assignment. Ignore Comments
-                        if __current_assignment_glyph == __assignment_glyphs.ref_hard_lock:
+                        if __current_assignment_glyph in (__assignment_glyphs.ref_hard_lock, __assignment_glyphs.rh, __assignment_glyphs.hr):
                             __value_token = f"{__value_token} "[:__value_token.find(__skip_markers[2])].rstrip()
                             setattr(self, __var_token, getattr(self, __value_token))
                             self.__assigned_src_reference_attr_map[__var_token] = __value_token
@@ -247,11 +274,11 @@ class _MaciDataObjConstructor:
                         setattr(self, __var_token, __literal_eval__(__value_token))
 
                         # Check if Attr is Locked from Re-Assignment
-                        if __current_assignment_glyph == __assignment_glyphs.lock:
+                        if __current_assignment_glyph in (__assignment_glyphs.lock, __assignment_glyphs.l):
                             self.__assignment_locked_attribs.append(__var_token)
 
                         # Check if Attr is Hard Locked from Re-Assignment
-                        if __current_assignment_glyph == __assignment_glyphs.hard_lock:
+                        if __current_assignment_glyph in (__assignment_glyphs.hard_lock, __assignment_glyphs.h):
                             self.__dict__['_MaciDataObjConstructor__assignment_hard_locked_attribs'] = (*self.__assignment_hard_locked_attribs, __var_token)
                         
                     except ValueError: raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')

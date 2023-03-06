@@ -1,0 +1,45 @@
+# Single
+
+# lower
+d1 = "data"
+d2 r= d1
+d3_1 rl= d2
+d3_2 lr= d2
+d4_1 rh= d3_1
+d4_2 hr= d3_1
+d5 l= [1,2,3]
+d6 h= {'k1':1, 'k2':2, 'k3':3}
+# UPPER
+d7 = {1,2,3}
+d8 R= d7
+d9_1 RL= d8
+d9_2 LR= d8
+d10_1 RH= d9_1
+d10_2 HR= d9_1
+d11 L= (1,2,3)
+d12 H= b'data'
+
+# Multi
+
+# lower
+d1_multi l= [
+    1,
+    2,
+    3
+]
+d2_multi h= {
+    'k1': 1,
+    'k2': 2,
+    'k3': 3
+}
+# UPPER
+d3_multi L= (
+    1,
+    2,
+    3
+)
+d4_multi H= {
+    1,
+    2,
+    3
+}

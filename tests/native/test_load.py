@@ -404,10 +404,65 @@ class TestLoad(unittest.TestCase):
         assert file_import.data_tuple_multi == (1,2,3)
         assert file_import.data_set_multi == {1,2,3}
         assert file_import.data_str_multi == "\ndata1\n data2\n  data3\ndata4\n"
-        # Glyph Types
-        assert file_import.d1 == 1
-        assert file_import.d2 == 1
-        assert file_import.d3 == 1
-        assert file_import.d4 == 1
-        assert file_import.d5 == 1
-        assert file_import.d6 == 1
+        
+        ### Glyph Types ###
+
+        # Symbols
+        assert file_import.s1 == 1
+        assert file_import.s2 == 1
+        assert file_import.s3 == 1
+        assert file_import.s4 == 1
+        assert file_import.s5 == 1
+        assert file_import.s6 == 1
+        # Letters: lower
+        assert file_import.l1 == 1
+        assert file_import.l2 == 1
+        assert file_import.l3_1 == 1
+        assert file_import.l3_2 == 1
+        assert file_import.l4 == 1
+        assert file_import.l5_1 == 1
+        assert file_import.l5_2 == 1
+        # Letters: UPPER
+        assert file_import.L1 == 1
+        assert file_import.L2 == 1
+        assert file_import.L3_1 == 1
+        assert file_import.L3_2 == 1
+        assert file_import.L4 == 1
+        assert file_import.L5_1 == 1
+        assert file_import.L5_2 == 1
+
+
+# 21. Check if Error Raised on Value Empty - Import Single Line Value with Empty Value
+    def test21_glyph_assignment_syntax(self):
+        filename_no_spaces = '21_glyph_assignment_syntax.data'
+
+        # File Import
+        filepath = test_file_path + filename_no_spaces
+        file_import = maci.load(filepath)
+
+        # Test Attributes and Types
+
+        # Single: lower
+        assert file_import.d1 == "data"
+        assert file_import.d2 == "data"
+        assert file_import.d3_1 == "data"
+        assert file_import.d3_2 == "data"
+        assert file_import.d4_1 == "data"
+        assert file_import.d4_2 == "data"
+        assert file_import.d5 == [1,2,3]
+        assert file_import.d6 == {'k1':1, 'k2':2, 'k3':3}
+        # Single: UPPER
+        assert file_import.d7 == {1,2,3}
+        assert file_import.d8 == {1,2,3}
+        assert file_import.d9_1 == {1,2,3}
+        assert file_import.d9_2 == {1,2,3}
+        assert file_import.d10_1 == {1,2,3}
+        assert file_import.d10_2 == {1,2,3}
+        assert file_import.d11 == (1,2,3)
+        assert file_import.d12 == b'data'
+
+        # Multi
+        assert file_import.d1_multi == [1,2,3]
+        assert file_import.d2_multi == {'k1':1, 'k2':2, 'k3':3}
+        assert file_import.d3_multi == (1,2,3)
+        assert file_import.d4_multi == {1,2,3}

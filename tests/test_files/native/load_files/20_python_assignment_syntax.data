@@ -36,10 +36,31 @@ data1
   data3
 data4
 """
-# Glyph Types
-d1=1
-d2$=1
-d3==d2
-d4$==d3
-d5$$=1
-d6$$==d5
+
+### Glyph Types: Symbols and Letters ###
+
+# Symbols
+s1=1
+s2$=1
+s3==s2
+s4$==s3
+s5$$=1
+s6$$==s5
+
+# Letters lower
+l1l=1
+l2r=l1
+l3_1rl=l2
+l3_2lr=l2
+l4h=1
+l5_1rh=l4
+l5_2hr=l4
+
+# Letters UPPER
+L1L=1
+L2R=L1
+L3_1RL=L2
+L3_2LR=L2
+L4H=1
+L5_1RH=L4
+L5_2HR=L4
