@@ -116,12 +116,29 @@ class _MaciDataObjConstructor:
             if (__is_building_data_sw == False):
                 for _glyph in __assignment_glyphs:
                     if __file_data_line.lower().partition(_glyph)[0].strip().isidentifier():
-                        if __file_data_line.partition(_glyph)[1] == '':
+                        # Pull Indices of Raw Glyph
+                        idx_start = __file_data_line.lower().find(_glyph)
+                        idx_end = __file_data_line.lower().find(_glyph) + len(_glyph)
+                        glyph_from_data = __file_data_line[idx_start:idx_end]
+
+                        # Ensure Raw Glyph meets glyph criteria, else empty it
+                        if '=' not in glyph_from_data: glyph_from_data = ''
+
+                        # Assume Mixed if if both Upper and lower
+                        if any(string.isupper() for string in glyph_from_data) \
+                        and any(string.islower() for string in glyph_from_data):
+                            __assignment_glyph = glyph_from_data
+                            break
+
+                        # Assume Upper if empty
+                        if glyph_from_data.isupper():
                             __assignment_glyph = _glyph.upper()
                             break
-                        else:
-                            __assignment_glyph = _glyph
-                            break
+                        
+                        # Assume is lower, or if Symbol
+                        __assignment_glyph = _glyph
+                        break
+                # Not found, then empty
                 else: __assignment_glyph = ''
 
             # Basic Syntax Check, or if in a Multiline Build

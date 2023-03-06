@@ -18,6 +18,16 @@ d10_1 RH= d9_1
 d10_2 HR= d9_1
 d11 L= (1,2,3)
 d12 H= b'data'
+# Mixed UPPER and lower
+d13 = "data"
+d14 rL= d13
+d15 Rl= d13
+d16 Lr= d13
+d17 lR= d13
+d18 rH= d13
+d19 Rh= d13
+d20 Hr= d13
+d21 hR= d13
 
 # Multi
 

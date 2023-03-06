@@ -377,7 +377,7 @@ class TestLoad(unittest.TestCase):
             maci.load(filepath)
 
 
-# 20. Check if Error Raised on Value Empty - Import Single Line Value with Empty Value
+# 20. Check Pythonic Assignment Syntax - Import Values and Glyphs with varying spaced or connected assignments
     def test20_python_assignment_syntax(self):
         filename_no_spaces = '20_python_assignment_syntax.data'
 
@@ -432,7 +432,7 @@ class TestLoad(unittest.TestCase):
         assert file_import.L5_2 == 1
 
 
-# 21. Check if Error Raised on Value Empty - Import Single Line Value with Empty Value
+# 21. Ensure Supported Glyph Syntax is Loadable - Import Glyphs with varying types and data
     def test21_glyph_assignment_syntax(self):
         filename_no_spaces = '21_glyph_assignment_syntax.data'
 
@@ -460,6 +460,16 @@ class TestLoad(unittest.TestCase):
         assert file_import.d10_2 == {1,2,3}
         assert file_import.d11 == (1,2,3)
         assert file_import.d12 == b'data'
+        # Mixed: UPPER and lower
+        assert file_import.d13 == "data"
+        assert file_import.d14 == "data"
+        assert file_import.d15 == "data"
+        assert file_import.d16 == "data"
+        assert file_import.d17 == "data"
+        assert file_import.d18 == "data"
+        assert file_import.d19 == "data"
+        assert file_import.d20 == "data"
+        assert file_import.d21 == "data"
 
         # Multi
         assert file_import.d1_multi == [1,2,3]
