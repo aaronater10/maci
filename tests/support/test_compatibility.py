@@ -65,11 +65,3 @@ def test2_prior_exception_names():
     maci.error.XmlImportStr
     maci.error.XmlExportFile
     maci.error.XmlExportStr
-
-
-# 3. Test all prior sfcparse object Method names from 'sfcparse'
-def test3_prior_obj_method_names():
-    maci_obj = maci.build()
-
-    # Sfcparse Object Method Names
-    maci_obj.reference_attr

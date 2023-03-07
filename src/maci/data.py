@@ -790,15 +790,6 @@ class _MaciDataObjConstructor:
         return deepcopy(self.__assigned_src_reference_attr_map)
 
 
-    # Name compatibility aliases/deprecation from ported library
-    def __getattr__(self, attr_name: str) -> object:
-        if attr_name == 'reference_attr': return self.link_attr
-
-        # Raise normal error if anything else
-        raise_msg = f"'{type(self).__name__}' object has no attribute '{attr_name}'"
-        raise AttributeError(raise_msg)
-
-
 #########################################################################################################
 # Main MaciDataObj Reference
 
