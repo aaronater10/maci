@@ -75,8 +75,8 @@ class _MaciDataObjConstructor:
         __build_data = ''
 
         # Markers
-        __start_markers = ('[', '{', '(', "'''", '"""')
-        __end_markers = (']', '}', ')', "'''", '"""')
+        __start_markers = {'[', '{', '(', "'''", '"""'}
+        __end_markers = {']', '}', ')', "'''", '"""'}
         __skip_markers = ('', ' ', '#', '\n')
         __eof_marker = file_data[-1]
 
