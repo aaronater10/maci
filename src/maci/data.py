@@ -16,20 +16,47 @@ from .error import Load, GeneralError, Hint
 #########################################################################################################
 # Assignment Glyphs
 class _Glyphs(_NamedTuple):
-    # Core Glyphs
-    ref_hard_lock: str = '$$=='
-    rh: str = '+rh='
-    hr: str = '+hr='
-    hard_lock: str = '$$='
-    h: str = '+h='
-    ref_lock: str = '$=='
-    rl: str = '+rl='
-    lr: str = '+lr='
-    lock: str = '$='
-    l: str = '+l='
+    """
+    Core assignment glyphs -> NamedTuple
+
+    Glyph processing order is critical for performance and stability and must be maintained
+
+    Any glyph closer to the top of the list will have the greatest
+    performance gain in the current design implementation
+
+    Order is as follows with reasons:
+
+    Normal -> Letter -> Symbol ('==' is the exception reasons below)
+
+    1. == -> must be above '=' assignment glyph to not get incorrectly parsed
+
+    2. = -> must be below '==' to not incorrectly parse assignment glyph
+
+    3..9. +<letter(s)>= purely preference as they do not step over each other, but letter
+    syntax is preferred to be evaluated first over symbols
+
+    10. $$== -> must be above '$$=' assignment glyph to not get incorrectly parsed
+
+    11. $$= -> must be below '$$==' to not incorrectly parse assignment glyph
+
+    12. $== -> must be above '$=' assignment glyph to not get incorrectly parsed
+
+    13. $= -> must be below '$==' to not incorrectly parse assignment glyph
+    """
+    ### Core Glyphs ###
     ref: str = '=='
-    r: str = '+r='
     norm: str = '='
+    r: str = '+r='
+    h: str = '+h='
+    l: str = '+l='
+    rh: str = '+rh='
+    rl: str = '+rl='
+    hr: str = '+hr='
+    lr: str = '+lr='
+    ref_hard_lock: str = '$$=='
+    hard_lock: str = '$$='
+    ref_lock: str = '$=='
+    lock: str = '$='
 
     # Mixed Case Scenarios for Glyph Checks
     @staticmethod
