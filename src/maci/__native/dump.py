@@ -6,6 +6,7 @@ from typing import Any as __Any
 from typing import NewType as __NewType
 from ..error import Dump, DumpRaw
 from ..data import MaciDataObj as __MaciDataObj
+from ..data import _Glyphs
 from .dumpraw import dumpraw as __dumpraw
 from .cleanformat import cleanformat as __cleanformat
 
@@ -24,13 +25,14 @@ def dump(
     indentation_on: bool=True,
     multi_line_str: bool=False,
     encoding: __Union[str, None]=None,
-    class_attrs=False,
-    private_all_under_attrs=False,
-    private_init_under_attrs=False,
-    private_class_under_attrs=False,
-    private_all_dunder_attrs=False,
-    private_init_dunder_attrs=False,
-    private_class_dunder_attrs=False,
+    class_attrs: bool=False,
+    private_all_under_attrs: bool=False,
+    private_init_under_attrs: bool=False,
+    private_class_under_attrs: bool=False,
+    private_all_dunder_attrs: bool=False,
+    private_init_dunder_attrs: bool=False,
+    private_class_dunder_attrs: bool=False,
+    use_symbol_glyphs: bool=False,
     ) -> None:
     """
     Saves your Attr or Key/Value pair data to a file with the new data.
@@ -77,13 +79,22 @@ def dump(
 
     # Save Data to File
     __build_data_output = ""
-    __assignment_glyphs = ('=', '$=', '==', '$==', '$$=', '$$==')
+    __assignment_glyphs = _Glyphs()
     __skip_object_key = ('_MaciDataObjConstructor', '__maci_file_format_id')
     __locked_attr_list_key =  '_MaciDataObjConstructor__assignment_locked_attribs'
     __hard_locked_attr_list_key =  '_MaciDataObjConstructor__assignment_hard_locked_attribs'
     __reference_attr_list_key =  '_MaciDataObjConstructor__assigned_src_reference_attr_map'
     __maci_file_format_id_match = "48448910-fa49-45ca-bd3e-38d7af136af5-7bcece52-e5ee-4272-989d-103f07aa6c0f"
 
+    # Set Glyph Style to Symbols if Requested - Creates New Object with Same Names
+    if use_symbol_glyphs:
+        __assignment_glyphs = _Glyphs(
+            r=__assignment_glyphs.ref,
+            h=__assignment_glyphs.hard_lock,
+            l=__assignment_glyphs.lock,
+            rh=__assignment_glyphs.ref_hard_lock,
+            rl=__assignment_glyphs.ref_lock,
+        )
 
     ### MACI DATA: Check if MaciDataObj ###
 
@@ -100,47 +111,47 @@ def dump(
 
                 # Reference Name and Locked
                 if (key in data.__dict__[__reference_attr_list_key]) and (key in data.__dict__[__locked_attr_list_key]):
-                    __build_data_output += f'{key} {__assignment_glyphs[3]} {data.__dict__[__reference_attr_list_key][key]}\n'
+                    __build_data_output += f'{key} {__assignment_glyphs.rl} {data.__dict__[__reference_attr_list_key][key]}\n'
                     continue
                 # Reference Name and Hard Locked
                 if (key in data.__dict__[__reference_attr_list_key]) and (key in data.__dict__[__hard_locked_attr_list_key]):
-                    __build_data_output += f'{key} {__assignment_glyphs[5]} {data.__dict__[__reference_attr_list_key][key]}\n'
+                    __build_data_output += f'{key} {__assignment_glyphs.rh} {data.__dict__[__reference_attr_list_key][key]}\n'
                     continue
                 # Reference Name Only
                 if key in data.__dict__[__reference_attr_list_key]:
-                    __build_data_output += f'{key} {__assignment_glyphs[2]} {data.__dict__[__reference_attr_list_key][key]}\n'
+                    __build_data_output += f'{key} {__assignment_glyphs.r} {data.__dict__[__reference_attr_list_key][key]}\n'
                     continue
                 # Locked Only
                 if key in data.__dict__[__locked_attr_list_key]:
                     if __multiline_check(value) and indentation_on:
                         value = __cleanformat(value, indent_level)
-                        __build_data_output += f'{key} {__assignment_glyphs[1]} {value}\n'
+                        __build_data_output += f'{key} {__assignment_glyphs.l} {value}\n'
                     elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):
                         is_set_start_new_line = '' if value.startswith('\n') else '\n'
                         is_set_end_new_line = '' if value.endswith('\n') else '\n'
-                        __build_data_output += f"{key} {__assignment_glyphs[1]} '''{is_set_start_new_line}{value}{is_set_end_new_line}'''\n"
-                    else: __build_data_output += f'{key} {__assignment_glyphs[1]} {repr(value)}\n'
+                        __build_data_output += f"{key} {__assignment_glyphs.l} '''{is_set_start_new_line}{value}{is_set_end_new_line}'''\n"
+                    else: __build_data_output += f'{key} {__assignment_glyphs.l} {repr(value)}\n'
                     continue
                 # Hard Locked Only
                 if key in data.__dict__[__hard_locked_attr_list_key]:
                     if __multiline_check(value) and indentation_on:
                         value = __cleanformat(value, indent_level)
-                        __build_data_output += f'{key} {__assignment_glyphs[4]} {value}\n'
+                        __build_data_output += f'{key} {__assignment_glyphs.h} {value}\n'
                     elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):
                         is_set_start_new_line = '' if value.startswith('\n') else '\n'
                         is_set_end_new_line = '' if value.endswith('\n') else '\n'
-                        __build_data_output += f"{key} {__assignment_glyphs[4]} '''{is_set_start_new_line}{value}{is_set_end_new_line}'''\n"
-                    else: __build_data_output += f'{key} {__assignment_glyphs[4]} {repr(value)}\n'
+                        __build_data_output += f"{key} {__assignment_glyphs.h} '''{is_set_start_new_line}{value}{is_set_end_new_line}'''\n"
+                    else: __build_data_output += f'{key} {__assignment_glyphs.h} {repr(value)}\n'
                     continue
                 # Normal Assignment
                 if __multiline_check(value) and indentation_on:
                     value = __cleanformat(value, indent_level)
-                    __build_data_output += f'{key} {__assignment_glyphs[0]} {value}\n'
+                    __build_data_output += f'{key} {__assignment_glyphs.norm} {value}\n'
                 elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):
                     is_set_start_new_line = '' if value.startswith('\n') else '\n'
                     is_set_end_new_line = '' if value.endswith('\n') else '\n'
-                    __build_data_output += f"{key} {__assignment_glyphs[0]} '''{is_set_start_new_line}{value}{is_set_end_new_line}'''\n"
-                else: __build_data_output += f'{key} {__assignment_glyphs[0]} {repr(value)}\n'
+                    __build_data_output += f"{key} {__assignment_glyphs.norm} '''{is_set_start_new_line}{value}{is_set_end_new_line}'''\n"
+                else: __build_data_output += f'{key} {__assignment_glyphs.norm} {repr(value)}\n'
 
         # Strip Last \n Char
         __build_data_output = __build_data_output.rstrip()
@@ -159,10 +170,10 @@ def dump(
             if indentation_on:
                 if __multiline_check(value):
                     value = __cleanformat(value, indent_level)
-                    __build_data_output += f'{key} {__assignment_glyphs[0]} {value}\n'
+                    __build_data_output += f'{key} {__assignment_glyphs.norm} {value}\n'
                     continue
             # Single Line Assignment
-            __build_data_output += f'{key} {__assignment_glyphs[0]} {repr(value)}\n'
+            __build_data_output += f'{key} {__assignment_glyphs.norm} {repr(value)}\n'
 
         # Strip Last \n Char
         __build_data_output = __build_data_output.rstrip()
@@ -207,8 +218,8 @@ def dump(
                 # Build Data
                 if __multiline_check(value) and indentation_on:
                     value = __cleanformat(value, indent_level)
-                    __build_data_output += f'{key} {__assignment_glyphs[0]} {value}\n'
-                else: __build_data_output += f'{key} {__assignment_glyphs[0]} {repr(value)}\n'
+                    __build_data_output += f'{key} {__assignment_glyphs.norm} {value}\n'
+                else: __build_data_output += f'{key} {__assignment_glyphs.norm} {repr(value)}\n'
 
         # Case 2 - Class Attrs Only. Not Instantiated
         elif '__mro__' in vars(type(data)) and class_attrs:
@@ -231,8 +242,8 @@ def dump(
                 # Build Data
                 if __multiline_check(value) and indentation_on:
                     value = __cleanformat(value, indent_level)
-                    __build_data_output += f'{key} {__assignment_glyphs[0]} {value}\n'
-                else: __build_data_output += f'{key} {__assignment_glyphs[0]} {repr(value)}\n'
+                    __build_data_output += f'{key} {__assignment_glyphs.norm} {value}\n'
+                else: __build_data_output += f'{key} {__assignment_glyphs.norm} {repr(value)}\n'
         
         # Default Case 3 - Init Attrs or Class Attrs, or both
         else:
@@ -256,8 +267,8 @@ def dump(
                     # Build Data - Init Attrs
                     if __multiline_check(value) and indentation_on:
                         value = __cleanformat(value, indent_level)
-                        __build_data_output_init += f'{key} {__assignment_glyphs[0]} {value}\n'
-                    else: __build_data_output_init += f'{key} {__assignment_glyphs[0]} {repr(value)}\n'
+                        __build_data_output_init += f'{key} {__assignment_glyphs.norm} {value}\n'
+                    else: __build_data_output_init += f'{key} {__assignment_glyphs.norm} {repr(value)}\n'
                 
             # Last: Class Attrs
             if class_attrs:
@@ -278,8 +289,8 @@ def dump(
                     # Build Data - Class Attrs
                     if __multiline_check(value) and indentation_on:
                         value = __cleanformat(value, indent_level)
-                        __build_data_output_class += f'{key} {__assignment_glyphs[0]} {value}\n'
-                    else: __build_data_output_class += f'{key} {__assignment_glyphs[0]} {repr(value)}\n'
+                        __build_data_output_class += f'{key} {__assignment_glyphs.norm} {value}\n'
+                    else: __build_data_output_class += f'{key} {__assignment_glyphs.norm} {repr(value)}\n'
 
         # Structure Build
         if _is_case1_build: pass
