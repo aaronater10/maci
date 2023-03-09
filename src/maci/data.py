@@ -10,7 +10,32 @@ from typing import List as _List
 from typing import Union as _Union
 from typing import Optional as _Optional
 from typing import NamedTuple as _NamedTuple
+from typing import Set as _Set
 from .error import Load, GeneralError, Hint
+
+#########################################################################################################
+# Assignment Glyphs
+class _Glyphs(_NamedTuple):
+    # Core Glyphs
+    ref_hard_lock: str = '$$=='
+    rh: str = '+rh='
+    hr: str = '+hr='
+    hard_lock: str = '$$='
+    h: str = '+h='
+    ref_lock: str = '$=='
+    rl: str = '+rl='
+    lr: str = '+lr='
+    lock: str = '$='
+    l: str = '+l='
+    ref: str = '=='
+    r: str = '+r='
+    norm: str = '='
+
+    # Mixed Case Scenarios for Glyph Checks
+    @staticmethod
+    def get_mixed_case_set() -> _Set[str]:
+        return {'+rL=', '+Rl=', '+rH=', '+Rh=', '+lR=', '+Lr=', '+hR=', '+Hr='}
+
 
 #########################################################################################################
 # MaciDataObj Constructor
@@ -80,25 +105,9 @@ class _MaciDataObjConstructor:
         __skip_markers = ('', ' ', '#', '\n')
         __eof_marker = file_data[-1]
 
-        # Assignment Glyphs
-        _Glyphs  = _NamedTuple(
-            '_Glyphs', [
-                ('ref_hard_lock', str), ('rh', str), ('hr', str),
-                ('hard_lock', str), ('h', str),
-                ('ref_lock', str), ('rl', str), ('lr', str),
-                ('lock', str), ('l', str),
-                ('ref', str), ('r', str),
-                ('norm', str)
-            ]
-        )
-        __assignment_glyphs = _Glyphs(
-            '$$==', 'rh=', 'hr=',
-            '$$=', 'h=',
-            '$==', 'rl=', 'lr=',
-            '$=', 'l=',
-            '==', 'r=',
-            '='
-        )
+        # Assignment Glyphs - Set by Another Class and is a NamedTuple
+        __assignment_glyphs = _Glyphs()
+
         # Glyph Checks for Internal Mechs
         _assignment_glyphs_for_any_checks = set(__assignment_glyphs)
         _assignment_glyphs_for_all_ref_checks = {
@@ -116,7 +125,8 @@ class _MaciDataObjConstructor:
         _assignment_glyphs_for_ref_hard_lock_checks = {__assignment_glyphs.ref_hard_lock, __assignment_glyphs.rh, __assignment_glyphs.hr}
         _assignment_glyphs_for_lock_checks = {__assignment_glyphs.lock, __assignment_glyphs.l}
         _assignment_glyphs_for_hard_lock_checks = {__assignment_glyphs.hard_lock, __assignment_glyphs.h}
-        _assignment_glyphs_for_mixed_cases = {'rL=', 'Rl=', 'rH=', 'Rh=', 'lR=', 'Lr=', 'hR=', 'Hr='}
+        _assignment_glyphs_for_mixed_cases = __assignment_glyphs.get_mixed_case_set()
+
 
         # Main File/Str Loop
         # To display correct line number, ensure to add +1 when ready to raise. Keeping

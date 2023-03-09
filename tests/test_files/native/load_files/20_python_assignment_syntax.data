@@ -48,19 +48,19 @@ s5$$=1
 s6$$==s5
 
 # Letters lower
-l1l=1
-l2r=l1
-l3_1rl=l2
-l3_2lr=l2
-l4h=1
-l5_1rh=l4
-l5_2hr=l4
+l1+l=1
+l2+r=l1
+l3_1+rl=l2
+l3_2+lr=l2
+l4+h=1
+l5_1+rh=l4
+l5_2+hr=l4
 
 # Letters UPPER
-L1L=1
-L2R=L1
-L3_1RL=L2
-L3_2LR=L2
-L4H=1
-L5_1RH=L4
-L5_2HR=L4
+L1+L=1
+L2+R=L1
+L3_1+RL=L2
+L3_2+LR=L2
+L4+H=1
+L5_1+RH=L4
+L5_2+HR=L4
