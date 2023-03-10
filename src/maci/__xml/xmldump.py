@@ -9,7 +9,7 @@ from ..error import XmlDump
 
 #########################################################################################################
 # Export xml file
-def xmldump(filename: str, data: __xml_etree.Element, *, encoding: __Union[str, None]=None) -> None:
+def xmldump(filename: str, data: __xml_etree.Element, *, append: bool=False, encoding: __Union[str, None]=None) -> None:
     """
     Exports a new file from xml Element obj as xml data
     
@@ -25,12 +25,14 @@ def xmldump(filename: str, data: __xml_etree.Element, *, encoding: __Union[str, 
     # Check for Error
     __err_msg_str = f"Only str is allowed for filename"
     __err_msg_etree = f"Only Element is allowed for data"
+    __err_msg_type_str_append = "Only bool is allowed for 'append'"
 
     if not isinstance(filename, str): raise XmlDump(__err_msg_str, f'\nFILE: "{filename}"')
     if not isinstance(data, __xml_etree.Element): raise XmlDump(__err_msg_etree, f"\nDATA: {data}")
+    if not isinstance(append, bool): raise XmlDump(__err_msg_type_str_append, f'\nFILE: "{filename}" \nDATA: {append}')
 
     # Export Data
     try:
         data = xmldumpstr(data)
-        dumpraw(filename, data, encoding=encoding)
+        dumpraw(filename, data, encoding=encoding, append=append)
     except FileNotFoundError as __err_msg: raise XmlDump(__err_msg, f'\nFILE: "{filename}"')
