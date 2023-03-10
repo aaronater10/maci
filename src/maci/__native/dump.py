@@ -20,7 +20,7 @@ def dump(
     filename: str, 
     data: __Union['__MaciDataObj', dict, CustomClass], 
     *,
-    write_mode: str='w',
+    append: bool=False,
     indent_level: int=1,
     indentation_on: bool=True,
     multi_line_str: bool=False,
@@ -47,11 +47,7 @@ def dump(
 
     [Options]
 
-    write_mode:
-
-    'w' = write new file with new data (Default)
-
-    'a' = append new data to existing file
+    append: set to True to append data to a file (Default=False, which writes a new file each time)
 
     indent_level: set indent level for types list, dict, tuple, set (Default 1)
 
@@ -60,7 +56,7 @@ def dump(
     [Example Use]
     Normal: dump('path/of/filename', 'data')
 
-    Append to File: dump('path/of/filename', 'data', write_mode='a')
+    Append to File: dump('path/of/filename', 'data', append=True)
 
     Indent OFF: dump('path/of/filename', 'data', indentation_on=False)
     """
@@ -68,12 +64,12 @@ def dump(
     __err_msg_general_error = "Error has occurred and cannot proceed"
     __err_msg_no_attrs_found = "Cannot save file. No attributes found in the object passed"
     __err_msg_type_str_filename = "Only str is allowed for filename"
-    __err_msg_type_str_write_mode = "Only str is allowed for write_mode"
+    __err_msg_type_str_append = "Only bool is allowed for 'append'"
     __err_msg_type_int_indent_level = "Only int is allowed for indent_level"
     __err_msg_type_bool_indentation_on = "Only bool is allowed for indentation_on"
 
     if not isinstance(filename, str): raise Dump(__err_msg_type_str_filename, f'\nFILE: "{filename}"')
-    if not isinstance(write_mode, str): raise Dump(__err_msg_type_str_write_mode, f'\nFILE: "{filename}" \nDATA: {write_mode}')
+    if not isinstance(append, bool): raise Dump(__err_msg_type_str_append, f'\nFILE: "{filename}" \nDATA: {append}')
     if not isinstance(indent_level, int): raise Dump(__err_msg_type_int_indent_level, f'\nFILE: "{filename}" \nDATA: {indent_level}')
     if not isinstance(indentation_on, bool): raise Dump(__err_msg_type_bool_indentation_on, f'\nFILE: "{filename}" \nDATA: {indentation_on}')
 
@@ -85,6 +81,8 @@ def dump(
     __hard_locked_attr_list_key =  '_MaciDataObjConstructor__assignment_hard_locked_attribs'
     __reference_attr_list_key =  '_MaciDataObjConstructor__assigned_src_reference_attr_map'
     __maci_file_format_id_match = "48448910-fa49-45ca-bd3e-38d7af136af5-7bcece52-e5ee-4272-989d-103f07aa6c0f"
+    # Set Write Mode: 'a' = append, 'w' = write
+    write_mode = 'a' if append else 'w'
 
     # Set Glyph Style to Symbols if Requested - Creates New Object with Same Names
     if use_symbol_glyphs:
@@ -350,7 +348,7 @@ def __write_file_data(filename: str, data: __Any, write_mode: str, *, encoding: 
             __dumpraw(filename, data, encoding=encoding)
         # Append Append File Mode
         if write_mode == 'a':
-            __dumpraw(filename, data, mode='a', encoding=encoding)        
+            __dumpraw(filename, data, append=True, encoding=encoding)        
         # Raise Exception if No Match
         if not write_mode in __write_mode_allowed_list:
             raise Dump(__err_msg_write_mode, f'\nFILE: "{filename}" \nDATA: {write_mode}')

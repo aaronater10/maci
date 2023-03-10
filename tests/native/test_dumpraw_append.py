@@ -24,7 +24,7 @@ def test1_basic_file_append():
     maci.dumpraw(filepath)
     assert path.exists(filepath)
     # Test Single Line Append and Verify
-    maci.dumpraw(filepath, f"data = {data}", mode='a')
+    maci.dumpraw(filepath, f"data = {data}", append=True)
     file_import = maci.load(filepath)
     assert (file_import.data == {'k1':1, 'k2':2, 'k3':3}) and (isinstance(file_import.data, dict))
     # Remove Test File
@@ -52,7 +52,7 @@ data_b3 = {data}
     maci.dumpraw(filepath)
     assert path.exists(filepath)
     # Test Multi Line Append and Verify
-    maci.dumpraw(filepath, f"data1 = {data}", f"\ndata2 = {data}", f"\ndata3 = {data}", big_data, mode='a')
+    maci.dumpraw(filepath, f"data1 = {data}", f"\ndata2 = {data}", f"\ndata3 = {data}", big_data, append=True)
     file_import = maci.load(filepath)
     assert (file_import.data1 == {'k1':1, 'k2':2, 'k3':3}) and (isinstance(file_import.data1, dict))
     assert (file_import.data2 == {'k1':1, 'k2':2, 'k3':3}) and (isinstance(file_import.data2, dict))
@@ -85,7 +85,7 @@ data_b3 = {data}"""
     maci.dumpraw(filepath, big_data)
     assert path.exists(filepath)
     # Test Append Without Tampering Present Data and Verify. Appending 3x Lines
-    maci.dumpraw(filepath, f"data1 = {data}", f"data2 = {data}", f"data3 = {data}", mode='a')
+    maci.dumpraw(filepath, f"data1 = {data}", f"data2 = {data}", f"data3 = {data}", append=True)
     file_import = maci.load(filepath)
     assert (file_import.data1 == {'k1':1, 'k2':2, 'k3':3}) and (isinstance(file_import.data1, dict))
     assert (file_import.data2 == {'k1':1, 'k2':2, 'k3':3}) and (isinstance(file_import.data2, dict))

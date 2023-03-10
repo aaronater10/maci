@@ -180,7 +180,7 @@ class TestDump(unittest.TestCase):
 
         # Store Data, then Append to it
         maci.dump(filepath, class_data, indentation_on=False)
-        maci.dump(filepath, class_data, write_mode='a', indentation_on=False)
+        maci.dump(filepath, class_data, append=True, indentation_on=False)
 
         # Import Data and Set Line Count
         file_import = maci.loadraw(filepath)

@@ -8,14 +8,15 @@ from ..error import DumpRaw
 
 #########################################################################################################
 # Export Data to File
-def dumpraw(filename: str, *data: __Any, mode: str='w', byte_data: bool=False, encoding: __Union[str, None]=None):
+def dumpraw(filename: str, *data: __Any, append: bool=False, byte_data: bool=False, encoding: __Union[str, None]=None):
     """
     Exports a new file with the new data.
     
     Enter new filename as str, Pass any data type for output to file.
 
     [Options]
-    mode: Set to 'a' to append data to file instead. Default is 'w'
+    append: set to True to append data to a file (Default=False, which writes a new file each time)
+
     byte_data: Set to True to write byte data. Default False
 
     [Example Use]
@@ -27,14 +28,16 @@ def dumpraw(filename: str, *data: __Any, mode: str='w', byte_data: bool=False, e
     __err_msg_bytes = "Only bytes is allowed if using 'byte_data' option"
     __err_msg_type_bytes = "Only bool is allowed for 'byte_data'"
     __err_msg_type_str = "Only str is allowed for 'filename'"
-    __err_msg_mode = "Only str is allowed for 'mode' option, and must be 'w' or 'a'"
+    __err_msg_append = "Only bool is allowed for 'append'"
 
     if not isinstance(byte_data, bool): raise DumpRaw(__err_msg_type_bytes, f'\nDATA: {byte_data}')
     if not isinstance(filename, str): raise DumpRaw(__err_msg_type_str, f'\nFILE: "{filename}"')
-    if (not isinstance(mode, str)) or not (mode in ['w', 'a']): 
-        raise DumpRaw(__err_msg_mode, f'\nDATA: "{mode}"')
+    if (not isinstance(append, bool)): raise DumpRaw(__err_msg_append, f'\nDATA: "{append}"')
 
-    # Export data 
+    # Set Write Mode: 'a' = append, 'w' = write
+    mode = 'a' if append else 'w'
+
+    ### Export data ###
 
     ### New File ###
     # Raw Data to File
