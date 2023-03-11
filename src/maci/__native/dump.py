@@ -11,7 +11,7 @@ from .dumpraw import dumpraw as __dumpraw
 from .cleanformat import cleanformat as __cleanformat
 
 #########################################################################################################
-# Save Data to File
+# Dump Data to File
 
 # Hinting reference name for "CustomClass" to denote a CustomClass can be used to dump data
 CustomClass = __NewType('CustomClass', object)
@@ -38,9 +38,9 @@ def dump(
     use_symbol_glyphs: bool=False,
     ) -> None:
     """
-    Saves your Attr or Key/Value pair data to a file with the new data.
+    Dumps your attributes or key/value pair data to a file
 
-    Enter filename as str, Pass MaciDataObj, dict, or custom class data type for output to file.
+    Enter filename as str, Pass MaciDataObj, dict, or Custom Class data type for output to file
 
     [Importing Data Back] Functions:
 
@@ -79,11 +79,12 @@ def dump(
     # Save Data to File
     __build_data_output = ""
     __assignment_glyphs = _Glyphs()
-    __skip_object_key = ('_MaciDataObjConstructor', '__maci_file_format_id')
+    __skip_object_key = ('_MaciDataObjConstructor', '__maci_obj_format_id')
     __locked_attr_list_key =  '_MaciDataObjConstructor__assignment_locked_attribs'
     __hard_locked_attr_list_key =  '_MaciDataObjConstructor__assignment_hard_locked_attribs'
     __reference_attr_list_key =  '_MaciDataObjConstructor__assigned_src_reference_attr_map'
-    __maci_file_format_id_match = "48448910-fa49-45ca-bd3e-38d7af136af5-7bcece52-e5ee-4272-989d-103f07aa6c0f"
+    __maci_obj_format_id_match = "48448910-fa49-45ca-bd3e-38d7af136af5-7bcece52-e5ee-4272-989d-103f07aa6c0f"
+
     # Set Write Mode: 'a' = append, 'w' = write
     write_mode = 'a' if append else 'w'
 
@@ -100,7 +101,7 @@ def dump(
     ### MACI DATA: Check if MaciDataObj ###
 
     # Build Out Data
-    if (isinstance(data, __MaciDataObj)) and (data.__maci_file_format_id__ == __maci_file_format_id_match):
+    if (isinstance(data, __MaciDataObj)) and (data.__maci_obj_format_id__ == __maci_obj_format_id_match):
         for key,value in data.__dict__.items():
             # If Match Prefixes, Skip
             if not key.startswith(__skip_object_key):

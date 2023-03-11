@@ -118,7 +118,7 @@ class _MaciDataObjConstructor:
 
         # One Time Generated using UUID4 mode from UUID Library.
         # This helps authenticity of MaciDataObj Object for Development aid
-        self.__maci_file_format_id__ = "48448910-fa49-45ca-bd3e-38d7af136af5-7bcece52-e5ee-4272-989d-103f07aa6c0f"
+        self.__maci_obj_format_id__ = "48448910-fa49-45ca-bd3e-38d7af136af5-7bcece52-e5ee-4272-989d-103f07aa6c0f"
 
         # Syntax/Usage Error Messages
         py_syntax_err_msg = _py_syntax_err_msg
@@ -935,6 +935,6 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
             )
 
     def __repr__(self) -> str:
-        skip_name_keys = ('_MaciDataObjConstructor', '__maci_file_format_id')
+        skip_name_keys = ('_MaciDataObjConstructor', '__maci_obj_format_id')
         build_repr = ', '.join([f"{name}={value!r}" for name,value in vars(self).items() if not name.startswith(skip_name_keys)])
         return f"{type(self).__name__}({build_repr})"

@@ -47,7 +47,7 @@ def loadattrs(filename: str, class_object: CustomClass, *, attr_name_dedup: bool
     # Import Attrs from File and Inject into Given Class Object
 
     # Skip Key
-    __skip_object_key = ('_MaciDataObjConstructor', '__maci_file_format_id')
+    __skip_object_key = ('_MaciDataObjConstructor', '__maci_obj_format_id')
 
     # Import Attrs
     try:
