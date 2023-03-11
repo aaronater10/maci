@@ -76,7 +76,7 @@ def dump(
     if not isinstance(indent_level, int): raise Dump(__err_msg_type_int_indent_level, f'\nFILE: "{filename}" \nDATA: {indent_level}')
     if not isinstance(indentation_on, bool): raise Dump(__err_msg_type_bool_indentation_on, f'\nFILE: "{filename}" \nDATA: {indentation_on}')
 
-    # Save Data to File
+    # Setup
     __build_data_output = ""
     __assignment_glyphs = _Glyphs()
     __skip_object_key = ('_MaciDataObjConstructor', '__maci_obj_format_id')

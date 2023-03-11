@@ -41,7 +41,7 @@ def dumpstr(
 
     [Importing Data Back] Functions:
 
-    loadstr: Import data back returning a class of attributes with Maci features
+    loadstr: Import data from str returning a class of attributes with Maci features
 
     [Options]
 
@@ -63,7 +63,7 @@ def dumpstr(
     if not isinstance(indent_level, int): raise DumpStr(__err_msg_type_int_indent_level, f'\nDATA: {indent_level}')
     if not isinstance(indentation_on, bool): raise DumpStr(__err_msg_type_bool_indentation_on, f'\nDATA: {indentation_on}')
 
-    # Save Data to File
+    # Setup
     __build_data_output = ""
     __assignment_glyphs = _Glyphs()
     __skip_object_key = ('_MaciDataObjConstructor', '__maci_obj_format_id')
@@ -153,10 +153,8 @@ def dumpstr(
         # Strip Last \n Char
         __build_data_output = __build_data_output.rstrip()
 
-        # Write File Data
-        __write_file_data(filename, __build_data_output, write_mode, encoding=encoding)
-
-        return None
+        # Return String Data
+        return __build_data_output
 
 
     ### DICT: Check if dict ###
@@ -175,10 +173,8 @@ def dumpstr(
         # Strip Last \n Char
         __build_data_output = __build_data_output.rstrip()
 
-        # Write File Data
-        __write_file_data(filename, __build_data_output, write_mode, encoding=encoding)
-
-        return None
+        # Return String Data
+        return __build_data_output
 
 
     ### CUSTOM CLASS: Check if any Class Object with Attributes
@@ -305,14 +301,12 @@ def dumpstr(
         # Strip Last \n Char
         __build_data_output = __build_data_output.rstrip()
 
-        # Write File Data
-        __write_file_data(filename, __build_data_output, write_mode, encoding=encoding)
-
-        return None
+        # Return String Data
+        return __build_data_output
 
     # Report if no __dict__ Attribute
     if not hasattr(data, '__dict__'):
-        raise Dump(__err_msg_no_attrs_found, f'\nFILE: "{filename}" \nDATA: {data}')
+        raise DumpStr(__err_msg_no_attrs_found, f'\nDATA: {data}')
 
     # Report if Error not Definable
     raise DumpStr(__err_msg_general_error, f'\nDATA: {data}')
@@ -332,23 +326,3 @@ def __multiline_check(data: __Union[list, dict, tuple, set]) -> bool:
     or isinstance(data, set):
         return True
     return False
-
-
-# Write File Data
-def __write_file_data(filename: str, data: __Any, write_mode: str, *, encoding: __Union[str, None]) -> None:
-    """
-    Write New or Append Data to File
-    """
-    __err_msg_write_mode = 'Bad write mode'
-    __write_mode_allowed_list = ['w', 'a']
-    try:
-        # Write New File Mode
-        if write_mode == 'w':
-            __dumpraw(filename, data, encoding=encoding)
-        # Append Append File Mode
-        if write_mode == 'a':
-            __dumpraw(filename, data, append=True, encoding=encoding)        
-        # Raise Exception if No Match
-        if not write_mode in __write_mode_allowed_list:
-            raise Dump(__err_msg_write_mode, f'\nFILE: "{filename}" \nDATA: {write_mode}')
-    except DumpRaw as __err_msg: raise Dump(__err_msg, '')
