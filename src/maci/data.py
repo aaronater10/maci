@@ -157,6 +157,7 @@ class _MaciDataObjConstructor:
         __end_markers = {']', '}', ')', "'''", '"""'}
         __skip_markers = ('', ' ', '#', '\n')
         __eof_marker = file_data[-1]
+        __ignore_multistr_marker = "'''"
 
         # Assignment Glyphs - Set by Another Class and is a NamedTuple
         __assignment_glyphs = _Glyphs()
@@ -283,15 +284,19 @@ class _MaciDataObjConstructor:
                         __value_token = __value_token.partition(__skip_markers[2])[0].strip()
                     # Set First Value
                     __build_data = __value_token
-                    
+
+                    # Swap ignore if multi-str
+                    if __ignore_multistr_marker == __value_token:
+                        __ignore_multistr_marker = '"""'
+
                     # Turn ON Data Build Switches
                     __is_building_data_sw = True
                     __body_build_data_sw = True
                     __end_data_build_sw = True
                     continue
-                
+
                 # END BUILD: Check if line of file is an End Data Build Marker. Import Built Data Type if Valid. Check if EOF in case File Missing End Marker.
-                elif (__end_data_build_sw) and ((__end_token in __end_markers) or (f"{__eof_marker}" == f"{__file_data_line}")):
+                elif (__end_data_build_sw) and (((__end_token in __end_markers) and (not __end_token == __ignore_multistr_marker)) or (f"{__eof_marker}" == f"{__file_data_line}")):
                     __build_data += f"\n{__file_data_line}"
                     
                     try:

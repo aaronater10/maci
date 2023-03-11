@@ -142,7 +142,8 @@ def dump(
                     elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):
                         is_set_start_new_line = '' if value.startswith('\n') else '\n'
                         is_set_end_new_line = '' if value.endswith('\n') else '\n'
-                        __build_data_output += f"{key} {__assignment_glyphs.l} '''{is_set_start_new_line}{value}{is_set_end_new_line}'''\n"
+                        surrounding_quote_type = "'''" if '"""' in value else '"""'
+                        __build_data_output += f"{key} {__assignment_glyphs.l} {surrounding_quote_type}{is_set_start_new_line}{value}{is_set_end_new_line}{surrounding_quote_type}\n"
                     else: __build_data_output += f'{key} {__assignment_glyphs.l} {repr(value)}\n'
                     continue
                 # Hard Locked Only
@@ -153,7 +154,8 @@ def dump(
                     elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):
                         is_set_start_new_line = '' if value.startswith('\n') else '\n'
                         is_set_end_new_line = '' if value.endswith('\n') else '\n'
-                        __build_data_output += f"{key} {__assignment_glyphs.h} '''{is_set_start_new_line}{value}{is_set_end_new_line}'''\n"
+                        surrounding_quote_type = "'''" if '"""' in value else '"""'
+                        __build_data_output += f"{key} {__assignment_glyphs.h} {surrounding_quote_type}{is_set_start_new_line}{value}{is_set_end_new_line}{surrounding_quote_type}\n"
                     else: __build_data_output += f'{key} {__assignment_glyphs.h} {repr(value)}\n'
                     continue
                 # Normal Assignment
@@ -163,7 +165,8 @@ def dump(
                 elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):
                     is_set_start_new_line = '' if value.startswith('\n') else '\n'
                     is_set_end_new_line = '' if value.endswith('\n') else '\n'
-                    __build_data_output += f"{key} {__assignment_glyphs.norm} '''{is_set_start_new_line}{value}{is_set_end_new_line}'''\n"
+                    surrounding_quote_type = "'''" if '"""' in value else '"""'
+                    __build_data_output += f'{key} {__assignment_glyphs.norm} {surrounding_quote_type}{is_set_start_new_line}{value}{is_set_end_new_line}{surrounding_quote_type}\n'
                 else: __build_data_output += f'{key} {__assignment_glyphs.norm} {repr(value)}\n'
 
         # Strip Last \n Char
