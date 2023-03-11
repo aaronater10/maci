@@ -110,6 +110,17 @@ def dump(
                 is_set_start_new_line = ''
                 is_set_end_new_line = ''
 
+                # Check for Dunder or Unders
+                _is_dunder_attr = False
+                if key.startswith(f'__'):
+                    if (private_attrs or private_dunder_attrs):
+                        _is_dunder_attr = True
+                    else: continue
+                if (key.startswith('_')) and not (_is_dunder_attr):
+                    if not (private_attrs or private_under_attrs):
+                        continue
+                _is_dunder_attr = False # reset dunder check for single under's
+
                 # Reference Name and Locked
                 if (key in data.__dict__[__reference_attr_list_key]) and (key in data.__dict__[__locked_attr_list_key]):
                     __build_data_output += f'{key} {__assignment_glyphs.rl} {data.__dict__[__reference_attr_list_key][key]}\n'
