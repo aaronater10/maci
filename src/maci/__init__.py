@@ -51,6 +51,12 @@ from .__yaml.yamlloadstr import yamlloadstr
 from .__yaml.yamldump import yamldump
 from .__yaml.yamldumpstr import yamldumpstr
 
+# TOML Lib
+from .__toml.tomlload import tomlload
+from .__toml.tomlloadstr import tomlloadstr
+from .__toml.tomldump import tomldump
+from .__toml.tomldumpstr import tomldumpstr
+
 # INI Lib
 from .__ini.iniload import iniload
 from .__ini.inidump import inidump

@@ -51,6 +51,12 @@ class YamlLoadStr(MaciError): pass
 class YamlDump(MaciError): pass
 class YamlDumpStr(MaciError): pass
 
+# TOML
+class TomlLoad(MaciError): pass
+class TomlLoadStr(MaciError): pass
+class TomlDump(MaciError): pass
+class TomlDumpStr(MaciError): pass
+
 # INI
 class IniLoad(MaciError): pass
 class IniDump(MaciError): pass
