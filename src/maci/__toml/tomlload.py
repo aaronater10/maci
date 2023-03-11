@@ -12,7 +12,7 @@ def tomlload(filename: str) -> _Dict[str, _Any]:
     """
     Loads toml data from a file
 
-    Returns data with matching python data type. Assign the output to var
+    Returns dict data with matching python data type. Assign the output to var
 
     Enter toml file location as str to load
 
