@@ -21,7 +21,6 @@ def dumpstr(
     indent_level: int=1,
     indentation_on: bool=True,
     multi_line_str: bool=False,
-    encoding: __Union[str, None]=None,
     class_attrs: bool=False,
     private_attrs: bool=False,
     private_under_attrs: bool=False,
