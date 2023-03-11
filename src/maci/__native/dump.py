@@ -26,11 +26,14 @@ def dump(
     multi_line_str: bool=False,
     encoding: __Union[str, None]=None,
     class_attrs: bool=False,
-    private_all_under_attrs: bool=False,
+    private_attrs: bool=False,
+    private_under_attrs: bool=False,
+    private_dunder_attrs: bool=False,
+    private_init_attrs: bool=False,
     private_init_under_attrs: bool=False,
-    private_class_under_attrs: bool=False,
-    private_all_dunder_attrs: bool=False,
     private_init_dunder_attrs: bool=False,
+    private_class_attrs: bool=False,
+    private_class_under_attrs: bool=False,
     private_class_dunder_attrs: bool=False,
     use_symbol_glyphs: bool=False,
     ) -> None:
@@ -204,12 +207,12 @@ def dump(
                 if callable(value): continue
                 if (key.startswith('__') and key.endswith('__')): continue
                 if key.startswith(f'_{type(data).__name__}'): # dunder detection (name mangle)
-                    if (private_all_dunder_attrs) or (private_class_dunder_attrs):
+                    if (private_attrs) or (private_dunder_attrs) or (private_class_attrs) or (private_class_dunder_attrs):
                         key = key.removeprefix(f'_{type(data).__name__}')
                         _is_dunder_attr = True
                     else: continue
                 if (key.startswith('_')) and not (_is_dunder_attr):
-                    if not (private_all_under_attrs or private_class_under_attrs):
+                    if not (private_attrs or private_under_attrs or private_class_attrs or private_class_under_attrs):
                         continue
                 _is_dunder_attr = False # reset dunder check for single under's
 
@@ -228,12 +231,12 @@ def dump(
                 if callable(value): continue
                 if (key.startswith('__') and key.endswith('__')): continue
                 if key.startswith(f'_{data.__name__}'): # dunder detection (name mangle)
-                    if (private_all_dunder_attrs) or (private_class_dunder_attrs):
+                    if (private_attrs) or (private_dunder_attrs) or (private_class_attrs) or (private_class_dunder_attrs):
                         key = key.removeprefix(f'_{data.__name__}')
                         _is_dunder_attr = True
                     else: continue
                 if (key.startswith('_')) and not (_is_dunder_attr):
-                    if not (private_all_under_attrs or private_class_under_attrs):
+                    if not (private_attrs or private_under_attrs or private_class_attrs or private_class_under_attrs):
                         continue
                 _is_dunder_attr = False # reset dunder check for single under's
 
@@ -253,12 +256,12 @@ def dump(
                     # Strip Unneeded Attrs/Methods, and Preserve Dunders if Required
                     if callable(value): continue
                     if key.startswith(f'_{type(data).__name__}'): # dunder detection (name mangle)
-                        if (private_all_dunder_attrs) or (private_init_dunder_attrs):
+                        if (private_attrs) or (private_dunder_attrs) or (private_init_attrs) or (private_init_dunder_attrs):
                             key = key.removeprefix(f'_{type(data).__name__}')
                             _is_dunder_attr = True
                         else: continue
                     if (key.startswith('_')) and not (_is_dunder_attr):
-                        if not (private_all_under_attrs or private_init_under_attrs):
+                        if not (private_attrs or private_under_attrs or private_init_attrs or private_init_under_attrs):
                             continue
                     _is_dunder_attr = False # reset dunder check for single under's
                 
@@ -275,12 +278,12 @@ def dump(
                     if callable(value): continue
                     if (key.startswith('__') and key.endswith('__')): continue
                     if key.startswith(f'_{type(data).__name__}'): # dunder detection (name mangle)
-                        if (private_all_dunder_attrs) or (private_class_dunder_attrs):
+                        if (private_attrs) or (private_dunder_attrs) or (private_class_attrs) or (private_class_dunder_attrs):
                             key = key.removeprefix(f'_{type(data).__name__}')
                             _is_dunder_attr = True
                         else: continue
                     if (key.startswith('_')) and not (_is_dunder_attr):
-                        if not (private_all_under_attrs or private_class_under_attrs):
+                        if not (private_attrs or private_under_attrs or private_class_attrs or private_class_under_attrs):
                             continue
                     _is_dunder_attr = False # reset dunder check for single under's
                     
