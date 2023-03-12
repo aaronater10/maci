@@ -66,6 +66,7 @@ def dump(
     # Error Checks
     __err_msg_general_error = "Error has occurred and cannot proceed"
     __err_msg_no_attrs_found = "Cannot save file. No attributes found in the object passed"
+    __err_msg_invalid_maciobj = "Invalid maci object passed in. Please use a valid 'MaciDataObj'"
     __err_msg_type_str_filename = "Only str is allowed for filename"
     __err_msg_type_str_append = "Only bool is allowed for 'append'"
     __err_msg_type_int_indent_level = "Only int is allowed for indent_level"
@@ -75,6 +76,7 @@ def dump(
     if not isinstance(append, bool): raise Dump(__err_msg_type_str_append, f'\nFILE: "{filename}" \nDATA: {append}')
     if not isinstance(indent_level, int): raise Dump(__err_msg_type_int_indent_level, f'\nFILE: "{filename}" \nDATA: {indent_level}')
     if not isinstance(indentation_on, bool): raise Dump(__err_msg_type_bool_indentation_on, f'\nFILE: "{filename}" \nDATA: {indentation_on}')
+    if isinstance(data, type(__MaciDataObj)): raise Dump(__err_msg_invalid_maciobj, f'\nFILE: "{filename}" \nDATA: {data}')
 
     # Setup
     __build_data_output = ""
@@ -140,10 +142,7 @@ def dump(
                         value = __cleanformat(value, indent_level)
                         __build_data_output += f'{key} {__assignment_glyphs.l} {value}\n'
                     elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):
-                        is_set_start_new_line = '' if value.startswith('\n') else '\n'
-                        is_set_end_new_line = '' if value.endswith('\n') else '\n'
-                        surrounding_quote_type = "'''" if '"""' in value else '"""'
-                        __build_data_output += f"{key} {__assignment_glyphs.l} {surrounding_quote_type}{is_set_start_new_line}{value}{is_set_end_new_line}{surrounding_quote_type}\n"
+                        __build_data_output += __setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.l, value=value)
                     else: __build_data_output += f'{key} {__assignment_glyphs.l} {repr(value)}\n'
                     continue
                 # Hard Locked Only
@@ -152,10 +151,7 @@ def dump(
                         value = __cleanformat(value, indent_level)
                         __build_data_output += f'{key} {__assignment_glyphs.h} {value}\n'
                     elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):
-                        is_set_start_new_line = '' if value.startswith('\n') else '\n'
-                        is_set_end_new_line = '' if value.endswith('\n') else '\n'
-                        surrounding_quote_type = "'''" if '"""' in value else '"""'
-                        __build_data_output += f"{key} {__assignment_glyphs.h} {surrounding_quote_type}{is_set_start_new_line}{value}{is_set_end_new_line}{surrounding_quote_type}\n"
+                        __build_data_output += __setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.h, value=value)
                     else: __build_data_output += f'{key} {__assignment_glyphs.h} {repr(value)}\n'
                     continue
                 # Normal Assignment
@@ -163,10 +159,7 @@ def dump(
                     value = __cleanformat(value, indent_level)
                     __build_data_output += f'{key} {__assignment_glyphs.norm} {value}\n'
                 elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):
-                    is_set_start_new_line = '' if value.startswith('\n') else '\n'
-                    is_set_end_new_line = '' if value.endswith('\n') else '\n'
-                    surrounding_quote_type = "'''" if '"""' in value else '"""'
-                    __build_data_output += f'{key} {__assignment_glyphs.norm} {surrounding_quote_type}{is_set_start_new_line}{value}{is_set_end_new_line}{surrounding_quote_type}\n'
+                    __build_data_output += __setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.norm, value=value)
                 else: __build_data_output += f'{key} {__assignment_glyphs.norm} {repr(value)}\n'
 
         # Strip Last \n Char
@@ -188,6 +181,10 @@ def dump(
                     value = __cleanformat(value, indent_level)
                     __build_data_output += f'{key} {__assignment_glyphs.norm} {value}\n'
                     continue
+            if (multi_line_str) and ('\n' in value) and (isinstance(value, str)):                
+                __build_data_output += __setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.norm, value=value)
+                continue
+
             # Single Line Assignment
             __build_data_output += f'{key} {__assignment_glyphs.norm} {repr(value)}\n'
 
@@ -235,6 +232,8 @@ def dump(
                 if __multiline_check(value) and indentation_on:
                     value = __cleanformat(value, indent_level)
                     __build_data_output += f'{key} {__assignment_glyphs.norm} {value}\n'
+                elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):                
+                    __build_data_output += __setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.norm, value=value)
                 else: __build_data_output += f'{key} {__assignment_glyphs.norm} {repr(value)}\n'
 
         # Case 2 - Class Attrs Only. Not Instantiated
@@ -259,6 +258,8 @@ def dump(
                 if __multiline_check(value) and indentation_on:
                     value = __cleanformat(value, indent_level)
                     __build_data_output += f'{key} {__assignment_glyphs.norm} {value}\n'
+                elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):                
+                    __build_data_output += __setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.norm, value=value)
                 else: __build_data_output += f'{key} {__assignment_glyphs.norm} {repr(value)}\n'
         
         # Default Case 3 - Init Attrs or Class Attrs, or both
@@ -284,6 +285,8 @@ def dump(
                     if __multiline_check(value) and indentation_on:
                         value = __cleanformat(value, indent_level)
                         __build_data_output_init += f'{key} {__assignment_glyphs.norm} {value}\n'
+                    elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):                
+                        __build_data_output_init += __setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.norm, value=value)
                     else: __build_data_output_init += f'{key} {__assignment_glyphs.norm} {repr(value)}\n'
                 
             # Last: Class Attrs
@@ -306,6 +309,8 @@ def dump(
                     if __multiline_check(value) and indentation_on:
                         value = __cleanformat(value, indent_level)
                         __build_data_output_class += f'{key} {__assignment_glyphs.norm} {value}\n'
+                    elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):                
+                        __build_data_output_class += __setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.norm, value=value)
                     else: __build_data_output_class += f'{key} {__assignment_glyphs.norm} {repr(value)}\n'
 
         # Structure Build
@@ -371,3 +376,11 @@ def __write_file_data(filename: str, data: __Any, write_mode: str, *, encoding: 
         if not write_mode in __write_mode_allowed_list:
             raise Dump(__err_msg_write_mode, f'\nFILE: "{filename}" \nDATA: {write_mode}')
     except DumpRaw as __err_msg: raise Dump(__err_msg, '')
+
+
+# Setup Multi-String
+def __setup_multi_string(key: str, assignment_glyph: str, value: str,) -> str:
+    is_set_start_new_line = '' if value.startswith('\n') else '\n'
+    is_set_end_new_line = '' if value.endswith('\n') else '\n'
+    surrounding_quote_type = "'''" if '"""' in value else '"""'
+    return f'{key} {assignment_glyph} {surrounding_quote_type}{is_set_start_new_line}{value}{is_set_end_new_line}{surrounding_quote_type}\n'
