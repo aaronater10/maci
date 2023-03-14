@@ -5,6 +5,8 @@
 # MaciDataObj
 from ast import literal_eval as __literal_eval__
 from datetime import datetime as _datetime
+from datetime import date as _datetime_date
+from datetime import time as _datetime_time
 from copy import deepcopy
 from typing import Any as _Any
 from typing import NoReturn as _NoReturn
@@ -1112,6 +1114,10 @@ def __dump_data(
                 if key in data.__dict__[__reference_attr_list_key]:
                     __build_data_output += f'{key} {__assignment_glyphs.r} {data.__dict__[__reference_attr_list_key][key]}\n'
                     continue
+
+                # REPR SIGNAL: If certain object type matches, disable repr use
+                repr_signal = __repr_signal(value)
+
                 # Locked Only
                 if key in data.__dict__[__locked_attr_list_key]:
                     if __multiline_check(value) and indentation_on:
@@ -1119,7 +1125,11 @@ def __dump_data(
                         __build_data_output += f'{key} {__assignment_glyphs.l} {value}\n'
                     elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):
                         __build_data_output += __setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.l, value=value)
-                    else: __build_data_output += f'{key} {__assignment_glyphs.l} {repr(value)}\n'
+                    else:
+                        if not repr_signal:
+                            __build_data_output += f'{key} {__assignment_glyphs.l} {value}\n'
+                            continue
+                        __build_data_output += f'{key} {__assignment_glyphs.l} {repr(value)}\n'
                     continue
                 # Hard Locked Only
                 if key in data.__dict__[__hard_locked_attr_list_key]:
@@ -1128,7 +1138,11 @@ def __dump_data(
                         __build_data_output += f'{key} {__assignment_glyphs.h} {value}\n'
                     elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):
                         __build_data_output += __setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.h, value=value)
-                    else: __build_data_output += f'{key} {__assignment_glyphs.h} {repr(value)}\n'
+                    else:
+                        if not repr_signal:
+                            __build_data_output += f'{key} {__assignment_glyphs.h} {value}\n'
+                            continue
+                        __build_data_output += f'{key} {__assignment_glyphs.h} {repr(value)}\n'
                     continue
                 # Normal Assignment
                 if __multiline_check(value) and indentation_on:
@@ -1136,7 +1150,11 @@ def __dump_data(
                     __build_data_output += f'{key} {__assignment_glyphs.norm} {value}\n'
                 elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):
                     __build_data_output += __setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.norm, value=value)
-                else: __build_data_output += f'{key} {__assignment_glyphs.norm} {repr(value)}\n'
+                else:
+                    if not repr_signal:
+                        __build_data_output += f'{key} {__assignment_glyphs.norm} {value}\n'
+                        continue
+                    __build_data_output += f'{key} {__assignment_glyphs.norm} {repr(value)}\n'
 
         # Strip Last \n Char
         __build_data_output = __build_data_output.rstrip()
@@ -1165,7 +1183,13 @@ def __dump_data(
                 __build_data_output += __setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.norm, value=value)
                 continue
 
+            # REPR SIGNAL: If certain object type matches, disable repr use
+            repr_signal = __repr_signal(value)
+
             # Single Line Assignment
+            if not repr_signal:
+                __build_data_output += f'{key} {__assignment_glyphs.norm} {value}\n'
+                continue
             __build_data_output += f'{key} {__assignment_glyphs.norm} {repr(value)}\n'
 
         # Strip Last \n Char
@@ -1212,13 +1236,20 @@ def __dump_data(
                         continue
                 _is_dunder_attr = False # reset dunder check for single under's
 
+                # REPR SIGNAL: If certain object type matches, disable repr use
+                repr_signal = __repr_signal(value)
+
                 # Build Data
                 if __multiline_check(value) and indentation_on:
                     value = __cleanformat(value, indent_level)
                     __build_data_output += f'{key} {__assignment_glyphs.norm} {value}\n'
                 elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):                
                     __build_data_output += __setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.norm, value=value)
-                else: __build_data_output += f'{key} {__assignment_glyphs.norm} {repr(value)}\n'
+                else:
+                    if not repr_signal:
+                        __build_data_output += f'{key} {__assignment_glyphs.norm} {value}\n'
+                        continue
+                    __build_data_output += f'{key} {__assignment_glyphs.norm} {repr(value)}\n'
 
         # Case 2 - Class Attrs Only. Not Instantiated
         elif '__mro__' in vars(type(data)) and class_attrs:
@@ -1238,13 +1269,20 @@ def __dump_data(
                         continue
                 _is_dunder_attr = False # reset dunder check for single under's
 
+                # REPR SIGNAL: If certain object type matches, disable repr use
+                repr_signal = __repr_signal(value)
+
                 # Build Data
                 if __multiline_check(value) and indentation_on:
                     value = __cleanformat(value, indent_level)
                     __build_data_output += f'{key} {__assignment_glyphs.norm} {value}\n'
                 elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):                
                     __build_data_output += __setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.norm, value=value)
-                else: __build_data_output += f'{key} {__assignment_glyphs.norm} {repr(value)}\n'
+                else:
+                    if not repr_signal:
+                        __build_data_output += f'{key} {__assignment_glyphs.norm} {value}\n'
+                        continue
+                    __build_data_output += f'{key} {__assignment_glyphs.norm} {repr(value)}\n'
         
         # Default Case 3 - Init Attrs or Class Attrs, or both
         else:
@@ -1264,6 +1302,9 @@ def __dump_data(
                         if not (private_attrs or private_under_attrs or private_init_attrs or private_init_under_attrs):
                             continue
                     _is_dunder_attr = False # reset dunder check for single under's
+
+                    # REPR SIGNAL: If certain object type matches, disable repr use
+                    repr_signal = __repr_signal(value)
                 
                     # Build Data - Init Attrs
                     if __multiline_check(value) and indentation_on:
@@ -1271,7 +1312,11 @@ def __dump_data(
                         __build_data_output_init += f'{key} {__assignment_glyphs.norm} {value}\n'
                     elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):                
                         __build_data_output_init += __setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.norm, value=value)
-                    else: __build_data_output_init += f'{key} {__assignment_glyphs.norm} {repr(value)}\n'
+                    else:
+                        if not repr_signal:
+                            __build_data_output += f'{key} {__assignment_glyphs.norm} {value}\n'
+                            continue
+                        __build_data_output_init += f'{key} {__assignment_glyphs.norm} {repr(value)}\n'
                 
             # Last: Class Attrs
             if class_attrs:
@@ -1288,6 +1333,9 @@ def __dump_data(
                         if not (private_attrs or private_under_attrs or private_class_attrs or private_class_under_attrs):
                             continue
                     _is_dunder_attr = False # reset dunder check for single under's
+
+                    # REPR SIGNAL: If certain object type matches, disable repr use
+                    repr_signal = __repr_signal(value)
                     
                     # Build Data - Class Attrs
                     if __multiline_check(value) and indentation_on:
@@ -1295,7 +1343,11 @@ def __dump_data(
                         __build_data_output_class += f'{key} {__assignment_glyphs.norm} {value}\n'
                     elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):                
                         __build_data_output_class += __setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.norm, value=value)
-                    else: __build_data_output_class += f'{key} {__assignment_glyphs.norm} {repr(value)}\n'
+                    else:
+                        if not repr_signal:
+                            __build_data_output += f'{key} {__assignment_glyphs.norm} {value}\n'
+                            continue
+                        __build_data_output_class += f'{key} {__assignment_glyphs.norm} {repr(value)}\n'
 
         # Structure Build
         if _is_case1_build: pass
@@ -1372,3 +1424,14 @@ def __setup_multi_string(key: str, assignment_glyph: str, value: str,) -> str:
     is_set_end_new_line = '' if value.endswith('\n') else '\n'
     surrounding_quote_type = "'''" if '"""' in value else '"""'
     return f'{key} {assignment_glyph} {surrounding_quote_type}{is_set_start_new_line}{value}{is_set_end_new_line}{surrounding_quote_type}\n'
+
+
+# Set DateTime Object to String
+def __repr_signal(value: _Any) -> bool:
+    """
+    Returns a bool to signal whether to use repr for certain object types
+    """
+    types_to_signal_disable_repr = (_datetime, _datetime_date, _datetime_time)
+    if isinstance(value, types_to_signal_disable_repr):
+        return False
+    return True

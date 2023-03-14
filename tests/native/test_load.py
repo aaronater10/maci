@@ -480,7 +480,7 @@ class TestLoad(unittest.TestCase):
 
 # 21. Ensure Supported Glyph Syntax is Loadable - Import Glyphs with varying types and data
     def test22_date_time_syntax(self):
-        from datetime import datetime
+        from datetime import datetime, date, time
         filename_no_spaces = '22_date_time_syntax.data'
 
         # File Import
@@ -488,11 +488,11 @@ class TestLoad(unittest.TestCase):
         file_import = maci.load(filepath)
 
         # Test Attributes
-        assert str(file_import.custom_date_time) == "2023-03-13 22:06:00"
-        assert str(file_import.custom_date_timem) == "2023-03-13 22:06:00.500000"
-        assert str(file_import.custom_date) == "2023-03-13"
-        assert str(file_import.custom_time) == "22:06:00"
-        assert str(file_import.custom_timem) == "22:06:00.500000"
-        assert str(file_import.custom_time_date) == "2023-03-13 22:06:00"
-        assert str(file_import.custom_timem_date) == "2023-03-13 22:06:00.500000"
-        assert str(file_import.date_time_iso8601) == "2023-03-13 22:06:00"
+        assert isinstance(file_import.custom_date_time, datetime) and str(file_import.custom_date_time) == "2023-03-13 22:06:00"
+        assert isinstance(file_import.custom_date_timem, datetime) and str(file_import.custom_date_timem) == "2023-03-13 22:06:00.500000"
+        assert isinstance(file_import.custom_date, date) and str(file_import.custom_date) == "2023-03-13"
+        assert isinstance(file_import.custom_time, time) and str(file_import.custom_time) == "22:06:00"
+        assert isinstance(file_import.custom_timem, time) and str(file_import.custom_timem) == "22:06:00.500000"
+        assert isinstance(file_import.custom_time_date, datetime) and str(file_import.custom_time_date) == "2023-03-13 22:06:00"
+        assert isinstance(file_import.custom_timem_date, datetime) and str(file_import.custom_timem_date) == "2023-03-13 22:06:00.500000"
+        assert isinstance(file_import.date_time_iso8601, datetime) and str(file_import.date_time_iso8601) == "2023-03-13 22:06:00"
