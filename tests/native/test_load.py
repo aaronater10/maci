@@ -476,3 +476,23 @@ class TestLoad(unittest.TestCase):
         assert file_import.d2_multi == {'k1':1, 'k2':2, 'k3':3}
         assert file_import.d3_multi == (1,2,3)
         assert file_import.d4_multi == {1,2,3}
+
+
+# 21. Ensure Supported Glyph Syntax is Loadable - Import Glyphs with varying types and data
+    def test22_date_time_syntax(self):
+        from datetime import datetime
+        filename_no_spaces = '22_date_time_syntax.data'
+
+        # File Import
+        filepath = test_file_path + filename_no_spaces
+        file_import = maci.load(filepath)
+
+        # Test Attributes
+        assert str(file_import.custom_date_time) == "2023-03-13 22:06:00"
+        assert str(file_import.custom_date_timem) == "2023-03-13 22:06:00.500000"
+        assert str(file_import.custom_date) == "2023-03-13"
+        assert str(file_import.custom_time) == "22:06:00"
+        assert str(file_import.custom_timem) == "22:06:00.500000"
+        assert str(file_import.custom_time_date) == "2023-03-13 22:06:00"
+        assert str(file_import.custom_timem_date) == "2023-03-13 22:06:00.500000"
+        assert str(file_import.date_time_iso8601) == "2023-03-13 22:06:00"

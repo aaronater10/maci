@@ -4,6 +4,7 @@
 
 # MaciDataObj
 from ast import literal_eval as __literal_eval__
+from datetime import datetime as _datetime
 from copy import deepcopy
 from typing import Any as _Any
 from typing import NoReturn as _NoReturn
@@ -95,6 +96,40 @@ def _rename_exc_name_to_user_object_name(method):
             raise type(exception)(build_err_msg) from None
         return return_data
     return wrapper
+
+
+#########################################################################################################
+# MaciDataObj Functions
+def _date_time_parse_check(value: str) -> _Union[str, None]:
+    """
+    Check if supported custom datetime format, or ISO8601 format
+
+    Returns datetime obj if found. Otherwise None
+    """
+    custom_date_time_formats = {
+        'date_time': '%Y-%m-%d %H:%M:%S',
+        'date_timem': '%Y-%m-%d %H:%M:%S.%f',
+        'date': '%Y-%m-%d',
+        'time': '%H:%M:%S',
+        'timem': '%H:%M:%S.%f',
+        'time_date': '%H:%M:%S %Y-%m-%d',
+        'timem_date': '%H:%M:%S.%f %Y-%m-%d',
+    }
+
+    for format_type, format_str in custom_date_time_formats.items():
+        try:
+            datetime_object = _datetime.strptime(value, format_str)
+            if format_type == 'date_time': return datetime_object
+            if format_type == 'date_timem': return datetime_object
+            if format_type == 'date': return datetime_object.date()
+            if format_type == 'time': return datetime_object.time()
+            if format_type == 'timem': return datetime_object.time()
+            if format_type == 'time_date': return datetime_object
+            if format_type == 'timem_date': return datetime_object
+        except ValueError: continue
+    else:
+        try: return _datetime.fromisoformat(value)
+        except ValueError: return None
 
 
 #########################################################################################################
@@ -381,14 +416,29 @@ class _MaciDataObjConstructor:
                         if __current_assignment_glyph in _assignment_glyphs_for_hard_lock_checks:
                             self.__dict__['_MaciDataObjConstructor__assignment_hard_locked_attribs'] = (*self.__assignment_hard_locked_attribs, __var_token)
                         
-                    except ValueError: raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')
+                    except ValueError:
+                        # Check if datetime format and set attr, else raise exception
+                        datetime_format =_date_time_parse_check(__value_token)
+                        if datetime_format is not None:
+                            # Assign Attr to datetime object
+                            setattr(self, __var_token, datetime_format)
+                        else:
+                            raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')
+
                     except AttributeError:
                         # REF_NAME: Ignores Comments to Display Attr Reference Name
                         raise Load(
                             name_reference_does_not_exist,
                             f'\nFILE: "{filename}" \nATTR_NAME: {__var_token} \nREF_NAME: {f"{__value_token} "[:__value_token.find(__skip_markers[2])].rstrip()}'
                         )
-                    except SyntaxError: raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')
+                    except SyntaxError:
+                        # Check if datetime format and set attr, else raise exception
+                        datetime_format =_date_time_parse_check(__value_token)
+                        if datetime_format is not None:
+                            # Assign Attr to datetime object
+                            setattr(self, __var_token, datetime_format)
+                        else:
+                            raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')
 
             else: raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nLINE: {line_num+1}')
     
