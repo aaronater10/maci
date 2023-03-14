@@ -43,6 +43,9 @@ def loadattrs(filename: str, class_object: CustomClass, *, attr_name_dedup: bool
 
     if isinstance(class_object, __MaciDataObj):
         raise LoadAttrs(__err_msg_type_maci_obj, f'\nFILE: "{filename}" \nDATA: {class_object}')
+    
+    if isinstance(class_object, type(__MaciDataObj)):
+        raise LoadAttrs(__err_msg_type_maci_obj, f'\nFILE: "{filename}" \nDATA: {class_object}')
 
     # Import Attrs from File and Inject into Given Class Object
 

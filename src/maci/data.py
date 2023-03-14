@@ -991,15 +991,17 @@ def __dump_data(
         DumpError = DumpStr
         # Set Values
         filename = ''
+        __err_msg_invalid_maciobj_item = f'\nDATA: {data}'
     else:
         DumpError = Dump
+        __err_msg_invalid_maciobj_item = f'\nFILE: "{filename}" \nDATA: {data}'
 
     # Error Checks & Collect Error Messages
     __err_msg_general_error = "Error has occurred and cannot proceed"
     __err_msg_invalid_maciobj = "Invalid maci object passed in. Please use a valid 'MaciDataObj'"
     __err_msg_no_attrs_found = __err_msg_no_attrs_found
 
-    if isinstance(data, type(MaciDataObj)): raise DumpError(__err_msg_invalid_maciobj, f'\nFILE: "{filename}" \nDATA: {data}')
+    if isinstance(data, type(MaciDataObj)): raise DumpError(__err_msg_invalid_maciobj, __err_msg_invalid_maciobj_item)
 
     # Setup
     __build_data_output = ""
@@ -1272,7 +1274,7 @@ def __dump_data(
 
     # Report if no __dict__ Attribute
     if not hasattr(data, '__dict__'):
-        raise DumpError(__err_msg_no_attrs_found, f'\nFILE: "{filename}" \nDATA: {data}')
+        raise DumpError(__err_msg_no_attrs_found, f'\nDATA: {data}')
 
     # Report if Error not Definable
     raise DumpError(__err_msg_general_error, f'\nDATA: {data}')
