@@ -43,6 +43,7 @@ def load(filename: str, *, attr_name_dedup: bool=True, encoding: __Union[str, No
         if __path.getsize(filename) == 0:
             return None
     except FileNotFoundError as __err_msg: raise Load(__err_msg, f'\nFILE: "{filename}"')
+    except OSError as __err_msg: raise Load(__err_msg, f'\nFILE: "{filename}"')
 
     # Syntax/Usage Error Messages
     __err_messages = {
