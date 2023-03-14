@@ -1,14 +1,14 @@
 # comparefilehash
 #########################################################################################################
 # Imports
-from typing import Union as __Union
-from .createfilehash import createfilehash
-from ..__native.load import load
+from typing import Union as _Union
+from .createfilehash import createfilehash as _createfilehash
+from ..__native.load import load as _load
 from ..error import CompareFileHash
 
 #########################################################################################################
 # Compare file hashes
-def comparefilehash(file_to_hash: str, stored_hash_file: str, hash_algorithm: str='sha256', *, encoding: __Union[str, None]=None) -> bool:
+def comparefilehash(file_to_hash: str, stored_hash_file: str, hash_algorithm: str='sha256', *, encoding: _Union[str, None]=None) -> bool:
     """
     Compares hash of any file by importing the previously stored hash file data from using "createfilehash"
 
@@ -27,20 +27,20 @@ def comparefilehash(file_to_hash: str, stored_hash_file: str, hash_algorithm: st
     This is using the hashlib library shipped with the python standard library. For more
     information on hashlib, visit: https://docs.python.org/3/library/hashlib.html
     """
-    __ALGO_OPTIONS = ('sha256', 'sha512', 'sha384', 'sha1', 'md5')
+    ALGO_OPTIONS = ('sha256', 'sha512', 'sha384', 'sha1', 'md5')
 
     # Error checks
-    __err_msg_str_file_src = f"Only str is allowed for file_to_hash"
-    __err_msg_hash_file = f"Only str is allowed for stored_hash_file"
-    __err_msg_str_hash = f"Only str is allowed for hash_algorithm"
-    __err_msg_hash = f"Invalid or no hash option chosen for hash_algorithm"
+    _err_msg_str_file_src = f"Only str is allowed for file_to_hash"
+    _err_msg_hash_file = f"Only str is allowed for stored_hash_file"
+    _err_msg_str_hash = f"Only str is allowed for hash_algorithm"
+    _err_msg_hash = f"Invalid or no hash option chosen for hash_algorithm"
 
-    if not isinstance(file_to_hash, str): raise CompareFileHash(__err_msg_str_file_src, f'"{file_to_hash}"')
-    if not isinstance(stored_hash_file, str): raise CompareFileHash(__err_msg_hash_file, f'"{stored_hash_file}"')
-    if not isinstance(hash_algorithm, str): raise CompareFileHash(__err_msg_str_hash, f'"{hash_algorithm}"')
-    if not hash_algorithm in __ALGO_OPTIONS: raise CompareFileHash(__err_msg_hash, f'"{hash_algorithm}"')
+    if not isinstance(file_to_hash, str): raise CompareFileHash(_err_msg_str_file_src, f'"{file_to_hash}"')
+    if not isinstance(stored_hash_file, str): raise CompareFileHash(_err_msg_hash_file, f'"{stored_hash_file}"')
+    if not isinstance(hash_algorithm, str): raise CompareFileHash(_err_msg_str_hash, f'"{hash_algorithm}"')
+    if not hash_algorithm in ALGO_OPTIONS: raise CompareFileHash(_err_msg_hash, f'"{hash_algorithm}"')
 
     # Collect hash data, then return result
-    __hash_data = createfilehash(file_to_hash, False, hash_algorithm)
-    __stored_hash_data = load(stored_hash_file, encoding=encoding)
-    return (__hash_data == __stored_hash_data.hash_data)
+    _hash_data = _createfilehash(file_to_hash, False, hash_algorithm)
+    _stored_hash_data = _load(stored_hash_file, encoding=encoding)
+    return (_hash_data == _stored_hash_data.hash_data)

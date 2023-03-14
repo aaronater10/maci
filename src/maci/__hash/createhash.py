@@ -1,13 +1,16 @@
 # createfilehash
 #########################################################################################################
 # Imports
-from typing import Union, List, Tuple, Set
+from typing import Union as _Union
+from typing import List as _List
+from typing import Tuple as _Tuple
+from typing import Set as _Set
 import hashlib as _hashlib
 from ..error import CreateHash
 
 #########################################################################################################
 # Create file hash
-def createhash(data_to_hash: Union[str, bytes, int, List[int], Tuple[int], Set[int], range, bool], hash_algorithm: str='sha256', *, encoding: str='utf-8') -> str:
+def createhash(data_to_hash: _Union[str, bytes, int, _List[int], _Tuple[int], _Set[int], range, bool], hash_algorithm: str='sha256', *, encoding: str='utf-8') -> str:
     """
     Creates a hash of the provided data
 

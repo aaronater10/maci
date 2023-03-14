@@ -3,7 +3,7 @@
 # Imports
 
 # MaciDataObj
-from ast import literal_eval as __literal_eval__
+from ast import literal_eval as _literal_eval
 from datetime import datetime as _datetime
 from datetime import date as _datetime_date
 from datetime import time as _datetime_time
@@ -19,10 +19,10 @@ from typing import Set as _Set
 from .error import Load, GeneralError, Hint
 # Dump Function
 from io import StringIO as _StringIO
-from typing import NewType as __NewType
+from typing import NewType as _NewType
+from .__native.dumpraw import dumpraw as _dumpraw
+from .__native.cleanformat import cleanformat as _cleanformat
 from .error import Dump, DumpRaw, DumpStr
-from .__native.dumpraw import dumpraw as __dumpraw
-from .__native.cleanformat import cleanformat as __cleanformat
 
 #########################################################################################################
 # Assignment Glyphs
@@ -343,10 +343,10 @@ class _MaciDataObjConstructor:
                 # END BUILD: Check if line of file is an End Data Build Marker. Import Built Data Type if Valid. Check if EOF in case File Missing End Marker.
                 elif (__end_data_build_sw) and (((__end_token in __end_markers) and (not __end_token == __ignore_multistr_marker)) or (f"{__eof_marker}" == f"{__file_data_line}")):
                     __build_data += f"\n{__file_data_line}"
-                    
+
                     try:
                         # Assign Attr
-                        setattr(self, __var_token, __literal_eval__(__build_data))
+                        setattr(self, __var_token, _literal_eval(__build_data))
 
                         # Check if Attr is Locked from Re-Assignment
                         if __current_assignment_glyph in _assignment_glyphs_for_lock_checks:
@@ -409,7 +409,7 @@ class _MaciDataObjConstructor:
                             continue
 
                         # Assign Attr
-                        setattr(self, __var_token, __literal_eval__(__value_token))
+                        setattr(self, __var_token, _literal_eval(__value_token))
 
                         # Check if Attr is Locked from Re-Assignment
                         if __current_assignment_glyph in _assignment_glyphs_for_lock_checks:
@@ -1009,7 +1009,7 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
 # Main Dump Function
 
 # Hinting reference name for "CustomClass" to denote a CustomClass can be used to dump data
-CustomClass = __NewType('CustomClass', object)
+CustomClass = _NewType('CustomClass', object)
 
 def __dump_data(
     *,
@@ -1122,7 +1122,7 @@ def __dump_data(
                 # Locked Only
                 if key in data.__dict__[__locked_attr_list_key]:
                     if __multiline_check(value) and indentation_on:
-                        value = __cleanformat(value, indent_level)
+                        value = _cleanformat(value, indent_level)
                         __build_data_output.write(f'{key} {__assignment_glyphs.l} {value}\n')
                     elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):
                         __build_data_output.write(__setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.l, value=value))
@@ -1135,7 +1135,7 @@ def __dump_data(
                 # Hard Locked Only
                 if key in data.__dict__[__hard_locked_attr_list_key]:
                     if __multiline_check(value) and indentation_on:
-                        value = __cleanformat(value, indent_level)
+                        value = _cleanformat(value, indent_level)
                         __build_data_output.write(f'{key} {__assignment_glyphs.h} {value}\n')
                     elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):
                         __build_data_output.write(__setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.h, value=value))
@@ -1147,7 +1147,7 @@ def __dump_data(
                     continue
                 # Normal Assignment
                 if __multiline_check(value) and indentation_on:
-                    value = __cleanformat(value, indent_level)
+                    value = _cleanformat(value, indent_level)
                     __build_data_output.write(f'{key} {__assignment_glyphs.norm} {value}\n')
                 elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):
                     __build_data_output.write(__setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.norm, value=value))
@@ -1180,7 +1180,7 @@ def __dump_data(
             # Multline Assignment from Indentation
             if indentation_on:
                 if __multiline_check(value):
-                    value = __cleanformat(value, indent_level)
+                    value = _cleanformat(value, indent_level)
                     __build_data_output.write(f'{key} {__assignment_glyphs.norm} {value}\n')
                     continue
             if (multi_line_str) and ('\n' in value) and (isinstance(value, str)):                
@@ -1248,7 +1248,7 @@ def __dump_data(
 
                 # Build Data
                 if __multiline_check(value) and indentation_on:
-                    value = __cleanformat(value, indent_level)
+                    value = _cleanformat(value, indent_level)
                     __build_data_output.write(f'{key} {__assignment_glyphs.norm} {value}\n')
                 elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):                
                     __build_data_output.write(__setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.norm, value=value))
@@ -1281,7 +1281,7 @@ def __dump_data(
 
                 # Build Data
                 if __multiline_check(value) and indentation_on:
-                    value = __cleanformat(value, indent_level)
+                    value = _cleanformat(value, indent_level)
                     __build_data_output.write(f'{key} {__assignment_glyphs.norm} {value}\n')
                 elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):                
                     __build_data_output.write(__setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.norm, value=value))
@@ -1315,7 +1315,7 @@ def __dump_data(
                 
                     # Build Data - Init Attrs
                     if __multiline_check(value) and indentation_on:
-                        value = __cleanformat(value, indent_level)
+                        value = _cleanformat(value, indent_level)
                         __build_data_output_init.write(f'{key} {__assignment_glyphs.norm} {value}\n')
                     elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):                
                         __build_data_output_init.write(__setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.norm, value=value))
@@ -1346,7 +1346,7 @@ def __dump_data(
                     
                     # Build Data - Class Attrs
                     if __multiline_check(value) and indentation_on:
-                        value = __cleanformat(value, indent_level)
+                        value = _cleanformat(value, indent_level)
                         __build_data_output_class.write(f'{key} {__assignment_glyphs.norm} {value}\n')
                     elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):                
                         __build_data_output_class.write(__setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.norm, value=value))
@@ -1420,10 +1420,10 @@ def __write_file_data(filename: str, data: _Any, write_mode: str, *, encoding: _
     try:
         # Write New File Mode
         if write_mode == 'w':
-            __dumpraw(filename, data, encoding=encoding)
+            _dumpraw(filename, data, encoding=encoding)
         # Append Append File Mode
         if write_mode == 'a':
-            __dumpraw(filename, data, append=True, encoding=encoding)        
+            _dumpraw(filename, data, append=True, encoding=encoding)        
         # Raise Exception if No Match
         if not write_mode in __write_mode_allowed_list:
             raise Dump(__err_msg_write_mode, f'\nFILE: "{filename}" \nDATA: {write_mode}')
