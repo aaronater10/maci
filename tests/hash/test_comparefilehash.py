@@ -1,11 +1,19 @@
 # comparefilehash - Tests
 from src import maci
+from os import remove
+import time
 
 test_file_path = './tests/test_files/hash/'
+file_delay_timer = 0.5
 
 
 ################################################################
 # TESTS
+
+# Hashes used to verfiy in tests
+SHA256 = "5dd4b652c5279c6e38c29aeb348c08e84004df82d1cbadf2ccc8cde3a56ed981"
+SHA256_U16 = "3d929c0dcbdbb9a3166be4e4d21d3069680a83c910bf69b4b814c9dc6608c031"
+SHA256_U32 = "0b810fbdd326b62836e3686fa308c67d1d88886bf5e718862691c880846919e5"
 
 # 1. Compare File Hash - Read a file and generate hash from it, then compare hash from stored hash
 def test1_compare_file_hash():
@@ -45,3 +53,40 @@ def test1_compare_file_hash():
     algo_option = 'md5'
     assert maci.comparefilehash(filepath_to_hash, filepath_to_cache_md5, algo_option) == True    
     assert isinstance(maci.comparefilehash(filepath_to_hash, filepath_to_cache_md5, algo_option), bool)
+
+
+# 2. Encoding - Test some common encoding types
+def test2_comparefilehash_encodings():
+    file_to_hash = '2_compare_hash_encoding.data'
+    file_to_cache = '2_compare_hash_encoding.cache'
+    filepath_to_hash = test_file_path + file_to_hash
+    filepath_to_cache = test_file_path + file_to_cache
+
+    # Remove Any Existing Cache Test File
+    try: remove(filepath_to_cache)
+    except: pass
+    time.sleep(file_delay_timer)
+
+    # Test - Using default hash algorithm SHA256
+    maci.createfilehash(filepath_to_hash, filepath_to_cache, encoding='utf-8')
+    assert maci.comparefilehash(filepath_to_hash, filepath_to_cache, encoding='utf-8')
+
+    maci.createfilehash(filepath_to_hash, filepath_to_cache, encoding='utf-16')
+    assert maci.comparefilehash(filepath_to_hash, filepath_to_cache, encoding='utf-16')
+
+    maci.createfilehash(filepath_to_hash, filepath_to_cache, encoding='utf-32')
+    assert maci.comparefilehash(filepath_to_hash, filepath_to_cache, encoding='utf-32')
+
+    maci.createfilehash(filepath_to_hash, filepath_to_cache, encoding='ascii')
+    assert maci.comparefilehash(filepath_to_hash, filepath_to_cache, encoding='ascii')
+
+    maci.createfilehash(filepath_to_hash, filepath_to_cache, encoding='iso-8859-1')
+    assert maci.comparefilehash(filepath_to_hash, filepath_to_cache, encoding='iso-8859-1')
+
+    maci.createfilehash(filepath_to_hash, filepath_to_cache, encoding='cp1252')
+    assert maci.comparefilehash(filepath_to_hash, filepath_to_cache, encoding='cp1252')
+
+    # Remove Cache Test File
+    time.sleep(file_delay_timer)
+    try: remove(filepath_to_cache)
+    except: pass

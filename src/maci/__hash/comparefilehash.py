@@ -41,6 +41,6 @@ def comparefilehash(file_to_hash: str, stored_hash_file: str, hash_algorithm: st
     if not hash_algorithm in ALGO_OPTIONS: raise CompareFileHash(_err_msg_hash, f'"{hash_algorithm}"')
 
     # Collect hash data, then return result
-    _hash_data = _createfilehash(file_to_hash, False, hash_algorithm)
+    _hash_data = _createfilehash(file_to_hash, False, hash_algorithm, encoding=encoding)
     _stored_hash_data = _load(stored_hash_file, encoding=encoding)
     return (_hash_data == _stored_hash_data.hash_data)

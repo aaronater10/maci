@@ -12,6 +12,8 @@ file_delay_timer = 0.5
 
 # Hashes used to verfiy in tests
 SHA256 = "5dd4b652c5279c6e38c29aeb348c08e84004df82d1cbadf2ccc8cde3a56ed981"
+SHA256_U16 = "3d929c0dcbdbb9a3166be4e4d21d3069680a83c910bf69b4b814c9dc6608c031"
+SHA256_U32 = "0b810fbdd326b62836e3686fa308c67d1d88886bf5e718862691c880846919e5"
 SHA512 = "5d087321d80436bb8710b524d42d266bfd52a6264d12733202b6e4d410faeef4c05e5c79f6f05ee05f1be6fffdda11fc906cfec37dadfbca4e093870e188bf7d"
 SHA384 = "440549e7a25995a2346bfe905c21941ae1302928833430ef06582613550dba364cb72db4470dd818b608998bd91c7737"
 SHA1 = "090496ae5a8bf96828fc9e1a3739a1246e617093"
@@ -89,3 +91,17 @@ def test2_create_hash_only():
     # Test md5 - generate hash of file and import to test value and type
     md5_returned = maci.createfilehash(filepath_to_hash, False, 'md5')
     assert (md5_returned == MD5) and (isinstance(md5_returned, str))
+
+
+# 3. Encoding - Test some common encoding types
+def test3_createfilehash_encodings():
+    file_to_hash = '3_file_hash_encoding.data'
+    filepath_to_hash = test_file_path + file_to_hash
+
+    # Using default hash algorithm SHA256
+    assert SHA256 == maci.createfilehash(filepath_to_hash, False, encoding='utf-8')
+    assert SHA256_U16 == maci.createfilehash(filepath_to_hash, False, encoding='utf-16')
+    assert SHA256_U32 == maci.createfilehash(filepath_to_hash, False, encoding='utf-32')
+    assert SHA256 == maci.createfilehash(filepath_to_hash, False, encoding='ascii')
+    assert SHA256 == maci.createfilehash(filepath_to_hash, False, encoding='iso-8859-1')
+    assert SHA256 == maci.createfilehash(filepath_to_hash, False, encoding='cp1252')

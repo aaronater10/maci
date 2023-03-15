@@ -52,7 +52,8 @@ def createfilehash(file_to_hash: str, file_to_store_hash: _Union[str,bool], hash
     if hash_algorithm == ALGO_OPTIONS[4]: _hash_type = _hashlib.md5() # md5
     
     # Read source file data and update hash
-    _readbytes = _loadraw(file_to_hash, byte_data=True)
+    _readbytes = _loadraw(file_to_hash)
+    _readbytes = _readbytes.encode() if encoding is None else _readbytes.encode(encoding=encoding)
     _hash_type.update(_readbytes)
     # Store hash to file
     _hash_type = _hash_type.hexdigest()

@@ -1,13 +1,13 @@
 # loadraw
 #########################################################################################################
 # Imports
-from typing import Union as __Union
+from typing import Union as _Union
 from os import path as __path
 from ..error import LoadRaw
 
 #########################################################################################################
 # Import raw data from file
-def loadraw(filename: str, *, byte_data: bool=False, encoding: __Union[str, None]=None) -> str:
+def loadraw(filename: str, *, byte_data: bool=False, encoding: _Union[str, None]=None) -> _Union[str, bytes]:
     """
     Imports any raw data from a file.
 
