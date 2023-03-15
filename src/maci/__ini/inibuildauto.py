@@ -1,25 +1,31 @@
 # inibuildauto
 #########################################################################################################
 # Imports
-from configparser import ConfigParser as __ConfigParser
-from configparser import ExtendedInterpolation as __ExtendedInterpolation
+from configparser import ConfigParser as _ConfigParser
+from configparser import ExtendedInterpolation as _ExtendedInterpolation
+from typing import Dict as _Dict
+from typing import Any as _Any
 from ..error import IniBuildAuto
 
 #########################################################################################################
 # Auto Build ini data
-def inibuildauto(data: dict) -> __ConfigParser:
+def inibuildauto(data: _Dict[str, _Dict[str, _Any]]) -> _ConfigParser:
     """
-    Auto converts python dict to ini data structure.
+    Auto converts dict to ini data structure
 
     Returns a ConfigParser obj with your data. Assign the output to var
 
-    Enter correctly structured python dict to convert to ini.
+    All sub-values are converted to strings naturally by the library. However, if your sub-value
+    contains a Nonetype, this function will also auto-convert to a string for you.
 
-    [Example Python dict]
+    Enter correctly structured dict to convert data
+
+    [Example dict structure]
 
     {
-        'section1': python_dict,
-        'section2': python_dict    
+        'section1': {'key1': 1},
+
+        'section2': {'key2': 2}   
     }
 
     This is using the native configparser library shipped with the python standard library. Using ConfigParser method
@@ -27,12 +33,15 @@ def inibuildauto(data: dict) -> __ConfigParser:
     visit: https://docs.python.org/3/library/configparser.html
     """
     # Auto Build INI data structure
-    __ini_data = __ConfigParser(interpolation=__ExtendedInterpolation())
+    __ini_data = _ConfigParser(interpolation=_ExtendedInterpolation())
 
     try:
         for section,dict_value in data.items():
-            bad_value = [v for _,v in dict_value.items()]
+            if None in dict_value.values():
+                for sub_key,sub_values in dict_value.items():
+                    if sub_values is None:
+                        dict_value[sub_key] = 'None'
             __ini_data[section] = dict_value
         return __ini_data
     except AttributeError as __err_msg: raise IniBuildAuto(f'{__err_msg} - Please send correct dict structure', f'\nDATA: {data}')
-    except TypeError as __err_msg: raise IniBuildAuto(__err_msg, f'\nDATA: {data} \nBAD_VALUE: {bad_value[0]}')
+    except TypeError as __err_msg: raise IniBuildAuto(__err_msg, f'\nDATA: {data}')
