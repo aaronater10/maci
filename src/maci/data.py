@@ -138,6 +138,27 @@ def _date_time_parse_check(value: str) -> _Union[str, None]:
 #########################################################################################################
 # MaciDataObj Constructor
 class _MaciDataObjConstructor:
+    # Protect Internal Attrs and Methods from Re-Assignment Listed Names
+    __internal_check_lists_setattr = {
+        '_MaciDataObjConstructor__assignment_hard_locked_attribs',
+        '_MaciDataObjConstructor__assignment_locked_attribs',
+        '_MaciDataObjConstructor__assigned_src_reference_attr_map',
+        '_MaciDataObjConstructor__assigned_dst_reference_attr_map',
+        '_MaciDataObjConstructor__reference_deletion_check',
+        'hard_lock_attr',
+        'lock_attr',
+        'unlock_attr',
+        'reference_attr'
+    }
+    # Protect Internal List/Reference Attrs from Deletion Listed Names
+    __internal_check_lists_delattr = {
+            '_MaciDataObjConstructor__assignment_hard_locked_attribs',
+            '_MaciDataObjConstructor__assignment_locked_attribs',
+            '_MaciDataObjConstructor__assigned_src_reference_attr_map',
+            '_MaciDataObjConstructor__assigned_dst_reference_attr_map'
+    }
+
+    # Main Constructor
     def __init__(
         self,
         filename: str,
@@ -456,18 +477,7 @@ class _MaciDataObjConstructor:
             self.__reference_deletion_check(_name, _src_ref_list=True)
 
         # Protect Internal List/Reference Attrs and Methods from Re-Assignment
-        _internal_check_lists = (
-            '_MaciDataObjConstructor__assignment_hard_locked_attribs',
-            '_MaciDataObjConstructor__assignment_locked_attribs',
-            '_MaciDataObjConstructor__assigned_src_reference_attr_map',
-            '_MaciDataObjConstructor__assigned_dst_reference_attr_map',
-            '_MaciDataObjConstructor__reference_deletion_check',
-            'hard_lock_attr',
-            'lock_attr',
-            'unlock_attr',
-            'reference_attr'
-        )
-        if hasattr(self, _name) and (_name in _internal_check_lists):
+        if hasattr(self, _name) and (_name in _MaciDataObjConstructor.__internal_check_lists_setattr):
             raise GeneralError('Cannot re-assign internal MaciDataObj attribute or method name!', f'\nATTR_NAME: "{_name}"')
 
 
@@ -527,13 +537,7 @@ class _MaciDataObjConstructor:
     
     def __delattr__(self, _name: str) -> None:
         # Protect Internal List/Reference Attrs from Deletion
-        _internal_check_lists = (
-            '_MaciDataObjConstructor__assignment_hard_locked_attribs',
-            '_MaciDataObjConstructor__assignment_locked_attribs',
-            '_MaciDataObjConstructor__assigned_src_reference_attr_map',
-            '_MaciDataObjConstructor__assigned_dst_reference_attr_map'
-        )
-        if _name in _internal_check_lists:
+        if _name in _MaciDataObjConstructor.__internal_check_lists_delattr:
             raise GeneralError('Cannot delete internal MaciDataObj attribute name!', f'\nATTR_NAME: "{_name}"')
 
         # Protect Hard Locked Attr from Deletion
