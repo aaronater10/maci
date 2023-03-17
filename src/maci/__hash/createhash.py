@@ -32,6 +32,7 @@ def createhash(data_to_hash: _Union[str, bytes, int, _List[int], _Tuple[int], _S
     # Error checks
     err_msg_data = f"Only str | bytes | int | List[int] | Tuple[int] | Set[int] | range | bool is allowed for 'data_to_hash'"
     err_msg_str_hash = f"Only str is allowed for 'hash_algorithm'"
+    err_msg_str_encoding = f"Only str is allowed for 'encoding'"
     err_msg_hash = f"Invalid hash option chosen for 'hash_algorithm'. Valid options: 'sha256', 'sha512', 'sha384', 'sha1', 'md5'"
 
     # Check Types
@@ -39,6 +40,7 @@ def createhash(data_to_hash: _Union[str, bytes, int, _List[int], _Tuple[int], _S
     valid_seq_of_int_types = (list, tuple, set, range)
 
     if not isinstance(data_to_hash, valid_types_to_hash): raise CreateHash(err_msg_data, f'\nGot: {repr(data_to_hash)}')
+    if not isinstance(encoding, str): raise CreateHash(err_msg_str_encoding, f'\nGot: {repr(encoding)}')
 
     if isinstance(data_to_hash, valid_seq_of_int_types):
         if not all(isinstance(item, int) for item in data_to_hash):
@@ -55,7 +57,10 @@ def createhash(data_to_hash: _Union[str, bytes, int, _List[int], _Tuple[int], _S
     if hash_algorithm == ALGO_OPTIONS[4]: hash_type = _hashlib.md5() # md5
 
     # Check and Convert data to bytes and update hash
-    if isinstance(data_to_hash, str): byte_data = data_to_hash.encode(encoding=encoding)
+    try: 
+        if isinstance(data_to_hash, str): byte_data = data_to_hash.encode(encoding=encoding)
+    except LookupError: raise CreateHash(err_msg_str_encoding, f'\nGot: {repr(encoding)}')
+
     if isinstance(data_to_hash, bytes): byte_data = data_to_hash
     if isinstance(data_to_hash, int): byte_data = bytes(data_to_hash) # catches bool as well
     if isinstance(data_to_hash, valid_seq_of_int_types): byte_data = bytes(data_to_hash)
