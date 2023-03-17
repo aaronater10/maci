@@ -32,8 +32,8 @@ def createhash(data_to_hash: _Union[str, bytes, int, _List[int], _Tuple[int], _S
     # Error checks
     err_msg_data = f"Only str | bytes | int | List[int] | Tuple[int] | Set[int] | range | bool is allowed for 'data_to_hash'"
     err_msg_str_hash = f"Only str is allowed for 'hash_algorithm'"
-    err_msg_str_encoding = f"Only str is allowed for 'encoding'"
     err_msg_hash = f"Invalid hash option chosen for 'hash_algorithm'. Valid options: 'sha256', 'sha512', 'sha384', 'sha1', 'md5'"
+    err_msg_str_encoding = f"Only str or valid option is allowed for 'encoding'"
 
     # Check Types
     valid_types_to_hash = (str, bytes, int, list, tuple, set, range, bool)

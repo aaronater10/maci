@@ -4,7 +4,7 @@
 from typing import Union as _Union
 from .createfilehash import createfilehash as _createfilehash
 from ..__native.load import load as _load
-from ..error import CompareFileHash
+from ..error import CompareFileHash, CreateFileHash, Load
 
 #########################################################################################################
 # Compare file hashes
@@ -34,13 +34,19 @@ def comparefilehash(file_to_hash: str, stored_hash_file: str, hash_algorithm: st
     _err_msg_hash_file = f"Only str is allowed for stored_hash_file"
     _err_msg_str_hash = f"Only str is allowed for hash_algorithm"
     _err_msg_hash = f"Invalid or no hash option chosen for hash_algorithm"
+    err_msg_str_encoding = f"Only str|None or valid option is allowed for 'encoding'"
 
     if not isinstance(file_to_hash, str): raise CompareFileHash(_err_msg_str_file_src, f'"{file_to_hash}"')
     if not isinstance(stored_hash_file, str): raise CompareFileHash(_err_msg_hash_file, f'"{stored_hash_file}"')
     if not isinstance(hash_algorithm, str): raise CompareFileHash(_err_msg_str_hash, f'"{hash_algorithm}"')
     if not hash_algorithm in ALGO_OPTIONS: raise CompareFileHash(_err_msg_hash, f'"{hash_algorithm}"')
+    if not isinstance(encoding, (str, type(None))): raise CompareFileHash(err_msg_str_encoding, f'\nGot: {repr(encoding)}')
 
     # Collect hash data, then return result
-    _hash_data = _createfilehash(file_to_hash, False, hash_algorithm, encoding=encoding)
-    _stored_hash_data = _load(stored_hash_file, encoding=encoding)
+    try: _hash_data = _createfilehash(file_to_hash, None, hash_algorithm, encoding=encoding)
+    except CreateFileHash as err_msg: raise CompareFileHash(err_msg)
+
+    try: _stored_hash_data = _load(stored_hash_file, encoding=encoding)
+    except Load as err_msg: raise CompareFileHash(err_msg)
+
     return (_hash_data == _stored_hash_data.hash_data)

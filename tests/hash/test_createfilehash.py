@@ -73,23 +73,23 @@ def test2_create_hash_only():
     filepath_to_hash = test_file_path + file_to_hash
 
     # Test sha256 - generate hash of file and import to test value and type
-    sha256_returned = maci.createfilehash(filepath_to_hash, False)
+    sha256_returned = maci.createfilehash(filepath_to_hash, None)
     assert (sha256_returned == SHA256) and (isinstance(sha256_returned, str))
 
     # Test sha512 - generate hash of file and import to test value and type
-    sha512_returned = maci.createfilehash(filepath_to_hash, False, 'sha512')
+    sha512_returned = maci.createfilehash(filepath_to_hash, None, 'sha512')
     assert (sha512_returned == SHA512) and (isinstance(sha512_returned, str))
 
     # Test sha384 - generate hash of file and import to test value and type
-    sha384_returned = maci.createfilehash(filepath_to_hash, False, 'sha384')
+    sha384_returned = maci.createfilehash(filepath_to_hash, None, 'sha384')
     assert (sha384_returned == SHA384) and (isinstance(sha384_returned, str))
 
     # Test sha1 - generate hash of file and import to test value and type
-    sha1_returned = maci.createfilehash(filepath_to_hash, False, 'sha1')
+    sha1_returned = maci.createfilehash(filepath_to_hash, None, 'sha1')
     assert (sha1_returned == SHA1) and (isinstance(sha1_returned, str))
 
     # Test md5 - generate hash of file and import to test value and type
-    md5_returned = maci.createfilehash(filepath_to_hash, False, 'md5')
+    md5_returned = maci.createfilehash(filepath_to_hash, None, 'md5')
     assert (md5_returned == MD5) and (isinstance(md5_returned, str))
 
 
@@ -99,9 +99,9 @@ def test3_createfilehash_encodings():
     filepath_to_hash = test_file_path + file_to_hash
 
     # Using default hash algorithm SHA256
-    assert SHA256 == maci.createfilehash(filepath_to_hash, False, encoding='utf-8')
-    assert SHA256_U16 == maci.createfilehash(filepath_to_hash, False, encoding='utf-16')
-    assert SHA256_U32 == maci.createfilehash(filepath_to_hash, False, encoding='utf-32')
-    assert SHA256 == maci.createfilehash(filepath_to_hash, False, encoding='ascii')
-    assert SHA256 == maci.createfilehash(filepath_to_hash, False, encoding='iso-8859-1')
-    assert SHA256 == maci.createfilehash(filepath_to_hash, False, encoding='cp1252')
+    assert SHA256 == maci.createfilehash(filepath_to_hash, None, encoding='utf-8')
+    assert SHA256_U16 == maci.createfilehash(filepath_to_hash, None, encoding='utf-16')
+    assert SHA256_U32 == maci.createfilehash(filepath_to_hash, None, encoding='utf-32')
+    assert SHA256 == maci.createfilehash(filepath_to_hash, None, encoding='ascii')
+    assert SHA256 == maci.createfilehash(filepath_to_hash, None, encoding='iso-8859-1')
+    assert SHA256 == maci.createfilehash(filepath_to_hash, None, encoding='cp1252')
