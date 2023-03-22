@@ -18,7 +18,7 @@ def load(filename: str, *, attr_name_dedup: bool=True, encoding: __Union[str, No
 
     Enter file location as str to import.
 
-    Accepted data types: str, int, float, bool, list, dict, tuple, set, nonetype, bytes
+    Accepted data types: str, int, float, bool, list, dict, tuple, set, nonetype, bytes, datetime
 
     Returns None if file empty
 

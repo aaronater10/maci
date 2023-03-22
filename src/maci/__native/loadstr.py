@@ -14,7 +14,7 @@ def loadstr(py_str_data: str, *, attr_name_dedup: bool=True) -> 'MaciDataObj':
 
     Enter python data string as str to import.
 
-    Accepted data types: str, int, float, bool, list, dict, tuple, set, nonetype, bytes
+    Accepted data types: str, int, float, bool, list, dict, tuple, set, nonetype, bytes, datetime
 
     Returns None if empty
 
