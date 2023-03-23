@@ -24,11 +24,20 @@ def iniload(filename: str, *, encoding: __Union[str, None]=None) -> __ConfigPars
     with ExtendedInterpolation enabled by default. For more information on the configparser library, 
     visit: https://docs.python.org/3/library/configparser.html
     """
+    # Error Checks
+    err_msg_file_type = "Only str is allowed for 'filename'"
+    err_msg_type_encoding = "Only str|None or valid option is allowed for 'encoding'"
+
+    if not isinstance(filename, str): raise IniLoad(err_msg_file_type, f'\nGot: {repr(filename)}')
+    if not isinstance(encoding, (str, type(None))): raise IniLoad(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
+
+    # Load file data
     try:
         with open(filename, 'r', encoding=encoding) as f: pass
-    except TypeError as __err_msg: raise IniLoad(__err_msg, f'\nFILE: "{filename}"')
-    except ValueError as __err_msg: raise IniLoad(__err_msg, f'\nFILE: "{filename}"')
-    except FileNotFoundError as __err_msg: raise IniLoad(__err_msg, f'\nFILE: "{filename}"')
+    except TypeError as _err_msg: raise IniLoad(_err_msg, f'\nFILE: "{filename}"')
+    except ValueError as _err_msg: raise IniLoad(_err_msg, f'\nFILE: "{filename}"')
+    except FileNotFoundError as _err_msg: raise IniLoad(_err_msg, f'\nFILE: "{filename}"')
+    except LookupError: raise IniLoad(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
 
     __parser = __ConfigParser(interpolation=__ExtendedInterpolation())
     __parser.read(filename)

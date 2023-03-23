@@ -1,35 +1,35 @@
 # inidump
 #########################################################################################################
 # Imports
-from configparser import ConfigParser as __ConfigParser
-from typing import NewType as __NewType
-from typing import Union as __Union
+from configparser import ConfigParser as _ConfigParser
+from typing import Union as _Union
 from ..error import IniDump
 
 #########################################################################################################
 # Export ini file
-
-# Hinting reference name for "ini_data" to denote ini data needs to be dumped
-IniData = __NewType('ini_data', __ConfigParser)
-
-def inidump(filename: str, data: IniData, *, append: bool=False, encoding: __Union[str, None]=None) -> None:
+def inidump(filename: str, ini_data: _ConfigParser, *, append: bool=False, encoding: _Union[str, None]=None) -> None:
     """
     Exports a new file from a ini data (ConfigParser) obj
-    
+
     Enter new filename as str. Pass ini data for output to file
     
     [Example Use]
 
-    inidump('path/to/filename.ini', data)
+    inidump('path/to/filename.ini', ini_data)
 
     This is using the native configparser library shipped with the python standard library. Using ConfigParser method.
     For more information on the configparser library, visit: https://docs.python.org/3/library/configparser.html
     """
-    __err_msg_parser = f"Invalid data to export, type, or nothing specified"
-    __err_msg_type_str_append = "Only bool is allowed for 'append'"
+    # Error Checks
+    err_msg_file_type = "Only str is allowed for 'filename'"
+    err_msg_parser = "Only ConfigParser is allowed for 'ini_data'"
+    err_msg_type_append = "Only bool is allowed for 'append'"
+    err_msg_type_encoding = "Only str|None or valid option is allowed for 'encoding'"
 
-    if not isinstance(data, __ConfigParser): raise IniDump(__err_msg_parser, f'\nFILE: "{filename}" \nDATA: {data}')
-    if not isinstance(append, bool): raise IniDump(__err_msg_type_str_append, f'\nFILE: "{filename}" \nDATA: {append}')
+    if not isinstance(filename, str): raise IniDump(err_msg_file_type, f'\nGot: {repr(filename)}')
+    if not isinstance(ini_data, _ConfigParser): raise IniDump(err_msg_parser, f'\nGot: {repr(ini_data)}')
+    if not isinstance(append, bool): raise IniDump(err_msg_type_append, f'\nGot: {repr(append)}')
+    if not isinstance(encoding, (str, type(None))): raise IniDump(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
 
     # Set Write Mode: 'a' = append, 'w' = write
     write_mode = 'a' if append else 'w'
@@ -37,7 +37,8 @@ def inidump(filename: str, data: IniData, *, append: bool=False, encoding: __Uni
     # Write Ini Data
     try:
         with open(filename, write_mode, encoding=encoding) as f:
-            data.write(f)
-    except TypeError as __err_msg: raise IniDump(__err_msg, f'\nFILE: "{filename}" \nDATA: {data}')
-    except ValueError as __err_msg: raise IniDump(__err_msg, f'\nFILE: "{filename}" \nDATA: {data}')
-    except FileNotFoundError as __err_msg: raise IniDump(__err_msg, f'\nFILE: "{filename}"')
+            ini_data.write(f)
+    except TypeError as _err_msg: raise IniDump(_err_msg, f'\nFILE: "{filename}" \nDATA: {ini_data}')
+    except ValueError as _err_msg: raise IniDump(_err_msg, f'\nFILE: "{filename}" \nDATA: {ini_data}')
+    except FileNotFoundError as _err_msg: raise IniDump(_err_msg, f'\nFILE: "{filename}"')
+    except LookupError: raise IniDump(err_msg_type_encoding, f'\nGot: {repr(encoding)}')

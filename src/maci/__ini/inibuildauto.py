@@ -32,6 +32,13 @@ def inibuildauto(data: _Dict[str, _Dict[str, _Any]]) -> _ConfigParser:
     with ExtendedInterpolation enabled by default. For more information on the configparser library, 
     visit: https://docs.python.org/3/library/configparser.html
     """
+    # Error Checks
+    err_msg_dict_type = f"Only dict is allowed for 'data'"
+    err_msg_dict_struct = "Please send correct dict structure"
+
+    if not isinstance(data, dict): raise IniBuildAuto(err_msg_dict_type, f'\nGOT: {repr(data)}')
+
+
     # Auto Build INI data structure
     __ini_data = _ConfigParser(interpolation=_ExtendedInterpolation())
 
@@ -43,5 +50,5 @@ def inibuildauto(data: _Dict[str, _Dict[str, _Any]]) -> _ConfigParser:
                         dict_value[sub_key] = 'None'
             __ini_data[section] = dict_value
         return __ini_data
-    except AttributeError as __err_msg: raise IniBuildAuto(f'{__err_msg} - Please send correct dict structure', f'\nDATA: {data}')
-    except TypeError as __err_msg: raise IniBuildAuto(__err_msg, f'\nDATA: {data}')
+    except AttributeError as __err_msg: raise IniBuildAuto(f'{__err_msg} - {err_msg_dict_struct}', f'\nGOT: {repr(data)}')
+    except TypeError as __err_msg: raise IniBuildAuto(__err_msg, f'\nGOT: {repr(data)}')
