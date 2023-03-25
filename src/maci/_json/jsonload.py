@@ -22,6 +22,14 @@ def jsonload(filename: str, *, encoding: Union[str, None]=None) -> Union[list, d
     This is using the native json library shipped with the python standard library. For more
     information on the json library, visit: https://docs.python.org/3/library/json.html
     """
+    # Error Checks
+    err_msg_file_type = "Only str is allowed for 'filename'"
+    err_msg_type_encoding = "Only str|None or valid option is allowed for 'encoding'"
+
+    if not isinstance(filename, str): raise JsonLoad(err_msg_file_type, f'\nGot: {repr(filename)}')
+    if not isinstance(encoding, (str, type(None))): raise JsonLoad(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
+
+
     # Import json file
     try:
         with open(filename, 'r', encoding=encoding) as f:
@@ -30,3 +38,4 @@ def jsonload(filename: str, *, encoding: Union[str, None]=None) -> Union[list, d
     except OSError as __err_msg: raise JsonLoad(__err_msg, f'\nFILE: "{filename}"')
     except TypeError as __err_msg: raise JsonLoad(__err_msg, f'\nFILE: "{filename}"')
     except __json.decoder.JSONDecodeError as __err_msg: raise JsonLoad(__err_msg, f'\nFILE: "{filename}"')
+    except LookupError: raise JsonLoad(err_msg_type_encoding, f'\nGot: {repr(encoding)}')

@@ -1,6 +1,6 @@
 # exceptions: ini - Tests
 from src import maci
-from os import remove, path
+from os import remove
 import time
 from configparser import ConfigParser
 import pytest
