@@ -24,51 +24,51 @@ from . import error
 from . import hint
 
 # Native Lib
-from .__native.load import load
-from .__native.loadstr import loadstr
-from .__native.loadraw import loadraw
-from .__native.loadattrs import loadattrs
-from .__native.dump import dump
-from .__native.dumpstr import dumpstr
-from .__native.dumpraw import dumpraw
-from .__native.cleanformat import cleanformat
-from .__native.build import build
+from ._native.load import load
+from ._native.loadstr import loadstr
+from ._native.loadraw import loadraw
+from ._native.loadattrs import loadattrs
+from ._native.dump import dump
+from ._native.dumpstr import dumpstr
+from ._native.dumpraw import dumpraw
+from ._native.cleanformat import cleanformat
+from ._native.build import build
 
 # Hash Lib
-from .__hash.createfilehash import createfilehash
-from .__hash.comparefilehash import comparefilehash
-from .__hash.createhash import createhash
+from ._hash.createfilehash import createfilehash
+from ._hash.comparefilehash import comparefilehash
+from ._hash.createhash import createhash
 
 # JSON Lib
-from .__json.jsonload import jsonload
-from .__json.jsonloadstr import jsonloadstr
-from .__json.jsondump import jsondump
-from .__json.jsondumpstr import jsondumpstr
+from ._json.jsonload import jsonload
+from ._json.jsonloadstr import jsonloadstr
+from ._json.jsondump import jsondump
+from ._json.jsondumpstr import jsondumpstr
 
 # YAML Lib
-from .__yaml.yamlload import yamlload
-from .__yaml.yamlloadstr import yamlloadstr
-from .__yaml.yamldump import yamldump
-from .__yaml.yamldumpstr import yamldumpstr
+from ._yaml.yamlload import yamlload
+from ._yaml.yamlloadstr import yamlloadstr
+from ._yaml.yamldump import yamldump
+from ._yaml.yamldumpstr import yamldumpstr
 
 # TOML Lib
-from .__toml.tomlload import tomlload
-from .__toml.tomlloadstr import tomlloadstr
-from .__toml.tomldump import tomldump
-from .__toml.tomldumpstr import tomldumpstr
+from ._toml.tomlload import tomlload
+from ._toml.tomlloadstr import tomlloadstr
+from ._toml.tomldump import tomldump
+from ._toml.tomldumpstr import tomldumpstr
 
 # INI Lib
-from .__ini.iniload import iniload
-from .__ini.inidump import inidump
-from .__ini.inibuildauto import inibuildauto
-from .__ini.inibuildmanual import inibuildmanual
+from ._ini.iniload import iniload
+from ._ini.inidump import inidump
+from ._ini.inibuildauto import inibuildauto
+from ._ini.inibuildmanual import inibuildmanual
 
 # XML Lib
-from .__xml.xmlload import xmlload
-from .__xml.xmlloadstr import xmlloadstr
-from .__xml.xmldump import xmldump
-from .__xml.xmldumpstr import xmldumpstr
-from .__xml.xmlbuildmanual import xmlbuildmanual
+from ._xml.xmlload import xmlload
+from ._xml.xmlloadstr import xmlloadstr
+from ._xml.xmldump import xmldump
+from ._xml.xmldumpstr import xmldumpstr
+from ._xml.xmlbuildmanual import xmlbuildmanual
 
 
 # Name compatibility aliases/deprecation from ported library
