@@ -1,14 +1,14 @@
 # iniload
 #########################################################################################################
 # Imports
-from typing import Union as __Union
-from configparser import ConfigParser as __ConfigParser
-from configparser import ExtendedInterpolation as __ExtendedInterpolation
+from typing import Union as _Union
+from configparser import ConfigParser as _ConfigParser
+from configparser import ExtendedInterpolation as _ExtendedInterpolation
 from ..error import IniLoad
 
 #########################################################################################################
 # Import ini file
-def iniload(filename: str, *, encoding: __Union[str, None]=None) -> __ConfigParser:
+def iniload(filename: str, *, encoding: _Union[str, None]=None) -> _ConfigParser:
     """
     Imports ini data from a file.
 
@@ -33,12 +33,12 @@ def iniload(filename: str, *, encoding: __Union[str, None]=None) -> __ConfigPars
 
     # Load file data
     try:
-        with open(filename, 'r', encoding=encoding) as f: pass
+        with open(filename, 'r', encoding=encoding): pass
     except TypeError as _err_msg: raise IniLoad(_err_msg, f'\nFILE: "{filename}"')
     except ValueError as _err_msg: raise IniLoad(_err_msg, f'\nFILE: "{filename}"')
     except FileNotFoundError as _err_msg: raise IniLoad(_err_msg, f'\nFILE: "{filename}"')
     except LookupError: raise IniLoad(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
 
-    __parser = __ConfigParser(interpolation=__ExtendedInterpolation())
-    __parser.read(filename)
-    return __parser
+    _parser = _ConfigParser(interpolation=_ExtendedInterpolation())
+    _parser.read(filename, encoding=encoding)
+    return _parser

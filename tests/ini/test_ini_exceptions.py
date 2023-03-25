@@ -14,7 +14,7 @@ file_delay_timer = 0.5
 
 ### inibuildauto ###
 
-# 1. Ini Build Auto- Type Checks
+# 1. Ini Build Auto - Type Checks
 def test1_exceptions_inibuildauto_types():
     with pytest.raises(maci.error.IniBuildAuto):
         maci.inibuildauto(1.0)

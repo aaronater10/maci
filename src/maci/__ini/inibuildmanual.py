@@ -1,12 +1,12 @@
 # inibuildmanual
 #########################################################################################################
 # Imports
-from configparser import ConfigParser as __ConfigParser
-from configparser import ExtendedInterpolation as __ExtendedInterpolation
+from configparser import ConfigParser as _ConfigParser
+from configparser import ExtendedInterpolation as _ExtendedInterpolation
 
 #########################################################################################################
 # Build manual ini data
-def inibuildmanual() -> __ConfigParser:
+def inibuildmanual() -> _ConfigParser:
     """    
     Returns an empty ConfigParser obj to manually build ini data
     
@@ -16,4 +16,4 @@ def inibuildmanual() -> __ConfigParser:
     with ExtendedInterpolation enabled by default. For more information on the configparser library, 
     visit: https://docs.python.org/3/library/configparser.html
     """
-    return __ConfigParser(interpolation=__ExtendedInterpolation())
+    return _ConfigParser(interpolation=_ExtendedInterpolation())

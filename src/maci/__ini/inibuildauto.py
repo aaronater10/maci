@@ -45,8 +45,8 @@ def inibuildauto(data: _Dict[str, _Dict[str, _Any]]) -> _ConfigParser:
     try:
         for section,dict_value in data.items():
             if None in dict_value.values():
-                for sub_key,sub_values in dict_value.items():
-                    if sub_values is None:
+                for sub_key,sub_value in dict_value.items():
+                    if sub_value is None:
                         dict_value[sub_key] = 'None'
             __ini_data[section] = dict_value
         return __ini_data
