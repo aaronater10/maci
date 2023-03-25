@@ -2,7 +2,7 @@
 #########################################################################################################
 # Imports
 from typing import Union as __Union
-from ..__native.dumpraw import dumpraw
+from .._native.dumpraw import dumpraw
 from .xmldumpstr import xmldumpstr
 import xml.etree.ElementTree as __xml_etree
 from ..error import XmlDump

@@ -20,8 +20,8 @@ from .error import Load, GeneralError, Hint
 # Dump Function
 from io import StringIO as _StringIO
 from typing import NewType as _NewType
-from .__native.dumpraw import dumpraw as _dumpraw
-from .__native.cleanformat import cleanformat as _cleanformat
+from ._native.dumpraw import dumpraw as _dumpraw
+from ._native.cleanformat import cleanformat as _cleanformat
 from .error import Dump, DumpRaw, DumpStr
 
 #########################################################################################################

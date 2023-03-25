@@ -3,7 +3,7 @@
 # Imports
 import json as __json
 from ..error import JsonDump
-from ..__native.dumpraw import dumpraw as _dumpraw
+from .._native.dumpraw import dumpraw as _dumpraw
 from typing import Union
 
 #########################################################################################################

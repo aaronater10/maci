@@ -1,8 +1,8 @@
 # createfilehash
 #########################################################################################################
 # Imports
-from ..__native.loadraw import loadraw as _loadraw
-from ..__native.dumpraw import dumpraw as _dumpraw
+from .._native.loadraw import loadraw as _loadraw
+from .._native.dumpraw import dumpraw as _dumpraw
 from typing import Union as _Union
 import hashlib as _hashlib
 from ..error import CreateFileHash, LoadRaw, DumpRaw

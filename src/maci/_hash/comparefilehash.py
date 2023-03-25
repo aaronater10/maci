@@ -3,7 +3,7 @@
 # Imports
 from typing import Union as _Union
 from .createfilehash import createfilehash as _createfilehash
-from ..__native.load import load as _load
+from .._native.load import load as _load
 from ..error import CompareFileHash, CreateFileHash, Load
 
 #########################################################################################################

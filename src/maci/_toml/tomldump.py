@@ -3,7 +3,7 @@
 # Imports
 import tomli_w as _tomli_w
 from ..error import TomlDump
-from ..__native.dumpraw import dumpraw as _dumpraw
+from .._native.dumpraw import dumpraw as _dumpraw
 from typing import Dict as _Dict
 from typing import Any as _Any
 
