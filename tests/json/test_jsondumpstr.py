@@ -4,7 +4,7 @@ from os import remove, path
 import time
 
 test_file_path = './tests/test_files/json/'
-file_delay_timer = 0.5
+file_delay_timer = 0.25
 
 
 ################################################################

@@ -4,7 +4,7 @@ from os import path, remove
 import time
 
 test_file_path = './tests/test_files/native/cleanformat_files/'
-file_delay_timer = 0.5
+file_delay_timer = 0.25
 
 
 ################################################################

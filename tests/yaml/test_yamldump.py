@@ -4,7 +4,7 @@ from os import remove, path
 import time
 
 test_file_path = './tests/test_files/yaml/'
-file_delay_timer = 0.5
+file_delay_timer = 0.25
 py_dict = {
     'k1': 10, 
     'k2': "data", 

@@ -5,7 +5,7 @@ import time
 import unittest
 
 test_file_path = './tests/test_files/native/dump_files/'
-file_delay_timer = 0.5
+file_delay_timer = 0.25
 
 ################################################################
 # TESTS

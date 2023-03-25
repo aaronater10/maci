@@ -5,7 +5,7 @@ import time
 import xml.etree.ElementTree as __xml_etree
 
 test_file_path = './tests/test_files/xml/'
-file_delay_timer = 0.5
+file_delay_timer = 0.25
 
 
 ################################################################
