@@ -51,6 +51,24 @@ def test2_exceptions_jsondump_opts_data():
     except: pass
 
 
+### jsondumpstr ###
+
+# 1. Json DumpStr - Type Checks
+def test1_exceptions_jsondumpstr_types():
+    # Tests
+    with pytest.raises(maci.error.JsonDumpStr):
+        maci.jsondumpstr(data={1,2,3})
+    with pytest.raises(maci.error.JsonDumpStr):
+        maci.jsondumpstr(data=[], indent_level='')
+
+
+# 2. Json DumpStr - Unsupported Options or Data
+def test2_exceptions_jsondumpstr_opts_data():
+    # Tests
+    with pytest.raises(maci.error.JsonDumpStr):
+        maci.jsondumpstr(data={'k': {1,2,3}})
+
+
 ### jsonload ###
 
 # 1. Json Load - Type Checks
@@ -71,3 +89,19 @@ def test2_exceptions_jsonload_opts_data():
         maci.jsonload(filename='')
     with pytest.raises(maci.error.JsonLoad):
         maci.jsonload(filename=filepath, encoding='')
+
+
+### jsonloadstr ###
+
+# 1. Json Load Str - Type Checks
+def test1_exceptions_jsonloadstr_types():
+    # Tests
+    with pytest.raises(maci.error.JsonLoadStr):
+        maci.jsonloadstr(json_str_data=1.0)
+
+
+# 2. Json Load Str - Unsupported Options or Data
+def test2_exceptions_jsonloadstr_opts_data():
+    # Tests
+    with pytest.raises(maci.error.JsonLoadStr):
+        maci.jsonloadstr(json_str_data='{"k": {1,2,3}}')

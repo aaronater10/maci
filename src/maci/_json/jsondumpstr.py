@@ -7,7 +7,7 @@ from typing import Union
 
 #########################################################################################################
 # Export json str
-def jsondumpstr(data: Union[str, int, float, bool, list, dict, tuple, None], *, indent_level: int=4) -> str:
+def jsondumpstr(data: Union[dict, list, tuple, str, int, float, bool, None], *, indent_level: int=4) -> str:
     """
     Exports python data type to json string
 
@@ -19,8 +19,15 @@ def jsondumpstr(data: Union[str, int, float, bool, list, dict, tuple, None], *, 
 
     This is using the native json library shipped with the python standard library. For more
     information on the json library, visit: https://docs.python.org/3/library/json.html
-    
+
     """
+    # Error Checks
+    err_msg_type_data = "Only dict|list|tuple|str|int|float|bool|None is allowed for 'data'"
+    err_msg_type_indent = "Only int is allowed for 'indent_level'"
+
+    if not isinstance(data, (list, dict, tuple, str, int, float, bool, type(None))): raise JsonDumpStr(err_msg_type_data, f'\nGot: {repr(data)}')
+    if not isinstance(indent_level, int): raise JsonDumpStr(err_msg_type_indent, f'\nGot: {repr(indent_level)}')
+
     try:
         # Export dict data to json string
         return __json.dumps(data, indent=indent_level)
