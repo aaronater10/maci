@@ -26,7 +26,9 @@ class Hint(MaciError): pass
 
 # Native
 class Load(MaciError): pass
+class LoadDict(MaciError): pass
 class LoadStr(MaciError): pass
+class LoadStrDict(MaciError): pass
 class LoadRaw(MaciError): pass
 class LoadAttrs(MaciError): pass
 class Dump(MaciError): pass

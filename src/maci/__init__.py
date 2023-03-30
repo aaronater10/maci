@@ -25,7 +25,9 @@ from . import hint
 
 # Native Lib
 from ._native.load import load
+from ._native.loaddict import loaddict
 from ._native.loadstr import loadstr
+from ._native.loadstrdict import loadstrdict
 from ._native.loadraw import loadraw
 from ._native.loadattrs import loadattrs
 from ._native.dump import dump
