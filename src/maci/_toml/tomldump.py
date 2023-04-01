@@ -28,13 +28,15 @@ def tomldump(
     This is using the tomli-w library installed as a dependency from pypi.
     For more information on tomli-w, visit: https://pypi.org/project/tomli-w/
     """
-    __err_msg_type_str_data = "Only dict is allowed for 'data'"
-    __err_msg_type_str_append = "Only bool is allowed for 'append'"
-    __err_msg_type_str_mls = "Only bool is allowed for 'multi_line_str'"
+    err_msg_type_file = "Only str is allowed for 'filename'"
+    err_msg_type_data = "Only dict is allowed for 'data'"
+    err_msg_type_append = "Only bool is allowed for 'append'"
+    err_msg_type_mls = "Only bool is allowed for 'multi_line_str'"
 
-    if not isinstance(data, dict): raise TomlDump(__err_msg_type_str_data, f'\nFILE: "{filename}" \nDATA: {data}')
-    if not isinstance(append, bool): raise TomlDump(__err_msg_type_str_append, f'\nFILE: "{filename}" \nDATA: {append}')
-    if not isinstance(multi_line_str, bool): raise TomlDump(__err_msg_type_str_mls, f'\nFILE: "{filename}" \nDATA: {multi_line_str}')
+    if not isinstance(filename, str): raise TomlDump(err_msg_type_file, f'\nGot: {repr(filename)}')
+    if not isinstance(data, dict): raise TomlDump(err_msg_type_data, f'\nGot: {repr(data)}')
+    if not isinstance(append, bool): raise TomlDump(err_msg_type_append, f'\nGot: {repr(append)}')
+    if not isinstance(multi_line_str, bool): raise TomlDump(err_msg_type_mls, f'\nGot: {repr(multi_line_str)}')
 
     # Set Write Mode: 'a' = append, 'w' = write
     write_mode = 'ab' if append else 'wb'
@@ -44,6 +46,6 @@ def tomldump(
         with open(filename, write_mode) as f:
             _tomli_w.dump(data, f, multiline_strings=multi_line_str)
             if write_mode == 'ab': _dumpraw(filename, '', append=True)
-    except TypeError as __err_msg: raise TomlDump(__err_msg, f'\nFILE: "{filename}" \nDATA:{data}')
-    except ValueError as __err_msg: raise TomlDump(__err_msg, f'\nFILE: "{filename}" \nDATA:{data}')
+    except TypeError as __err_msg: raise TomlDump(__err_msg, f'\nFILE: "{filename}" \nGot: {repr(data)}')
+    except ValueError as __err_msg: raise TomlDump(__err_msg, f'\nFILE: "{filename}" \nGot: {repr(data)}')
     except FileNotFoundError as __err_msg: raise TomlDump(__err_msg, f'\nFILE: "{filename}"')
