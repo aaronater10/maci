@@ -49,77 +49,72 @@ def test1_tomldump_file():
 
 
 # 2. TOML Data Append - Appending toml data to toml file and test data
-# def test2_tomldump_append():
-#     filename = '2_append_file_data.toml'
-#     filepath = test_file_path + filename
-#     expected_toml = """\
-# {
-#     "key": "data"
-# }
-# {
-#     "key": "data"
-# }
-# {
-#     "key": "data"
-# }"""
-    
-#     # Remove Any Existing Test File
-#     try: remove(filepath)
-#     except: pass
-#     time.sleep(file_delay_timer)
+def test2_tomldump_append():
+    filename = '2_append_file_data.toml'
+    filepath = test_file_path + filename
+    expected_toml = {
+        's0': {'int_data': 1, 'bool_data': True},
+        's1': {'int_data': 1, 'bool_data': True},
+        's2': {'int_data': 1, 'bool_data': True}
+    }
 
-#     # Test not exist, create file by appending data, check if file exist, then test data
-#     assert not path.exists(filepath)
-#     append_times = 3
-#     toml_data = {'key': 'data'}
-#     for _ in range(append_times):
-#         maci.tomldump(filepath, toml_data, append=True)
+    # Remove Any Existing Test File
+    try: remove(filepath)
+    except: pass
+    time.sleep(file_delay_timer)
 
-#     assert path.exists(filepath)
+    # Test not exist, create file by appending data, check if file exist, then test data
+    assert not path.exists(filepath)
+    append_times = 3
+    for append_num in range(append_times):
+        dump_data = {f's{append_num}': {'int_data': 1, 'bool_data': True}}
+        maci.tomldump(filepath, dump_data, append=True)
 
-#     file_import = maci.loadraw(filepath)
+    assert path.exists(filepath)
+    file_import = maci.tomlload(filepath)
 
-#     # Test Section Data from File Load
-#     assert expected_toml == file_import
+    # Test Data from File Load
+    assert expected_toml == file_import
 
-#     # Remove Test File
-#     time.sleep(file_delay_timer)
-#     try: remove(filepath)
-#     except: pass
+    # Remove Test File
+    time.sleep(file_delay_timer)
+    try: remove(filepath)
+    except: pass
 
 
-# # 3. Encoding - Test some common encoding types
-# def test3_tomldump_and_tomlload_encodings():
-#     filename = '3_toml_encoding.toml'
-#     filepath = test_file_path + filename
-#     encodings_to_test = {
-#         'utf-8',
-#         'utf-16',
-#         'utf-32',
-#         'ascii',
-#         'iso-8859-1',
-#         'cp1252',
-#     }
+# 3. TOML Multi-String Data - Test Multiline String toml data from file
+def test3_tomldump_multi_str():
+    filename = '3_multiline_str_data.toml'
+    filepath = test_file_path + filename
+    expected_toml_data = {'data': "my\nmulti\nstring\n"}
+    expected_toml_str = '''\
+data = """
+my
+multi
+string
+"""
+'''
 
-#     # Remove Any Existing Test File
-#     try: remove(filepath)
-#     except: pass
-#     time.sleep(file_delay_timer)
-#     assert not path.exists(filepath)
+    # Remove Any Existing Test File
+    try: remove(filepath)
+    except: pass
+    time.sleep(file_delay_timer)
 
-#     # Setup Toml Data
-#     toml_data = {'key': 'data'}
+    # Test not exist, create file by appending data, check if file exist, then test data
+    assert not path.exists(filepath)
 
-#     # Test Dump and Load with Various Encodings
-#     for encoding in encodings_to_test:
-#         maci.tomldump(filepath, toml_data, encoding=encoding)
-#         time.sleep(file_delay_timer)
-#         file_import = maci.tomlload(filepath, encoding=encoding)
+    toml_data = {'data': "my\nmulti\nstring\n"}
+    maci.tomldump(filepath, toml_data, multi_line_str=True)
 
-#         # Test Section Data from File Load
-#         assert 'data' == file_import.get('key')
+    assert path.exists(filepath)
+    file_import_str = maci.loadraw(filepath)
+    file_import_data = maci.tomlload(filepath)
 
-#     # Remove Test File
-#     time.sleep(file_delay_timer)
-#     try: remove(filepath)
-#     except: pass
+    # Test Data from File Load
+    assert expected_toml_str == file_import_str
+    assert expected_toml_data['data'] == file_import_data['data']
+
+    # # Remove Test File
+    time.sleep(file_delay_timer)
+    try: remove(filepath)
+    except: pass
