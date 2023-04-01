@@ -2,32 +2,32 @@
 
 # lower
 d1 = "data"
-d2 +r= d1
-d3_1 +rl= d2
-d3_2 +lr= d2
-d4_1 +rh= d3_1
-d4_2 +hr= d3_1
+d2 +c= d1
+d3_1 +cl= d2
+d3_2 +lc= d2
+d4_1 +ch= d3_1
+d4_2 +hc= d3_1
 d5 +l= [1,2,3]
 d6 +h= {'k1':1, 'k2':2, 'k3':3}
 # UPPER
 d7 = {1,2,3}
-d8 +R= d7
-d9_1 +RL= d8
-d9_2 +LR= d8
-d10_1 +RH= d9_1
-d10_2 +HR= d9_1
+d8 +C= d7
+d9_1 +CL= d8
+d9_2 +LC= d8
+d10_1 +CH= d9_1
+d10_2 +HC= d9_1
 d11 +L= (1,2,3)
 d12 +H= b'data'
 # Mixed UPPER and lower
 d13 = "data"
-d14 +rL= d13
-d15 +Rl= d13
-d16 +Lr= d13
-d17 +lR= d13
-d18 +rH= d13
-d19 +Rh= d13
-d20 +Hr= d13
-d21 +hR= d13
+d14 +cL= d13
+d15 +Cl= d13
+d16 +Lc= d13
+d17 +lC= d13
+d18 +cH= d13
+d19 +Ch= d13
+d20 +Hc= d13
+d21 +hC= d13
 
 # Multi
 

@@ -478,7 +478,7 @@ class TestLoad(unittest.TestCase):
         assert file_import.d4_multi == {1,2,3}
 
 
-# 21. Ensure Supported Glyph Syntax is Loadable - Import Glyphs with varying types and data
+# 22. Ensure DateTime Syntax is Loadable - Import DateTime data with varying formats
     def test22_date_time_syntax(self):
         from datetime import datetime, date, time
         filename_no_spaces = '22_date_time_syntax.data'
