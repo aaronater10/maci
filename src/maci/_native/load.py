@@ -9,7 +9,7 @@ from ..error import Load
 
 #########################################################################################################
 # Import py Data from File
-def load(filename: str, *, attr_name_dedup: bool=True, encoding: __Union[str, None]=None) -> 'MaciDataObj':
+def load(filename: str, *, attr_name_dedup: bool=True, encoding: __Union[str, None]=None, ignore_maci_attr_check: bool=False) -> 'MaciDataObj':
     """
     Imports saved python data from any text file.
 
@@ -57,6 +57,7 @@ def load(filename: str, *, attr_name_dedup: bool=True, encoding: __Union[str, No
     return MaciDataObj(
                 filename,
                 _is_load_request=True,
+                _ignore_internal_maci_attr_check=ignore_maci_attr_check,
                 attr_name_dedup=attr_name_dedup,
                 encoding=encoding,
                 **__err_messages

@@ -139,16 +139,28 @@ def _date_time_parse_check(value: str) -> _Union[str, None]:
 # MaciDataObj Constructor
 class _MaciDataObjConstructor:
     # Protect Internal Attrs and Methods from Re-Assignment Listed Names
-    __internal_check_lists_setattr = {
+    __internal_check_lists_setattr_maci_names = {
         '_MaciDataObjConstructor__assignment_hard_locked_attribs',
         '_MaciDataObjConstructor__assignment_locked_attribs',
         '_MaciDataObjConstructor__assigned_src_reference_attr_map',
         '_MaciDataObjConstructor__assigned_dst_reference_attr_map',
         '_MaciDataObjConstructor__reference_deletion_check',
+    }
+    # Protect Internal Method Names from Re-Assignment Listed Names
+    __internal_check_lists_setattr_maci_methods = {
         'hard_lock_attr',
         'lock_attr',
         'unlock_attr',
-        'reference_attr'
+        'link_attr',
+        'unlink_attr',
+        'get_all_links',
+        'get_parent_links',
+        'get_child_links',
+        'get_parent_chains',
+        'get_locked_list',
+        'get_hard_locked_list',
+        'is_parent_link',
+        'is_child_link',
     }
     # Protect Internal List/Reference Attrs from Deletion Listed Names
     __internal_check_lists_delattr = {
@@ -174,6 +186,7 @@ class _MaciDataObjConstructor:
         _str_data: str='',
         _is_build_request: bool=False,
         _is_hint_request: bool=False,
+        _ignore_internal_maci_attr_check: bool=False,
     ) -> None:
         # Setup: Reference lists and maps should be first assignment
         self.__assignment_locked_attribs: _Set[str] = set()
@@ -181,6 +194,7 @@ class _MaciDataObjConstructor:
         self.__assigned_src_reference_attr_map: _Dict[str, str] = {}
         self.__assigned_dst_reference_attr_map: _Dict[str, _Dict[str, str]] = {}
         self.__attrib_name_dedup = attr_name_dedup
+        self.___ignore_internal_maci_attr_check = _ignore_internal_maci_attr_check
 
         # One Time Generated using UUID4 mode from UUID Library.
         # This helps authenticity of MaciDataObj Object for Development aid
@@ -477,8 +491,12 @@ class _MaciDataObjConstructor:
             self.__reference_deletion_check(_name, _src_ref_list=True)
 
         # Protect Internal List/Reference Attrs and Methods from Re-Assignment
-        if hasattr(self, _name) and (_name in _MaciDataObjConstructor.__internal_check_lists_setattr):
-            raise GeneralError('Cannot re-assign internal MaciDataObj attribute or method name!', f'\nATTR_NAME: "{_name}"')
+        if hasattr(self, _name) and (_name in _MaciDataObjConstructor.__internal_check_lists_setattr_maci_names):
+            raise GeneralError('Cannot re-assign internal MaciDataObj attribute name!', f'\nATTR_NAME: "{_name}"')
+        
+        # Protect Internal Method Names from Re-Assignment. Can be switched OFF by User
+        if hasattr(self, _name) and (_name in _MaciDataObjConstructor.__internal_check_lists_setattr_maci_methods) and (not self.___ignore_internal_maci_attr_check):
+            raise GeneralError('Cannot re-assign internal MaciDataObj method name!', f'\nMETHOD_NAME: "{_name}"')
 
 
         # Always Assign Value 
@@ -969,6 +987,7 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
         _is_load_request: bool=False,
         _is_build_request: bool=False,
         _is_hint_request: bool=False,
+        _ignore_internal_maci_attr_check: bool=False,
     )-> None:
         __constructor_locked = True
         __constructor_locked = False if (_is_load_request
@@ -1000,7 +1019,8 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
                 _is_str_parse_request=_is_str_parse_request,
                 _str_data=_str_data,
                 _is_build_request=_is_build_request,
-                _is_hint_request=_is_hint_request
+                _is_hint_request=_is_hint_request,
+                _ignore_internal_maci_attr_check=_ignore_internal_maci_attr_check,
             )
 
     def __repr__(self) -> str:
