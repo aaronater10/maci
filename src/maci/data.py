@@ -176,9 +176,9 @@ class _MaciDataObjConstructor:
         _is_hint_request: bool=False,
     ) -> None:
         # Setup: Reference lists and maps should be first assignment
-        self.__assignment_locked_attribs = []
-        self.__assignment_hard_locked_attribs = ()
-        self.__assigned_src_reference_attr_map = {}
+        self.__assignment_locked_attribs: _Set[str] = set()
+        self.__assignment_hard_locked_attribs: _Set[str] = set()
+        self.__assigned_src_reference_attr_map: _Dict[str, str] = {}
         self.__assigned_dst_reference_attr_map: _Dict[str, _Dict[str, str]] = {}
         self.__attrib_name_dedup = attr_name_dedup
 
@@ -371,11 +371,11 @@ class _MaciDataObjConstructor:
 
                         # Check if Attr is Locked from Re-Assignment
                         if __current_assignment_glyph in _assignment_glyphs_for_lock_checks:
-                            self.__assignment_locked_attribs.append(__var_token)
+                            self.__assignment_locked_attribs.add(__var_token)
 
                         # Check if Attr is Hard Locked from Re-Assignment
                         if __current_assignment_glyph in _assignment_glyphs_for_hard_lock_checks:
-                            self.__dict__['_MaciDataObjConstructor__assignment_hard_locked_attribs'] = (*self.__assignment_hard_locked_attribs, __var_token)
+                            self.__assignment_hard_locked_attribs.add(__var_token)
 
                     except SyntaxError: raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')
 
@@ -417,7 +417,7 @@ class _MaciDataObjConstructor:
                             setattr(self, __var_token, getattr(self, __value_token))
                             self.__assigned_src_reference_attr_map[__var_token] = __value_token
                             self.__assigned_dst_reference_attr_map.setdefault(__value_token, {}).setdefault(__var_token, __value_token)
-                            self.__assignment_locked_attribs.append(__var_token)
+                            self.__assignment_locked_attribs.add(__var_token)
                             continue
                         
                         # Check if Attr is a Reference to Another Attr's Value for Assignment and Hard Locked from Re-Assignment. Ignore Comments
@@ -426,7 +426,7 @@ class _MaciDataObjConstructor:
                             setattr(self, __var_token, getattr(self, __value_token))
                             self.__assigned_src_reference_attr_map[__var_token] = __value_token
                             self.__assigned_dst_reference_attr_map.setdefault(__value_token, {}).setdefault(__var_token, __value_token)
-                            self.__dict__['_MaciDataObjConstructor__assignment_hard_locked_attribs'] = (*self.__assignment_hard_locked_attribs, __var_token)
+                            self.__assignment_hard_locked_attribs.add(__var_token)
                             continue
 
                         # Assign Attr
@@ -434,11 +434,11 @@ class _MaciDataObjConstructor:
 
                         # Check if Attr is Locked from Re-Assignment
                         if __current_assignment_glyph in _assignment_glyphs_for_lock_checks:
-                            self.__assignment_locked_attribs.append(__var_token)
+                            self.__assignment_locked_attribs.add(__var_token)
 
                         # Check if Attr is Hard Locked from Re-Assignment
                         if __current_assignment_glyph in _assignment_glyphs_for_hard_lock_checks:
-                            self.__dict__['_MaciDataObjConstructor__assignment_hard_locked_attribs'] = (*self.__assignment_hard_locked_attribs, __var_token)
+                            self.__assignment_hard_locked_attribs.add(__var_token)
                         
                     except ValueError:
                         # Check if datetime format and set attr, else raise exception
@@ -573,7 +573,7 @@ class _MaciDataObjConstructor:
         if attr_name in self.__assignment_locked_attribs:
             raise GeneralError(__err_msg_attr_name_other_lock, f'\nATTR_NAME: "{attr_name}"')
 
-        self.__dict__['_MaciDataObjConstructor__assignment_hard_locked_attribs'] = (*self.__assignment_hard_locked_attribs, attr_name)
+        self.__assignment_hard_locked_attribs.add(attr_name)
 
 
     @_rename_exc_name_to_user_object_name
@@ -596,7 +596,7 @@ class _MaciDataObjConstructor:
         if attr_name in self.__assignment_hard_locked_attribs:
             raise GeneralError(__err_msg_attr_name_other_lock, f'\nATTR_NAME: "{attr_name}"')
 
-        self.__assignment_locked_attribs.append(attr_name)
+        self.__assignment_locked_attribs.add(attr_name)
 
 
     @_rename_exc_name_to_user_object_name
@@ -614,7 +614,7 @@ class _MaciDataObjConstructor:
 
         # Remove Attr from Locked List
         try: self.__assignment_locked_attribs.remove(attr_name)
-        except ValueError: raise GeneralError(__err_msg_attr_name_exist_unlock, f'\nATTR_NAME: "{attr_name}"')
+        except KeyError: raise GeneralError(__err_msg_attr_name_exist_unlock, f'\nATTR_NAME: "{attr_name}"')
 
 
     @_rename_exc_name_to_user_object_name
@@ -766,7 +766,7 @@ class _MaciDataObjConstructor:
 
         Returns a copy of the current list of locked attributes
         """
-        return self.__assignment_locked_attribs.copy()
+        return list(self.__assignment_locked_attribs)
 
 
     @_rename_exc_name_to_user_object_name
@@ -777,7 +777,7 @@ class _MaciDataObjConstructor:
         Returns a new list of the current hard locked attributes
         """
         return list(self.__assignment_hard_locked_attribs)
-    
+
 
     @_rename_exc_name_to_user_object_name
     def get_all_links(self) -> _Dict[str, _Dict[str, _Union[str, _Dict[str, str]]]]:
