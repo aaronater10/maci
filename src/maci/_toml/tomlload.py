@@ -23,6 +23,10 @@ def tomlload(filename: str) -> _Dict[str, _Any]:
     This is using the tomli library installed as a dependency from pypi.
     For more information on tomli, visit: https://pypi.org/project/tomli/
     """
+    # Error Checks
+    err_msg_type_file = "Only str is allowed for 'filename'"
+
+    if not isinstance(filename, str): raise TomlLoad(err_msg_type_file, f'\nGot: {repr(filename)}')
 
     # Load toml file
     try:

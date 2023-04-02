@@ -28,11 +28,11 @@ def tomldumpstr(
     __err_msg_type_str_data = "Only dict is allowed for 'data'"
     __err_msg_type_str_mls = "Only bool is allowed for 'multi_line_str'"
 
-    if not isinstance(data, dict): raise TomlDumpStr(__err_msg_type_str_data, f'\nDATA: {data}')
-    if not isinstance(multi_line_str, bool): raise TomlDumpStr(__err_msg_type_str_mls, f'\nDATA: {multi_line_str}')
+    if not isinstance(data, dict): raise TomlDumpStr(__err_msg_type_str_data, f'\nGot: {repr(data)}')
+    if not isinstance(multi_line_str, bool): raise TomlDumpStr(__err_msg_type_str_mls, f'\nGot: {repr(multi_line_str)}')
 
     try:
         # Dump data to toml str
         return _tomli_w.dumps(data, multiline_strings=multi_line_str)
-    except TypeError as __err_msg: raise TomlDumpStr(__err_msg, f'\nDATA:{data}')
-    except ValueError as __err_msg: raise TomlDumpStr(__err_msg, f'\nDATA:{data}')
+    except TypeError as __err_msg: raise TomlDumpStr(__err_msg, f'\nGot: {repr(data)}')
+    except ValueError as __err_msg: raise TomlDumpStr(__err_msg, f'\nGot: {repr(data)}')
