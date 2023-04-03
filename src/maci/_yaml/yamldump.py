@@ -1,14 +1,14 @@
 # yamldump
 #########################################################################################################
 # Imports
-from typing import Any as __Any
-from typing import Union as __Union
-import yaml as __yaml
+from typing import Any as _Any
+from typing import Union as _Union
+import yaml as _yaml
 from ..error import YamlDump
 
 #########################################################################################################
 # Export yaml file
-def yamldump(filename: str, data: __Any, *, append: bool=False, encoding: __Union[str, None]=None) -> None:
+def yamldump(filename: str, data: _Any, *, append: bool=False, encoding: _Union[str, None]=None) -> None:
     """
     Exports a new file from python data type to yaml data.
     
@@ -23,9 +23,14 @@ def yamldump(filename: str, data: __Any, *, append: bool=False, encoding: __Unio
     For more information on PyYAML, visit: https://pypi.org/project/PyYAML/
     
     """
-    __err_msg_type_str_append = "Only bool is allowed for 'append'"
+    # Error Checks
+    err_msg_type_file = "Only str is allowed for 'filename'"
+    err_msg_type_append = "Only bool is allowed for 'append'"
+    err_msg_type_encoding = "Only str|None or valid option is allowed for 'encoding'"
 
-    if not isinstance(append, bool): raise YamlDump(__err_msg_type_str_append, f'\nFILE: "{filename}" \nDATA: {append}')
+    if not isinstance(filename, str): raise YamlDump(err_msg_type_file, f'\nGot: {repr(filename)}')
+    if not isinstance(append, bool): raise YamlDump(err_msg_type_append, f'\nGot: {repr(append)}')
+    if not isinstance(encoding, (str, type(None))): raise YamlDump(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
 
     # Set Write Mode: 'a' = append, 'w' = write
     write_mode = 'a' if append else 'w'
@@ -33,8 +38,9 @@ def yamldump(filename: str, data: __Any, *, append: bool=False, encoding: __Unio
     # Export data to yaml file
     try:
         with open(filename, write_mode, encoding=encoding) as f:
-            __yaml.safe_dump(data, f)
-    except __yaml.representer.RepresenterError as __err_msg: raise YamlDump(__err_msg, f'\nFILE: "{filename}" \nDATA: {data}')
+            _yaml.safe_dump(data, f)
+    except _yaml.representer.RepresenterError as __err_msg: raise YamlDump(__err_msg, f'\nFILE: "{filename}" \nDATA: {data}')
     except TypeError as __err_msg: raise YamlDump(__err_msg, f'\nFILE: "{filename}" \nDATA: {data}')
     except ValueError as __err_msg: raise YamlDump(__err_msg, f'\nFILE: "{filename}" \nDATA: {data}')
     except FileNotFoundError as __err_msg: raise YamlDump(__err_msg, f'\nFILE: "{filename}"')
+    except LookupError: raise YamlDump(err_msg_type_encoding, f'\nGot: {repr(encoding)}')

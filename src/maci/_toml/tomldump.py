@@ -28,6 +28,7 @@ def tomldump(
     This is using the tomli-w library installed as a dependency from pypi.
     For more information on tomli-w, visit: https://pypi.org/project/tomli-w/
     """
+    # Error Checks
     err_msg_type_file = "Only str is allowed for 'filename'"
     err_msg_type_data = "Only dict is allowed for 'data'"
     err_msg_type_append = "Only bool is allowed for 'append'"

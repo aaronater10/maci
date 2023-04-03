@@ -25,6 +25,6 @@ def yamldumpstr(data: __Any) -> str:
     # Export data to yaml str
     try:
         return __yaml.safe_dump(data, stream=None).rstrip() # Strip trailing \n, yaml parser adds this oddly
-    except __yaml.representer.RepresenterError as __err_msg: raise YamlDumpStr(__err_msg, f'\nDATA: {data}')
+    except __yaml.representer.RepresenterError as __err_msg: raise YamlDumpStr(__err_msg, f'\nGot: {repr(data)}')
     except TypeError as __err_msg: raise YamlDumpStr(__err_msg, f'\nDATA: {data}')
     except ValueError as __err_msg: raise YamlDumpStr(__err_msg, f'\nDATA: {data}')
