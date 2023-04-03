@@ -46,3 +46,74 @@ def test1_yaml_export_file():
     time.sleep(file_delay_timer)
     try: remove(filepath)
     except: pass
+
+
+# 2. YAML Data Append - Appending yaml data to yaml file and test data
+def test2_yamldump_append():
+    filename = '2_append_file_data.yaml'
+    filepath = test_file_path + filename
+    expected_yaml = {
+        'd0': {'int_data': 1, 'bool_data': True},
+        'd1': {'int_data': 1, 'bool_data': True},
+        'd2': {'int_data': 1, 'bool_data': True}
+    }
+
+    # Remove Any Existing Test File
+    try: remove(filepath)
+    except: pass
+    time.sleep(file_delay_timer)
+
+    # Test not exist, create file by appending data, check if file exist, then test data
+    assert not path.exists(filepath)
+    append_times = 3
+    for append_num in range(append_times):
+        dump_data = {f'd{append_num}': {'int_data': 1, 'bool_data': True}}
+        maci.yamldump(filepath, dump_data, append=True)
+
+    assert path.exists(filepath)
+    file_import = maci.yamlload(filepath)
+
+    # Test Data from File Load
+    assert expected_yaml == file_import
+
+    # Remove Test File
+    time.sleep(file_delay_timer)
+    try: remove(filepath)
+    except: pass
+
+
+# 3. Encoding - Test some common encoding types
+def test3_yamldump_and_yamlload_encodings():
+    filename = '3_yaml_encoding.yaml'
+    filepath = test_file_path + filename
+    encodings_to_test = {
+        'utf-8',
+        'utf-16',
+        'utf-32',
+        'ascii',
+        'iso-8859-1',
+        'cp1252',
+    }
+
+    # Remove Any Existing Test File
+    try: remove(filepath)
+    except: pass
+    time.sleep(file_delay_timer)
+    assert not path.exists(filepath)
+
+    # Setup Yaml Data
+    yaml_data = {'key': 'data'}
+
+    # Test Dump and Load with Various Encodings
+    for encoding in encodings_to_test:
+        maci.yamldump(filepath, yaml_data, encoding=encoding)
+        time.sleep(file_delay_timer)
+        file_import = maci.yamlload(filepath, encoding=encoding)
+
+        # Test Section Data from File Load
+        assert 'data' == file_import.get('key')
+
+    # Remove Test File
+    time.sleep(file_delay_timer)
+    try: remove(filepath)
+    except: pass

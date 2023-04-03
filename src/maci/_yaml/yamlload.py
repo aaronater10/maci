@@ -32,5 +32,6 @@ def yamlload(filename: str, *, encoding: __Union[str, None]=None) -> __Any:
     except OSError as __err_msg: raise YamlLoad(__err_msg, f'\nFILE: "{filename}"')
     except __yaml.scanner.ScannerError as __err_msg: raise YamlLoad(__err_msg, f'\nFILE: "{filename}"')
     except __yaml.parser.ParserError as __err_msg: raise YamlLoad(__err_msg, f'\nFILE: "{filename}"')
+    except __yaml.reader.ReaderError as __err_msg: raise YamlLoad(__err_msg, f'\nFILE: "{filename}"')
     except ValueError as __err_msg: raise YamlLoad(__err_msg, f'\nFILE: "{filename}"')
     except TypeError as __err_msg: raise YamlLoad(__err_msg, f'\nFILE: "{filename}"')
