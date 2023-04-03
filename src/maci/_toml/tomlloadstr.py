@@ -21,6 +21,7 @@ def tomlloadstr(toml_str_data: str) -> _Dict[str, _Any]:
     This is using the tomli library installed as a dependency from pypi.
     For more information on tomli, visit: https://pypi.org/project/tomli/
     """
+    # Error Checks
     __err_msg_type_str = "Only str is allowed for 'toml_str_data'"
 
     if not isinstance(toml_str_data, str): raise TomlLoadStr(__err_msg_type_str, f'\nGot: {repr(toml_str_data)}')

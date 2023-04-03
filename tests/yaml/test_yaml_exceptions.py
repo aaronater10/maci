@@ -58,37 +58,43 @@ def test2_exceptions_yamldumpstr_opts_data():
         data = 1
 
     # Tests
-    with pytest.raises(maci.error.YamlDump):
+    with pytest.raises(maci.error.YamlDumpStr):
         maci.yamldumpstr(data={'k': CustomData})
 
 
-# # ### yamlload ###
+### yamlload ###
 
-# # 1. Yaml Load - Type Checks
-# def test1_exceptions_yamlload_types():
-#     # Tests
-#     with pytest.raises(maci.error.YamlLoad):
-#         maci.yamlload(filename=1.0)
-
-
-# # 2. Yaml Load - Unsupported Options or Data
-# def test2_exceptions_yamlload_opts_data():
-#     # Tests
-#     with pytest.raises(maci.error.YamlLoad):
-#         maci.yamlload(filename='')
+# 1. Yaml Load - Type Checks
+def test1_exceptions_yamlload_types():
+    # Tests
+    with pytest.raises(maci.error.YamlLoad):
+        maci.yamlload(filename=1.0)
+    with pytest.raises(maci.error.YamlLoad):
+        maci.yamlload(filename='', encoding=1.0)
 
 
-# # ### yamlloadstr ###
+# 2. Yaml Load - Unsupported Options or Data
+def test2_exceptions_yamlload_opts_data():
+    filepath = test_file_path + 'exc_yamlload.yml'
 
-# # 1. Yaml Load Str - Type Checks
-# def test1_exceptions_yamlloadstr_types():
-#     # Tests
-#     with pytest.raises(maci.error.YamlLoadStr):
-#         maci.yamlloadstr(yaml_str_data=1.0)
+    # Tests
+    with pytest.raises(maci.error.YamlLoad):
+        maci.yamlload(filename='')
+    with pytest.raises(maci.error.YamlLoad):
+        maci.yamlload(filename=filepath, encoding='')
 
 
-# # 2. Yaml Load Str - Unsupported Options or Data
-# def test2_exceptions_yamlloadstr_opts_data():
-#     # Tests
-#     with pytest.raises(maci.error.YamlLoadStr):
-#         maci.yamlloadstr(yaml_str_data='k = {1,2,3}')
+# ### yamlloadstr ###
+
+# 1. Yaml Load Str - Type Checks
+def test1_exceptions_yamlloadstr_types():
+    # Tests
+    with pytest.raises(maci.error.YamlLoadStr):
+        maci.yamlloadstr(yaml_str_data=1.0)
+
+
+# 2. Yaml Load Str - Unsupported Options or Data
+def test2_exceptions_yamlloadstr_opts_data():
+    # Tests
+    with pytest.raises(maci.error.YamlLoadStr):
+        maci.yamlloadstr(yaml_str_data='k: %v')

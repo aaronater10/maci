@@ -23,6 +23,11 @@ def yamlloadstr(yaml_str_data: str) -> __Any:
     "safe_load" method to protect from untrusted input.
     For more information on PyYAML, visit: https://pypi.org/project/PyYAML/
     """
+    # Error Checks
+    __err_msg_type_str = "Only str is allowed for 'yaml_str_data'"
+
+    if not isinstance(yaml_str_data, str): raise YamlLoadStr(__err_msg_type_str, f'\nGot: {repr(yaml_str_data)}')
+
     # Import yaml str
     try:       
         return __yaml.safe_load(yaml_str_data)

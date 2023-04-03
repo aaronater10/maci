@@ -24,6 +24,14 @@ def yamlload(filename: str, *, encoding: __Union[str, None]=None) -> __Any:
     "safe_load" method to protect from untrusted input.
     For more information on PyYAML, visit: https://pypi.org/project/PyYAML/
     """
+    # Error Checks
+    err_msg_type_file = "Only str is allowed for 'filename'"
+    err_msg_type_encoding = "Only str|None or valid option is allowed for 'encoding'"
+
+    if not isinstance(filename, str): raise YamlLoad(err_msg_type_file, f'\nGot: {repr(filename)}')
+    if not isinstance(encoding, (str, type(None))): raise YamlLoad(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
+
+
     # Import yaml file
     try:
         with open(filename, 'r', encoding=encoding) as f:
@@ -35,3 +43,4 @@ def yamlload(filename: str, *, encoding: __Union[str, None]=None) -> __Any:
     except __yaml.reader.ReaderError as __err_msg: raise YamlLoad(__err_msg, f'\nFILE: "{filename}"')
     except ValueError as __err_msg: raise YamlLoad(__err_msg, f'\nFILE: "{filename}"')
     except TypeError as __err_msg: raise YamlLoad(__err_msg, f'\nFILE: "{filename}"')
+    except LookupError: raise YamlLoad(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
