@@ -19,6 +19,7 @@ def cleanformat(datatype: __Union[dict,list,tuple,set], indent_level: int=1) -> 
     Accepted data types: dict, list, tuple, set 
 
     [Example Use]
+    
     var = cleanformat(datatype)
     """
     __err_indent = 'Only int is allowed for indent level.'
@@ -41,26 +42,25 @@ def cleanformat(datatype: __Union[dict,list,tuple,set], indent_level: int=1) -> 
         return __build_data
 
     # List
-    elif isinstance(datatype, list):
+    if isinstance(datatype, list):
         for value in datatype:
             __build_data += f"\n{indent_level}{repr(value)},"
         __build_data = f"[{__build_data}\n]"
         return __build_data
 
     # Tuple
-    elif isinstance(datatype, tuple):
+    if isinstance(datatype, tuple):
         for value in datatype:
             __build_data += f"\n{indent_level}{repr(value)},"
         __build_data = f"({__build_data}\n)"
         return __build_data
 
     # Set
-    elif isinstance(datatype, set):
+    if isinstance(datatype, set):
         for value in datatype:
             __build_data += f"\n{indent_level}{repr(value)},"
         __build_data = f"{{{__build_data}\n}}"
         return __build_data
 
     # Raise Error
-    else:
-        raise CleanFormat(__err_type, f'"{datatype}"')
+    raise CleanFormat(__err_type, f'"{datatype}"')
