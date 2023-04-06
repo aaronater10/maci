@@ -345,154 +345,154 @@ class TestLoad(unittest.TestCase):
 ### NEW TESTS BELOW ###
 
 # 18. Ignore Glyph in Value Str Check - Import Single Line Value String Containing a Glyph
-    def test18_ignore_glyph_in_value_str(self):
-        filename = '18_glyph_in_value.data'
-        filepath = test_file_path + filename
+def test18_ignore_glyph_in_value_str():
+    filename = '18_glyph_in_value.data'
+    filepath = test_file_path + filename
 
-        # File Import
-        file_import = maci.load(filepath)
+    # File Import
+    file_import = maci.load(filepath)
 
-        # Test Attributes and Types
-        assert (file_import.data_str1 == "data with = glyph")
-        assert (file_import.data_str2 == "data with == glyph")
-        assert (file_import.data_str3 == "data with $= glyph")
-        assert (file_import.data_str4 == "data with $$= glyph")
-        assert (file_import.data_str5 == "data with $== glyph")
-        assert (file_import.data_str6 == "data with $$== glyph")
+    # Test Attributes and Types
+    assert (file_import.data_str1 == "data with = glyph")
+    assert (file_import.data_str2 == "data with == glyph")
+    assert (file_import.data_str3 == "data with $= glyph")
+    assert (file_import.data_str4 == "data with $$= glyph")
+    assert (file_import.data_str5 == "data with $== glyph")
+    assert (file_import.data_str6 == "data with $$== glyph")
 
 
 # 19. Check if Error Raised on Value Empty - Import Single Line Value with Empty Value
-    def test19_raise_on_value_empty(self):
-        filename_no_spaces = '19_raise_on_value_empty_no_spaces.data'
-        filename_spaces = '19_raise_on_value_empty_spaces.data'
+def test19_raise_on_value_empty():
+    filename_no_spaces = '19_raise_on_value_empty_no_spaces.data'
+    filename_spaces = '19_raise_on_value_empty_spaces.data'
 
-        # File Import: No Spaces
-        filepath = test_file_path + filename_no_spaces
-        with pytest.raises(maci.error.Load):
-            maci.load(filepath)
-        
-        # File Import: Value Empty with Spaces
-        filepath = test_file_path + filename_spaces
-        with pytest.raises(maci.error.Load):
-            maci.load(filepath)
+    # File Import: No Spaces
+    filepath = test_file_path + filename_no_spaces
+    with pytest.raises(maci.error.Load):
+        maci.load(filepath)
+    
+    # File Import: Value Empty with Spaces
+    filepath = test_file_path + filename_spaces
+    with pytest.raises(maci.error.Load):
+        maci.load(filepath)
 
 
 # 20. Check Pythonic Assignment Syntax - Import Values and Glyphs with varying spaced or connected assignments
-    def test20_python_assignment_syntax(self):
-        filename_no_spaces = '20_python_assignment_syntax.data'
+def test20_python_assignment_syntax():
+    filename_no_spaces = '20_python_assignment_syntax.data'
 
-        # File Import
-        filepath = test_file_path + filename_no_spaces
-        file_import = maci.load(filepath)
+    # File Import
+    filepath = test_file_path + filename_no_spaces
+    file_import = maci.load(filepath)
 
-        # Test Attributes and Types
+    # Test Attributes and Types
 
-        # Single
-        assert file_import.data_str == "data"
-        assert file_import.data_int == 1
-        assert file_import.data_float == 1.0
-        assert file_import.data_bool == True
-        assert file_import.data_list == [1,2,3]
-        assert file_import.data_dict == {'k1':1, 'k2':2, 'k3':3}
-        assert file_import.data_tuple == (1,2,3)
-        assert file_import.data_set == {1,2,3}
-        assert file_import.data_none == None
-        assert file_import.data_bytes == b'data'
-        # Multi
-        assert file_import.data_list_multi == [1,2,3]
-        assert file_import.data_dict_multi == {'k1':1, 'k2':2, 'k3':3}
-        assert file_import.data_tuple_multi == (1,2,3)
-        assert file_import.data_set_multi == {1,2,3}
-        assert file_import.data_str_multi == "\ndata1\n data2\n  data3\ndata4\n"
-        
-        ### Glyph Types ###
+    # Single
+    assert file_import.data_str == "data"
+    assert file_import.data_int == 1
+    assert file_import.data_float == 1.0
+    assert file_import.data_bool == True
+    assert file_import.data_list == [1,2,3]
+    assert file_import.data_dict == {'k1':1, 'k2':2, 'k3':3}
+    assert file_import.data_tuple == (1,2,3)
+    assert file_import.data_set == {1,2,3}
+    assert file_import.data_none == None
+    assert file_import.data_bytes == b'data'
+    # Multi
+    assert file_import.data_list_multi == [1,2,3]
+    assert file_import.data_dict_multi == {'k1':1, 'k2':2, 'k3':3}
+    assert file_import.data_tuple_multi == (1,2,3)
+    assert file_import.data_set_multi == {1,2,3}
+    assert file_import.data_str_multi == "\ndata1\n data2\n  data3\ndata4\n"
+    
+    ### Glyph Types ###
 
-        # Symbols
-        assert file_import.s1 == 1
-        assert file_import.s2 == 1
-        assert file_import.s3 == 1
-        assert file_import.s4 == 1
-        assert file_import.s5 == 1
-        assert file_import.s6 == 1
-        # Letters: lower
-        assert file_import.l1 == 1
-        assert file_import.l2 == 1
-        assert file_import.l3_1 == 1
-        assert file_import.l3_2 == 1
-        assert file_import.l4 == 1
-        assert file_import.l5_1 == 1
-        assert file_import.l5_2 == 1
-        # Letters: UPPER
-        assert file_import.L1 == 1
-        assert file_import.L2 == 1
-        assert file_import.L3_1 == 1
-        assert file_import.L3_2 == 1
-        assert file_import.L4 == 1
-        assert file_import.L5_1 == 1
-        assert file_import.L5_2 == 1
+    # Symbols
+    assert file_import.s1 == 1
+    assert file_import.s2 == 1
+    assert file_import.s3 == 1
+    assert file_import.s4 == 1
+    assert file_import.s5 == 1
+    assert file_import.s6 == 1
+    # Letters: lower
+    assert file_import.l1 == 1
+    assert file_import.l2 == 1
+    assert file_import.l3_1 == 1
+    assert file_import.l3_2 == 1
+    assert file_import.l4 == 1
+    assert file_import.l5_1 == 1
+    assert file_import.l5_2 == 1
+    # Letters: UPPER
+    assert file_import.L1 == 1
+    assert file_import.L2 == 1
+    assert file_import.L3_1 == 1
+    assert file_import.L3_2 == 1
+    assert file_import.L4 == 1
+    assert file_import.L5_1 == 1
+    assert file_import.L5_2 == 1
 
 
 # 21. Ensure Supported Glyph Syntax is Loadable - Import Glyphs with varying types and data
-    def test21_glyph_assignment_syntax(self):
-        filename_no_spaces = '21_glyph_assignment_syntax.data'
+def test21_glyph_assignment_syntax():
+    filename_no_spaces = '21_glyph_assignment_syntax.data'
 
-        # File Import
-        filepath = test_file_path + filename_no_spaces
-        file_import = maci.load(filepath)
+    # File Import
+    filepath = test_file_path + filename_no_spaces
+    file_import = maci.load(filepath)
 
-        # Test Attributes and Types
+    # Test Attributes and Types
 
-        # Single: lower
-        assert file_import.d1 == "data"
-        assert file_import.d2 == "data"
-        assert file_import.d3_1 == "data"
-        assert file_import.d3_2 == "data"
-        assert file_import.d4_1 == "data"
-        assert file_import.d4_2 == "data"
-        assert file_import.d5 == [1,2,3]
-        assert file_import.d6 == {'k1':1, 'k2':2, 'k3':3}
-        # Single: UPPER
-        assert file_import.d7 == {1,2,3}
-        assert file_import.d8 == {1,2,3}
-        assert file_import.d9_1 == {1,2,3}
-        assert file_import.d9_2 == {1,2,3}
-        assert file_import.d10_1 == {1,2,3}
-        assert file_import.d10_2 == {1,2,3}
-        assert file_import.d11 == (1,2,3)
-        assert file_import.d12 == b'data'
-        # Mixed: UPPER and lower
-        assert file_import.d13 == "data"
-        assert file_import.d14 == "data"
-        assert file_import.d15 == "data"
-        assert file_import.d16 == "data"
-        assert file_import.d17 == "data"
-        assert file_import.d18 == "data"
-        assert file_import.d19 == "data"
-        assert file_import.d20 == "data"
-        assert file_import.d21 == "data"
+    # Single: lower
+    assert file_import.d1 == "data"
+    assert file_import.d2 == "data"
+    assert file_import.d3_1 == "data"
+    assert file_import.d3_2 == "data"
+    assert file_import.d4_1 == "data"
+    assert file_import.d4_2 == "data"
+    assert file_import.d5 == [1,2,3]
+    assert file_import.d6 == {'k1':1, 'k2':2, 'k3':3}
+    # Single: UPPER
+    assert file_import.d7 == {1,2,3}
+    assert file_import.d8 == {1,2,3}
+    assert file_import.d9_1 == {1,2,3}
+    assert file_import.d9_2 == {1,2,3}
+    assert file_import.d10_1 == {1,2,3}
+    assert file_import.d10_2 == {1,2,3}
+    assert file_import.d11 == (1,2,3)
+    assert file_import.d12 == b'data'
+    # Mixed: UPPER and lower
+    assert file_import.d13 == "data"
+    assert file_import.d14 == "data"
+    assert file_import.d15 == "data"
+    assert file_import.d16 == "data"
+    assert file_import.d17 == "data"
+    assert file_import.d18 == "data"
+    assert file_import.d19 == "data"
+    assert file_import.d20 == "data"
+    assert file_import.d21 == "data"
 
-        # Multi
-        assert file_import.d1_multi == [1,2,3]
-        assert file_import.d2_multi == {'k1':1, 'k2':2, 'k3':3}
-        assert file_import.d3_multi == (1,2,3)
-        assert file_import.d4_multi == {1,2,3}
+    # Multi
+    assert file_import.d1_multi == [1,2,3]
+    assert file_import.d2_multi == {'k1':1, 'k2':2, 'k3':3}
+    assert file_import.d3_multi == (1,2,3)
+    assert file_import.d4_multi == {1,2,3}
 
 
 # 22. Ensure DateTime Syntax is Loadable - Import DateTime data with varying formats
-    def test22_date_time_syntax(self):
-        from datetime import datetime, date, time
-        filename_no_spaces = '22_date_time_syntax.data'
+def test22_date_time_syntax():
+    from datetime import datetime, date, time
+    filename_no_spaces = '22_date_time_syntax.data'
 
-        # File Import
-        filepath = test_file_path + filename_no_spaces
-        file_import = maci.load(filepath)
+    # File Import
+    filepath = test_file_path + filename_no_spaces
+    file_import = maci.load(filepath)
 
-        # Test Attributes
-        assert isinstance(file_import.custom_date_time, datetime) and str(file_import.custom_date_time) == "2023-03-13 22:06:00"
-        assert isinstance(file_import.custom_date_timem, datetime) and str(file_import.custom_date_timem) == "2023-03-13 22:06:00.500000"
-        assert isinstance(file_import.custom_date, date) and str(file_import.custom_date) == "2023-03-13"
-        assert isinstance(file_import.custom_time, time) and str(file_import.custom_time) == "22:06:00"
-        assert isinstance(file_import.custom_timem, time) and str(file_import.custom_timem) == "22:06:00.500000"
-        assert isinstance(file_import.custom_time_date, datetime) and str(file_import.custom_time_date) == "2023-03-13 22:06:00"
-        assert isinstance(file_import.custom_timem_date, datetime) and str(file_import.custom_timem_date) == "2023-03-13 22:06:00.500000"
-        assert isinstance(file_import.date_time_iso8601, datetime) and str(file_import.date_time_iso8601) == "2023-03-13 22:06:00"
+    # Test Attributes
+    assert isinstance(file_import.custom_date_time, datetime) and str(file_import.custom_date_time) == "2023-03-13 22:06:00"
+    assert isinstance(file_import.custom_date_timem, datetime) and str(file_import.custom_date_timem) == "2023-03-13 22:06:00.500000"
+    assert isinstance(file_import.custom_date, date) and str(file_import.custom_date) == "2023-03-13"
+    assert isinstance(file_import.custom_time, time) and str(file_import.custom_time) == "22:06:00"
+    assert isinstance(file_import.custom_timem, time) and str(file_import.custom_timem) == "22:06:00.500000"
+    assert isinstance(file_import.custom_time_date, datetime) and str(file_import.custom_time_date) == "2023-03-13 22:06:00"
+    assert isinstance(file_import.custom_timem_date, datetime) and str(file_import.custom_timem_date) == "2023-03-13 22:06:00.500000"
+    assert isinstance(file_import.date_time_iso8601, datetime) and str(file_import.date_time_iso8601) == "2023-03-13 22:06:00"
