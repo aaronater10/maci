@@ -1148,7 +1148,7 @@ def __dump_data(
                     if __multiline_check(value) and indentation_on:
                         value = _cleanformat(value, indent_level)
                         __build_data_output.write(f'{key} {__assignment_glyphs.l} {value}\n')
-                    elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):
+                    elif (multi_line_str) and (isinstance(value, str)) and ('\n' in value):
                         __build_data_output.write(__setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.l, value=value))
                     else:
                         if not repr_signal:
@@ -1161,7 +1161,7 @@ def __dump_data(
                     if __multiline_check(value) and indentation_on:
                         value = _cleanformat(value, indent_level)
                         __build_data_output.write(f'{key} {__assignment_glyphs.h} {value}\n')
-                    elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):
+                    elif (multi_line_str) and (isinstance(value, str)) and ('\n' in value):
                         __build_data_output.write(__setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.h, value=value))
                     else:
                         if not repr_signal:
@@ -1173,7 +1173,7 @@ def __dump_data(
                 if __multiline_check(value) and indentation_on:
                     value = _cleanformat(value, indent_level)
                     __build_data_output.write(f'{key} {__assignment_glyphs.norm} {value}\n')
-                elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):
+                elif (multi_line_str) and (isinstance(value, str)) and ('\n' in value):
                     __build_data_output.write(__setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.norm, value=value))
                 else:
                     if not repr_signal:
@@ -1207,7 +1207,7 @@ def __dump_data(
                     value = _cleanformat(value, indent_level)
                     __build_data_output.write(f'{key} {__assignment_glyphs.norm} {value}\n')
                     continue
-            if (multi_line_str) and ('\n' in value) and (isinstance(value, str)):                
+            if (multi_line_str) and (isinstance(value, str)) and ('\n' in value):                
                 __build_data_output.write(__setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.norm, value=value))
                 continue
 
@@ -1274,7 +1274,7 @@ def __dump_data(
                 if __multiline_check(value) and indentation_on:
                     value = _cleanformat(value, indent_level)
                     __build_data_output.write(f'{key} {__assignment_glyphs.norm} {value}\n')
-                elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):                
+                elif (multi_line_str) and (isinstance(value, str)) and ('\n' in value):                
                     __build_data_output.write(__setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.norm, value=value))
                 else:
                     if not repr_signal:
@@ -1307,7 +1307,7 @@ def __dump_data(
                 if __multiline_check(value) and indentation_on:
                     value = _cleanformat(value, indent_level)
                     __build_data_output.write(f'{key} {__assignment_glyphs.norm} {value}\n')
-                elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):                
+                elif (multi_line_str) and (isinstance(value, str)) and ('\n' in value):                
                     __build_data_output.write(__setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.norm, value=value))
                 else:
                     if not repr_signal:
@@ -1341,7 +1341,7 @@ def __dump_data(
                     if __multiline_check(value) and indentation_on:
                         value = _cleanformat(value, indent_level)
                         __build_data_output_init.write(f'{key} {__assignment_glyphs.norm} {value}\n')
-                    elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):                
+                    elif (multi_line_str) and (isinstance(value, str)) and ('\n' in value):                
                         __build_data_output_init.write(__setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.norm, value=value))
                     else:
                         if not repr_signal:
@@ -1372,7 +1372,7 @@ def __dump_data(
                     if __multiline_check(value) and indentation_on:
                         value = _cleanformat(value, indent_level)
                         __build_data_output_class.write(f'{key} {__assignment_glyphs.norm} {value}\n')
-                    elif (multi_line_str) and ('\n' in value) and (isinstance(value, str)):                
+                    elif (multi_line_str) and (isinstance(value, str)) and ('\n' in value):                
                         __build_data_output_class.write(__setup_multi_string(key=key, assignment_glyph=__assignment_glyphs.norm, value=value))
                     else:
                         if not repr_signal:
