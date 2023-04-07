@@ -237,7 +237,8 @@ class _MaciDataObjConstructor:
         __end_markers = {']', '}', ')', "'''", '"""'}
         __skip_markers = ('', ' ', '#', '\n')
         __eof_marker = file_data[-1]
-        __ignore_multistr_marker = "'''"
+        __ignore_multistr_markers = ("'''", '"""')
+        __ignore_multistr_marker = ''
 
         # Assignment Glyphs - Set by Another Class and is a NamedTuple
         __assignment_glyphs = _Glyphs()
@@ -365,9 +366,9 @@ class _MaciDataObjConstructor:
                     # Set First Value
                     __build_data = __value_token
 
-                    # Swap ignore if multi-str
-                    if __ignore_multistr_marker == __value_token:
-                        __ignore_multistr_marker = '"""'
+                    # Swap ignore type if multi-str. If triple-singles, then ignore triple-doubles and vice-versa
+                    if __ignore_multistr_markers[0] == __value_token: __ignore_multistr_marker = __ignore_multistr_markers[1]
+                    if __ignore_multistr_markers[1] == __value_token: __ignore_multistr_marker = __ignore_multistr_markers[0]
 
                     # Turn ON Data Build Switches
                     __is_building_data_sw = True
