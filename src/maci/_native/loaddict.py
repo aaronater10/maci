@@ -64,6 +64,7 @@ def loaddict(filename: str, *, attr_name_dedup: bool=True, encoding: __Union[str
         '__maci_obj_format_id__',
         '_MaciDataObjConstructor__assignment_locked_atrribs_err_msg',
         '_MaciDataObjConstructor__assignment_hard_locked_atrribs_err_msg',
+        '_MaciDataObjConstructor__ignore_internal_maci_attr_check',
     }
 
     # Generate Dict as a Fresh Copy

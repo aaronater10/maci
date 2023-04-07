@@ -194,7 +194,7 @@ class _MaciDataObjConstructor:
         self.__assigned_src_reference_attr_map: _Dict[str, str] = {}
         self.__assigned_dst_reference_attr_map: _Dict[str, _Dict[str, str]] = {}
         self.__attrib_name_dedup = attr_name_dedup
-        self.___ignore_internal_maci_attr_check = _ignore_internal_maci_attr_check
+        self.__ignore_internal_maci_attr_check = _ignore_internal_maci_attr_check
 
         # One Time Generated using UUID4 mode from UUID Library.
         # This helps authenticity of MaciDataObj Object for Development aid
@@ -496,7 +496,7 @@ class _MaciDataObjConstructor:
             raise GeneralError('Cannot re-assign internal MaciDataObj attribute name!', f'\nATTR_NAME: "{_name}"')
         
         # Protect Internal Method Names from Re-Assignment. Can be switched OFF by User
-        if hasattr(self, _name) and (_name in _MaciDataObjConstructor.__internal_check_lists_setattr_maci_methods) and (not self.___ignore_internal_maci_attr_check):
+        if hasattr(self, _name) and (_name in _MaciDataObjConstructor.__internal_check_lists_setattr_maci_methods) and (not self.__ignore_internal_maci_attr_check):
             raise GeneralError('Cannot re-assign internal MaciDataObj method name!', f'\nMETHOD_NAME: "{_name}"')
 
 
