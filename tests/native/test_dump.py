@@ -343,3 +343,136 @@ def test3_dump_file_multiline_str_maciobj():
     time.sleep(file_delay_timer)
     try: remove(filepath)
     except: pass
+
+
+# 4. Encoding: MaciDataObj - Test some common encoding types
+def test4_dump_and_load_encodings():
+    filename = '4_dump_file_encoding.data'
+    filepath = test_file_path + filename
+    encodings_to_test = {
+        'utf-8',
+        'utf-16',
+        'utf-32',
+        'ascii',
+        'iso-8859-1',
+        'cp1252',
+    }
+
+    # Remove Any Existing Test File
+    try: remove(filepath)
+    except: pass
+    time.sleep(file_delay_timer)
+    assert not path.exists(filepath)
+
+    # Build Data
+    file_data = maci.build()
+    file_data.data_dict = {'key': 'data'}
+
+    # Test Dump and Load with Various Encodings
+    for encoding in encodings_to_test:
+        maci.dump(filepath, file_data, encoding=encoding)
+        time.sleep(file_delay_timer)
+        file_import = maci.load(filepath, encoding=encoding)
+
+        # Test Section Data from File Load
+        assert 'data' == file_import.data_dict.get('key')
+
+    # Remove Test File
+    time.sleep(file_delay_timer)
+    try: remove(filepath)
+    except: pass
+
+
+# 5. Dump File - Attr Types: MaciDataObj - Test different attribute types to dump and ensure data is maintained
+def test5_dump_file_attr_types_maciobj():
+    filename = '5_dump_file_attr_types_maciobj.data'
+    filepath = test_file_path + filename
+
+    # Remove Any Existing Test File
+    try: remove(filepath)
+    except: pass
+    time.sleep(file_delay_timer)
+
+    # Build Data
+    file_data = maci.build()
+    file_data.norm_data1 = 'data1'
+    file_data._under_data = 'data'
+    file_data.__dunder_data = 'data'
+    file_data.norm_data2 = 'data2'
+    
+    # Test: All Private Attrs
+    maci.dump(filepath, file_data, private_attrs=True)
+    file_import = maci.load(filepath)
+
+    assert file_import.norm_data1 == 'data1'
+    assert file_import._under_data == 'data'
+    assert file_import.__dunder_data == 'data'
+    assert file_import.norm_data2 == 'data2'
+
+    # Test: Private Under Attrs
+    maci.dump(filepath, file_data, private_under_attrs=True)
+    file_import = maci.load(filepath)
+
+    assert file_import.norm_data1 == 'data1'
+    assert file_import._under_data == 'data'
+    assert file_import.norm_data2 == 'data2'
+
+    # Test: Private Dunder Attrs
+    maci.dump(filepath, file_data, private_dunder_attrs=True)
+    file_import = maci.load(filepath)
+
+    assert file_import.norm_data1 == 'data1'
+    assert file_import.__dunder_data == 'data'
+    assert file_import.norm_data2 == 'data2'
+
+    # Remove Test File
+    time.sleep(file_delay_timer)
+    try: remove(filepath)
+    except: pass
+
+
+# 6. Dump File - Use Symbol Glyphs: MaciDataObj - Test dump with symbol glyph representation
+def test6_dump_file_use_symbol_glyphs_maciobj():
+    filename = '6_dump_file_use_symbol_glyphs_maciobj.data'
+    filepath = test_file_path + filename
+
+    # Remove Any Existing Test File
+    try: remove(filepath)
+    except: pass
+    time.sleep(file_delay_timer)
+
+    # Build Data
+    file_data = maci.build()
+    file_data.norm_data = 'data'
+    file_data.map_data = None
+    file_data.lock_data = 'data'
+    file_data.hard_lock_data = 'data'
+    file_data.map_lock = None
+    file_data.map_hard_lock = None
+
+    # Setup Attrs
+    file_data.link_attr('map_data', 'norm_data')
+    file_data.lock_attr('lock_data')
+    file_data.hard_lock_attr('hard_lock_data')
+
+    file_data.link_attr('map_lock', 'lock_data')
+    file_data.lock_attr('map_lock')
+
+    file_data.link_attr('map_hard_lock', 'hard_lock_data')
+    file_data.hard_lock_attr('map_hard_lock')
+
+    # Test dump with symbols and test data
+    maci.dump(filepath, file_data, use_symbol_glyphs=True)
+    file_import = maci.load(filepath)
+
+    assert file_import.norm_data == 'data'
+    assert file_import.map_data == 'data'
+    assert file_import.lock_data == 'data'
+    assert file_import.hard_lock_data == 'data'
+    assert file_import.map_lock == 'data'
+    assert file_import.map_hard_lock == 'data'
+
+    # Remove Test File
+    time.sleep(file_delay_timer)
+    try: remove(filepath)
+    except: pass
