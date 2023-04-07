@@ -9,10 +9,10 @@ test_file_path = './tests/test_files/native/load_files/'
 ################################################################
 '''
 NOTICE:
-- Any new tests must not use the unittest class and instead use the pytest framework.
+- Any new tests must not use the unittest class and instead use the pytest framework if needed.
 - Add new tests below the "TestLoad" class
 - Old tests are still being used/kept to reference consistent functionality
-- Ensure to number tests in order
+- Ensure to still continue to number tests in order
 '''
 ################################################################
 

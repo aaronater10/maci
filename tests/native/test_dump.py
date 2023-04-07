@@ -8,6 +8,17 @@ test_file_path = './tests/test_files/native/dump_files/'
 file_delay_timer = 0.25
 
 ################################################################
+'''
+NOTICE:
+- Any new tests must not use the unittest class and instead use the pytest framework if needed.
+- Add new tests below the "TestDump" class
+- Old tests are still being used/kept to reference consistent functionality
+- Ensure to still continue to number tests in order
+'''
+################################################################
+
+
+################################################################
 # TESTS
 
 class TestDump(unittest.TestCase):
@@ -184,13 +195,151 @@ class TestDump(unittest.TestCase):
 
         # Import Data and Set Line Count
         file_import = maci.loadraw(filepath)
+        file_data = maci.loadstr(file_import, attr_name_dedup=False)
         file_import_lines = len(file_import.splitlines())
 
-        # Test Data
+        # Test Line Count
         expected_file_lines = 6
         self.assertEqual(file_import_lines, expected_file_lines)
+        # Test Data
+        self.assertEqual(file_data.data_list, [1,2,3])
+        self.assertEqual(file_data.data_bool, True)
+        self.assertEqual(file_data.data_int, 1)
 
         # Remove Test File
         time.sleep(file_delay_timer)
         try: remove(filepath)
         except: pass
+
+### END OF OLD TESTS ###
+################################################################
+# SEE AT TOP ABOVE FOR THIS
+################################################################
+### NEW TESTS BELOW ###
+
+
+### MaciDataObj ###
+
+# 1. Dump File - Append: MaciDataObj - Test Appending
+def test1_dump_file_append_maciobj():
+    filename = '1_dump_file_append_maciobj.data'
+    filepath = test_file_path + filename
+
+    # Remove Any Existing Test File
+    try: remove(filepath)
+    except: pass
+    time.sleep(file_delay_timer)
+
+    # Build Data
+    file_data = maci.build()
+    file_data.d1 = 'data1'
+    file_data.d2 = 'data2'
+    file_data.d3 = 'data3'
+
+    # Append Data
+    maci.dump(filepath, file_data)
+    maci.dump(filepath, file_data, append=True)
+
+    # Test Data
+    file_import = maci.load(filepath, attr_name_dedup=False)
+
+    assert file_import.d1 == 'data1'
+    assert file_import.d2 == 'data2'
+    assert file_import.d3 == 'data3'
+
+    # Remove Test File
+    time.sleep(file_delay_timer)
+    try: remove(filepath)
+    except: pass
+
+
+# 2. Dump File - Indentation: MaciDataObj - Test Indenting and Indentation off
+def test2_dump_file_indentation_maciobj():
+    filename = '2_dump_file_indentation_maciobj.data'
+    filepath = test_file_path + filename
+
+    # Remove Any Existing Test File
+    try: remove(filepath)
+    except: pass
+    time.sleep(file_delay_timer)
+
+    # Build Data
+    file_data = maci.build()
+    file_data.data_list = [1,2,3]
+    file_data.data_tuple = (1,2,3)
+    file_data.data_set = {1,2,3}
+
+    # Test Indent Level at 0 and its Data
+    maci.dump(filepath, file_data, indent_level=0)
+    file_import = maci.load(filepath)
+
+    assert file_import.data_list == [1,2,3]
+    assert file_import.data_tuple == (1,2,3)
+    assert file_import.data_set == {1,2,3}
+
+    # Test Indent Level at 7 and its Data
+    maci.dump(filepath, file_data, indent_level=7)
+    file_import = maci.load(filepath)
+
+    assert file_import.data_list == [1,2,3]
+    assert file_import.data_tuple == (1,2,3)
+    assert file_import.data_set == {1,2,3}
+
+    # Test Indentation OFF
+    maci.dump(filepath, file_data, indentation_on=False)
+    file_import = maci.load(filepath)
+
+    assert file_import.data_list == [1,2,3]
+    assert file_import.data_tuple == (1,2,3)
+    assert file_import.data_set == {1,2,3}
+
+    # Remove Test File
+    time.sleep(file_delay_timer)
+    try: remove(filepath)
+    except: pass
+
+
+# 3. Dump File - Multi-Line String: MaciDataObj - Test Multi-Line String Format
+def test3_dump_file_multiline_str_maciobj():
+    filename = '3_dump_file_multiline_str_maciobj.data'
+    filepath = test_file_path + filename
+
+    # Remove Any Existing Test File
+    try: remove(filepath)
+    except: pass
+    time.sleep(file_delay_timer)
+
+    # Build Data
+    file_data = maci.build()
+    file_data.data_int = 1
+    file_data.data_multi_str1 = "data line 1\ndata line 2\ndata line 3"
+    file_data.data_multi_str2 = "'data line 1\ndata line 2\ndata line 3'"
+    file_data.data_multi_str3 = '"data line 1\ndata line 2\ndata line 3"'
+    file_data.data_multi_str4 = '"""data line 1\ndata line 2\ndata line 3"""'
+    file_data.data_multi_str5 = "'''data line 1\ndata line 2\ndata line 3'''"
+    file_data.data_multi_str6 = "data line 1\ndata line ''' 2\ndata line 3"
+    file_data.data_multi_str7 = 'data line 1\ndata line """ 2\ndata line 3'
+    file_data.data_multi_str8 = 'data line 1\ndata line "" 2\ndata line 3'
+    file_data.data_multi_str9 = "data line 1\ndata line '' 2\ndata line 3"
+    file_data.data_bool = False
+
+    # Test Multi-Line String Dump and Load
+    maci.dump(filepath, file_data, multi_line_str=True)
+    file_import = maci.load(filepath)
+
+    assert file_import.data_int == 1
+    assert file_import.data_multi_str1 == "\ndata line 1\ndata line 2\ndata line 3\n"
+    assert file_import.data_multi_str2 == "\n'data line 1\ndata line 2\ndata line 3'\n"
+    assert file_import.data_multi_str3 == '\n"data line 1\ndata line 2\ndata line 3"\n'
+    assert file_import.data_multi_str4 == '\n"""data line 1\ndata line 2\ndata line 3"""\n'
+    assert file_import.data_multi_str5 == "\n'''data line 1\ndata line 2\ndata line 3'''\n"
+    assert file_import.data_multi_str6 == "\ndata line 1\ndata line ''' 2\ndata line 3\n"
+    assert file_import.data_multi_str7 == '\ndata line 1\ndata line """ 2\ndata line 3\n'
+    assert file_import.data_multi_str8 == '\ndata line 1\ndata line "" 2\ndata line 3\n'
+    assert file_import.data_multi_str9 == "\ndata line 1\ndata line '' 2\ndata line 3\n"
+    assert file_import.data_bool == False
+
+    # Remove Test File
+    time.sleep(file_delay_timer)
+    try: remove(filepath)
+    except: pass
