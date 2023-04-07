@@ -451,14 +451,14 @@ def test6_dump_file_use_symbol_glyphs_maciobj():
     file_data.map_hard_lock = None
 
     # Setup Attrs
-    file_data.link_attr('map_data', 'norm_data')
+    file_data.map_attr('map_data', 'norm_data')
     file_data.lock_attr('lock_data')
     file_data.hard_lock_attr('hard_lock_data')
 
-    file_data.link_attr('map_lock', 'lock_data')
+    file_data.map_attr('map_lock', 'lock_data')
     file_data.lock_attr('map_lock')
 
-    file_data.link_attr('map_hard_lock', 'hard_lock_data')
+    file_data.map_attr('map_hard_lock', 'hard_lock_data')
     file_data.hard_lock_attr('map_hard_lock')
 
     # Test dump with symbols and test data

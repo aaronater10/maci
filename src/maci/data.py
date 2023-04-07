@@ -57,13 +57,13 @@ class _Glyphs(_NamedTuple):
     ### Core Glyphs ###
     ref: str = '=='
     norm: str = '='
-    c: str = '+c='
+    m: str = '+m='
     h: str = '+h='
     l: str = '+l='
-    ch: str = '+ch='
-    cl: str = '+cl='
-    hc: str = '+hc='
-    lc: str = '+lc='
+    mh: str = '+mh='
+    ml: str = '+ml='
+    hm: str = '+hm='
+    lm: str = '+lm='
     ref_hard_lock: str = '$$=='
     hard_lock: str = '$$='
     ref_lock: str = '$=='
@@ -72,7 +72,7 @@ class _Glyphs(_NamedTuple):
     # Mixed Case Scenarios for Glyph Checks
     @staticmethod
     def get_mixed_case_set() -> _Set[str]:
-        return {'+cL=', '+Cl=', '+cH=', '+Ch=', '+lC=', '+Lc=', '+hC=', '+Hc='}
+        return {'+mL=', '+Ml=', '+mH=', '+Mh=', '+lM=', '+Lm=', '+hM=', '+Hm='}
 
 
 #########################################################################################################
@@ -249,15 +249,15 @@ class _MaciDataObjConstructor:
             __assignment_glyphs.ref,
             __assignment_glyphs.ref_lock,
             __assignment_glyphs.ref_hard_lock,
-            __assignment_glyphs.c,
-            __assignment_glyphs.cl,
-            __assignment_glyphs.lc,
-            __assignment_glyphs.ch,
-            __assignment_glyphs.hc
+            __assignment_glyphs.m,
+            __assignment_glyphs.ml,
+            __assignment_glyphs.lm,
+            __assignment_glyphs.mh,
+            __assignment_glyphs.hm
         }
-        _assignment_glyphs_for_ref_checks = {__assignment_glyphs.ref, __assignment_glyphs.c}
-        _assignment_glyphs_for_ref_lock_checks = {__assignment_glyphs.ref_lock, __assignment_glyphs.cl, __assignment_glyphs.lc}
-        _assignment_glyphs_for_ref_hard_lock_checks = {__assignment_glyphs.ref_hard_lock, __assignment_glyphs.ch, __assignment_glyphs.hc}
+        _assignment_glyphs_for_ref_checks = {__assignment_glyphs.ref, __assignment_glyphs.m}
+        _assignment_glyphs_for_ref_lock_checks = {__assignment_glyphs.ref_lock, __assignment_glyphs.ml, __assignment_glyphs.lm}
+        _assignment_glyphs_for_ref_hard_lock_checks = {__assignment_glyphs.ref_hard_lock, __assignment_glyphs.mh, __assignment_glyphs.hm}
         _assignment_glyphs_for_lock_checks = {__assignment_glyphs.lock, __assignment_glyphs.l}
         _assignment_glyphs_for_hard_lock_checks = {__assignment_glyphs.hard_lock, __assignment_glyphs.h}
         _assignment_glyphs_for_mixed_cases = __assignment_glyphs.get_mixed_case_set()
@@ -637,7 +637,7 @@ class _MaciDataObjConstructor:
 
 
     @_rename_exc_name_to_user_object_name
-    def link_attr(self, child_attr: str, parent_attr: str) -> None:
+    def map_attr(self, child_attr: str, parent_attr: str) -> None:
         """
         Create a link of an attribute name to another attribute name
 
@@ -668,7 +668,7 @@ class _MaciDataObjConstructor:
 
 
     @_rename_exc_name_to_user_object_name
-    def unlink_attr(self, attr_name: str) -> None:
+    def unmap_attr(self, attr_name: str) -> None:
         """
         Unlink an attribute name from another attribute name
 
@@ -694,7 +694,7 @@ class _MaciDataObjConstructor:
 
 
     @_rename_exc_name_to_user_object_name
-    def is_parent_link(self, attr_name: str) -> bool:
+    def is_parent_map(self, attr_name: str) -> bool:
         """
         Check if attr is a parent link
 
@@ -712,7 +712,7 @@ class _MaciDataObjConstructor:
     
 
     @_rename_exc_name_to_user_object_name
-    def is_child_link(self, attr_name: str) -> bool:
+    def is_child_map(self, attr_name: str) -> bool:
         """
         Check if attr is a child link
 
@@ -799,7 +799,7 @@ class _MaciDataObjConstructor:
 
 
     @_rename_exc_name_to_user_object_name
-    def get_all_links(self) -> _Dict[str, _Dict[str, _Union[str, _Dict[str, str]]]]:
+    def get_all_maps(self) -> _Dict[str, _Dict[str, _Union[str, _Dict[str, str]]]]:
         """
         Get all Parent and Child Links
 
@@ -819,7 +819,7 @@ class _MaciDataObjConstructor:
 
 
     @_rename_exc_name_to_user_object_name
-    def get_parent_links(self) -> _Dict[str, _Dict[str, str]]:
+    def get_parent_maps(self) -> _Dict[str, _Dict[str, str]]:
         """
         Get all Parent Links
 
@@ -837,9 +837,9 @@ class _MaciDataObjConstructor:
 
 
     @_rename_exc_name_to_user_object_name
-    def get_parent_chains(self, parent_attr: _Optional[str]=None, *, dup_link_check: bool=True) -> _Union[_Dict[str, _List[str]], _List[str]]:
+    def get_parent_map_chains(self, parent_attr: _Optional[str]=None, *, dup_link_check: bool=True) -> _Union[_Dict[str, _List[str]], _List[str]]:
         """
-        Get Parent Chains
+        Get Parent Map Chains
 
         Builds and returns a new dict or list of attr name chains that are currently linked together by interconnected children with
         the very top chain link being their parent
@@ -945,7 +945,7 @@ class _MaciDataObjConstructor:
 
 
     @_rename_exc_name_to_user_object_name
-    def get_child_links(self) -> _Dict[str, str]:
+    def get_child_maps(self) -> _Dict[str, str]:
         """
         Get all Child Links
 
@@ -1096,11 +1096,11 @@ def __dump_data(
     # Set Glyph Style to Symbols if Requested - Creates New Object with Same Names
     if use_symbol_glyphs:
         __assignment_glyphs = _Glyphs(
-            c=__assignment_glyphs.ref,
+            m=__assignment_glyphs.ref,
             h=__assignment_glyphs.hard_lock,
             l=__assignment_glyphs.lock,
-            ch=__assignment_glyphs.ref_hard_lock,
-            cl=__assignment_glyphs.ref_lock,
+            mh=__assignment_glyphs.ref_hard_lock,
+            ml=__assignment_glyphs.ref_lock,
         )
 
     
@@ -1130,15 +1130,15 @@ def __dump_data(
 
                 # Reference Name and Locked
                 if (key in data.__dict__[__reference_attr_list_key]) and (key in data.__dict__[__locked_attr_list_key]):
-                    __build_data_output.write(f'{key} {__assignment_glyphs.cl} {data.__dict__[__reference_attr_list_key][key]}\n')
+                    __build_data_output.write(f'{key} {__assignment_glyphs.ml} {data.__dict__[__reference_attr_list_key][key]}\n')
                     continue
                 # Reference Name and Hard Locked
                 if (key in data.__dict__[__reference_attr_list_key]) and (key in data.__dict__[__hard_locked_attr_list_key]):
-                    __build_data_output.write(f'{key} {__assignment_glyphs.ch} {data.__dict__[__reference_attr_list_key][key]}\n')
+                    __build_data_output.write(f'{key} {__assignment_glyphs.mh} {data.__dict__[__reference_attr_list_key][key]}\n')
                     continue
                 # Reference Name Only
                 if key in data.__dict__[__reference_attr_list_key]:
-                    __build_data_output.write(f'{key} {__assignment_glyphs.c} {data.__dict__[__reference_attr_list_key][key]}\n')
+                    __build_data_output.write(f'{key} {__assignment_glyphs.m} {data.__dict__[__reference_attr_list_key][key]}\n')
                     continue
 
                 # REPR SIGNAL: If certain object type matches, disable repr use

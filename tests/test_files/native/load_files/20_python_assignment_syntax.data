@@ -49,18 +49,18 @@ s6$$==s5
 
 # Letters lower
 l1+l=1
-l2+c=l1
-l3_1+cl=l2
-l3_2+lc=l2
+l2+m=l1
+l3_1+ml=l2
+l3_2+lm=l2
 l4+h=1
-l5_1+ch=l4
-l5_2+hc=l4
+l5_1+mh=l4
+l5_2+hm=l4
 
 # Letters UPPER
 L1+L=1
-L2+C=L1
-L3_1+CL=L2
-L3_2+LC=L2
+L2+M=L1
+L3_1+ML=L2
+L3_2+LM=L2
 L4+H=1
-L5_1+CH=L4
-L5_2+HC=L4
+L5_1+MH=L4
+L5_2+HM=L4

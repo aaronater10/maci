@@ -10,8 +10,10 @@ def test1_function_names_exist():
     # Native
     maci.load
     maci.loadstr
+    maci.loadstrdict
     maci.loadraw
     maci.loadattrs
+    maci.loaddict
     maci.dump
     maci.dumpstr
     maci.dumpraw
@@ -49,8 +51,10 @@ def test2_exception_names_exist():
     # Native
     maci.error.Load
     maci.error.LoadStr
+    maci.error.LoadStrDict
     maci.error.LoadRaw
     maci.error.LoadAttrs
+    maci.error.LoadDict
     maci.error.Dump
     maci.error.DumpStr
     maci.error.DumpRaw
@@ -87,13 +91,13 @@ def test3_macidataobj_method_names_exist():
     maci_obj.lock_attr
     maci_obj.unlock_attr
     maci_obj.hard_lock_attr
-    maci_obj.link_attr
+    maci_obj.map_attr
+    maci_obj.unmap_attr
     maci_obj.get_locked_list
     maci_obj.get_hard_locked_list
-    maci_obj.get_all_links
-    maci_obj.get_parent_links
-    maci_obj.get_child_links
-    maci_obj.get_parent_chains
-    maci_obj.unlink_attr
-    maci_obj.is_parent_link
-    maci_obj.is_child_link
+    maci_obj.get_all_maps
+    maci_obj.get_parent_maps
+    maci_obj.get_child_maps
+    maci_obj.get_parent_map_chains
+    maci_obj.is_parent_map
+    maci_obj.is_child_map
