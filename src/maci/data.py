@@ -1260,7 +1260,7 @@ def __dump_data(
                 if (key.startswith('__') and key.endswith('__')): continue
                 if key.startswith(f'_{type(data).__name__}'): # dunder detection (name mangle)
                     if (private_attrs) or (private_dunder_attrs) or (private_class_attrs) or (private_class_dunder_attrs):
-                        key = key.removeprefix(f'_{type(data).__name__}')
+                        key = key[len(f'_{type(data).__name__}'):]
                         _is_dunder_attr = True
                     else: continue
                 if (key.startswith('_')) and not (_is_dunder_attr):
@@ -1293,7 +1293,7 @@ def __dump_data(
                 if (key.startswith('__') and key.endswith('__')): continue
                 if key.startswith(f'_{data.__name__}'): # dunder detection (name mangle)
                     if (private_attrs) or (private_dunder_attrs) or (private_class_attrs) or (private_class_dunder_attrs):
-                        key = key.removeprefix(f'_{data.__name__}')
+                        key = key[len(f'_{data.__name__}'):]
                         _is_dunder_attr = True
                     else: continue
                 if (key.startswith('_')) and not (_is_dunder_attr):
@@ -1327,7 +1327,7 @@ def __dump_data(
                     if callable(value): continue
                     if key.startswith(f'_{type(data).__name__}'): # dunder detection (name mangle)
                         if (private_attrs) or (private_dunder_attrs) or (private_init_attrs) or (private_init_dunder_attrs):
-                            key = key.removeprefix(f'_{type(data).__name__}')
+                            key = key[len(f'_{type(data).__name__}'):]
                             _is_dunder_attr = True
                         else: continue
                     if (key.startswith('_')) and not (_is_dunder_attr):
@@ -1358,7 +1358,7 @@ def __dump_data(
                     if (key.startswith('__') and key.endswith('__')): continue
                     if key.startswith(f'_{type(data).__name__}'): # dunder detection (name mangle)
                         if (private_attrs) or (private_dunder_attrs) or (private_class_attrs) or (private_class_dunder_attrs):
-                            key = key.removeprefix(f'_{type(data).__name__}')
+                            key = key[len(f'_{type(data).__name__}'):]
                             _is_dunder_attr = True
                         else: continue
                     if (key.startswith('_')) and not (_is_dunder_attr):
