@@ -5,7 +5,7 @@ from ast import literal_eval as __literal_eval__
 from os import path as __path
 from typing import Union as __Union
 from ..data import MaciDataObj
-from ..error import Load
+from ..error import Load, GeneralError
 
 #########################################################################################################
 # Import py Data from File
@@ -54,11 +54,13 @@ def load(filename: str, *, attr_name_dedup: bool=True, encoding: __Union[str, No
     }
 
     # Return Final Import
-    return MaciDataObj(
-                filename,
-                _is_load_request=True,
-                _ignore_internal_maci_attr_check=_ignore_maci_attr_check,
-                attr_name_dedup=attr_name_dedup,
-                encoding=encoding,
-                **__err_messages
-            )
+    try:
+        return MaciDataObj(
+                    filename,
+                    _is_load_request=True,
+                    _ignore_internal_maci_attr_check=_ignore_maci_attr_check,
+                    attr_name_dedup=attr_name_dedup,
+                    encoding=encoding,
+                    **__err_messages
+                )
+    except GeneralError as err: raise Load(err) from None

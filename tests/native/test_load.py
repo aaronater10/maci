@@ -496,3 +496,23 @@ def test22_date_time_syntax():
     assert isinstance(file_import.custom_time_date, datetime) and str(file_import.custom_time_date) == "2023-03-13 22:06:00"
     assert isinstance(file_import.custom_timem_date, datetime) and str(file_import.custom_timem_date) == "2023-03-13 22:06:00.500000"
     assert isinstance(file_import.date_time_iso8601, datetime) and str(file_import.date_time_iso8601) == "2023-03-13 22:06:00"
+
+
+# 23. Ensure DateTime Syntax is Loadable - Import DateTime data with varying formats
+def test23_load_internal_method_check_off_on():
+    from datetime import datetime, date, time
+    filename_no_spaces = '23_internal_method_check.data'
+    filepath = test_file_path + filename_no_spaces
+
+    # OFF: File Import
+    file_import = maci.load(filepath, attr_name_dedup=False, _ignore_maci_attr_check=True)
+
+    # Test Attrs
+    assert file_import.map_attr == [1,2,3]
+    assert file_import.lock_attr == [1,2,3]
+    assert file_import.data_str == 'data'
+    assert file_import.data_int == 1
+
+    # ON: File Import (ON by Default)
+    with pytest.raises(maci.error.Load):
+        file_import = maci.load(filepath, attr_name_dedup=False)
