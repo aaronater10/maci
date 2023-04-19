@@ -106,3 +106,40 @@ def test4_data_bytes_export():
     time.sleep(file_delay_timer)
     try: remove(filepath)
     except: pass
+
+
+# 5. Encoding: Raw - Test some common encoding types
+def test5_dumpraw_and_loadraw_encodings():
+    filename = '5_dumpraw_loadraw_file_encodings.data'
+    filepath = test_file_path + filename
+    encodings_to_test = {
+        'utf-8',
+        'utf-16',
+        'utf-32',
+        'ascii',
+        'iso-8859-1',
+        'cp1252',
+    }
+
+    # Remove Any Existing Test File
+    try: remove(filepath)
+    except: pass
+    time.sleep(file_delay_timer)
+    assert not path.exists(filepath)
+
+    # Build Data
+    file_data = {'key': 'data'}
+
+    # Test Dump and Load with Various Encodings
+    for encoding in encodings_to_test:
+        maci.dumpraw(filepath, file_data, encoding=encoding)
+        time.sleep(file_delay_timer)
+        file_import = maci.loadraw(filepath, encoding=encoding)
+
+        # Test Section Data from File Load
+        assert "{'key': 'data'}" == file_import
+
+    # Remove Test File
+    time.sleep(file_delay_timer)
+    try: remove(filepath)
+    except: pass
