@@ -9,7 +9,9 @@ file_delay_timer = 0.25
 
 ################################################################
 # TESTS
-def test1_loadict_file_import():
+
+# 1. Load Dict - Test loading attrs from file
+def test1_loaddict_file_import():
     filename = '1_loaddict_file_import.data'
     filepath = test_file_path + filename
 
@@ -30,7 +32,8 @@ def test1_loadict_file_import():
     assert str(file_import['data_datetime']) == "2023-03-13 22:06:00"
 
 
-def test2_loadict_attr_dedup_off_on():
+# 2. Load Dict: Attr Dedup - Test Attr Dedup OFF/ON
+def test2_loaddict_attr_dedup_off_on():
     filename = '2_loaddict_attr_dedup_off_on.data'
     filepath = test_file_path + filename
 
