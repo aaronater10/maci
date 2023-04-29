@@ -137,7 +137,7 @@ class TestDump(unittest.TestCase):
         except: pass
 
     # 5. Save File: class - Testing Indentation
-    def test5_save_file_indentation_class(self):
+    def test5_save_file_indentation_class1(self):
         filename = '5_save_file_indentation_class.data'
         filepath = test_file_path + filename
 
@@ -685,7 +685,7 @@ def test1_dump_file_append_class():
 
 
 # 2. Dump File - Indentation: Class - Test Indenting and Indentation off
-def test2_dump_file_indentation_class():
+def test2_dump_file_indentation_class2():
     filename = '2_dump_file_indentation_class.data'
     filepath = test_file_path + filename
 

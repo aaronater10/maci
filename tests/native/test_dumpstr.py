@@ -1,11 +1,7 @@
 # dumpstr - Tests
 from src import maci
-from os import path, remove
-import time
-import pytest
 
 test_file_path = './tests/test_files/native/dumpstr_files/'
-file_delay_timer = 0.25
 
 ################################################################
 # TESTS
@@ -87,7 +83,7 @@ def test4_dumpstr_str_formatting_class():
 
 
 # 5. Dump Str: class - Testing Indentation
-def test5_dumpstr_str_indentation_class():
+def test5_dumpstr_str_indentation_class1():
     # Test Data Custom Class
     class TemplateData:
         def __init__(self) -> None:
@@ -118,902 +114,526 @@ def test5_dumpstr_str_indentation_class():
     assert str_import.data_list == [1,2,3]
 
 
+### MaciDataObj ###
 
-# ### PAUSE ###
+# 1. Dump Str - Indentation: MaciDataObj - Test Indenting and Indentation off
+def test1_dumpstr_str_indentation_maciobj():
+    # Build Data
+    str_data_build = maci.build()
+    str_data_build.data_list = [1,2,3]
+    str_data_build.data_tuple = (1,2,3)
+    str_data_build.data_set = {1,2,3}
 
-# # 6. Save File: class - Testing Appending
-# def test6_save_file_append_class():
-#     filename = '6_save_file_append_class.data'
-#     filepath = test_file_path + filename
+    # Test Indent Level at 0 and its Data
+    str_data = maci.dumpstr(str_data_build, indent_level=0)
+    str_import = maci.loadstr(str_data)
 
-#     # Test Data Custom Class
-#     class TemplateData:
-#         def __init__() -> None:
-#             self.data_list = [1,2,3]
-#             self.data_bool = True
-#             self.data_int = 1
-#     class_data = TemplateData()
+    assert str_import.data_list == [1,2,3]
+    assert str_import.data_tuple == (1,2,3)
+    assert str_import.data_set == {1,2,3}
 
-#     # Store Data, then Append to it
-#     maci.dumpstr(filepath, class_data, indentation_on=False)
-#     maci.dumpstr(filepath, class_data, append=True, indentation_on=False)
+    # Test Indent Level at 7 and its Data
+    str_data = maci.dumpstr(str_data_build, indent_level=7)
+    str_import = maci.loadstr(str_data)
 
-#     # Import Data and Set Line Count
-#     file_import = maci.loadraw(filepath)
-#     file_data = maci.loadstr(file_import, attr_name_dedup=False)
-#     file_import_lines = len(file_import.splitlines())
+    assert str_import.data_list == [1,2,3]
+    assert str_import.data_tuple == (1,2,3)
+    assert str_import.data_set == {1,2,3}
 
-#     # Test Line Count
-#     expected_file_lines = 6
-#     self.assertEqual(file_import_lines, expected_file_lines)
-#     # Test Data
-#     self.assertEqual(file_data.data_list, [1,2,3])
-#     self.assertEqual(file_data.data_bool, True)
-#     self.assertEqual(file_data.data_int, 1)
+    # Test Indentation OFF
+    str_data = maci.dumpstr(str_data_build, indentation_on=False)
+    str_import = maci.loadstr(str_data)
 
-#     # Remove Test File
-#     time.sleep(file_delay_timer)
-#     try: remove(filepath)
-#     except: pass
+    assert str_import.data_list == [1,2,3]
+    assert str_import.data_tuple == (1,2,3)
+    assert str_import.data_set == {1,2,3}
 
 
+# 2. Dump Str - Multi-Line String: MaciDataObj - Test Multi-Line String Format
+def test2_dumpstr_str_multiline_str_maciobj():
+    # Build Data
+    str_data_build = maci.build()
+    str_data_build.data_int = 1
+    str_data_build.data_multi_str1 = "data line 1\ndata line 2\ndata line 3"
+    str_data_build.data_multi_str2 = "'data line 1\ndata line 2\ndata line 3'"
+    str_data_build.data_multi_str3 = '"data line 1\ndata line 2\ndata line 3"'
+    str_data_build.data_multi_str4 = '"""data line 1\ndata line 2\ndata line 3"""'
+    str_data_build.data_multi_str5 = "'''data line 1\ndata line 2\ndata line 3'''"
+    str_data_build.data_multi_str6 = "data line 1\ndata line ''' 2\ndata line 3"
+    str_data_build.data_multi_str7 = 'data line 1\ndata line """ 2\ndata line 3'
+    str_data_build.data_multi_str8 = 'data line 1\ndata line "" 2\ndata line 3'
+    str_data_build.data_multi_str9 = "data line 1\ndata line '' 2\ndata line 3"
+    str_data_build.data_bool = False
 
-# ### MaciDataObj ###
+    # Test Multi-Line String Dump and Load
+    str_data = maci.dumpstr(str_data_build, multi_line_str=True)
+    str_import = maci.loadstr(str_data)
 
-# # 1. Dump File - Append: MaciDataObj - Test Appending
-# def test1_dump_file_append_maciobj():
-#     filename = '1_dump_file_append_maciobj.data'
-#     filepath = test_file_path + filename
-
-#     # Remove Any Existing Test File
-#     try: remove(filepath)
-#     except: pass
-#     time.sleep(file_delay_timer)
-
-#     # Build Data
-#     file_data = maci.build()
-#     file_data.d1 = 'data1'
-#     file_data.d2 = 'data2'
-#     file_data.d3 = 'data3'
-
-#     # Append Data
-#     maci.dumpstr(filepath, file_data)
-#     maci.dumpstr(filepath, file_data, append=True)
-
-#     # Test Data
-#     file_import = maci.load(filepath, attr_name_dedup=False)
-
-#     assert file_import.d1 == 'data1'
-#     assert file_import.d2 == 'data2'
-#     assert file_import.d3 == 'data3'
-
-#     # Remove Test File
-#     time.sleep(file_delay_timer)
-#     try: remove(filepath)
-#     except: pass
+    assert str_import.data_int == 1
+    assert str_import.data_multi_str1 == "\ndata line 1\ndata line 2\ndata line 3\n"
+    assert str_import.data_multi_str2 == "\n'data line 1\ndata line 2\ndata line 3'\n"
+    assert str_import.data_multi_str3 == '\n"data line 1\ndata line 2\ndata line 3"\n'
+    assert str_import.data_multi_str4 == '\n"""data line 1\ndata line 2\ndata line 3"""\n'
+    assert str_import.data_multi_str5 == "\n'''data line 1\ndata line 2\ndata line 3'''\n"
+    assert str_import.data_multi_str6 == "\ndata line 1\ndata line ''' 2\ndata line 3\n"
+    assert str_import.data_multi_str7 == '\ndata line 1\ndata line """ 2\ndata line 3\n'
+    assert str_import.data_multi_str8 == '\ndata line 1\ndata line "" 2\ndata line 3\n'
+    assert str_import.data_multi_str9 == "\ndata line 1\ndata line '' 2\ndata line 3\n"
+    assert str_import.data_bool == False
 
 
-# # 2. Dump File - Indentation: MaciDataObj - Test Indenting and Indentation off
-# def test2_dump_file_indentation_maciobj():
-#     filename = '2_dump_file_indentation_maciobj.data'
-#     filepath = test_file_path + filename
-
-#     # Remove Any Existing Test File
-#     try: remove(filepath)
-#     except: pass
-#     time.sleep(file_delay_timer)
-
-#     # Build Data
-#     file_data = maci.build()
-#     file_data.data_list = [1,2,3]
-#     file_data.data_tuple = (1,2,3)
-#     file_data.data_set = {1,2,3}
-
-#     # Test Indent Level at 0 and its Data
-#     maci.dumpstr(filepath, file_data, indent_level=0)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.data_list == [1,2,3]
-#     assert file_import.data_tuple == (1,2,3)
-#     assert file_import.data_set == {1,2,3}
-
-#     # Test Indent Level at 7 and its Data
-#     maci.dumpstr(filepath, file_data, indent_level=7)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.data_list == [1,2,3]
-#     assert file_import.data_tuple == (1,2,3)
-#     assert file_import.data_set == {1,2,3}
-
-#     # Test Indentation OFF
-#     maci.dumpstr(filepath, file_data, indentation_on=False)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.data_list == [1,2,3]
-#     assert file_import.data_tuple == (1,2,3)
-#     assert file_import.data_set == {1,2,3}
-
-#     # Remove Test File
-#     time.sleep(file_delay_timer)
-#     try: remove(filepath)
-#     except: pass
-
-
-# # 3. Dump File - Multi-Line String: MaciDataObj - Test Multi-Line String Format
-# def test3_dump_file_multiline_str_maciobj():
-#     filename = '3_dump_file_multiline_str_maciobj.data'
-#     filepath = test_file_path + filename
-
-#     # Remove Any Existing Test File
-#     try: remove(filepath)
-#     except: pass
-#     time.sleep(file_delay_timer)
-
-#     # Build Data
-#     file_data = maci.build()
-#     file_data.data_int = 1
-#     file_data.data_multi_str1 = "data line 1\ndata line 2\ndata line 3"
-#     file_data.data_multi_str2 = "'data line 1\ndata line 2\ndata line 3'"
-#     file_data.data_multi_str3 = '"data line 1\ndata line 2\ndata line 3"'
-#     file_data.data_multi_str4 = '"""data line 1\ndata line 2\ndata line 3"""'
-#     file_data.data_multi_str5 = "'''data line 1\ndata line 2\ndata line 3'''"
-#     file_data.data_multi_str6 = "data line 1\ndata line ''' 2\ndata line 3"
-#     file_data.data_multi_str7 = 'data line 1\ndata line """ 2\ndata line 3'
-#     file_data.data_multi_str8 = 'data line 1\ndata line "" 2\ndata line 3'
-#     file_data.data_multi_str9 = "data line 1\ndata line '' 2\ndata line 3"
-#     file_data.data_bool = False
-
-#     # Test Multi-Line String Dump and Load
-#     maci.dumpstr(filepath, file_data, multi_line_str=True)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.data_int == 1
-#     assert file_import.data_multi_str1 == "\ndata line 1\ndata line 2\ndata line 3\n"
-#     assert file_import.data_multi_str2 == "\n'data line 1\ndata line 2\ndata line 3'\n"
-#     assert file_import.data_multi_str3 == '\n"data line 1\ndata line 2\ndata line 3"\n'
-#     assert file_import.data_multi_str4 == '\n"""data line 1\ndata line 2\ndata line 3"""\n'
-#     assert file_import.data_multi_str5 == "\n'''data line 1\ndata line 2\ndata line 3'''\n"
-#     assert file_import.data_multi_str6 == "\ndata line 1\ndata line ''' 2\ndata line 3\n"
-#     assert file_import.data_multi_str7 == '\ndata line 1\ndata line """ 2\ndata line 3\n'
-#     assert file_import.data_multi_str8 == '\ndata line 1\ndata line "" 2\ndata line 3\n'
-#     assert file_import.data_multi_str9 == "\ndata line 1\ndata line '' 2\ndata line 3\n"
-#     assert file_import.data_bool == False
-
-#     # Remove Test File
-#     time.sleep(file_delay_timer)
-#     try: remove(filepath)
-#     except: pass
-
-
-# # 4. Encoding: MaciDataObj - Test some common encoding types
-# def test4_dump_and_load_encodings_maciobj():
-#     filename = '4_dump_file_encoding.data'
-#     filepath = test_file_path + filename
-#     encodings_to_test = {
-#         'utf-8',
-#         'utf-16',
-#         'utf-32',
-#         'ascii',
-#         'iso-8859-1',
-#         'cp1252',
-#     }
-
-#     # Remove Any Existing Test File
-#     try: remove(filepath)
-#     except: pass
-#     time.sleep(file_delay_timer)
-#     assert not path.exists(filepath)
-
-#     # Build Data
-#     file_data = maci.build()
-#     file_data.data_dict = {'key': 'data'}
-
-#     # Test Dump and Load with Various Encodings
-#     for encoding in encodings_to_test:
-#         maci.dumpstr(filepath, file_data, encoding=encoding)
-#         time.sleep(file_delay_timer)
-#         file_import = maci.load(filepath, encoding=encoding)
-
-#         # Test Section Data from File Load
-#         assert 'data' == file_import.data_dict.get('key')
-
-#     # Remove Test File
-#     time.sleep(file_delay_timer)
-#     try: remove(filepath)
-#     except: pass
-
-
-# # 5. Dump File - Attr Types: MaciDataObj - Test different attribute types to dump and ensure data is maintained
-# def test5_dump_file_attr_types_maciobj():
-#     filename = '5_dump_file_attr_types_maciobj.data'
-#     filepath = test_file_path + filename
-
-#     # Remove Any Existing Test File
-#     try: remove(filepath)
-#     except: pass
-#     time.sleep(file_delay_timer)
-
-#     # Build Data
-#     file_data = maci.build()
-#     file_data.norm_data1 = 'data1'
-#     file_data._under_data = 'data'
-#     file_data.__dunder_data = 'data'
-#     file_data.norm_data2 = 'data2'
+# 3. Dump Str - Attr Types: MaciDataObj - Test different attribute types to dump and ensure data is maintained
+def test3_dumpstr_str_attr_types_maciobj():
+    # Build Data
+    str_data_build = maci.build()
+    str_data_build.norm_data1 = 'data1'
+    str_data_build._under_data = 'data'
+    str_data_build.__dunder_data = 'data'
+    str_data_build.norm_data2 = 'data2'
     
-#     # Test: All Private Attrs
-#     maci.dumpstr(filepath, file_data, private_attrs=True)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.norm_data1 == 'data1'
-#     assert file_import._under_data == 'data'
-#     assert file_import.__dunder_data == 'data'
-#     assert file_import.norm_data2 == 'data2'
-
-#     # Test: Private Under Attrs
-#     maci.dumpstr(filepath, file_data, private_under_attrs=True)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.norm_data1 == 'data1'
-#     assert file_import._under_data == 'data'
-#     assert file_import.norm_data2 == 'data2'
-
-#     # Test: Private Dunder Attrs
-#     maci.dumpstr(filepath, file_data, private_dunder_attrs=True)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.norm_data1 == 'data1'
-#     assert file_import.__dunder_data == 'data'
-#     assert file_import.norm_data2 == 'data2'
-
-#     # Remove Test File
-#     time.sleep(file_delay_timer)
-#     try: remove(filepath)
-#     except: pass
-
-
-# # 6. Dump File - Use Symbol Glyphs: MaciDataObj - Test dump with symbol glyph representation
-# def test6_dump_file_use_symbol_glyphs_maciobj():
-#     filename = '6_dump_file_use_symbol_glyphs_maciobj.data'
-#     filepath = test_file_path + filename
-
-#     # Remove Any Existing Test File
-#     try: remove(filepath)
-#     except: pass
-#     time.sleep(file_delay_timer)
-
-#     # Build Data
-#     file_data = maci.build()
-#     file_data.norm_data = 'data'
-#     file_data.map_data = None
-#     file_data.lock_data = 'data'
-#     file_data.hard_lock_data = 'data'
-#     file_data.map_lock = None
-#     file_data.map_hard_lock = None
-
-#     # Setup Attrs
-#     file_data.map_attr('map_data', 'norm_data')
-#     file_data.lock_attr('lock_data')
-#     file_data.hard_lock_attr('hard_lock_data')
-
-#     file_data.map_attr('map_lock', 'lock_data')
-#     file_data.lock_attr('map_lock')
-
-#     file_data.map_attr('map_hard_lock', 'hard_lock_data')
-#     file_data.hard_lock_attr('map_hard_lock')
-
-#     # Test dump with symbols and test data
-#     maci.dumpstr(filepath, file_data, use_symbol_glyphs=True)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.norm_data == 'data'
-#     assert file_import.map_data == 'data'
-#     assert file_import.lock_data == 'data'
-#     assert file_import.hard_lock_data == 'data'
-#     assert file_import.map_lock == 'data'
-#     assert file_import.map_hard_lock == 'data'
-
-#     # Remove Test File
-#     time.sleep(file_delay_timer)
-#     try: remove(filepath)
-#     except: pass
-
-
-
-# ### DICT ###
-
-# # 1. Dump File - Append: Dict - Test Appending
-# def test1_dump_file_append_dict():
-#     filename = '1_dump_file_append_dict.data'
-#     filepath = test_file_path + filename
-
-#     # Remove Any Existing Test File
-#     try: remove(filepath)
-#     except: pass
-#     time.sleep(file_delay_timer)
-
-#     # Build Data
-#     file_data = {
-#         'd1': 'data1',
-#         'd2': 'data2',
-#         'd3': 'data3',
-#     }
-
-#     # Append Data
-#     maci.dumpstr(filepath, file_data)
-#     maci.dumpstr(filepath, file_data, append=True)
-
-#     # Test Data
-#     file_import = maci.load(filepath, attr_name_dedup=False)
-
-#     assert file_import.d1 == 'data1'
-#     assert file_import.d2 == 'data2'
-#     assert file_import.d3 == 'data3'
-
-#     # Remove Test File
-#     time.sleep(file_delay_timer)
-#     try: remove(filepath)
-#     except: pass
-
-
-# # 2. Dump File - Indentation: Dict - Test Indenting and Indentation off
-# def test2_dump_file_indentation_dict():
-#     filename = '2_dump_file_indentation_dict.data'
-#     filepath = test_file_path + filename
-
-#     # Remove Any Existing Test File
-#     try: remove(filepath)
-#     except: pass
-#     time.sleep(file_delay_timer)
-
-#     # Build Data
-#     file_data = {
-#     'data_list': [1,2,3],
-#     'data_tuple': (1,2,3),
-#     'data_set': {1,2,3},
-#     }
-
-#     # Test Indent Level at 0 and its Data
-#     maci.dumpstr(filepath, file_data, indent_level=0)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.data_list == [1,2,3]
-#     assert file_import.data_tuple == (1,2,3)
-#     assert file_import.data_set == {1,2,3}
-
-#     # Test Indent Level at 7 and its Data
-#     maci.dumpstr(filepath, file_data, indent_level=7)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.data_list == [1,2,3]
-#     assert file_import.data_tuple == (1,2,3)
-#     assert file_import.data_set == {1,2,3}
-
-#     # Test Indentation OFF
-#     maci.dumpstr(filepath, file_data, indentation_on=False)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.data_list == [1,2,3]
-#     assert file_import.data_tuple == (1,2,3)
-#     assert file_import.data_set == {1,2,3}
-
-#     # Remove Test File
-#     time.sleep(file_delay_timer)
-#     try: remove(filepath)
-#     except: pass
-
-
-# # 3. Dump File - Multi-Line String: Dict - Test Multi-Line String Format
-# def test3_dump_file_multiline_str_dict():
-#     filename = '3_dump_file_multiline_str_dict.data'
-#     filepath = test_file_path + filename
-
-#     # Remove Any Existing Test File
-#     try: remove(filepath)
-#     except: pass
-#     time.sleep(file_delay_timer)
-
-#     # Build Data
-#     file_data = {
-#     'data_int': 1,
-#     'data_multi_str1': "data line 1\ndata line 2\ndata line 3",
-#     'data_multi_str2': "'data line 1\ndata line 2\ndata line 3'",
-#     'data_multi_str3': '"data line 1\ndata line 2\ndata line 3"',
-#     'data_multi_str4': '"""data line 1\ndata line 2\ndata line 3"""',
-#     'data_multi_str5': "'''data line 1\ndata line 2\ndata line 3'''",
-#     'data_multi_str6': "data line 1\ndata line ''' 2\ndata line 3",
-#     'data_multi_str7': 'data line 1\ndata line """ 2\ndata line 3',
-#     'data_multi_str8': 'data line 1\ndata line "" 2\ndata line 3',
-#     'data_multi_str9': "data line 1\ndata line '' 2\ndata line 3",
-#     'data_bool': False,
-#     }
-
-#     # Test Multi-Line String Dump and Load
-#     maci.dumpstr(filepath, file_data, multi_line_str=True)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.data_int == 1
-#     assert file_import.data_multi_str1 == "\ndata line 1\ndata line 2\ndata line 3\n"
-#     assert file_import.data_multi_str2 == "\n'data line 1\ndata line 2\ndata line 3'\n"
-#     assert file_import.data_multi_str3 == '\n"data line 1\ndata line 2\ndata line 3"\n'
-#     assert file_import.data_multi_str4 == '\n"""data line 1\ndata line 2\ndata line 3"""\n'
-#     assert file_import.data_multi_str5 == "\n'''data line 1\ndata line 2\ndata line 3'''\n"
-#     assert file_import.data_multi_str6 == "\ndata line 1\ndata line ''' 2\ndata line 3\n"
-#     assert file_import.data_multi_str7 == '\ndata line 1\ndata line """ 2\ndata line 3\n'
-#     assert file_import.data_multi_str8 == '\ndata line 1\ndata line "" 2\ndata line 3\n'
-#     assert file_import.data_multi_str9 == "\ndata line 1\ndata line '' 2\ndata line 3\n"
-#     assert file_import.data_bool == False
-
-#     # Remove Test File
-#     time.sleep(file_delay_timer)
-#     try: remove(filepath)
-#     except: pass
-
-
-# # 4. Encoding: Dict - Test some common encoding types
-# def test4_dump_and_load_encodings_dict():
-#     filename = '4_dump_file_encoding.data'
-#     filepath = test_file_path + filename
-#     encodings_to_test = {
-#         'utf-8',
-#         'utf-16',
-#         'utf-32',
-#         'ascii',
-#         'iso-8859-1',
-#         'cp1252',
-#     }
-
-#     # Remove Any Existing Test File
-#     try: remove(filepath)
-#     except: pass
-#     time.sleep(file_delay_timer)
-#     assert not path.exists(filepath)
-
-#     # Build Data
-#     file_data = {'key': 'data'}
-
-#     # Test Dump and Load with Various Encodings
-#     for encoding in encodings_to_test:
-#         maci.dumpstr(filepath, file_data, encoding=encoding)
-#         time.sleep(file_delay_timer)
-#         file_import = maci.load(filepath, encoding=encoding)
-
-#         # Test Section Data from File Load
-#         assert 'data' == file_import.key
-
-#     # Remove Test File
-#     time.sleep(file_delay_timer)
-#     try: remove(filepath)
-#     except: pass
-
-
-
-# ### Class ###
-
-# # 1. Dump File - Append: Class - Test Appending
-# def test1_dump_file_append_class():
-#     filename = '1_dump_file_append_class.data'
-#     filepath = test_file_path + filename
-
-#     # Remove Any Existing Test File
-#     try: remove(filepath)
-#     except: pass
-#     time.sleep(file_delay_timer)
-
-#     # Build Data
-#     class CustomClass:
-#         def __init__():
-#             self.d1 = 'data1'
-#             self.d2 = 'data2'
-#             self.d3 = 'data3'
-#     file_data = CustomClass()
-
-#     # Append Data
-#     maci.dumpstr(filepath, file_data)
-#     maci.dumpstr(filepath, file_data, append=True)
-
-#     # Test Data
-#     file_import = maci.load(filepath, attr_name_dedup=False)
-
-#     assert file_import.d1 == 'data1'
-#     assert file_import.d2 == 'data2'
-#     assert file_import.d3 == 'data3'
-
-#     # Remove Test File
-#     time.sleep(file_delay_timer)
-#     try: remove(filepath)
-#     except: pass
-
-
-# # 2. Dump File - Indentation: Class - Test Indenting and Indentation off
-# def test2_dump_file_indentation_class():
-#     filename = '2_dump_file_indentation_class.data'
-#     filepath = test_file_path + filename
-
-#     # Remove Any Existing Test File
-#     try: remove(filepath)
-#     except: pass
-#     time.sleep(file_delay_timer)
-
-#     # Build Data
-#     class CustomClass:
-#         def __init__():
-#             self.data_list = [1,2,3]
-#             self.data_tuple = (1,2,3)
-#             self.data_set = {1,2,3}
-#     file_data = CustomClass()
-
-#     # Test Indent Level at 0 and its Data
-#     maci.dumpstr(filepath, file_data, indent_level=0)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.data_list == [1,2,3]
-#     assert file_import.data_tuple == (1,2,3)
-#     assert file_import.data_set == {1,2,3}
-
-#     # Test Indent Level at 7 and its Data
-#     maci.dumpstr(filepath, file_data, indent_level=7)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.data_list == [1,2,3]
-#     assert file_import.data_tuple == (1,2,3)
-#     assert file_import.data_set == {1,2,3}
-
-#     # Test Indentation OFF
-#     maci.dumpstr(filepath, file_data, indentation_on=False)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.data_list == [1,2,3]
-#     assert file_import.data_tuple == (1,2,3)
-#     assert file_import.data_set == {1,2,3}
-
-#     # Remove Test File
-#     time.sleep(file_delay_timer)
-#     try: remove(filepath)
-#     except: pass
-
-
-# # 3. Dump File - Multi-Line String: Class - Test Multi-Line String Format
-# def test3_dump_file_multiline_str_class():
-#     filename = '3_dump_file_multiline_str_class.data'
-#     filepath = test_file_path + filename
-
-#     # Remove Any Existing Test File
-#     try: remove(filepath)
-#     except: pass
-#     time.sleep(file_delay_timer)
-
-#     # Build Data
-#     class CustomClass:
-#         def __init__():
-#             self.data_int = 1
-#             self.data_multi_str1 = "data line 1\ndata line 2\ndata line 3"
-#             self.data_multi_str2 = "'data line 1\ndata line 2\ndata line 3'"
-#             self.data_multi_str3 = '"data line 1\ndata line 2\ndata line 3"'
-#             self.data_multi_str4 = '"""data line 1\ndata line 2\ndata line 3"""'
-#             self.data_multi_str5 = "'''data line 1\ndata line 2\ndata line 3'''"
-#             self.data_multi_str6 = "data line 1\ndata line ''' 2\ndata line 3"
-#             self.data_multi_str7 = 'data line 1\ndata line """ 2\ndata line 3'
-#             self.data_multi_str8 = 'data line 1\ndata line "" 2\ndata line 3'
-#             self.data_multi_str9 = "data line 1\ndata line '' 2\ndata line 3"
-#             self.data_bool = False
-#     file_data = CustomClass()
-
-#     # Test Multi-Line String Dump and Load
-#     maci.dumpstr(filepath, file_data, multi_line_str=True)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.data_int == 1
-#     assert file_import.data_multi_str1 == "\ndata line 1\ndata line 2\ndata line 3\n"
-#     assert file_import.data_multi_str2 == "\n'data line 1\ndata line 2\ndata line 3'\n"
-#     assert file_import.data_multi_str3 == '\n"data line 1\ndata line 2\ndata line 3"\n'
-#     assert file_import.data_multi_str4 == '\n"""data line 1\ndata line 2\ndata line 3"""\n'
-#     assert file_import.data_multi_str5 == "\n'''data line 1\ndata line 2\ndata line 3'''\n"
-#     assert file_import.data_multi_str6 == "\ndata line 1\ndata line ''' 2\ndata line 3\n"
-#     assert file_import.data_multi_str7 == '\ndata line 1\ndata line """ 2\ndata line 3\n'
-#     assert file_import.data_multi_str8 == '\ndata line 1\ndata line "" 2\ndata line 3\n'
-#     assert file_import.data_multi_str9 == "\ndata line 1\ndata line '' 2\ndata line 3\n"
-#     assert file_import.data_bool == False
-
-#     # Remove Test File
-#     time.sleep(file_delay_timer)
-#     try: remove(filepath)
-#     except: pass
-
-
-# # 4. Encoding: Class - Test some common encoding types
-# def test4_dump_and_load_encodings_class():
-#     filename = '4_dump_file_encoding.data'
-#     filepath = test_file_path + filename
-#     encodings_to_test = {
-#         'utf-8',
-#         'utf-16',
-#         'utf-32',
-#         'ascii',
-#         'iso-8859-1',
-#         'cp1252',
-#     }
-
-#     # Remove Any Existing Test File
-#     try: remove(filepath)
-#     except: pass
-#     time.sleep(file_delay_timer)
-#     assert not path.exists(filepath)
-
-#     # Build Data
-#     class CustomClass:
-#         def __init__():
-#             self.data_dict = {'key': 'data'}
-#     file_data = CustomClass()
-
-#     # Test Dump and Load with Various Encodings
-#     for encoding in encodings_to_test:
-#         maci.dumpstr(filepath, file_data, encoding=encoding)
-#         time.sleep(file_delay_timer)
-#         file_import = maci.load(filepath, encoding=encoding)
-
-#         # Test Section Data from File Load
-#         assert 'data' == file_import.data_dict.get('key')
-
-#     # Remove Test File
-#     time.sleep(file_delay_timer)
-#     try: remove(filepath)
-#     except: pass
-
-
-# # 5. Dump File - Attr Types: Class - Test different attribute types to dump and ensure data is maintained
-# def test5_dump_file_attr_types_class():
-#     filename = '5_dump_file_attr_types_class.data'
-#     filepath = test_file_path + filename
-
-#     # Remove Any Existing Test File
-#     try: remove(filepath)
-#     except: pass
-#     time.sleep(file_delay_timer)
-
-#     # Build Data
-#     class CustomClass:
-#         # Class Attrs
-#         cls_norm_data1 = 'data1'
-#         _cls_under_data = 'data'
-#         __cls_dunder_data = 'data'
-#         cls_norm_data2 = 'data2'
-#         def __init__():
-#             # Init Attrs
-#             self.init_norm_data1 = 'data1'
-#             self._init_under_data = 'data'
-#             self.__init_dunder_data = 'data'
-#             self.init_norm_data2 = 'data2'
-#     file_data = CustomClass()
-
-#     ### INIT & CLASS ###
-
-#     # Test: All Normal Init & Class Attrs
-#     maci.dumpstr(filepath, file_data, class_attrs=True)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.init_norm_data1 == 'data1'
-#     assert file_import.init_norm_data2 == 'data2'
-#     assert file_import.cls_norm_data1 == 'data1'
-#     assert file_import.cls_norm_data2 == 'data2'
-
-#     # Test: All Normal/Private Init & Class Attrs
-#     maci.dumpstr(filepath, file_data, private_attrs=True, class_attrs=True)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.init_norm_data1 == 'data1'
-#     assert file_import._init_under_data == 'data'
-#     assert file_import.__init_dunder_data == 'data'
-#     assert file_import.init_norm_data2 == 'data2'
-#     assert file_import.cls_norm_data1 == 'data1'
-#     assert file_import._cls_under_data == 'data'
-#     assert file_import.__cls_dunder_data == 'data'
-#     assert file_import.cls_norm_data2 == 'data2'
-
-#     # Test: All Normal/Under Init & Class Attrs
-#     maci.dumpstr(filepath, file_data, private_under_attrs=True, class_attrs=True)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.init_norm_data1 == 'data1'
-#     assert file_import._init_under_data == 'data'
-#     assert file_import.init_norm_data2 == 'data2'
-#     assert file_import.cls_norm_data1 == 'data1'
-#     assert file_import._cls_under_data == 'data'
-#     assert file_import.cls_norm_data2 == 'data2'
-
-#     # Test: All Normal/Dunder Init & Class Attrs
-#     maci.dumpstr(filepath, file_data, private_dunder_attrs=True, class_attrs=True)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.init_norm_data1 == 'data1'
-#     assert file_import.__init_dunder_data == 'data'
-#     assert file_import.init_norm_data2 == 'data2'
-#     assert file_import.cls_norm_data1 == 'data1'
-#     assert file_import.__cls_dunder_data == 'data'
-#     assert file_import.cls_norm_data2 == 'data2'
-
-#     # Test: Normal Init & Normal/Private Class Attrs
-#     maci.dumpstr(filepath, file_data, private_class_attrs=True, class_attrs=True)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.init_norm_data1 == 'data1'
-#     assert file_import.init_norm_data2 == 'data2'
-#     assert file_import.cls_norm_data1 == 'data1'
-#     assert file_import._cls_under_data == 'data'
-#     assert file_import.__cls_dunder_data == 'data'
-#     assert file_import.cls_norm_data2 == 'data2'
-
-#     # Test: Normal Init & Normal/Under Class Attrs
-#     maci.dumpstr(filepath, file_data, private_class_under_attrs=True, class_attrs=True)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.init_norm_data1 == 'data1'
-#     assert file_import.init_norm_data2 == 'data2'
-#     assert file_import.cls_norm_data1 == 'data1'
-#     assert file_import._cls_under_data == 'data'
-#     assert file_import.cls_norm_data2 == 'data2'
-
-#     # Test: Normal Init & Normal/Dunder Class Attrs
-#     maci.dumpstr(filepath, file_data, private_class_dunder_attrs=True, class_attrs=True)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.init_norm_data1 == 'data1'
-#     assert file_import.init_norm_data2 == 'data2'
-#     assert file_import.cls_norm_data1 == 'data1'
-#     assert file_import.__cls_dunder_data == 'data'
-#     assert file_import.cls_norm_data2 == 'data2'
-
-#     # Test: Normal Class & Normal/Private Init Attrs
-#     maci.dumpstr(filepath, file_data, private_init_attrs=True, class_attrs=True)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.init_norm_data1 == 'data1'
-#     assert file_import._init_under_data == 'data'
-#     assert file_import.__init_dunder_data == 'data'
-#     assert file_import.init_norm_data2 == 'data2'
-#     assert file_import.cls_norm_data1 == 'data1'
-#     assert file_import.cls_norm_data2 == 'data2'
+    # Test: All Private Attrs
+    str_data = maci.dumpstr(str_data_build, private_attrs=True)
+    str_import = maci.loadstr(str_data)
+
+    assert str_import.norm_data1 == 'data1'
+    assert str_import._under_data == 'data'
+    assert str_import.__dunder_data == 'data'
+    assert str_import.norm_data2 == 'data2'
+
+    # Test: Private Under Attrs
+    str_data = maci.dumpstr(str_data_build, private_under_attrs=True)
+    str_import = maci.loadstr(str_data)
+
+    assert str_import.norm_data1 == 'data1'
+    assert str_import._under_data == 'data'
+    assert str_import.norm_data2 == 'data2'
+
+    # Test: Private Dunder Attrs
+    str_data = maci.dumpstr(str_data_build, private_dunder_attrs=True)
+    str_import = maci.loadstr(str_data)
+
+    assert str_import.norm_data1 == 'data1'
+    assert str_import.__dunder_data == 'data'
+    assert str_import.norm_data2 == 'data2'
+
+
+# 4. Dump Str - Use Symbol Glyphs: MaciDataObj - Test dump with symbol glyph representation
+def test4_dumpstr_str_use_symbol_glyphs_maciobj():
+    # Build Data
+    str_data_build = maci.build()
+    str_data_build.norm_data = 'data'
+    str_data_build.map_data = None
+    str_data_build.lock_data = 'data'
+    str_data_build.hard_lock_data = 'data'
+    str_data_build.map_lock = None
+    str_data_build.map_hard_lock = None
+
+    # Setup Attrs
+    str_data_build.map_attr('map_data', 'norm_data')
+    str_data_build.lock_attr('lock_data')
+    str_data_build.hard_lock_attr('hard_lock_data')
+
+    str_data_build.map_attr('map_lock', 'lock_data')
+    str_data_build.lock_attr('map_lock')
+
+    str_data_build.map_attr('map_hard_lock', 'hard_lock_data')
+    str_data_build.hard_lock_attr('map_hard_lock')
+
+    # Test dump with symbols and test data
+    str_data = maci.dumpstr(str_data_build, use_symbol_glyphs=True)
+    str_import = maci.loadstr(str_data)
+
+    assert str_import.norm_data == 'data'
+    assert str_import.map_data == 'data'
+    assert str_import.lock_data == 'data'
+    assert str_import.hard_lock_data == 'data'
+    assert str_import.map_lock == 'data'
+    assert str_import.map_hard_lock == 'data'
+
+
+### DICT ###
+
+# 1. Dump Str - Indentation: Dict - Test Indenting and Indentation off
+def test1_dumpstr_str_indentation_dict():
+    # Build Data
+    str_data_dict = {
+    'data_list': [1,2,3],
+    'data_tuple': (1,2,3),
+    'data_set': {1,2,3},
+    }
+
+    # Test Indent Level at 0 and its Data
+    str_data = maci.dumpstr(str_data_dict, indent_level=0)
+    str_import = maci.loadstr(str_data)
+
+    assert str_import.data_list == [1,2,3]
+    assert str_import.data_tuple == (1,2,3)
+    assert str_import.data_set == {1,2,3}
+
+    # Test Indent Level at 7 and its Data
+    str_data = maci.dumpstr(str_data_dict, indent_level=7)
+    str_import = maci.loadstr(str_data)
+
+    assert str_import.data_list == [1,2,3]
+    assert str_import.data_tuple == (1,2,3)
+    assert str_import.data_set == {1,2,3}
+
+    # Test Indentation OFF
+    str_data = maci.dumpstr(str_data_dict, indentation_on=False)
+    str_import = maci.loadstr(str_data)
+
+    assert str_import.data_list == [1,2,3]
+    assert str_import.data_tuple == (1,2,3)
+    assert str_import.data_set == {1,2,3}
+
+
+# 2. Dump Str - Multi-Line String: Dict - Test Multi-Line String Format
+def test2_dumpstr_str_multiline_str_dict():
+    # Build Data
+    str_data_dict = {
+    'data_int': 1,
+    'data_multi_str1': "data line 1\ndata line 2\ndata line 3",
+    'data_multi_str2': "'data line 1\ndata line 2\ndata line 3'",
+    'data_multi_str3': '"data line 1\ndata line 2\ndata line 3"',
+    'data_multi_str4': '"""data line 1\ndata line 2\ndata line 3"""',
+    'data_multi_str5': "'''data line 1\ndata line 2\ndata line 3'''",
+    'data_multi_str6': "data line 1\ndata line ''' 2\ndata line 3",
+    'data_multi_str7': 'data line 1\ndata line """ 2\ndata line 3',
+    'data_multi_str8': 'data line 1\ndata line "" 2\ndata line 3',
+    'data_multi_str9': "data line 1\ndata line '' 2\ndata line 3",
+    'data_bool': False,
+    }
+
+    # Test Multi-Line String Dump and Load
+    str_data = maci.dumpstr(str_data_dict, multi_line_str=True)
+    str_import = maci.loadstr(str_data)
+
+    assert str_import.data_int == 1
+    assert str_import.data_multi_str1 == "\ndata line 1\ndata line 2\ndata line 3\n"
+    assert str_import.data_multi_str2 == "\n'data line 1\ndata line 2\ndata line 3'\n"
+    assert str_import.data_multi_str3 == '\n"data line 1\ndata line 2\ndata line 3"\n'
+    assert str_import.data_multi_str4 == '\n"""data line 1\ndata line 2\ndata line 3"""\n'
+    assert str_import.data_multi_str5 == "\n'''data line 1\ndata line 2\ndata line 3'''\n"
+    assert str_import.data_multi_str6 == "\ndata line 1\ndata line ''' 2\ndata line 3\n"
+    assert str_import.data_multi_str7 == '\ndata line 1\ndata line """ 2\ndata line 3\n'
+    assert str_import.data_multi_str8 == '\ndata line 1\ndata line "" 2\ndata line 3\n'
+    assert str_import.data_multi_str9 == "\ndata line 1\ndata line '' 2\ndata line 3\n"
+    assert str_import.data_bool == False
+
+
+### Class ###
+
+# 1. Dump Str - Indentation: Class - Test Indenting and Indentation off
+def test1_dumpstr_str_indentation_class2():
+    # Build Data
+    class CustomClass:
+        def __init__(self):
+            self.data_list = [1,2,3]
+            self.data_tuple = (1,2,3)
+            self.data_set = {1,2,3}
+    str_data_class = CustomClass()
+
+    # Test Indent Level at 0 and its Data
+    str_data = maci.dumpstr(str_data_class, indent_level=0)
+    str_import = maci.loadstr(str_data)
+
+    assert str_import.data_list == [1,2,3]
+    assert str_import.data_tuple == (1,2,3)
+    assert str_import.data_set == {1,2,3}
+
+    # Test Indent Level at 7 and its Data
+    str_data = maci.dumpstr(str_data_class, indent_level=7)
+    str_import = maci.loadstr(str_data)
+
+    assert str_import.data_list == [1,2,3]
+    assert str_import.data_tuple == (1,2,3)
+    assert str_import.data_set == {1,2,3}
+
+    # Test Indentation OFF
+    str_data = maci.dumpstr(str_data_class, indentation_on=False)
+    str_import = maci.loadstr(str_data)
+
+    assert str_import.data_list == [1,2,3]
+    assert str_import.data_tuple == (1,2,3)
+    assert str_import.data_set == {1,2,3}
+
+
+# 2. Dump Str - Multi-Line String: Class - Test Multi-Line String Format
+def test2_dumpstr_str_multiline_str_class():
+    # Build Data
+    class CustomClass:
+        def __init__(self):
+            self.data_int = 1
+            self.data_multi_str1 = "data line 1\ndata line 2\ndata line 3"
+            self.data_multi_str2 = "'data line 1\ndata line 2\ndata line 3'"
+            self.data_multi_str3 = '"data line 1\ndata line 2\ndata line 3"'
+            self.data_multi_str4 = '"""data line 1\ndata line 2\ndata line 3"""'
+            self.data_multi_str5 = "'''data line 1\ndata line 2\ndata line 3'''"
+            self.data_multi_str6 = "data line 1\ndata line ''' 2\ndata line 3"
+            self.data_multi_str7 = 'data line 1\ndata line """ 2\ndata line 3'
+            self.data_multi_str8 = 'data line 1\ndata line "" 2\ndata line 3'
+            self.data_multi_str9 = "data line 1\ndata line '' 2\ndata line 3"
+            self.data_bool = False
+    str_data_class = CustomClass()
+
+    # Test Multi-Line String Dump and Load
+    str_data = maci.dumpstr(str_data_class, multi_line_str=True)
+    str_import = maci.loadstr(str_data)
+
+    assert str_import.data_int == 1
+    assert str_import.data_multi_str1 == "\ndata line 1\ndata line 2\ndata line 3\n"
+    assert str_import.data_multi_str2 == "\n'data line 1\ndata line 2\ndata line 3'\n"
+    assert str_import.data_multi_str3 == '\n"data line 1\ndata line 2\ndata line 3"\n'
+    assert str_import.data_multi_str4 == '\n"""data line 1\ndata line 2\ndata line 3"""\n'
+    assert str_import.data_multi_str5 == "\n'''data line 1\ndata line 2\ndata line 3'''\n"
+    assert str_import.data_multi_str6 == "\ndata line 1\ndata line ''' 2\ndata line 3\n"
+    assert str_import.data_multi_str7 == '\ndata line 1\ndata line """ 2\ndata line 3\n'
+    assert str_import.data_multi_str8 == '\ndata line 1\ndata line "" 2\ndata line 3\n'
+    assert str_import.data_multi_str9 == "\ndata line 1\ndata line '' 2\ndata line 3\n"
+    assert str_import.data_bool == False
+
+
+# 3. Dump Str - Attr Types: Class - Test different attribute types to dump and ensure data is maintained
+def test3_dumpstr_str_attr_types_class():
+    # Build Data
+    class CustomClass:
+        # Class Attrs
+        cls_norm_data1 = 'data1'
+        _cls_under_data = 'data'
+        __cls_dunder_data = 'data'
+        cls_norm_data2 = 'data2'
+        def __init__(self):
+            # Init Attrs
+            self.init_norm_data1 = 'data1'
+            self._init_under_data = 'data'
+            self.__init_dunder_data = 'data'
+            self.init_norm_data2 = 'data2'
+    str_data_class = CustomClass()
+
+    ### INIT & CLASS ###
+
+    # Test: All Normal Init & Class Attrs
+    str_data = maci.dumpstr(str_data_class, class_attrs=True)
+    str_import = maci.loadstr(str_data)
+
+    assert str_import.init_norm_data1 == 'data1'
+    assert str_import.init_norm_data2 == 'data2'
+    assert str_import.cls_norm_data1 == 'data1'
+    assert str_import.cls_norm_data2 == 'data2'
+
+    # Test: All Normal/Private Init & Class Attrs
+    str_data = maci.dumpstr(str_data_class, private_attrs=True, class_attrs=True)
+    str_import = maci.loadstr(str_data)
+
+    assert str_import.init_norm_data1 == 'data1'
+    assert str_import._init_under_data == 'data'
+    assert str_import.__init_dunder_data == 'data'
+    assert str_import.init_norm_data2 == 'data2'
+    assert str_import.cls_norm_data1 == 'data1'
+    assert str_import._cls_under_data == 'data'
+    assert str_import.__cls_dunder_data == 'data'
+    assert str_import.cls_norm_data2 == 'data2'
+
+    # Test: All Normal/Under Init & Class Attrs
+    str_data = maci.dumpstr(str_data_class, private_under_attrs=True, class_attrs=True)
+    str_import = maci.loadstr(str_data)
+
+    assert str_import.init_norm_data1 == 'data1'
+    assert str_import._init_under_data == 'data'
+    assert str_import.init_norm_data2 == 'data2'
+    assert str_import.cls_norm_data1 == 'data1'
+    assert str_import._cls_under_data == 'data'
+    assert str_import.cls_norm_data2 == 'data2'
+
+    # Test: All Normal/Dunder Init & Class Attrs
+    str_data = maci.dumpstr(str_data_class, private_dunder_attrs=True, class_attrs=True)
+    str_import = maci.loadstr(str_data)
+
+    assert str_import.init_norm_data1 == 'data1'
+    assert str_import.__init_dunder_data == 'data'
+    assert str_import.init_norm_data2 == 'data2'
+    assert str_import.cls_norm_data1 == 'data1'
+    assert str_import.__cls_dunder_data == 'data'
+    assert str_import.cls_norm_data2 == 'data2'
+
+    # Test: Normal Init & Normal/Private Class Attrs
+    str_data = maci.dumpstr(str_data_class, private_class_attrs=True, class_attrs=True)
+    str_import = maci.loadstr(str_data)
+
+    assert str_import.init_norm_data1 == 'data1'
+    assert str_import.init_norm_data2 == 'data2'
+    assert str_import.cls_norm_data1 == 'data1'
+    assert str_import._cls_under_data == 'data'
+    assert str_import.__cls_dunder_data == 'data'
+    assert str_import.cls_norm_data2 == 'data2'
+
+    # Test: Normal Init & Normal/Under Class Attrs
+    str_data = maci.dumpstr(str_data_class, private_class_under_attrs=True, class_attrs=True)
+    str_import = maci.loadstr(str_data)
+
+    assert str_import.init_norm_data1 == 'data1'
+    assert str_import.init_norm_data2 == 'data2'
+    assert str_import.cls_norm_data1 == 'data1'
+    assert str_import._cls_under_data == 'data'
+    assert str_import.cls_norm_data2 == 'data2'
+
+    # Test: Normal Init & Normal/Dunder Class Attrs
+    str_data = maci.dumpstr(str_data_class, private_class_dunder_attrs=True, class_attrs=True)
+    str_import = maci.loadstr(str_data)
+
+    assert str_import.init_norm_data1 == 'data1'
+    assert str_import.init_norm_data2 == 'data2'
+    assert str_import.cls_norm_data1 == 'data1'
+    assert str_import.__cls_dunder_data == 'data'
+    assert str_import.cls_norm_data2 == 'data2'
+
+    # Test: Normal Class & Normal/Private Init Attrs
+    str_data = maci.dumpstr(str_data_class, private_init_attrs=True, class_attrs=True)
+    str_import = maci.loadstr(str_data)
+
+    assert str_import.init_norm_data1 == 'data1'
+    assert str_import._init_under_data == 'data'
+    assert str_import.__init_dunder_data == 'data'
+    assert str_import.init_norm_data2 == 'data2'
+    assert str_import.cls_norm_data1 == 'data1'
+    assert str_import.cls_norm_data2 == 'data2'
     
-#     # Test: Normal Class & Normal/Under Init Attrs
-#     maci.dumpstr(filepath, file_data, private_init_under_attrs=True, class_attrs=True)
-#     file_import = maci.load(filepath)
+    # Test: Normal Class & Normal/Under Init Attrs
+    str_data = maci.dumpstr(str_data_class, private_init_under_attrs=True, class_attrs=True)
+    str_import = maci.loadstr(str_data)
 
-#     assert file_import.init_norm_data1 == 'data1'
-#     assert file_import._init_under_data == 'data'
-#     assert file_import.init_norm_data2 == 'data2'
-#     assert file_import.cls_norm_data1 == 'data1'
-#     assert file_import.cls_norm_data2 == 'data2'
+    assert str_import.init_norm_data1 == 'data1'
+    assert str_import._init_under_data == 'data'
+    assert str_import.init_norm_data2 == 'data2'
+    assert str_import.cls_norm_data1 == 'data1'
+    assert str_import.cls_norm_data2 == 'data2'
 
-#     # Test: Normal Class & Normal/Dunder Init Attrs
-#     maci.dumpstr(filepath, file_data, private_init_dunder_attrs=True, class_attrs=True)
-#     file_import = maci.load(filepath)
+    # Test: Normal Class & Normal/Dunder Init Attrs
+    str_data = maci.dumpstr(str_data_class, private_init_dunder_attrs=True, class_attrs=True)
+    str_import = maci.loadstr(str_data)
 
-#     assert file_import.init_norm_data1 == 'data1'
-#     assert file_import.__init_dunder_data == 'data'
-#     assert file_import.init_norm_data2 == 'data2'
-#     assert file_import.cls_norm_data1 == 'data1'
-#     assert file_import.cls_norm_data2 == 'data2'
-
-
-#     ### CLASS ONLY ###
-
-#     # Test: Normal Class Attrs
-#     maci.dumpstr(filepath, type(file_data), class_attrs=True)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.cls_norm_data1 == 'data1'
-#     assert file_import.cls_norm_data2 == 'data2'
-
-#     # Test: Normal/Private Class Attrs
-#     maci.dumpstr(filepath, type(file_data), private_attrs=True, class_attrs=True)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.cls_norm_data1 == 'data1'
-#     assert file_import._cls_under_data == 'data'
-#     assert file_import.__cls_dunder_data == 'data'
-#     assert file_import.cls_norm_data2 == 'data2'
-
-#     # Test: Normal/Private Class Attrs - Alternate Option
-#     maci.dumpstr(filepath, type(file_data), private_class_attrs=True, class_attrs=True)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.cls_norm_data1 == 'data1'
-#     assert file_import._cls_under_data == 'data'
-#     assert file_import.__cls_dunder_data == 'data'
-#     assert file_import.cls_norm_data2 == 'data2'
-
-#     # Test: Normal/Under Class Attrs
-#     maci.dumpstr(filepath, type(file_data), private_under_attrs=True, class_attrs=True)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.cls_norm_data1 == 'data1'
-#     assert file_import._cls_under_data == 'data'
-#     assert file_import.cls_norm_data2 == 'data2'
-
-#     # Test: Normal/Under Class Attrs - Alternate Option
-#     maci.dumpstr(filepath, type(file_data), private_class_under_attrs=True, class_attrs=True)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.cls_norm_data1 == 'data1'
-#     assert file_import._cls_under_data == 'data'
-#     assert file_import.cls_norm_data2 == 'data2'
-
-#     # Test: Normal/Dunder Class Attrs
-#     maci.dumpstr(filepath, type(file_data), private_dunder_attrs=True, class_attrs=True)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.cls_norm_data1 == 'data1'
-#     assert file_import.__cls_dunder_data == 'data'
-#     assert file_import.cls_norm_data2 == 'data2'
-
-#     # Test: Normal/Dunder Class Attrs - Alternate Option
-#     maci.dumpstr(filepath, type(file_data), private_class_dunder_attrs=True, class_attrs=True)
-#     file_import = maci.load(filepath)
-
-#     assert file_import.cls_norm_data1 == 'data1'
-#     assert file_import.__cls_dunder_data == 'data'
-#     assert file_import.cls_norm_data2 == 'data2'
+    assert str_import.init_norm_data1 == 'data1'
+    assert str_import.__init_dunder_data == 'data'
+    assert str_import.init_norm_data2 == 'data2'
+    assert str_import.cls_norm_data1 == 'data1'
+    assert str_import.cls_norm_data2 == 'data2'
 
 
-#     ### INIT ONLY ###
+    ### CLASS ONLY ###
 
-#     # Test: Normal Init Attrs
-#     maci.dumpstr(filepath, file_data)
-#     file_import = maci.load(filepath)
+    # Test: Normal Class Attrs
+    str_data = maci.dumpstr(type(str_data_class), class_attrs=True)
+    str_import = maci.loadstr(str_data)
 
-#     assert file_import.init_norm_data1 == 'data1'
-#     assert file_import.init_norm_data2 == 'data2'
+    assert str_import.cls_norm_data1 == 'data1'
+    assert str_import.cls_norm_data2 == 'data2'
 
-#     # Test: Normal/Private Init Attrs
-#     maci.dumpstr(filepath, file_data, private_attrs=True)
-#     file_import = maci.load(filepath)
+    # Test: Normal/Private Class Attrs
+    str_data = maci.dumpstr(type(str_data_class), private_attrs=True, class_attrs=True)
+    str_import = maci.loadstr(str_data)
 
-#     assert file_import.init_norm_data1 == 'data1'
-#     assert file_import._init_under_data == 'data'
-#     assert file_import.__init_dunder_data == 'data'
-#     assert file_import.init_norm_data2 == 'data2'
+    assert str_import.cls_norm_data1 == 'data1'
+    assert str_import._cls_under_data == 'data'
+    assert str_import.__cls_dunder_data == 'data'
+    assert str_import.cls_norm_data2 == 'data2'
 
-#     # Test: Normal/Private Init Attrs - Alternate Option
-#     maci.dumpstr(filepath, file_data, private_init_attrs=True)
-#     file_import = maci.load(filepath)
+    # Test: Normal/Private Class Attrs - Alternate Option
+    str_data = maci.dumpstr(type(str_data_class), private_class_attrs=True, class_attrs=True)
+    str_import = maci.loadstr(str_data)
 
-#     assert file_import.init_norm_data1 == 'data1'
-#     assert file_import._init_under_data == 'data'
-#     assert file_import.__init_dunder_data == 'data'
-#     assert file_import.init_norm_data2 == 'data2'
+    assert str_import.cls_norm_data1 == 'data1'
+    assert str_import._cls_under_data == 'data'
+    assert str_import.__cls_dunder_data == 'data'
+    assert str_import.cls_norm_data2 == 'data2'
 
-#     # Test: Normal/Under Init Attrs
-#     maci.dumpstr(filepath, file_data, private_under_attrs=True)
-#     file_import = maci.load(filepath)
+    # Test: Normal/Under Class Attrs
+    str_data = maci.dumpstr(type(str_data_class), private_under_attrs=True, class_attrs=True)
+    str_import = maci.loadstr(str_data)
 
-#     assert file_import.init_norm_data1 == 'data1'
-#     assert file_import._init_under_data == 'data'
-#     assert file_import.init_norm_data2 == 'data2'
+    assert str_import.cls_norm_data1 == 'data1'
+    assert str_import._cls_under_data == 'data'
+    assert str_import.cls_norm_data2 == 'data2'
 
-#     # Test: Normal/Under Init Attrs - Alternate Option
-#     maci.dumpstr(filepath, file_data, private_init_under_attrs=True)
-#     file_import = maci.load(filepath)
+    # Test: Normal/Under Class Attrs - Alternate Option
+    str_data = maci.dumpstr(type(str_data_class), private_class_under_attrs=True, class_attrs=True)
+    str_import = maci.loadstr(str_data)
 
-#     assert file_import.init_norm_data1 == 'data1'
-#     assert file_import._init_under_data == 'data'
-#     assert file_import.init_norm_data2 == 'data2'
+    assert str_import.cls_norm_data1 == 'data1'
+    assert str_import._cls_under_data == 'data'
+    assert str_import.cls_norm_data2 == 'data2'
 
-#     # Test: Normal/Dunder Init Attrs
-#     maci.dumpstr(filepath, file_data, private_dunder_attrs=True)
-#     file_import = maci.load(filepath)
+    # Test: Normal/Dunder Class Attrs
+    str_data = maci.dumpstr(type(str_data_class), private_dunder_attrs=True, class_attrs=True)
+    str_import = maci.loadstr(str_data)
 
-#     assert file_import.init_norm_data1 == 'data1'
-#     assert file_import.__init_dunder_data == 'data'
-#     assert file_import.init_norm_data2 == 'data2'
+    assert str_import.cls_norm_data1 == 'data1'
+    assert str_import.__cls_dunder_data == 'data'
+    assert str_import.cls_norm_data2 == 'data2'
 
-#     # Test: Normal/Dunder Init Attrs - Alternate Option
-#     maci.dumpstr(filepath, file_data, private_init_dunder_attrs=True)
-#     file_import = maci.load(filepath)
+    # Test: Normal/Dunder Class Attrs - Alternate Option
+    str_data = maci.dumpstr(type(str_data_class), private_class_dunder_attrs=True, class_attrs=True)
+    str_import = maci.loadstr(str_data)
 
-#     assert file_import.init_norm_data1 == 'data1'
-#     assert file_import.__init_dunder_data == 'data'
-#     assert file_import.init_norm_data2 == 'data2'
+    assert str_import.cls_norm_data1 == 'data1'
+    assert str_import.__cls_dunder_data == 'data'
+    assert str_import.cls_norm_data2 == 'data2'
 
-#     # Remove Test File
-#     time.sleep(file_delay_timer)
-#     try: remove(filepath)
-#     except: pass
+
+    ### INIT ONLY ###
+
+    # Test: Normal Init Attrs
+    str_data = maci.dumpstr(str_data_class)
+    str_import = maci.loadstr(str_data)
+
+    assert str_import.init_norm_data1 == 'data1'
+    assert str_import.init_norm_data2 == 'data2'
+
+    # Test: Normal/Private Init Attrs
+    str_data = maci.dumpstr(str_data_class, private_attrs=True)
+    str_import = maci.loadstr(str_data)
+
+    assert str_import.init_norm_data1 == 'data1'
+    assert str_import._init_under_data == 'data'
+    assert str_import.__init_dunder_data == 'data'
+    assert str_import.init_norm_data2 == 'data2'
+
+    # Test: Normal/Private Init Attrs - Alternate Option
+    str_data = maci.dumpstr(str_data_class, private_init_attrs=True)
+    str_import = maci.loadstr(str_data)
+
+    assert str_import.init_norm_data1 == 'data1'
+    assert str_import._init_under_data == 'data'
+    assert str_import.__init_dunder_data == 'data'
+    assert str_import.init_norm_data2 == 'data2'
+
+    # Test: Normal/Under Init Attrs
+    str_data = maci.dumpstr(str_data_class, private_under_attrs=True)
+    str_import = maci.loadstr(str_data)
+
+    assert str_import.init_norm_data1 == 'data1'
+    assert str_import._init_under_data == 'data'
+    assert str_import.init_norm_data2 == 'data2'
+
+    # Test: Normal/Under Init Attrs - Alternate Option
+    str_data = maci.dumpstr(str_data_class, private_init_under_attrs=True)
+    str_import = maci.loadstr(str_data)
+
+    assert str_import.init_norm_data1 == 'data1'
+    assert str_import._init_under_data == 'data'
+    assert str_import.init_norm_data2 == 'data2'
+
+    # Test: Normal/Dunder Init Attrs
+    str_data = maci.dumpstr(str_data_class, private_dunder_attrs=True)
+    str_import = maci.loadstr(str_data)
+
+    assert str_import.init_norm_data1 == 'data1'
+    assert str_import.__init_dunder_data == 'data'
+    assert str_import.init_norm_data2 == 'data2'
+
+    # Test: Normal/Dunder Init Attrs - Alternate Option
+    str_data = maci.dumpstr(str_data_class, private_init_dunder_attrs=True)
+    str_import = maci.loadstr(str_data)
+
+    assert str_import.init_norm_data1 == 'data1'
+    assert str_import.__init_dunder_data == 'data'
+    assert str_import.init_norm_data2 == 'data2'
