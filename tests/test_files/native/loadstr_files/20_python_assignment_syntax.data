@@ -1,0 +1,66 @@
+# Single
+data_str ="data"
+data_int= 1
+data_float=1.0
+data_bool =True
+data_list =[1,2,3]
+data_dict= {'k1':1, 'k2':2, 'k3':3}
+data_tuple =(1,2,3)
+data_set={1,2,3}
+data_none=None
+data_bytes=b'data'
+# Multi
+data_list_multi =[
+    1,
+    2,
+    3
+]
+data_dict_multi={
+    'k1': 1,
+    'k2': 2,
+    'k3': 3
+}
+data_tuple_multi= (
+    1,
+    2,
+    3
+)
+data_set_multi={
+    1,
+    2,
+    3
+}
+data_str_multi ="""
+data1
+ data2
+  data3
+data4
+"""
+
+### Glyph Types: Symbols and Letters ###
+
+# Symbols
+s1=1
+s2$=1
+s3==s2
+s4$==s3
+s5$$=1
+s6$$==s5
+
+# Letters lower
+l1+l=1
+l2+m=l1
+l3_1+ml=l2
+l3_2+lm=l2
+l4+h=1
+l5_1+mh=l4
+l5_2+hm=l4
+
+# Letters UPPER
+L1+L=1
+L2+M=L1
+L3_1+ML=L2
+L3_2+LM=L2
+L4+H=1
+L5_1+MH=L4
+L5_2+HM=L4

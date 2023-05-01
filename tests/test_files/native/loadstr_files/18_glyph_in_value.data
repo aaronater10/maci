@@ -1,0 +1,16 @@
+# Symbols
+data_str1 = "data with = glyph"
+data_str2 = "data with == glyph"
+data_str3 = "data with $= glyph"
+data_str4 = "data with $$= glyph"
+data_str5 = "data with $== glyph"
+data_str6 = "data with $$== glyph"
+
+# Letters
+data_let1 = "data with +m= glyph"
+data_let2 = "data with +l= glyph"
+data_let3 = "data with +h= glyph"
+data_let4 = "data with +ml= glyph"
+data_let5 = "data with +mh= glyph"
+data_let6 = "data with +lm= glyph"
+data_let7 = "data with +hm= glyph"

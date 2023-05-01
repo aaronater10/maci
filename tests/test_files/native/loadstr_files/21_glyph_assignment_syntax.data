@@ -1,0 +1,55 @@
+# Single
+
+# lower
+d1 = "data"
+d2 +m= d1
+d3_1 +ml= d2
+d3_2 +lm= d2
+d4_1 +mh= d3_1
+d4_2 +hm= d3_1
+d5 +l= [1,2,3]
+d6 +h= {'k1':1, 'k2':2, 'k3':3}
+# UPPER
+d7 = {1,2,3}
+d8 +M= d7
+d9_1 +ML= d8
+d9_2 +LM= d8
+d10_1 +MH= d9_1
+d10_2 +HM= d9_1
+d11 +L= (1,2,3)
+d12 +H= b'data'
+# Mixed UPPER and lower
+d13 = "data"
+d14 +mL= d13
+d15 +Ml= d13
+d16 +Lm= d13
+d17 +lM= d13
+d18 +mH= d13
+d19 +Mh= d13
+d20 +Hm= d13
+d21 +hM= d13
+
+# Multi
+
+# lower
+d1_multi +l= [
+    1,
+    2,
+    3
+]
+d2_multi +h= {
+    'k1': 1,
+    'k2': 2,
+    'k3': 3
+}
+# UPPER
+d3_multi +L= (
+    1,
+    2,
+    3
+)
+d4_multi +H= {
+    1,
+    2,
+    3
+}
