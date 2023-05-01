@@ -352,13 +352,22 @@ def test18_ignore_glyph_in_value_str():
     # File Import
     file_import = maci.load(filepath)
 
-    # Test Attributes and Types
+    # Test Attributes: Symbols
     assert (file_import.data_str1 == "data with = glyph")
     assert (file_import.data_str2 == "data with == glyph")
     assert (file_import.data_str3 == "data with $= glyph")
     assert (file_import.data_str4 == "data with $$= glyph")
     assert (file_import.data_str5 == "data with $== glyph")
     assert (file_import.data_str6 == "data with $$== glyph")
+
+    # Test Attributes: Letters
+    assert (file_import.data_let1 == "data with +m= glyph")
+    assert (file_import.data_let2 == "data with +l= glyph")
+    assert (file_import.data_let3 == "data with +h= glyph")
+    assert (file_import.data_let4 == "data with +ml= glyph")
+    assert (file_import.data_let5 == "data with +mh= glyph")
+    assert (file_import.data_let6 == "data with +lm= glyph")
+    assert (file_import.data_let7 == "data with +hm= glyph")
 
 
 # 19. Check if Error Raised on Value Empty - Import Single Line Value with Empty Value
