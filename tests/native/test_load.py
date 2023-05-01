@@ -388,10 +388,10 @@ def test19_raise_on_value_empty():
 
 # 20. Check Pythonic Assignment Syntax - Import Values and Glyphs with varying spaced or connected assignments
 def test20_python_assignment_syntax():
-    filename_no_spaces = '20_python_assignment_syntax.data'
+    filename = '20_python_assignment_syntax.data'
 
     # File Import
-    filepath = test_file_path + filename_no_spaces
+    filepath = test_file_path + filename
     file_import = maci.load(filepath)
 
     # Test Attributes and Types
@@ -443,10 +443,10 @@ def test20_python_assignment_syntax():
 
 # 21. Ensure Supported Glyph Syntax is Loadable - Import Glyphs with varying types and data
 def test21_glyph_assignment_syntax():
-    filename_no_spaces = '21_glyph_assignment_syntax.data'
+    filename = '21_glyph_assignment_syntax.data'
 
     # File Import
-    filepath = test_file_path + filename_no_spaces
+    filepath = test_file_path + filename
     file_import = maci.load(filepath)
 
     # Test Attributes and Types
@@ -490,10 +490,10 @@ def test21_glyph_assignment_syntax():
 # 22. Ensure DateTime Syntax is Loadable - Import DateTime data with varying formats
 def test22_date_time_syntax():
     from datetime import datetime, date, time
-    filename_no_spaces = '22_date_time_syntax.data'
+    filename = '22_date_time_syntax.data'
 
     # File Import
-    filepath = test_file_path + filename_no_spaces
+    filepath = test_file_path + filename
     file_import = maci.load(filepath)
 
     # Test Attributes
@@ -509,9 +509,8 @@ def test22_date_time_syntax():
 
 # 23. Check behavior of internal method check - Test with it ON/OFF
 def test23_load_internal_method_check_off_on():
-    from datetime import datetime, date, time
-    filename_no_spaces = '23_internal_method_check.data'
-    filepath = test_file_path + filename_no_spaces
+    filename = '23_internal_method_check.data'
+    filepath = test_file_path + filename
 
     # OFF: File Import - All Attrs Import
     file_import = maci.load(filepath, attr_name_dedup=False, _ignore_maci_attr_check=True)
