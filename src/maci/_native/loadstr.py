@@ -29,6 +29,9 @@ def loadstr(py_str_data: str, *, attr_name_dedup: bool=True) -> 'MaciDataObj':
     if not isinstance(py_str_data, str): raise LoadStr(__err_msg_py_str, f'\nDATA: "{py_str_data}"')
     if not isinstance(attr_name_dedup, bool): raise LoadStr(__err_msg_attrib, f'\nDATA: {attr_name_dedup}')
 
+    # Check if string empty. Returns None if empty
+    if py_str_data == '': return None
+
     # Syntax/Usage Error Messages
     __err_messages = {
         '_py_syntax_err_msg': "Must have valid Python data types to import, or string's syntax is not formatted correctly",
