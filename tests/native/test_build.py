@@ -75,7 +75,7 @@ class TestBuildData(unittest.TestCase):
         build_data.lock_attr('data_none')
 
         # Test Locked Attribute
-        with self.assertRaises(Exception): build_data.data_none = True
+        with self.assertRaises(maci.error.MaciError): build_data.data_none = True
         self.assertEqual(build_data.data_none, None)
 
 
@@ -87,7 +87,7 @@ class TestBuildData(unittest.TestCase):
         self.assertEqual(build_data.data_none, True)
         
         # Test Unlocking Exception when already Unlocked
-        with self.assertRaises(Exception): build_data.unlock_attr('data_none')
+        with self.assertRaises(maci.error.MaciError): build_data.unlock_attr('data_none')
     
         
         # REFERENCE
@@ -103,7 +103,7 @@ class TestBuildData(unittest.TestCase):
         build_data.lock_attr('data_none')
 
         # Test Attribute Reference Value and Lock
-        with self.assertRaises(Exception): build_data.data_none = True
+        with self.assertRaises(maci.error.MaciError): build_data.data_none = True
         self.assertEqual(build_data.data_none, [1,2,3])
         # Reset back to Normal
         build_data.unlock_attr('data_none')
@@ -130,18 +130,18 @@ class TestBuildData(unittest.TestCase):
         # Test Imported Data
         
         # Tuple
-        with self.assertRaises(Exception): file_import.data_tuple = True
+        with self.assertRaises(maci.error.MaciError): file_import.data_tuple = True
         self.assertEqual(file_import.data_tuple, (1,2,3))
 
         # Str
-        with self.assertRaises(Exception): file_import.data_str = True
+        with self.assertRaises(maci.error.MaciError): file_import.data_str = True
         self.assertEqual(file_import.data_str, "data")
 
         # List
         self.assertEqual(file_import.data_list, {'k1':1, 'k2':2, 'k3':3})
 
         # Set
-        with self.assertRaises(Exception): file_import.data_set = False
+        with self.assertRaises(maci.error.MaciError): file_import.data_set = False
         self.assertEqual(file_import.data_set, True)
 
         # Remove Test File

@@ -247,34 +247,34 @@ def test13_loadstr_single_attr_lock():
     # Test Attributes - Confirm attr values not changed and match expected
     change_value = 'changed_value'
 
-    with pytest.raises(Exception): str_import.data_str = change_value
+    with pytest.raises(maci.error.MaciError): str_import.data_str = change_value
     assert str_import.data_str == "data"
 
-    with pytest.raises(Exception): str_import.data_int = change_value
+    with pytest.raises(maci.error.MaciError): str_import.data_int = change_value
     assert str_import.data_int == 1
 
-    with pytest.raises(Exception): str_import.data_float = change_value
+    with pytest.raises(maci.error.MaciError): str_import.data_float = change_value
     assert str_import.data_float == 1.0
 
-    with pytest.raises(Exception): str_import.data_bool = change_value
+    with pytest.raises(maci.error.MaciError): str_import.data_bool = change_value
     assert str_import.data_bool == True
 
-    with pytest.raises(Exception): str_import.data_list = change_value
+    with pytest.raises(maci.error.MaciError): str_import.data_list = change_value
     assert str_import.data_list == [1,2,3]
 
-    with pytest.raises(Exception): str_import.data_dict = change_value
+    with pytest.raises(maci.error.MaciError): str_import.data_dict = change_value
     assert str_import.data_dict == {'k1':1, 'k2':2, 'k3':3}
 
-    with pytest.raises(Exception): str_import.data_tuple = change_value
+    with pytest.raises(maci.error.MaciError): str_import.data_tuple = change_value
     assert str_import.data_tuple == (1,2,3)
 
-    with pytest.raises(Exception): str_import.data_set = change_value
+    with pytest.raises(maci.error.MaciError): str_import.data_set = change_value
     assert str_import.data_set == {1,2,3}
 
-    with pytest.raises(Exception): str_import.data_none = change_value
+    with pytest.raises(maci.error.MaciError): str_import.data_none = change_value
     assert str_import.data_none == None
 
-    with pytest.raises(Exception): str_import.data_bytes = change_value
+    with pytest.raises(maci.error.MaciError): str_import.data_bytes = change_value
     assert str_import.data_bytes == b'data'
 
 
@@ -290,16 +290,16 @@ def test14_loadstr_multi_attr_lock():
     # Test Attributes - Confirm attr values not changed and match expected
     change_value = 'changed_value'
 
-    with pytest.raises(Exception): str_import.data_list = change_value
+    with pytest.raises(maci.error.MaciError): str_import.data_list = change_value
     assert str_import.data_list == [1,2,3]
 
-    with pytest.raises(Exception): str_import.data_dict = change_value
+    with pytest.raises(maci.error.MaciError): str_import.data_dict = change_value
     assert str_import.data_dict == {'k1':1, 'k2':2, 'k3':3}
 
-    with pytest.raises(Exception): str_import.data_tuple = change_value
+    with pytest.raises(maci.error.MaciError): str_import.data_tuple = change_value
     assert str_import.data_tuple == (1,2,3)
 
-    with pytest.raises(Exception): str_import.data_set = change_value
+    with pytest.raises(maci.error.MaciError): str_import.data_set = change_value
     assert str_import.data_set == {1,2,3}
 
 
@@ -342,16 +342,16 @@ def test17_loadstr_attr_ref_lock_single_multi():
     change_value = 'changed_value'
     
     assert str_import.data_list_multi, 1
-    with pytest.raises(Exception): str_import.data_list_multi = change_value
+    with pytest.raises(maci.error.MaciError): str_import.data_list_multi = change_value
 
     assert str_import.data_float, {'k1':1, 'k2':2, 'k3':3}
-    with pytest.raises(Exception): str_import.data_float = change_value
+    with pytest.raises(maci.error.MaciError): str_import.data_float = change_value
 
     assert str_import.data_bool, {'k1':1, 'k2':2, 'k3':3}
-    with pytest.raises(Exception): str_import.data_bool = change_value
+    with pytest.raises(maci.error.MaciError): str_import.data_bool = change_value
 
     assert str_import.data_set, (1,2,3)
-    with pytest.raises(Exception): str_import.data_set = change_value
+    with pytest.raises(maci.error.MaciError): str_import.data_set = change_value
 
 
 # 18. Ignore Glyph in Value Str Check - Import Single Line Value String Containing a Glyph

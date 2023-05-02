@@ -14,7 +14,7 @@ class Test1CodeNotExec(unittest.TestCase):
     def test1_code_notexec_import(self):
         filename = '1_code_notexec.data'
         filepath = test_file_path + filename
-        with self.assertRaises(Exception):
+        with self.assertRaises(maci.error.MaciError):
             maci.load(filepath)
 
 
@@ -24,7 +24,7 @@ class Test2CodeNotExec(unittest.TestCase):
     def test2_code_notexec_import(self):
         filename = '2_code_notexec.data'
         filepath = test_file_path + filename
-        with self.assertRaises(Exception):
+        with self.assertRaises(maci.error.MaciError):
             maci.load(filepath)
 
 
@@ -34,7 +34,7 @@ class Test3SingleAttrProtect(unittest.TestCase):
     def test3_single_attr_protect(self):
         filename = '3_singleline_attr_protect.data'
         filepath = test_file_path + filename
-        with self.assertRaises(Exception):
+        with self.assertRaises(maci.error.MaciError):
             maci.load(filepath)
 
 
@@ -44,5 +44,5 @@ class Test4MultiAttrProtect(unittest.TestCase):
     def test4_multi_attr_protect(self):
         filename = '4_multiline_attr_protect.data'
         filepath = test_file_path + filename
-        with self.assertRaises(Exception):
+        with self.assertRaises(maci.error.MaciError):
             maci.load(filepath)

@@ -240,34 +240,34 @@ class TestLoad(unittest.TestCase):
         # Test Attributes and Types - Confirm attr values not changed and match expected
         change_value = 'changed_value'
 
-        with self.assertRaises(Exception): file_import.data_str = change_value
+        with self.assertRaises(maci.error.MaciError): file_import.data_str = change_value
         self.assertEqual(file_import.data_str, "data")
 
-        with self.assertRaises(Exception): file_import.data_int = change_value
+        with self.assertRaises(maci.error.MaciError): file_import.data_int = change_value
         self.assertEqual(file_import.data_int, 1)
 
-        with self.assertRaises(Exception): file_import.data_float = change_value
+        with self.assertRaises(maci.error.MaciError): file_import.data_float = change_value
         self.assertEqual(file_import.data_float, 1.0)
 
-        with self.assertRaises(Exception): file_import.data_bool = change_value
+        with self.assertRaises(maci.error.MaciError): file_import.data_bool = change_value
         self.assertEqual(file_import.data_bool, True)
 
-        with self.assertRaises(Exception): file_import.data_list = change_value
+        with self.assertRaises(maci.error.MaciError): file_import.data_list = change_value
         self.assertEqual(file_import.data_list, [1,2,3])
 
-        with self.assertRaises(Exception): file_import.data_dict = change_value
+        with self.assertRaises(maci.error.MaciError): file_import.data_dict = change_value
         self.assertEqual(file_import.data_dict, {'k1':1, 'k2':2, 'k3':3})
 
-        with self.assertRaises(Exception): file_import.data_tuple = change_value
+        with self.assertRaises(maci.error.MaciError): file_import.data_tuple = change_value
         self.assertEqual(file_import.data_tuple, (1,2,3))
 
-        with self.assertRaises(Exception): file_import.data_set = change_value
+        with self.assertRaises(maci.error.MaciError): file_import.data_set = change_value
         self.assertEqual(file_import.data_set, {1,2,3})
 
-        with self.assertRaises(Exception): file_import.data_none = change_value
+        with self.assertRaises(maci.error.MaciError): file_import.data_none = change_value
         self.assertEqual(file_import.data_none, None)
 
-        with self.assertRaises(Exception): file_import.data_bytes = change_value
+        with self.assertRaises(maci.error.MaciError): file_import.data_bytes = change_value
         self.assertEqual(file_import.data_bytes, b'data')
 
     # 14. Single-Line Attr Lock - Attribute Locked and Cannot Re-Assign
@@ -281,16 +281,16 @@ class TestLoad(unittest.TestCase):
         # Test Attributes and Types - Confirm attr values not changed and match expected
         change_value = 'changed_value'
 
-        with self.assertRaises(Exception): file_import.data_list = change_value
+        with self.assertRaises(maci.error.MaciError): file_import.data_list = change_value
         self.assertEqual(file_import.data_list, [1,2,3])
 
-        with self.assertRaises(Exception): file_import.data_dict = change_value
+        with self.assertRaises(maci.error.MaciError): file_import.data_dict = change_value
         self.assertEqual(file_import.data_dict, {'k1':1, 'k2':2, 'k3':3})
 
-        with self.assertRaises(Exception): file_import.data_tuple = change_value
+        with self.assertRaises(maci.error.MaciError): file_import.data_tuple = change_value
         self.assertEqual(file_import.data_tuple, (1,2,3))
 
-        with self.assertRaises(Exception): file_import.data_set = change_value
+        with self.assertRaises(maci.error.MaciError): file_import.data_set = change_value
         self.assertEqual(file_import.data_set, {1,2,3})
     
     # 15. Mixed Attr/Regular Imports - Confirm Importing Attribute Locked and Regular Values in One File
@@ -327,16 +327,16 @@ class TestLoad(unittest.TestCase):
         change_value = 'changed_value'
         
         self.assertEqual(file_import.data_list_multi, 1)
-        with self.assertRaises(Exception): file_import.data_list_multi = change_value
+        with self.assertRaises(maci.error.MaciError): file_import.data_list_multi = change_value
 
         self.assertEqual(file_import.data_float, {'k1':1, 'k2':2, 'k3':3})
-        with self.assertRaises(Exception): file_import.data_float = change_value
+        with self.assertRaises(maci.error.MaciError): file_import.data_float = change_value
 
         self.assertEqual(file_import.data_bool, {'k1':1, 'k2':2, 'k3':3})
-        with self.assertRaises(Exception): file_import.data_bool = change_value
+        with self.assertRaises(maci.error.MaciError): file_import.data_bool = change_value
 
         self.assertEqual(file_import.data_set, (1,2,3))
-        with self.assertRaises(Exception): file_import.data_set = change_value
+        with self.assertRaises(maci.error.MaciError): file_import.data_set = change_value
 
 ### END OF OLD TESTS ###
 ################################################################
