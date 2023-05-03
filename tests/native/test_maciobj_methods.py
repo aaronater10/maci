@@ -60,6 +60,7 @@ def test1_maciobj_methods_glyph_integrity():
     assert 'hard_lock_data' in file_import.get_hard_locked_list()
     assert 'map_lock' in file_import.get_child_maps() and 'map_lock' in file_import.get_locked_list()
     assert 'map_hard_lock' in file_import.get_child_maps() and 'map_hard_lock' in file_import.get_hard_locked_list()
+    assert file_data.get_all_maps() == {'parent_link_map': {'norm_data': {'map_data': 'norm_data'}, 'lock_data': {'map_lock': 'lock_data'}, 'hard_lock_data': {'map_hard_lock': 'hard_lock_data'}}, 'child_link_map': {'map_data': 'norm_data', 'map_lock': 'lock_data', 'map_hard_lock': 'hard_lock_data'}}
 
     # Remove Test File
     time.sleep(file_delay_timer)
@@ -139,6 +140,7 @@ def test4_maciobj_methods_parent_child_large_map_and_sources():
     assert maci_data._MaciDataObjConstructor__assigned_src_reference_attr_map == maci_data.get_child_maps()
 
     # Map Methods Match Data Structure
+    assert maci_data.get_all_maps() == {'parent_link_map': {'norm_data1': {'map_data1': 'norm_data1', 'map_data2': 'norm_data1', 'map_data3': 'norm_data1'}, 'norm_data2': {'map_data4': 'norm_data2', 'map_data5': 'norm_data2', 'map_data6': 'norm_data2'}}, 'child_link_map': {'map_data1': 'norm_data1', 'map_data2': 'norm_data1', 'map_data3': 'norm_data1', 'map_data4': 'norm_data2', 'map_data5': 'norm_data2', 'map_data6': 'norm_data2'}}
     assert maci_data.get_parent_maps() == {'norm_data1': {'map_data1': 'norm_data1', 'map_data2': 'norm_data1', 'map_data3': 'norm_data1'}, 'norm_data2': {'map_data4': 'norm_data2', 'map_data5': 'norm_data2', 'map_data6': 'norm_data2'}}
     assert maci_data.get_child_maps() == {'map_data1': 'norm_data1', 'map_data2': 'norm_data1', 'map_data3': 'norm_data1', 'map_data4': 'norm_data2', 'map_data5': 'norm_data2', 'map_data6': 'norm_data2'}
 
