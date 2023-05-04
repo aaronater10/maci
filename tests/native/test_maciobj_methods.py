@@ -174,6 +174,37 @@ def test5_maciobj_methods_map_parent_chains():
     assert maci_data.get_parent_map_chains('norm_data1') ==  ['norm_data1', 'map_data1', 'map_data2']
     assert maci_data.get_parent_map_chains('norm_data2') ==  ['norm_data2', 'map_data3', 'map_data4']
 
+
+    ### Test: Breaking a link in chain (from Deletion or Re-Assignment) ###
+
+    # Build Data
+    maci_data = maci.build()
+    maci_data.norm_data1 = 'data1'
+    maci_data.map_data1 = None
+    maci_data.map_data2 = None
+    maci_data.map_data3 = None
+    maci_data.map_data4 = None
+    
+    # Setup Attrs
+    maci_data.map_attr('map_data1', 'norm_data1')
+    maci_data.map_attr('map_data2', 'map_data1')
+    maci_data.map_attr('map_data3', 'map_data2')
+    maci_data.map_attr('map_data4', 'map_data3')
+
+    # Test Data and Parent/Child Map Chain Data and Structure is Correct
+
+    # Normal
+    assert maci_data.get_parent_map_chains() == {'norm_data1': ['norm_data1', 'map_data1', 'map_data2', 'map_data3', 'map_data4']}
+    
+    # RE-ASSIGN Attr: Break in Chain from re-assignment
+    maci_data.map_data2 = None
+    assert maci_data.get_parent_map_chains() == {'norm_data1': ['norm_data1', 'map_data1'], 'map_data2': ['map_data2', 'map_data3', 'map_data4']}
+
+    # DELETE Attr: Break in Chain from re-assignment
+    del maci_data.map_data2
+    assert maci_data.get_parent_map_chains() == {'norm_data1': ['norm_data1', 'map_data1'], 'map_data3': ['map_data3', 'map_data4']}
+
+
     ### Test: Dup Link Check (ON by Default) ###
     
     # Build Data
@@ -261,6 +292,10 @@ def test7_maciobj_methods_unmap_direct_indirect():
     maci_data.map_data3 = None
     maci_data.map_data4 = None
 
+    maci_data.norm_data3 = 'data3'
+    maci_data.map_data5 = None
+    maci_data.map_data6 = None
+
     # Setup Attrs
     maci_data.map_attr('map_data1', 'norm_data1')
     maci_data.map_attr('map_data2', 'norm_data1')
@@ -268,15 +303,24 @@ def test7_maciobj_methods_unmap_direct_indirect():
     maci_data.map_attr('map_data3', 'norm_data2')
     maci_data.map_attr('map_data4', 'norm_data2')
 
+    maci_data.map_attr('map_data5', 'norm_data3')
+    maci_data.map_attr('map_data6', 'norm_data3')
+
     # Test Map Data and Unmap
     assert maci_data.map_data1 == 'data1'
     assert maci_data.map_data2 == 'data1'
     assert maci_data.map_data3 == 'data2'
     assert maci_data.map_data4 == 'data2'
+    assert maci_data.map_data5 == 'data3'
+    assert maci_data.map_data6 == 'data3'
     assert 'map_data1' in maci_data.get_child_maps()
     assert 'map_data2' in maci_data.get_child_maps()
     assert 'map_data3' in maci_data.get_child_maps()
     assert 'map_data4' in maci_data.get_child_maps()
+    assert 'map_data5' in maci_data.get_child_maps()
+    assert 'map_data6' in maci_data.get_child_maps()
+
+    # Test: Parent: norm_data1 - Children: map_data1, map_data2
 
     # UNMAP Child: Direct "map_data1" - Parent Map Still Intact
     maci_data.unmap_attr('map_data1')
@@ -287,10 +331,23 @@ def test7_maciobj_methods_unmap_direct_indirect():
     maci_data.map_data2 = None
     assert 'map_data2' not in maci_data.get_child_maps()
 
+    # Test: Parent: norm_data2 - Children: map_data3, map_data4
+
     # UNMAP Parent: Direct "norm_data2" - Parent Map Still Intact
     maci_data.unmap_attr('norm_data2')
     assert 'map_data3' not in maci_data.get_child_maps()
     assert 'map_data4' not in maci_data.get_child_maps()
+
+    # Test: Parent: norm_data3 - Children: map_data5, map_data6
+
+    # UNMAP Child: InDirect "map_data5" (From Attribute Deletion)
+    del maci_data.map_data5
+    assert 'map_data5' not in maci_data.get_child_maps()
+
+    # UNMAP Parent: InDirect "norm_data3" and "map_data6" (From Attribute Deletion)
+    del maci_data.norm_data3
+    assert 'norm_data3' not in maci_data.get_parent_maps()
+    assert 'map_data6' not in maci_data.get_child_maps()
 
     # Test Maps Empty
     assert maci_data.get_parent_maps() ==  {}
