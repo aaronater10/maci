@@ -366,14 +366,82 @@ def test8_maciobj_methods_lock():
     maci_data.lock_attr('lock_data')
 
     # Test Attr is Locked and Matched Source List
-    assert list(maci_data._MaciDataObjConstructor__assignment_locked_attribs) == maci_data.get_locked_list()
+    assert list(maci_data._MaciDataObjConstructor__assignment_locked_attribs) == maci_data.get_locked_list() == ['lock_data']
     assert 'lock_data' in maci_data.get_locked_list()
 
-    # Test: Lock block from exception, test data still same
+    # Test - Re-Assign: Lock block from exception, test data still same
     with pytest.raises(maci.error.MaciError):
         maci_data.lock_data = None
     assert maci_data.lock_data == 'data'
 
+    # Test: You cannot lock attr twice or use a different lock
+
+    # Re-lock
+    with pytest.raises(maci.error.MaciError):
+        maci_data.lock_attr('lock_data')
+
+    # Use other lock
+    with pytest.raises(maci.error.MaciError):
+        maci_data.hard_lock_attr('lock_data')
+
     # Test: Removed from Lock list via Deletion
     del maci_data.lock_data
     assert 'lock_data' not in maci_data.get_locked_list()
+
+
+# 9. MaciDataObj - UNLOCK: Test general unlocking functionality and protection
+def test9_maciobj_methods_unlock():
+    # Build Data
+    maci_data = maci.build()
+    maci_data.lock_data = 'data'
+
+    # Setup Attr
+    maci_data.lock_attr('lock_data')
+    assert 'lock_data' in maci_data.get_locked_list()
+    
+    # Unlock it
+    maci_data.unlock_attr('lock_data')
+
+    # Test Attr is Unlocked and Matched Source List
+    assert 'lock_data' not in maci_data.get_locked_list()
+    assert list(maci_data._MaciDataObjConstructor__assignment_locked_attribs) == maci_data.get_locked_list() == []
+
+    # Test: Unlock again block from exception, test that you cannot unlock attr twice
+    with pytest.raises(maci.error.MaciError):
+        maci_data.unlock_attr('lock_data')
+
+
+# 10. MaciDataObj - HARD LOCK: Test general hard locking functionality and protection
+def test10_maciobj_methods_hard_lock():
+    # Build Data
+    maci_data = maci.build()
+    maci_data.hard_lock_data = 'data'
+
+    # Check if not in List, Setup Attr
+    assert 'hard_lock_data' not in maci_data.get_hard_locked_list()
+    maci_data.hard_lock_attr('hard_lock_data')
+
+    # Test Attr is Hard Locked and Matched Source List
+    assert 'hard_lock_data' in maci_data.get_hard_locked_list()
+    assert list(maci_data._MaciDataObjConstructor__assignment_hard_locked_attribs) == maci_data.get_hard_locked_list() == ['hard_lock_data']
+
+    # Test - Re-Assign, Delete: Hard Lock block from exception, test data still same
+    
+    # Re-Assign Attr
+    with pytest.raises(maci.error.MaciError):
+        maci_data.hard_lock_data = None
+    assert maci_data.hard_lock_data == 'data'
+    # Delete Attr
+    with pytest.raises(maci.error.MaciError):
+        del maci_data.hard_lock_data
+    assert maci_data.hard_lock_data == 'data'
+
+    # Test: You cannot lock attr twice or use a different lock
+
+    # Re-lock
+    with pytest.raises(maci.error.MaciError):
+        maci_data.hard_lock_attr('hard_lock_data')
+
+    # Use other lock
+    with pytest.raises(maci.error.MaciError):
+        maci_data.lock_attr('hard_lock_data')
