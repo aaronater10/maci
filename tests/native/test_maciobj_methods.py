@@ -233,7 +233,7 @@ def test5_maciobj_methods_map_parent_chains():
     assert maci_data.get_parent_map_chains('norm_data2', dup_link_check=False) == ['norm_data2', 'map_data4']
 
 
-# 6. MaciDataObj - UNMAP: Test Map being Unmapped Directly and Indirectly
+# 6. MaciDataObj - UNMAP: Test children is following parent data properly
 def test6_maciobj_methods_map_data_followed():
     # Build Data
     maci_data = maci.build()
@@ -353,3 +353,27 @@ def test7_maciobj_methods_unmap_direct_indirect():
     assert maci_data.get_parent_maps() ==  {}
     assert maci_data.get_parent_map_chains() ==  {}
     assert maci_data.get_child_maps() ==  {}
+
+
+# 8. MaciDataObj - LOCK: Test general locking protection and indirect unlock
+def test8_maciobj_methods_lock():
+    # Build Data
+    maci_data = maci.build()
+    maci_data.lock_data = 'data'
+
+    # Check if not in List, Setup Attr
+    assert 'lock_data' not in maci_data.get_locked_list()
+    maci_data.lock_attr('lock_data')
+
+    # Test Attr is Locked and Matched Source List
+    assert list(maci_data._MaciDataObjConstructor__assignment_locked_attribs) == maci_data.get_locked_list()
+    assert 'lock_data' in maci_data.get_locked_list()
+
+    # Test: Lock block from exception, test data still same
+    with pytest.raises(maci.error.MaciError):
+        maci_data.lock_data = None
+    assert maci_data.lock_data == 'data'
+
+    # Test: Removed from Lock list via Deletion
+    del maci_data.lock_data
+    assert 'lock_data' not in maci_data.get_locked_list()
