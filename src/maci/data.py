@@ -816,11 +816,11 @@ class _MaciDataObjConstructor:
 
         attr_child == attr_parent
 
-        Parent map will be -> 'parent_link_map': {'attr_parent': {'attr_child': 'attr_parent'}}
+        Parent map will be -> 'parent_map': {'attr_parent': {'attr_child': 'attr_parent'}}
 
-        Child map will be -> 'child_link_map': {'attr_child': 'attr_parent'}
+        Child map will be -> 'child_map': {'attr_child': 'attr_parent'}
         """
-        return {'parent_link_map': deepcopy(self.__assigned_dst_reference_attr_map), 'child_link_map': deepcopy(self.__assigned_src_reference_attr_map)}
+        return {'parent_maps': deepcopy(self.__assigned_dst_reference_attr_map), 'child_maps': deepcopy(self.__assigned_src_reference_attr_map)}
 
 
     @_rename_exc_name_to_user_object_name
