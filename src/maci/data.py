@@ -235,6 +235,8 @@ class _MaciDataObjConstructor:
         # Markers
         __start_markers = {'[', '{', '(', "'''", '"""'}
         __end_markers = {']', '}', ')', "'''", '"""'}
+        __end_multistr_markers = {"'''", '"""'}
+        __end_markers_build = __end_markers
         __skip_markers = ('', ' ', '#', '\n')
         __eof_marker = file_data[-1]
         __ignore_multistr_markers = ("'''", '"""')
@@ -370,14 +372,16 @@ class _MaciDataObjConstructor:
                     if __ignore_multistr_markers[0] == __value_token: __ignore_multistr_marker = __ignore_multistr_markers[1]
                     if __ignore_multistr_markers[1] == __value_token: __ignore_multistr_marker = __ignore_multistr_markers[0]
 
-                    # Turn ON Data Build Switches
+                    # Turn ON/UPDATE Data Build Switches
                     __is_building_data_sw = True
                     __body_build_data_sw = True
                     __end_data_build_sw = True
+                    if __value_token in __end_multistr_markers:
+                        __end_markers_build = __end_multistr_markers
                     continue
 
                 # END BUILD: Check if line of file is an End Data Build Marker. Import Built Data Type if Valid. Check if EOF in case File Missing End Marker.
-                elif (__end_data_build_sw) and (((__end_token in __end_markers) and (not __end_token == __ignore_multistr_marker)) or (f"{__eof_marker}" == f"{__file_data_line}")):
+                elif (__end_data_build_sw) and (((__end_token in __end_markers_build) and (not __end_token == __ignore_multistr_marker)) or (f"{__eof_marker}" == f"{__file_data_line}")):
                     __build_data += f"\n{__file_data_line}"
 
                     try:
@@ -394,11 +398,12 @@ class _MaciDataObjConstructor:
 
                     except SyntaxError: raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')
 
-                    # Turn OFF Data Build Switches
+                    # Turn OFF/UPDATE Data Build Switches
                     __is_building_data_sw = False
                     __body_build_data_sw = False
                     __end_data_build_sw = False
                     __build_data = ''
+                    __end_markers_build = __end_markers
                     continue
 
                 # CONT BUILD: Continue to Build Data

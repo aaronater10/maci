@@ -163,6 +163,7 @@ def test2_dumpstr_str_multiline_str_maciobj():
     str_data_build.data_multi_str7 = 'data line 1\ndata line """ 2\ndata line 3'
     str_data_build.data_multi_str8 = 'data line 1\ndata line "" 2\ndata line 3'
     str_data_build.data_multi_str9 = "data line 1\ndata line '' 2\ndata line 3"
+    str_data_build.data_multi_str10 = "]data line 1\n} data line 2\ndata line 3\n)"
     str_data_build.data_bool = False
 
     # Test Multi-Line String Dump and Load
@@ -179,6 +180,7 @@ def test2_dumpstr_str_multiline_str_maciobj():
     assert str_import.data_multi_str7 == '\ndata line 1\ndata line """ 2\ndata line 3\n'
     assert str_import.data_multi_str8 == '\ndata line 1\ndata line "" 2\ndata line 3\n'
     assert str_import.data_multi_str9 == "\ndata line 1\ndata line '' 2\ndata line 3\n"
+    assert str_import.data_multi_str10 == "\n]data line 1\n} data line 2\ndata line 3\n)\n"
     assert str_import.data_bool == False
 
 
@@ -301,6 +303,7 @@ def test2_dumpstr_str_multiline_str_dict():
     'data_multi_str7': 'data line 1\ndata line """ 2\ndata line 3',
     'data_multi_str8': 'data line 1\ndata line "" 2\ndata line 3',
     'data_multi_str9': "data line 1\ndata line '' 2\ndata line 3",
+    'data_multi_str10': "]data line 1\n} data line 2\ndata line 3\n)",
     'data_bool': False,
     }
 
@@ -318,6 +321,7 @@ def test2_dumpstr_str_multiline_str_dict():
     assert str_import.data_multi_str7 == '\ndata line 1\ndata line """ 2\ndata line 3\n'
     assert str_import.data_multi_str8 == '\ndata line 1\ndata line "" 2\ndata line 3\n'
     assert str_import.data_multi_str9 == "\ndata line 1\ndata line '' 2\ndata line 3\n"
+    assert str_import.data_multi_str10 == "\n]data line 1\n} data line 2\ndata line 3\n)\n"
     assert str_import.data_bool == False
 
 
@@ -373,6 +377,7 @@ def test2_dumpstr_str_multiline_str_class():
             self.data_multi_str7 = 'data line 1\ndata line """ 2\ndata line 3'
             self.data_multi_str8 = 'data line 1\ndata line "" 2\ndata line 3'
             self.data_multi_str9 = "data line 1\ndata line '' 2\ndata line 3"
+            self.data_multi_str10 = "]data line 1\n} data line 2\ndata line 3\n)"
             self.data_bool = False
     str_data_class = CustomClass()
 
@@ -390,6 +395,7 @@ def test2_dumpstr_str_multiline_str_class():
     assert str_import.data_multi_str7 == '\ndata line 1\ndata line """ 2\ndata line 3\n'
     assert str_import.data_multi_str8 == '\ndata line 1\ndata line "" 2\ndata line 3\n'
     assert str_import.data_multi_str9 == "\ndata line 1\ndata line '' 2\ndata line 3\n"
+    assert str_import.data_multi_str10 == "\n]data line 1\n} data line 2\ndata line 3\n)\n"
     assert str_import.data_bool == False
 
 

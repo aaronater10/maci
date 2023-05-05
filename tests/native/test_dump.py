@@ -321,6 +321,7 @@ def test3_dump_file_multiline_str_maciobj():
     file_data.data_multi_str7 = 'data line 1\ndata line """ 2\ndata line 3'
     file_data.data_multi_str8 = 'data line 1\ndata line "" 2\ndata line 3'
     file_data.data_multi_str9 = "data line 1\ndata line '' 2\ndata line 3"
+    file_data.data_multi_str10 = "]data line 1\n} data line 2\ndata line 3\n)"
     file_data.data_bool = False
 
     # Test Multi-Line String Dump and Load
@@ -337,6 +338,7 @@ def test3_dump_file_multiline_str_maciobj():
     assert file_import.data_multi_str7 == '\ndata line 1\ndata line """ 2\ndata line 3\n'
     assert file_import.data_multi_str8 == '\ndata line 1\ndata line "" 2\ndata line 3\n'
     assert file_import.data_multi_str9 == "\ndata line 1\ndata line '' 2\ndata line 3\n"
+    assert file_import.data_multi_str10 == "\n]data line 1\n} data line 2\ndata line 3\n)\n"
     assert file_import.data_bool == False
 
     # Remove Test File
@@ -584,6 +586,7 @@ def test3_dump_file_multiline_str_dict():
     'data_multi_str7': 'data line 1\ndata line """ 2\ndata line 3',
     'data_multi_str8': 'data line 1\ndata line "" 2\ndata line 3',
     'data_multi_str9': "data line 1\ndata line '' 2\ndata line 3",
+    'data_multi_str10': "]data line 1\n} data line 2\ndata line 3\n)",
     'data_bool': False,
     }
 
@@ -601,6 +604,7 @@ def test3_dump_file_multiline_str_dict():
     assert file_import.data_multi_str7 == '\ndata line 1\ndata line """ 2\ndata line 3\n'
     assert file_import.data_multi_str8 == '\ndata line 1\ndata line "" 2\ndata line 3\n'
     assert file_import.data_multi_str9 == "\ndata line 1\ndata line '' 2\ndata line 3\n"
+    assert file_import.data_multi_str10 == "\n]data line 1\n} data line 2\ndata line 3\n)\n"
     assert file_import.data_bool == False
 
     # Remove Test File
@@ -755,6 +759,7 @@ def test3_dump_file_multiline_str_class():
             self.data_multi_str7 = 'data line 1\ndata line """ 2\ndata line 3'
             self.data_multi_str8 = 'data line 1\ndata line "" 2\ndata line 3'
             self.data_multi_str9 = "data line 1\ndata line '' 2\ndata line 3"
+            self.data_multi_str10 = "]data line 1\n} data line 2\ndata line 3\n)"
             self.data_bool = False
     file_data = CustomClass()
 
@@ -772,6 +777,7 @@ def test3_dump_file_multiline_str_class():
     assert file_import.data_multi_str7 == '\ndata line 1\ndata line """ 2\ndata line 3\n'
     assert file_import.data_multi_str8 == '\ndata line 1\ndata line "" 2\ndata line 3\n'
     assert file_import.data_multi_str9 == "\ndata line 1\ndata line '' 2\ndata line 3\n"
+    assert file_import.data_multi_str10 == "\n]data line 1\n} data line 2\ndata line 3\n)\n"
     assert file_import.data_bool == False
 
     # Remove Test File
