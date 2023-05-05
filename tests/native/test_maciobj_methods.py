@@ -60,7 +60,7 @@ def test1_maciobj_methods_glyph_integrity():
     assert 'hard_lock_data' in file_import.get_hard_locked_list()
     assert 'map_lock' in file_import.get_child_maps() and 'map_lock' in file_import.get_locked_list()
     assert 'map_hard_lock' in file_import.get_child_maps() and 'map_hard_lock' in file_import.get_hard_locked_list()
-    assert file_data.get_all_maps() == {'parent_link_map': {'norm_data': {'map_data': 'norm_data'}, 'lock_data': {'map_lock': 'lock_data'}, 'hard_lock_data': {'map_hard_lock': 'hard_lock_data'}}, 'child_link_map': {'map_data': 'norm_data', 'map_lock': 'lock_data', 'map_hard_lock': 'hard_lock_data'}}
+    assert file_data.get_all_maps() == {'parent_maps': {'norm_data': {'map_data': 'norm_data'}, 'lock_data': {'map_lock': 'lock_data'}, 'hard_lock_data': {'map_hard_lock': 'hard_lock_data'}}, 'child_maps': {'map_data': 'norm_data', 'map_lock': 'lock_data', 'map_hard_lock': 'hard_lock_data'}}
 
     # Remove Test File
     time.sleep(file_delay_timer)
@@ -140,7 +140,7 @@ def test4_maciobj_methods_parent_child_large_map_and_sources():
     assert maci_data._MaciDataObjConstructor__assigned_src_reference_attr_map == maci_data.get_child_maps()
 
     # Map Methods Match Data Structure
-    assert maci_data.get_all_maps() == {'parent_link_map': {'norm_data1': {'map_data1': 'norm_data1', 'map_data2': 'norm_data1', 'map_data3': 'norm_data1'}, 'norm_data2': {'map_data4': 'norm_data2', 'map_data5': 'norm_data2', 'map_data6': 'norm_data2'}}, 'child_link_map': {'map_data1': 'norm_data1', 'map_data2': 'norm_data1', 'map_data3': 'norm_data1', 'map_data4': 'norm_data2', 'map_data5': 'norm_data2', 'map_data6': 'norm_data2'}}
+    assert maci_data.get_all_maps() == {'parent_maps': {'norm_data1': {'map_data1': 'norm_data1', 'map_data2': 'norm_data1', 'map_data3': 'norm_data1'}, 'norm_data2': {'map_data4': 'norm_data2', 'map_data5': 'norm_data2', 'map_data6': 'norm_data2'}}, 'child_maps': {'map_data1': 'norm_data1', 'map_data2': 'norm_data1', 'map_data3': 'norm_data1', 'map_data4': 'norm_data2', 'map_data5': 'norm_data2', 'map_data6': 'norm_data2'}}
     assert maci_data.get_parent_maps() == {'norm_data1': {'map_data1': 'norm_data1', 'map_data2': 'norm_data1', 'map_data3': 'norm_data1'}, 'norm_data2': {'map_data4': 'norm_data2', 'map_data5': 'norm_data2', 'map_data6': 'norm_data2'}}
     assert maci_data.get_child_maps() == {'map_data1': 'norm_data1', 'map_data2': 'norm_data1', 'map_data3': 'norm_data1', 'map_data4': 'norm_data2', 'map_data5': 'norm_data2', 'map_data6': 'norm_data2'}
 
@@ -445,3 +445,92 @@ def test10_maciobj_methods_hard_lock():
     # Use other lock
     with pytest.raises(maci.error.MaciError):
         maci_data.lock_attr('hard_lock_data')
+
+
+# 11. MaciDataObj - Mixed Concepts: Test general locking, hard locking, and mapping in different scenarios
+def test11_maciobj_methods_mixed_concepts():
+    # Build Data
+    maci_data = maci.build()
+    maci_data.data_a0 = 'data_a'
+    maci_data.data_a1 = None
+    maci_data.data_b0 = 'data_b'
+    maci_data.data_b1 = None
+
+    ### Map & Lock ###
+
+    # Setup Data and Test
+    maci_data.map_attr('data_a1', 'data_a0')
+    maci_data.lock_attr('data_a1')
+
+    # Test: Check if in Both Child and Lock Lists
+    assert 'data_a1' in maci_data.get_child_maps() and 'data_a1' in maci_data.get_locked_list()
+    
+    # Test: Check if re-assign parent data works, but child is blocked because locked
+    with pytest.raises(maci.error.MaciError):
+        maci_data.data_a0 = None
+    assert maci_data.data_a0 == None
+    assert maci_data.data_a1 == 'data_a'
+
+
+    ### Map & Hard Lock ###
+    
+    # Setup Data and Test
+    maci_data.map_attr('data_b1', 'data_b0')
+    maci_data.hard_lock_attr('data_b1')
+
+    # Test: Check if in Both Child and Lock Lists
+    assert 'data_b1' in maci_data.get_child_maps() and 'data_b1' in maci_data.get_hard_locked_list()
+    
+    # Test: Check if re-assign parent data works, but child is blocked because locked
+    with pytest.raises(maci.error.MaciError):
+        maci_data.data_b0 = None
+    assert maci_data.data_b0 == None
+    assert maci_data.data_b1 == 'data_b'
+
+    
+    ### LOCK & MAP: Remove Map, Re-Map, Remove Lock, Re-Lock - Check all List Statuses ###
+
+    maci_data.unmap_attr('data_a1')
+    assert 'data_a1' not in maci_data.get_child_maps() and 'data_a1' in maci_data.get_locked_list()
+
+    # Re-Map raises exception cause still locked
+    with pytest.raises(maci.error.MaciError):
+        maci_data.map_attr('data_a1', 'data_a0')
+    
+    # Unlock and test
+    maci_data.unlock_attr('data_a1')
+    assert 'data_a1' not in maci_data.get_child_maps() and 'data_a1' not in maci_data.get_locked_list()
+
+    # Re-map and Re-Lock then Unlock and check if still mapped and value changes
+    # And, lock, change parent, check value change, unlock, re-assign parent and check if child updates
+    maci_data.map_attr('data_a1', 'data_a0')
+    maci_data.lock_attr('data_a1')
+
+    maci_data.unlock_attr('data_a1')
+    assert 'data_a1' in maci_data.get_child_maps() and 'data_a1' not in maci_data.get_locked_list()
+
+    assert maci_data.data_a0 == None
+    assert maci_data.data_a1 == None
+
+    maci_data.lock_attr('data_a1')
+    try: maci_data.data_a0 = 'change1'
+    except: pass
+    
+    assert maci_data.data_a0 == 'change1'
+    assert maci_data.data_a1 == None
+
+    maci_data.unlock_attr('data_a1')
+
+    maci_data.data_a0 = 'change2'
+    assert maci_data.data_a0 == 'change2'
+    assert maci_data.data_a1 == 'change2'
+
+
+    ### HARD LOCK & MAP: Remove Map, Attempt Re-Map - Check all List Statuses ###
+    
+    maci_data.unmap_attr('data_b1')
+    assert 'data_b1' not in maci_data.get_child_maps() and 'data_b1' in maci_data.get_hard_locked_list()
+
+    # Re-Map raises exception cause still hard locked
+    with pytest.raises(maci.error.MaciError):
+        maci_data.map_attr('data_b1', 'data_b0')
