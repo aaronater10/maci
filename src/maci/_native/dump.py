@@ -60,19 +60,50 @@ def dump(
 
     Indent OFF: dump('path/of/filename', 'data', indentation_on=False)
     """
-    # Error Checks
+    # Error Checks & Messages
     _err_messages = {
         '__err_msg_no_attrs_found': "Cannot save file. No attributes found in the object passed",
     }
-    __err_msg_type_str_filename = "Only str is allowed for filename"
-    __err_msg_type_str_append = "Only bool is allowed for 'append'"
-    __err_msg_type_int_indent_level = "Only int is allowed for indent_level"
-    __err_msg_type_bool_indentation_on = "Only bool is allowed for indentation_on"
+    __err_msg_type_filename = "Only str is allowed for 'filename'"
+    __err_msg_type_data = "Only MaciDataObj|dict|CustomClass is allowed for 'data'"
+    __err_msg_type_append = "Only bool is allowed for 'append'"
+    __err_msg_type_indent_level = "Only int is allowed for 'indent_level'"
+    __err_msg_type_indentation_on = "Only bool is allowed for 'indentation_on'"
+    __err_msg_type_multi_line_str = "Only bool is allowed for 'multi_line_str'"
+    __err_msg_type_encoding = "Only str|None is allowed for 'encoding'"
+    __err_msg_type_private_attrs = "Only bool is allowed for 'private_attrs'"
+    __err_msg_type_private_under_attrs = "Only bool is allowed for 'private_under_attrs'"
+    __err_msg_type_private_dunder_attrs = "Only bool is allowed for 'private_dunder_attrs'"
+    __err_msg_type_class_attrs = "Only bool is allowed for 'class_attrs'"
+    __err_msg_type_private_init_attrs = "Only bool is allowed for 'private_init_attrs'"
+    __err_msg_type_private_init_under_attrs = "Only bool is allowed for 'private_init_under_attrs'"
+    __err_msg_type_private_init_dunder_attrs = "Only bool is allowed for 'private_init_dunder_attrs'"
+    __err_msg_type_private_class_attrs = "Only bool is allowed for 'private_class_attrs'"
+    __err_msg_type_private_class_under_attrs = "Only bool is allowed for 'private_class_under_attrs'"
+    __err_msg_type_private_class_dunder_attrs = "Only bool is allowed for 'private_class_dunder_attrs'"
+    __err_msg_type_use_symbol_glyphs = "Only bool is allowed for 'use_symbol_glyphs'"
 
-    if not isinstance(filename, str): raise Dump(__err_msg_type_str_filename, f'\nFILE: "{filename}"')
-    if not isinstance(append, bool): raise Dump(__err_msg_type_str_append, f'\nFILE: "{filename}" \nDATA: {append}')
-    if not isinstance(indent_level, int): raise Dump(__err_msg_type_int_indent_level, f'\nFILE: "{filename}" \nDATA: {indent_level}')
-    if not isinstance(indentation_on, bool): raise Dump(__err_msg_type_bool_indentation_on, f'\nFILE: "{filename}" \nDATA: {indentation_on}')
+
+    filter_data_object_types = (str, int, float, bool, list, tuple, set, type(None), bytes, complex, range, frozenset, bytearray, memoryview)
+
+    if not isinstance(filename, str): raise Dump(__err_msg_type_filename, f'\nGot: "{filename}"')
+    if isinstance(data, filter_data_object_types): raise Dump(__err_msg_type_data, f'\nGot: {repr(data)}')
+    if not isinstance(append, bool): raise Dump(__err_msg_type_append, f'\nGot: {repr(append)}')
+    if not isinstance(indent_level, int): raise Dump(__err_msg_type_indent_level, f'\nGot: {repr(indent_level)}')
+    if not isinstance(indentation_on, bool): raise Dump(__err_msg_type_indentation_on, f'\nGot: {repr(indentation_on)}')
+    if not isinstance(multi_line_str, bool): raise Dump(__err_msg_type_multi_line_str, f'\nGot: {repr(multi_line_str)}')
+    if not isinstance(encoding, (str, type(None))): raise Dump(__err_msg_type_encoding, f'\nGot: {repr(encoding)}')
+    if not isinstance(private_attrs, bool): raise Dump(__err_msg_type_private_attrs, f'\nGot: {repr(private_attrs)}')
+    if not isinstance(private_under_attrs, bool): raise Dump(__err_msg_type_private_under_attrs, f'\nGot: {repr(private_under_attrs)}')
+    if not isinstance(private_dunder_attrs, bool): raise Dump(__err_msg_type_private_dunder_attrs, f'\nGot: {repr(private_dunder_attrs)}')
+    if not isinstance(class_attrs, bool): raise Dump(__err_msg_type_class_attrs, f'\nGot: {repr(class_attrs)}')
+    if not isinstance(private_init_attrs, bool): raise Dump(__err_msg_type_private_init_attrs, f'\nGot: {repr(private_init_attrs)}')
+    if not isinstance(private_init_under_attrs, bool): raise Dump(__err_msg_type_private_init_under_attrs, f'\nGot: {repr(private_init_under_attrs)}')
+    if not isinstance(private_init_dunder_attrs, bool): raise Dump(__err_msg_type_private_init_dunder_attrs, f'\nGot: {repr(private_init_dunder_attrs)}')
+    if not isinstance(private_class_attrs, bool): raise Dump(__err_msg_type_private_class_attrs, f'\nGot: {repr(private_class_attrs)}')
+    if not isinstance(private_class_under_attrs, bool): raise Dump(__err_msg_type_private_class_under_attrs, f'\nGot: {repr(private_class_under_attrs)}')
+    if not isinstance(private_class_dunder_attrs, bool): raise Dump(__err_msg_type_private_class_dunder_attrs, f'\nGot: {repr(private_class_dunder_attrs)}')
+    if not isinstance(use_symbol_glyphs, bool): raise Dump(__err_msg_type_use_symbol_glyphs, f'\nGot: {repr(use_symbol_glyphs)}')
 
     # Write built data to file, return None
     __dump_data(
