@@ -54,20 +54,22 @@ def test1_exceptions_macidump_types():
         maci.dump(filename="", data={}, use_symbol_glyphs=1.0)
 
 
-# # 2. Maci Dump - Unsupported Options or Data
-# def test2_exceptions_macidump_opts_data():
-#     filepath = test_file_path + 'exc_macidump.maci'
+# 2. Maci Dump - Unsupported Options or Data
+def test2_exceptions_macidump_opts_data():
+    filepath = test_file_path + 'exc_macidump.maci'
 
-#     # Remove Any Existing Cache Test File
-#     try: remove(filepath)
-#     except: pass
-#     time.sleep(file_delay_timer)
+    # Remove Any Existing Cache Test File
+    try: remove(filepath)
+    except: pass
+    time.sleep(file_delay_timer)
 
-#     # Tests
-#     with pytest.raises(maci.error.MaciDump):
-#         maci.dump(filename='', data='')
+    # Tests
+    with pytest.raises(maci.error.Dump):
+        maci.dump(filename="", data={})
+    with pytest.raises(maci.error.Dump):
+        maci.dump(filename=filepath, data={}, encoding="")
 
-#     # Remove Cache Test File
-#     time.sleep(file_delay_timer)
-#     try: remove(filepath)
-#     except: pass
+    # Remove Cache Test File
+    time.sleep(file_delay_timer)
+    try: remove(filepath)
+    except: pass
