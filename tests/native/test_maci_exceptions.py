@@ -75,6 +75,43 @@ def test2_exceptions_macidump_opts_data():
     except: pass
 
 
+### maci.dumpraw ###
+
+# 1. Maci Dump Raw - Type Checks
+def test1_exceptions_macidumpraw_types():
+    # Tests
+    with pytest.raises(maci.error.DumpRaw):
+        maci.dumpraw(filename=1.0)
+    with pytest.raises(maci.error.DumpRaw):
+        maci.dumpraw(filename="", append=1.0)
+    with pytest.raises(maci.error.DumpRaw):
+        maci.dumpraw(filename="", byte_data=1.0)
+    with pytest.raises(maci.error.DumpRaw):
+        maci.dumpraw(filename="", encoding=1.0)
+
+
+# 2. Maci Dump Raw - Unsupported Options or Data
+def test2_exceptions_macidumpraw_opts_data():
+    filepath = test_file_path + 'exc_macidumpraw.maci'
+
+    # Remove Any Existing Cache Test File
+    try: remove(filepath)
+    except: pass
+    time.sleep(file_delay_timer)
+
+    # Tests
+    with pytest.raises(maci.error.DumpRaw):
+        maci.dumpraw(filename="")
+    with pytest.raises(maci.error.DumpRaw):
+        maci.dumpraw(filepath, 1.0, byte_data=True)
+    with pytest.raises(maci.error.DumpRaw):
+        maci.dumpraw(filename=filepath, encoding="")
+
+    # Remove Cache Test File
+    time.sleep(file_delay_timer)
+    try: remove(filepath)
+    except: pass
+
 
 ### maci.cleanformat ###
 
@@ -88,3 +125,5 @@ def test1_exceptions_macicleanformat_types():
 
 # 2. Maci Dump - Unsupported Options or Data
 ### NO OPTS TO TEST ###
+
+
