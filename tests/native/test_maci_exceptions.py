@@ -82,9 +82,9 @@ def test2_exceptions_macidump_opts_data():
 def test1_exceptions_macicleanformat_types():
     # Tests
     with pytest.raises(maci.error.CleanFormat):
-        maci.cleanformat(datatype=1.0)
+        maci.cleanformat(data=1.0)
     with pytest.raises(maci.error.CleanFormat):
-        maci.cleanformat(datatype={}, indent_level=1.0)
+        maci.cleanformat(data={}, indent_level=1.0)
 
 # 2. Maci Dump - Unsupported Options or Data
 ### NO OPTS TO TEST ###
