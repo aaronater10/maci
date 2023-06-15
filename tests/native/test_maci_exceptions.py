@@ -223,7 +223,6 @@ def test2_exceptions_maciloadattrs_opts_data():
     filepath = test_file_path + 'exc_maciloadattrs.maci'
 
     # Build Data
-    maci_data = maci.build()
     class CustomData: ...
 
     # Tests

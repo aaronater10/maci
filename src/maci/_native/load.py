@@ -33,7 +33,7 @@ def load(filename: str, *, attr_name_dedup: bool=True, encoding: __Union[str, No
     # Error Checks
     err_msg_type_filename = "Only str is allowed for 'filename'"
     err_msg_type_attr_name_dedup = "Only bool is allowed for 'attr_name_dedup'"
-    err_msg_type_encoding = "Only str|None is allowed for 'encoding'"
+    err_msg_type_encoding = "Only str|None or valid option is allowed for 'encoding'"
     err_msg_type__ignore_maci_attr_check = "Only bool is allowed for '_ignore_maci_attr_check'"
     
     if not isinstance(filename, str): raise Load(err_msg_type_filename, f'\nGot: {repr(filename)}')

@@ -70,7 +70,7 @@ def dump(
     __err_msg_type_indent_level = "Only int is allowed for 'indent_level'"
     __err_msg_type_indentation_on = "Only bool is allowed for 'indentation_on'"
     __err_msg_type_multi_line_str = "Only bool is allowed for 'multi_line_str'"
-    __err_msg_type_encoding = "Only str|None is allowed for 'encoding'"
+    __err_msg_type_encoding = "Only str|None or valid option is allowed for 'encoding'"
     __err_msg_type_private_attrs = "Only bool is allowed for 'private_attrs'"
     __err_msg_type_private_under_attrs = "Only bool is allowed for 'private_under_attrs'"
     __err_msg_type_private_dunder_attrs = "Only bool is allowed for 'private_dunder_attrs'"
