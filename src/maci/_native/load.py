@@ -30,19 +30,23 @@ def load(filename: str, *, attr_name_dedup: bool=True, encoding: __Union[str, No
     including the ability to overwrite internal dunder names. This feature is meant to protect you from accidentally
     duplicating an attribute name in a file that has already been created.
     """
-    __err_msg_file = 'Invalid data type or nothing specified for filename:'
-    __err_msg_attrib = 'Invalid data type or nothing specified for attr_name_dedup:'
-    
     # Error Checks
-    if not isinstance(filename, str): raise Load(__err_msg_file, f'\nFILE: "{filename}"')
-    if not isinstance(attr_name_dedup, bool): raise Load(__err_msg_attrib, f'\nDATA: {attr_name_dedup}')
+    err_msg_type_filename = "Only str is allowed for 'filename'"
+    err_msg_type_attr_name_dedup = "Only bool is allowed for 'attr_name_dedup'"
+    err_msg_type_encoding = "Only str|None is allowed for 'encoding'"
+    err_msg_type__ignore_maci_attr_check = "Only bool is allowed for '_ignore_maci_attr_check'"
+    
+    if not isinstance(filename, str): raise Load(err_msg_type_filename, f'\nGot: {repr(filename)}')
+    if not isinstance(attr_name_dedup, bool): raise Load(err_msg_type_attr_name_dedup, f'\nGot: {repr(attr_name_dedup)}')
+    if not isinstance(encoding, (str, type(None))): raise Load(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
+    if not isinstance(_ignore_maci_attr_check, bool): raise Load(err_msg_type__ignore_maci_attr_check, f'\nGot: {repr(_ignore_maci_attr_check)}')
 
     # Check if file empty. Returns None if empty
     try:
         if __path.getsize(filename) == 0:
             return None
-    except FileNotFoundError as __err_msg: raise Load(__err_msg, f'\nFILE: "{filename}"')
-    except OSError as __err_msg: raise Load(__err_msg, f'\nFILE: "{filename}"')
+    except FileNotFoundError as __err_msg: raise Load(__err_msg, f'\nGot: {repr(filename)}')
+    except OSError as __err_msg: raise Load(__err_msg, f'\nGot: {repr(filename)}')
 
     # Syntax/Usage Error Messages
     __err_messages = {
@@ -64,3 +68,4 @@ def load(filename: str, *, attr_name_dedup: bool=True, encoding: __Union[str, No
                     **__err_messages
                 )
     except GeneralError as err: raise Load(err) from None
+    except LookupError: raise Load(err_msg_type_encoding, f'\nGot: {repr(encoding)}')

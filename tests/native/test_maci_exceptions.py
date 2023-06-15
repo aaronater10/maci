@@ -167,3 +167,27 @@ def test1_exceptions_macicleanformat_types():
 ### NO OPTS TO TEST ###
 
 
+### maci.load ###
+
+# 1. Maci Dump Raw - Type Checks
+def test1_exceptions_maciload_types():
+    # Tests
+    with pytest.raises(maci.error.Load):
+        maci.load(filename=1.0)
+    with pytest.raises(maci.error.Load):
+        maci.load(filename="", attr_name_dedup=1.0)
+    with pytest.raises(maci.error.Load):
+        maci.load(filename="", encoding=1.0)
+    with pytest.raises(maci.error.Load):
+        maci.load(filename="", _ignore_maci_attr_check=1.0)
+
+
+# 2. Maci Dump Raw - Unsupported Options or Data
+def test2_exceptions_maciload_opts_data():
+    filepath = test_file_path + 'exc_maciload.maci'
+
+    # Tests
+    with pytest.raises(maci.error.Load):
+        maci.load(filename="")
+    with pytest.raises(maci.error.Load):
+        maci.load(filename=filepath, encoding="")
