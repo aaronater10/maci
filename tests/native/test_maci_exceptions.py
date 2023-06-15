@@ -113,6 +113,46 @@ def test2_exceptions_macidumpraw_opts_data():
     except: pass
 
 
+### maci.dumpstr ###
+
+# 1. Maci Dump Str - Type Checks
+def test1_exceptions_macidumpstr_types():
+    # Tests
+    with pytest.raises(maci.error.DumpStr):
+        maci.dumpstr(data=1.0)
+    with pytest.raises(maci.error.DumpStr):
+        maci.dumpstr(data={}, indent_level=1.0)
+    with pytest.raises(maci.error.DumpStr):
+        maci.dumpstr(data={}, indentation_on=1.0)
+    with pytest.raises(maci.error.DumpStr):
+        maci.dumpstr(data={}, multi_line_str=1.0)
+    with pytest.raises(maci.error.DumpStr):
+        maci.dumpstr(data={}, private_attrs=1.0)
+    with pytest.raises(maci.error.DumpStr):
+        maci.dumpstr(data={}, private_under_attrs=1.0)
+    with pytest.raises(maci.error.DumpStr):
+        maci.dumpstr(data={}, private_dunder_attrs=1.0)
+    with pytest.raises(maci.error.DumpStr):
+        maci.dumpstr(data={}, class_attrs=1.0)
+    with pytest.raises(maci.error.DumpStr):
+        maci.dumpstr(data={}, private_init_attrs=1.0)
+    with pytest.raises(maci.error.DumpStr):
+        maci.dumpstr(data={}, private_init_under_attrs=1.0)
+    with pytest.raises(maci.error.DumpStr):
+        maci.dumpstr(data={}, private_init_dunder_attrs=1.0)
+    with pytest.raises(maci.error.DumpStr):
+        maci.dumpstr(data={}, private_class_attrs=1.0)
+    with pytest.raises(maci.error.DumpStr):
+        maci.dumpstr(data={}, private_class_under_attrs=1.0)
+    with pytest.raises(maci.error.DumpStr):
+        maci.dumpstr(data={}, private_class_dunder_attrs=1.0)
+    with pytest.raises(maci.error.DumpStr):
+        maci.dumpstr(data={}, use_symbol_glyphs=1.0)
+
+# 2. Maci Dump Str - Unsupported Options or Data
+### NO OPTS TO TEST ###
+
+
 ### maci.cleanformat ###
 
 # 1. Maci Clean Format - Type Checks
@@ -123,7 +163,7 @@ def test1_exceptions_macicleanformat_types():
     with pytest.raises(maci.error.CleanFormat):
         maci.cleanformat(data={}, indent_level=1.0)
 
-# 2. Maci Dump - Unsupported Options or Data
+# 2. Maci Clean Format - Unsupported Options or Data
 ### NO OPTS TO TEST ###
 
 
