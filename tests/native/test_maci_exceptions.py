@@ -230,3 +230,27 @@ def test2_exceptions_maciloadattrs_opts_data():
         maci.loadattrs(filename="", class_object=CustomData())
     with pytest.raises(maci.error.LoadAttrs):
         maci.loadattrs(filename=filepath, class_object=CustomData(), encoding="")
+
+
+### maci.loaddict ###
+
+# 1. Maci Load Dict - Type Checks
+def test1_exceptions_maciloaddict_types():
+    # Tests
+    with pytest.raises(maci.error.LoadDict):
+        maci.loaddict(filename=1.0)
+    with pytest.raises(maci.error.LoadDict):
+        maci.loaddict(filename="", attr_name_dedup=1.0)
+    with pytest.raises(maci.error.LoadDict):
+        maci.loaddict(filename="", encoding=1.0)
+
+
+# 2. Maci Load Dict - Unsupported Options or Data
+def test2_exceptions_maciloaddict_opts_data():
+    filepath = test_file_path + 'exc_maciloadattrs.maci'
+
+    # Tests
+    with pytest.raises(maci.error.LoadDict):
+        maci.loaddict(filename="")
+    with pytest.raises(maci.error.LoadDict):
+        maci.loaddict(filename=filepath, encoding="")

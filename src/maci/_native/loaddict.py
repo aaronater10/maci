@@ -31,19 +31,21 @@ def loaddict(filename: str, *, attr_name_dedup: bool=True, encoding: __Union[str
     including the ability to overwrite internal dunder names. This feature is meant to protect you from accidentally
     duplicating an attribute name in a file that has already been created.
     """
-    err_msg_file = 'Invalid data type or nothing specified for filename:'
-    err_msg_attrib = 'Invalid data type or nothing specified for attr_name_dedup:'
-
     # Error Checks
-    if not isinstance(filename, str): raise LoadDict(err_msg_file, f'\nFILE: "{filename}"')
-    if not isinstance(attr_name_dedup, bool): raise LoadDict(err_msg_attrib, f'\nDATA: {attr_name_dedup}')
+    err_msg_type_filename = "Only str is allowed for 'filename'"
+    err_msg_type_attr_name_dedup = "Only bool is allowed for 'attr_name_dedup'"
+    err_msg_type_encoding = "Only str|None or valid option is allowed for 'encoding'"
+
+    if not isinstance(filename, str): raise LoadDict(err_msg_type_filename, f'\nGot: {repr(filename)}')
+    if not isinstance(attr_name_dedup, bool): raise LoadDict(err_msg_type_attr_name_dedup, f'\nGot: {repr(attr_name_dedup)}')
+    if not isinstance(encoding, (str, type(None))): raise LoadDict(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
 
     # Check if file empty. Returns None if empty
     try:
         if __path.getsize(filename) == 0:
             return None
-    except FileNotFoundError as __err_msg: raise LoadDict(__err_msg, f'\nFILE: "{filename}"')
-    except OSError as __err_msg: raise LoadDict(__err_msg, f'\nFILE: "{filename}"')
+    except FileNotFoundError as __err_msg: raise LoadDict(__err_msg, f'\nGot: "{filename}"')
+    except OSError as __err_msg: raise LoadDict(__err_msg, f'\nGot: "{filename}"')
 
     # Syntax/Usage Error Messages
     err_messages = {
@@ -77,7 +79,8 @@ def loaddict(filename: str, *, attr_name_dedup: bool=True, encoding: __Union[str
                 **err_messages
             )))
     except Load as __err_msg: raise LoadDict(__err_msg) from None
-    
+    except LookupError: raise LoadDict(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
+
     # Remove any Internal Keys
     for remove_key in internal_remove_key_list:
         if remove_key in dict_data:
