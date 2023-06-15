@@ -169,7 +169,7 @@ def test1_exceptions_macicleanformat_types():
 
 ### maci.load ###
 
-# 1. Maci Dump Raw - Type Checks
+# 1. Maci Load - Type Checks
 def test1_exceptions_maciload_types():
     # Tests
     with pytest.raises(maci.error.Load):
@@ -182,7 +182,7 @@ def test1_exceptions_maciload_types():
         maci.load(filename="", _ignore_maci_attr_check=1.0)
 
 
-# 2. Maci Dump Raw - Unsupported Options or Data
+# 2. Maci Load - Unsupported Options or Data
 def test2_exceptions_maciload_opts_data():
     filepath = test_file_path + 'exc_maciload.maci'
 
@@ -191,3 +191,43 @@ def test2_exceptions_maciload_opts_data():
         maci.load(filename="")
     with pytest.raises(maci.error.Load):
         maci.load(filename=filepath, encoding="")
+
+
+### maci.loadattrs ###
+
+# 1. Maci Load Attrs - Type Checks
+def test1_exceptions_maciloadattrs_types():
+    # Build Data
+    maci_data = maci.build()
+    class CustomData: ...
+
+    # Tests
+    with pytest.raises(maci.error.LoadAttrs):
+        maci.loadattrs(filename=1.0, class_object=CustomData())
+    with pytest.raises(maci.error.LoadAttrs):
+        maci.loadattrs(filename="", class_object=maci_data)
+    with pytest.raises(maci.error.LoadAttrs):
+        maci.loadattrs(filename="", class_object=type(maci_data))
+    with pytest.raises(maci.error.LoadAttrs):
+        maci.loadattrs(filename="", class_object={})
+    with pytest.raises(maci.error.LoadAttrs):
+        maci.loadattrs(filename="", class_object=CustomData(), encoding=1.0)
+    with pytest.raises(maci.error.LoadAttrs):
+        maci.loadattrs(filename="", class_object=CustomData(), attr_name_dedup=1.0)
+    with pytest.raises(maci.error.LoadAttrs):
+        maci.loadattrs(filename="", class_object=CustomData(), _ignore_maci_attr_check=1.0)
+
+
+# 2. Maci Load Attrs- Unsupported Options or Data
+def test2_exceptions_maciloadattrs_opts_data():
+    filepath = test_file_path + 'exc_maciloadattrs.maci'
+
+    # Build Data
+    maci_data = maci.build()
+    class CustomData: ...
+
+    # Tests
+    with pytest.raises(maci.error.LoadAttrs):
+        maci.loadattrs(filename="", class_object=CustomData())
+    with pytest.raises(maci.error.LoadAttrs):
+        maci.loadattrs(filename=filepath, class_object=CustomData(), encoding="")

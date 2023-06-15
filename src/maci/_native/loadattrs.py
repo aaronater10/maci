@@ -30,22 +30,22 @@ def loadattrs(filename: str, class_object: CustomClass, *, encoding: __Union[str
     duplicating an attribute name in a file that has already been created.
     """
     # Error Checks
-    __err_msg_type_str_filename = "Only str is allowed for filename"
-    __err_msg_type_class_obj = "Only a custom class object is allowed for class_object"
-    __err_msg_type_maci_obj = "Please use 'load' function to properly import a MaciDataObj object"
+    err_msg_type_filename = "Only str is allowed for 'filename'"
+    __err_msg_type_class_obj = "Only a custom class object is allowed for 'class_object'"
+    __err_msg_type_maci_obj = "Please use 'load' function to properly import a 'MaciDataObj' object"
 
-    if not isinstance(filename, str): raise LoadAttrs(__err_msg_type_str_filename, f'\nFILE: "{filename}"')
-    
+    if not isinstance(filename, str): raise LoadAttrs(err_msg_type_filename, f'\nGot: {repr(filename)}')
+
     # Verify if Custom Class Obj
     _filter_objects = (str, int, float, bool, list, dict, tuple, set, type(None), bytes, complex, range, frozenset, bytearray, memoryview)
     if isinstance(class_object, _filter_objects):
-        raise LoadAttrs(__err_msg_type_class_obj, f'\nFILE: "{filename}" \nDATA: {class_object}')
+        raise LoadAttrs(__err_msg_type_class_obj, f'\nGot: {repr(class_object)}')
 
     if isinstance(class_object, __MaciDataObj):
-        raise LoadAttrs(__err_msg_type_maci_obj, f'\nFILE: "{filename}" \nDATA: {class_object}')
-    
+        raise LoadAttrs(__err_msg_type_maci_obj, f'\nGot: {repr(class_object)}')
+
     if isinstance(class_object, type(__MaciDataObj)):
-        raise LoadAttrs(__err_msg_type_maci_obj, f'\nFILE: "{filename}" \nDATA: {class_object}')
+        raise LoadAttrs(__err_msg_type_maci_obj, f'\nGot: {repr(class_object)}')
 
     # Import Attrs from File and Inject into Given Class Object
 
