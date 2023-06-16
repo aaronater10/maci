@@ -247,10 +247,36 @@ def test1_exceptions_maciloaddict_types():
 
 # 2. Maci Load Dict - Unsupported Options or Data
 def test2_exceptions_maciloaddict_opts_data():
-    filepath = test_file_path + 'exc_maciloadattrs.maci'
+    filepath = test_file_path + 'exc_maciloaddict.maci'
 
     # Tests
     with pytest.raises(maci.error.LoadDict):
         maci.loaddict(filename="")
     with pytest.raises(maci.error.LoadDict):
         maci.loaddict(filename=filepath, encoding="")
+
+
+### maci.loadraw ###
+
+# 1. Maci Load Raw - Type Checks
+def test1_exceptions_maciloadraw_types():
+    # Tests
+    with pytest.raises(maci.error.LoadRaw):
+        maci.loadraw(filename=1.0)
+    with pytest.raises(maci.error.LoadRaw):
+        maci.loadraw(filename="", byte_data=1.0)
+    with pytest.raises(maci.error.LoadRaw):
+        maci.loadraw(filename="", encoding=1.0)
+
+
+# 2. Maci Load Raw - Unsupported Options or Data
+def test2_exceptions_maciloadraw_opts_data():
+    filepath = test_file_path + 'exc_maciloadraw.maci'
+
+    # Tests
+    with pytest.raises(maci.error.LoadRaw):
+        maci.loadraw(filename="")
+    with pytest.raises(maci.error.LoadRaw):
+        maci.loadraw(filename="", byte_data=True)
+    with pytest.raises(maci.error.LoadRaw):
+        maci.loadraw(filename=filepath, encoding="")
