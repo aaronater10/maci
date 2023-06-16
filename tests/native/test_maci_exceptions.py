@@ -296,3 +296,17 @@ def test1_exceptions_maciloadstr_types():
 
 # 2. Maci Load Str - Unsupported Options or Data
 ### NO OPTS TO TEST ### - Syntax/Parse Errors are already tested in functionality
+
+
+### maci.loadstrdict ###
+
+# 1. Maci Load Str Dict - Type Checks
+def test1_exceptions_maciloadstrdict_types():
+    # Tests
+    with pytest.raises(maci.error.LoadStrDict):
+        maci.loadstrdict(py_str_data=1.0)
+    with pytest.raises(maci.error.LoadStrDict):
+        maci.loadstrdict(py_str_data="", attr_name_dedup=1.0)
+
+# 2. Maci Load Str Dict - Unsupported Options or Data
+### NO OPTS TO TEST ### - Syntax/Parse Errors are already tested in functionality
