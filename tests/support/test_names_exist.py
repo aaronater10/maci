@@ -22,6 +22,7 @@ def test1_function_names_exist():
     # HASH
     maci.createfilehash
     maci.comparefilehash
+    maci.createhash
     # JSON
     maci.jsonload
     maci.jsonloadstr
@@ -32,6 +33,11 @@ def test1_function_names_exist():
     maci.yamlloadstr
     maci.yamldump
     maci.yamldumpstr
+    # TOML
+    maci.tomlload
+    maci.tomlloadstr
+    maci.tomldump
+    maci.tomldumpstr
     # INI
     maci.iniload
     maci.inidump
@@ -44,10 +50,13 @@ def test1_function_names_exist():
     maci.xmldumpstr
     maci.xmlbuildmanual    
 
+
 # 2. Test all Exception attr names are present
 def test2_exception_names_exist():
     # General
     maci.error.GeneralError
+    # Hints
+    maci.error.Hint
     # Native
     maci.error.Load
     maci.error.LoadStr
@@ -62,6 +71,7 @@ def test2_exception_names_exist():
     # HASH
     maci.error.CreateFileHash
     maci.error.CompareFileHash
+    maci.error.CreateHash
     # JSON
     maci.error.JsonLoad
     maci.error.JsonLoadStr
@@ -72,6 +82,11 @@ def test2_exception_names_exist():
     maci.error.YamlLoadStr
     maci.error.YamlDump
     maci.error.YamlDumpStr
+    # TOML
+    maci.error.TomlLoad
+    maci.error.TomlLoadStr
+    maci.error.TomlDump
+    maci.error.TomlDumpStr
     # INI
     maci.error.IniLoad
     maci.error.IniDump
