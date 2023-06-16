@@ -22,12 +22,12 @@ def loadstr(py_str_data: str, *, attr_name_dedup: bool=True) -> 'MaciDataObj':
 
     loadstr("data1 = 'value1'\\ndata2 = "value2")
     """
-    __err_msg_py_str = 'Invalid data type or nothing specified for "py_str_data"'
-    __err_msg_attrib = 'Invalid data type or nothing specified for "attr_name_dedup"'
-
     # Error Checks
-    if not isinstance(py_str_data, str): raise LoadStr(__err_msg_py_str, f'\nDATA: "{py_str_data}"')
-    if not isinstance(attr_name_dedup, bool): raise LoadStr(__err_msg_attrib, f'\nDATA: {attr_name_dedup}')
+    err_msg_type_py_str_data = "Only str is allowed for 'py_str_data'"
+    err_msg_type_attr_name_dedup = "Only bool is allowed for 'attr_name_dedup'"
+
+    if not isinstance(py_str_data, str): raise LoadStr(err_msg_type_py_str_data, f'\nGot: {repr(py_str_data)}')
+    if not isinstance(attr_name_dedup, bool): raise LoadStr(err_msg_type_attr_name_dedup, f'\nGot: {repr(attr_name_dedup)}')
 
     # Check if string empty. Returns None if empty
     if py_str_data == '': return None

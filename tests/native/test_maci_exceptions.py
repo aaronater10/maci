@@ -192,6 +192,8 @@ def test2_exceptions_maciload_opts_data():
     with pytest.raises(maci.error.Load):
         maci.load(filename=filepath, encoding="")
 
+### load Note: Syntax/Parse Errors are already tested in functionality
+
 
 ### maci.loadattrs ###
 
@@ -280,3 +282,17 @@ def test2_exceptions_maciloadraw_opts_data():
         maci.loadraw(filename="", byte_data=True)
     with pytest.raises(maci.error.LoadRaw):
         maci.loadraw(filename=filepath, encoding="")
+
+
+### maci.loadstr ###
+
+# 1. Maci Load Str - Type Checks
+def test1_exceptions_maciloadstr_types():
+    # Tests
+    with pytest.raises(maci.error.LoadStr):
+        maci.loadstr(py_str_data=1.0)
+    with pytest.raises(maci.error.LoadStr):
+        maci.loadstr(py_str_data="", attr_name_dedup=1.0)
+
+# 2. Maci Load Str - Unsupported Options or Data
+### NO OPTS TO TEST ### - Syntax/Parse Errors are already tested in functionality
