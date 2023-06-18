@@ -1,14 +1,14 @@
 # xmldumpstr
 #########################################################################################################
 # Imports
-import xml.etree.ElementTree as __xml_etree
+import xml.etree.ElementTree as _xml_etree
 from ..error import XmlDumpStr
 
 #########################################################################################################
 # Export xml str
-def xmldumpstr(data: __xml_etree.Element, *, encoding: str='utf-8') -> str:
+def xmldumpstr(data: _xml_etree.Element, *, encoding: str='utf-8') -> str:
     """
-    Exports xml Element obj to a string
+    Exports xml Element object to a string
 
     Returns a str. Assign the output to var
 
@@ -22,7 +22,7 @@ def xmldumpstr(data: __xml_etree.Element, *, encoding: str='utf-8') -> str:
     # Check for Error
     __err_msg_etree = f"Only Element is allowed for data"
 
-    if not isinstance(data, __xml_etree.Element): raise XmlDumpStr(__err_msg_etree, f'\nDATA: {data}')
+    if not isinstance(data, _xml_etree.Element): raise XmlDumpStr(__err_msg_etree, f'\nDATA: {data}')
 
     # Export Data
-    return __xml_etree.tostring(data).decode(encoding=encoding)
+    return _xml_etree.tostring(data).decode(encoding=encoding)

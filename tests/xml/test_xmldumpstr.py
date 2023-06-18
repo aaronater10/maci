@@ -9,7 +9,7 @@ test_file_path = './tests/test_files/xml/'
 # TESTS
 
 # 1. XML Data Export to Str - Exporting xml data to str and test attributes
-def test1_xml_file_export():
+def test1_xml_str_export():
     filename = '1_export_str_data.xml'
     filepath = test_file_path + filename
     xml_data_str_match = """<test_root test_attr="attr_value">

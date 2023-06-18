@@ -1,12 +1,12 @@
 # xmlloadstr
 #########################################################################################################
 # Imports
-import xml.etree.ElementTree as __xml_etree
+import xml.etree.ElementTree as _xml_etree
 from ..error import XmlLoadStr
 
 #########################################################################################################
 # Import xml str
-def xmlloadstr(xml_str_data: str) -> __xml_etree.Element:
+def xmlloadstr(xml_str_data: str) -> _xml_etree.Element:
     """
     Imports xml data from a string
 
@@ -23,5 +23,5 @@ def xmlloadstr(xml_str_data: str) -> __xml_etree.Element:
 
     if not isinstance(xml_str_data, str): raise XmlLoadStr(__err_msg_str, f'\nDATA: {repr(xml_str_data)}')
     try:
-        return __xml_etree.fromstring(str(xml_str_data))
-    except __xml_etree.ParseError as __err_msg: raise XmlLoadStr(__err_msg, f'\nDATA: {xml_str_data}')
+        return _xml_etree.fromstring(str(xml_str_data))
+    except _xml_etree.ParseError as __err_msg: raise XmlLoadStr(__err_msg, f'\nDATA: {xml_str_data}')

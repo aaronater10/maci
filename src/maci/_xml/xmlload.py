@@ -10,7 +10,7 @@ def xmlload(filename: str) -> __xml_etree.Element:
     """
     Imports xml data from a file.
 
-    Returns a xml Parsed Element obj with the root. Assign the output to var
+    Returns the root Element object of the ElementTree parsed from a xml file. Assign the output to var
 
     Enter xml file location as str to import.
 
