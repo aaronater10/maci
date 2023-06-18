@@ -51,4 +51,5 @@ jobs:
 
     - name: Test with pytest Framework
       run: |
-        python3 -B -m pytest tests/ -v
+        coverage run --branch -m pytest tests/ -v
+        coverage report --show-missing --fail-under 90
