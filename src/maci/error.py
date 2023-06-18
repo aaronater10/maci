@@ -2,13 +2,14 @@
 """
 Contains exception names for handling
 """
+from typing import Any as _Any
 
 # Base Exception
 class MaciError(Exception):
     """
     maci base exception
     """
-    def __init__(self, msg: str, item: str='') -> None:
+    def __init__(self, msg: _Any, item: _Any='') -> None:
         self.msg = str(msg)
         self.item = str(item)
 

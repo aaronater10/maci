@@ -50,7 +50,7 @@ def dumpraw(filename: str, *data: __Any, append: bool=False, byte_data: bool=Fal
                     f.writelines(str(data_to_write))
         except FileNotFoundError as __err_msg: raise DumpRaw(__err_msg, f'\nGot: {repr(filename)}')
         except LookupError: raise DumpRaw(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
-    
+
     # Byte Data Converted to File
     if (mode == 'w') and (byte_data):
         for data_to_write in data:
@@ -63,7 +63,7 @@ def dumpraw(filename: str, *data: __Any, append: bool=False, byte_data: bool=Fal
 
     
     ### Append File ###
-    __new_line = '\n'
+    __new_line: __Union[str, bytes] = '\n'
 
     # Raw Data to File
     if (mode == 'a') and (not byte_data):
