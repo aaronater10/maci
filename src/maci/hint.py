@@ -10,13 +10,16 @@ __hint_settings = {
     'attr_name_dedup': True,
     '_is_hint_request': True,
 }
-
 MaciDataObj = type(__MaciDataObj(**__hint_settings, encoding=None))
 
 
 # INI
-from configparser import ConfigParser as Ini_ConfigParser
+from configparser import ConfigParser as __ConfigParser
+ConfigParser = __ConfigParser
+
 
 # XML
-from xml.etree import ElementTree as __ElementTree
-Xml_ElementTree = type(__ElementTree)
+from xml.etree.ElementTree import ElementTree as __ElementTree
+from xml.etree.ElementTree import Element as __Element
+ElementTree = __ElementTree
+Element = __Element

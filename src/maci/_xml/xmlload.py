@@ -1,16 +1,17 @@
 # xmlload
 #########################################################################################################
 # Imports
-import xml.etree.ElementTree as __xml_etree
+from typing import Union as _Union
+import xml.etree.ElementTree as _xml_etree
 from ..error import XmlLoad
 
 #########################################################################################################
 # Import xml file
-def xmlload(filename: str) -> __xml_etree.Element:
+def xmlload(filename: str, *, auto_get_root: bool=True) -> _Union[_xml_etree.Element, _xml_etree.ElementTree]:
     """
     Imports xml data from a file.
 
-    Returns the root Element object of the ElementTree parsed from a xml file. Assign the output to var
+    Returns the root Element object of the ElementTree parsed from a xml file by default. Assign the output to var
 
     Enter xml file location as str to import.
 
@@ -27,6 +28,9 @@ def xmlload(filename: str) -> __xml_etree.Element:
     if not isinstance(filename, str): raise XmlLoad(err_msg_str, f'\nGot: {repr(filename)}')
 
     # Load File Data
-    try: return __xml_etree.parse(filename).getroot()
+    try:
+        if auto_get_root:
+            return _xml_etree.parse(filename).getroot()
+        return _xml_etree.parse(filename)
     except FileNotFoundError as __err_msg: raise XmlLoad(__err_msg, f'\nGot: {repr(filename)}')
-    except __xml_etree.ParseError as __err_msg: raise XmlLoad(__err_msg, f'\nGot: {repr(filename)}')
+    except _xml_etree.ParseError as __err_msg: raise XmlLoad(__err_msg, f'\nGot: {repr(filename)}')

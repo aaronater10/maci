@@ -8,7 +8,7 @@ from configparser import ExtendedInterpolation as _ExtendedInterpolation
 # Build manual ini data
 def inibuildmanual() -> _ConfigParser:
     """    
-    Returns an empty ConfigParser obj to manually build ini data
+    Returns an empty ConfigParser object to manually build ini data
     
     Assign the output to var
 
