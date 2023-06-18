@@ -23,7 +23,7 @@ def xmldump(filename: str, data: _Union[_ElementTree, _Element], *, append: bool
     This is using the native xml library via etree shipped with the python standard library.
     For more information on the xml.etree api, visit: https://docs.python.org/3/library/xml.etree.elementtree.html#module-xml.etree.ElementTree
     """
-    # Check for Error
+    # Error Checks
     err_msg_str = "Only str is allowed for 'filename'"
     err_msg_etree = "Only ElementTree|Element is allowed for 'data'"
     err_msg_type_str_append = "Only bool is allowed for 'append'"
