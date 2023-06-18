@@ -78,3 +78,19 @@ def test2_exceptions_xmldumpstr_opts_data():
     # Tests
     with pytest.raises(maci.error.XmlDumpStr):
         maci.xmldumpstr(data=xml_data, encoding='')
+
+
+### xmlload ###
+
+# 1. Xml Load - Type Checks
+def test1_exceptions_xmlload_types():
+    # Tests
+    with pytest.raises(maci.error.XmlLoad):
+        maci.xmlload(filename=1.0)
+
+
+# 2. Xml Load - Unsupported Options or Data
+def test2_exceptions_xmlload_opts_data():
+    # Tests
+    with pytest.raises(maci.error.XmlLoad):
+        maci.xmlload(filename='')

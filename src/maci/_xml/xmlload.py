@@ -21,10 +21,10 @@ def xmlload(filename: str) -> __xml_etree.Element:
     This is using the native xml library via etree shipped with the python standard library.
     For more information on the xml.etree api, visit: https://docs.python.org/3/library/xml.etree.elementtree.html#module-xml.etree.ElementTree
     """
-    __err_msg_str = f"Only str is allowed for filename"
+    err_msg_str = "Only str is allowed for 'filename'"
 
-    if not isinstance(filename, str): raise XmlLoad(__err_msg_str, f'\nFILE: "{filename}"')
+    if not isinstance(filename, str): raise XmlLoad(err_msg_str, f'\nGot: {repr(filename)}')
 
     try: return __xml_etree.parse(filename).getroot()
-    except FileNotFoundError as __err_msg: raise XmlLoad(__err_msg, f'\nFILE: "{filename}"')
-    except __xml_etree.ParseError as __err_msg: raise XmlLoad(__err_msg, f'\nFILE: "{filename}"')
+    except FileNotFoundError as __err_msg: raise XmlLoad(__err_msg, f'\nGot: {repr(filename)}')
+    except __xml_etree.ParseError as __err_msg: raise XmlLoad(__err_msg, f'\nGot: {repr(filename)}')
