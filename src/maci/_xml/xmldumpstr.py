@@ -20,9 +20,12 @@ def xmldumpstr(data: _xml_etree.Element, *, encoding: str='utf-8') -> str:
     For more information on the xml.etree api, visit: https://docs.python.org/3/library/xml.etree.elementtree.html#module-xml.etree.ElementTree
     """
     # Check for Error
-    __err_msg_etree = f"Only Element is allowed for data"
+    err_msg_type_etree = "Only Element is allowed for 'data'"
+    err_msg_type_encoding = "Only str|None or valid option is allowed for 'encoding'"
 
-    if not isinstance(data, _xml_etree.Element): raise XmlDumpStr(__err_msg_etree, f'\nDATA: {data}')
+    if not isinstance(data, _xml_etree.Element): raise XmlDumpStr(err_msg_type_etree, f'\nGot: {repr(data)}')
+    if not isinstance(encoding, (str, type(None))): raise XmlDumpStr(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
 
     # Export Data
-    return _xml_etree.tostring(data).decode(encoding=encoding)
+    try: return _xml_etree.tostring(data).decode(encoding=encoding)
+    except LookupError: raise XmlDumpStr(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
