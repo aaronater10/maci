@@ -42,5 +42,4 @@ def xmldump(filename: str, data: _Union[_ElementTree, _Element], *, append: bool
 
         data = xmldumpstr(data)
         dumpraw(filename, data, encoding=encoding, append=append)
-    except FileNotFoundError as __err_msg: raise XmlDump(__err_msg, f'\nFILE: "{filename}"')
     except DumpRaw as _err_msg: raise XmlDump(_err_msg) from None

@@ -45,6 +45,10 @@ def test1_xml_file_export():
     assert path.exists(filepath)
     file_import = maci.xmlload(filepath)
 
+    # Test - ElementTree Load/Dump
+    file_import_tree = maci.xmlload(filepath, auto_get_root=False)
+    maci.xmldump(filepath, file_import_tree)
+
     # Root Attrib
     assert (file_import.attrib['test_attr'] == "attr_value") and isinstance(file_import, __xml_etree.Element)
     # Sub Elements
