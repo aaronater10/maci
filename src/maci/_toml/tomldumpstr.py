@@ -35,4 +35,3 @@ def tomldumpstr(
         # Dump data to toml str
         return _tomli_w.dumps(data, multiline_strings=multi_line_str)
     except TypeError as __err_msg: raise TomlDumpStr(__err_msg, f'\nGot: {repr(data)}')
-    except ValueError as __err_msg: raise TomlDumpStr(__err_msg, f'\nGot: {repr(data)}')

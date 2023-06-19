@@ -71,9 +71,16 @@ def test1_exceptions_tomlload_types():
 
 # 2. Toml Load - Unsupported Options or Data
 def test2_exceptions_tomlload_opts_data():
+    filepath = test_file_path + 'exc_tomlload.toml'
+
     # Tests
     with pytest.raises(maci.error.TomlLoad):
         maci.tomlload(filename='')
+    with pytest.raises(maci.error.TomlLoad):
+        maci.tomlload(filename='*')
+    with pytest.raises(maci.error.TomlLoad):
+        maci.tomlload(filename=filepath)
+    
 
 
 # ### tomlloadstr ###

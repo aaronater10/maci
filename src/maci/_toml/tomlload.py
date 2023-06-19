@@ -34,5 +34,4 @@ def tomlload(filename: str) -> _Dict[str, _Any]:
             return _tomli.load(f)
     except FileNotFoundError as _err_msg: raise TomlLoad(_err_msg, f'\nFILE: "{filename}"')
     except OSError as _err_msg: raise TomlLoad(_err_msg, f'\nFILE: "{filename}"')
-    except TypeError as _err_msg: raise TomlLoad(_err_msg, f'\nFILE: "{filename}"')
     except _tomli.TOMLDecodeError as _err_msg: raise TomlLoad(_err_msg, f'\nFILE: "{filename}"')

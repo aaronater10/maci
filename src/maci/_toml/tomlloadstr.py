@@ -29,5 +29,4 @@ def tomlloadstr(toml_str_data: str) -> _Dict[str, _Any]:
     # Load toml data from str
     try:
         return _tomli.loads(toml_str_data)
-    except TypeError as _err_msg: raise TomlLoadStr(_err_msg, f'\nGot: {repr(toml_str_data)}')
     except _tomli.TOMLDecodeError as _err_msg: raise TomlLoadStr(_err_msg, f'\nGot: {repr(toml_str_data)}')
