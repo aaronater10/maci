@@ -23,9 +23,11 @@ def xmlload(filename: str, *, auto_get_root: bool=True) -> _Union[_xml_etree.Ele
     For more information on the xml.etree api, visit: https://docs.python.org/3/library/xml.etree.elementtree.html#module-xml.etree.ElementTree
     """
     # Error Checks
-    err_msg_str = "Only str is allowed for 'filename'"
+    err_msg_type_filename = "Only str is allowed for 'filename'"
+    err_msg_type_auto_get_root = "Only bool is allowed for 'auto_get_root'"
 
-    if not isinstance(filename, str): raise XmlLoad(err_msg_str, f'\nGot: {repr(filename)}')
+    if not isinstance(filename, str): raise XmlLoad(err_msg_type_filename, f'\nGot: {repr(filename)}')
+    if not isinstance(auto_get_root, bool): raise XmlLoad(err_msg_type_auto_get_root, f'\nGot: {repr(auto_get_root)}')
 
     # Load File Data
     try:

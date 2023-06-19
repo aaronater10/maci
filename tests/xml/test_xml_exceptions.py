@@ -87,6 +87,8 @@ def test1_exceptions_xmlload_types():
     # Tests
     with pytest.raises(maci.error.XmlLoad):
         maci.xmlload(filename=1.0)
+    with pytest.raises(maci.error.XmlLoad):
+        maci.xmlload(filename='', auto_get_root=1.0)
 
 
 # 2. Xml Load - Unsupported Options or Data
