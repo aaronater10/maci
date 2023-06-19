@@ -31,6 +31,4 @@ def jsondumpstr(data: Union[dict, list, tuple, str, int, float, bool, None], *, 
     try:
         # Export dict data to json string
         return __json.dumps(data, indent=indent_level)
-    except TypeError as __err_msg: raise JsonDumpStr(__err_msg, f'\nDATA: {data} \nINDENT_LEVEL: {indent_level}')
-    except ValueError as __err_msg: raise JsonDumpStr(__err_msg, f'\nDATA: {data} \nINDENT_LEVEL: {indent_level}')
-
+    except TypeError as __err_msg: raise JsonDumpStr(__err_msg, f'\nGot: {data} \nINDENT_LEVEL: {indent_level}')

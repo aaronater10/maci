@@ -36,6 +36,5 @@ def jsonload(filename: str, *, encoding: Union[str, None]=None) -> Union[list, d
             return __json.load(f)
     except FileNotFoundError as __err_msg: raise JsonLoad(__err_msg, f'\nFILE: "{filename}"')
     except OSError as __err_msg: raise JsonLoad(__err_msg, f'\nFILE: "{filename}"')
-    except TypeError as __err_msg: raise JsonLoad(__err_msg, f'\nFILE: "{filename}"')
     except __json.decoder.JSONDecodeError as __err_msg: raise JsonLoad(__err_msg, f'\nFILE: "{filename}"')
     except LookupError: raise JsonLoad(err_msg_type_encoding, f'\nGot: {repr(encoding)}')

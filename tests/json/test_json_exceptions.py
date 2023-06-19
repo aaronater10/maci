@@ -83,12 +83,17 @@ def test1_exceptions_jsonload_types():
 # 2. Json Load - Unsupported Options or Data
 def test2_exceptions_jsonload_opts_data():
     filepath = test_file_path + 'exc_jsonload.json'
+    filepath_err = test_file_path + 'exc_jsonload_err.json'
 
     # Tests
     with pytest.raises(maci.error.JsonLoad):
         maci.jsonload(filename='')
     with pytest.raises(maci.error.JsonLoad):
+        maci.jsonload(filename='*')
+    with pytest.raises(maci.error.JsonLoad):
         maci.jsonload(filename=filepath, encoding='')
+    with pytest.raises(maci.error.JsonLoad):
+        maci.jsonload(filename=filepath_err)
 
 
 ### jsonloadstr ###

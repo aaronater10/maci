@@ -59,7 +59,7 @@ def cleanformat(data: __Union[dict,list,tuple,set], indent_level: int=1) -> str:
         return __build_data
 
     # Set
-    if isinstance(data, set):
+    if isinstance(data, set): # pragma: no branch
         for value in data:
             __build_data += f"\n{indent_level}{repr(value)},"
         __build_data = f"{{{__build_data}\n}}"

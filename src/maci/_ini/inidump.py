@@ -38,7 +38,5 @@ def inidump(filename: str, ini_data: _ConfigParser, *, append: bool=False, encod
     try:
         with open(filename, write_mode, encoding=encoding) as f:
             ini_data.write(f)
-    except TypeError as _err_msg: raise IniDump(_err_msg, f'\nFILE: "{filename}" \nDATA: {ini_data}')
-    except ValueError as _err_msg: raise IniDump(_err_msg, f'\nFILE: "{filename}" \nDATA: {ini_data}')
     except FileNotFoundError as _err_msg: raise IniDump(_err_msg, f'\nFILE: "{filename}"')
     except LookupError: raise IniDump(err_msg_type_encoding, f'\nGot: {repr(encoding)}')

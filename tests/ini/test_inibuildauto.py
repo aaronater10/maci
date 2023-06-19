@@ -23,7 +23,8 @@ def test1_ini_build_auto_data():
     'dict_data': {'key': {'k1': 1}},
     'list_data': {'key': [1,2,3]},
     'tuple_data': {'key': (1,2,3)},
-    'set_data': {'key': {1,2,3}}
+    'set_data': {'key': {1,2,3}},
+    'none_data': {'key': None}
     }
 
     # Test if Build data matches it's unique type
@@ -41,7 +42,7 @@ def test1_ini_build_auto_data():
     assert path.exists(filepath)
     file_import = maci.iniload(filepath)
 
-    sections_match = ['str_data', 'int_data', 'float_data', 'bool_data', 'dict_data', 'list_data', 'tuple_data', 'set_data']
+    sections_match = ['str_data', 'int_data', 'float_data', 'bool_data', 'dict_data', 'list_data', 'tuple_data', 'set_data', 'none_data']
     assert (file_import.sections() == sections_match) and (isinstance(file_import.sections(), list))
 
     for section,_ in ini_data.items():

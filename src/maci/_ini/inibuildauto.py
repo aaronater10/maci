@@ -46,9 +46,8 @@ def inibuildauto(data: _Dict[str, _Dict[str, _Any]]) -> _ConfigParser:
         for section,dict_value in data.items():
             if None in dict_value.values():
                 for sub_key,sub_value in dict_value.items():
-                    if sub_value is None:
+                    if sub_value is None: # pragma: no branch
                         dict_value[sub_key] = 'None'
             __ini_data[section] = dict_value
         return __ini_data
     except AttributeError as __err_msg: raise IniBuildAuto(f'{__err_msg} - {err_msg_dict_struct}', f'\nGOT: {repr(data)}')
-    except TypeError as __err_msg: raise IniBuildAuto(__err_msg, f'\nGOT: {repr(data)}')

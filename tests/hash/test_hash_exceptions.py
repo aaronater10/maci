@@ -25,9 +25,11 @@ def test1_exceptions_createhash_types():
 # 2. Create Hash - Unsupported Options or Data
 def test2_exceptions_createhash_unsupported_opts_data():    
     with pytest.raises(maci.error.CreateHash):
-        maci.createhash('', hash_algorithm='')
+        maci.createhash(data_to_hash='', hash_algorithm='')
     with pytest.raises(maci.error.CreateHash):
-        maci.createhash('', 'sha256', encoding='')
+        maci.createhash(data_to_hash=[''], hash_algorithm='sha256')
+    with pytest.raises(maci.error.CreateHash):
+        maci.createhash(data_to_hash='', hash_algorithm='sha256', encoding='')
 
 
 ### createfilehash ###
