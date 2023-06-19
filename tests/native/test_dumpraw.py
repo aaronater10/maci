@@ -86,25 +86,39 @@ data_b3 = {data}
 # 4. Data Bytes Export - Exporting a file with bytes and validate character
 def test4_data_bytes_export():
     filename = '4_data_bytes.data'
+    filename_append = '4_data_bytes_append.data'
     filepath = test_file_path + filename
+    filepath_append = test_file_path + filename_append
     data_bytes = b'\xC3\xA9'
     bytes_match = "é"
 
-    # Remove Any Existing Test File
-    try: remove(filepath)
+    # Remove Any Existing Test Files
+    try:
+        remove(filepath)
+        remove(filepath_append)
     except: pass
     time.sleep(file_delay_timer)
 
+    ### Write File ###
     # Test Not Exist, Create, Exist, Data and it's Type
     assert not path.exists(filepath)
     maci.dumpraw(filepath, data_bytes, byte_data=True)
-    assert path.exists(filepath)
     file_import = maci.loadraw(filepath, byte_data=True)
     assert (file_import.decode() == bytes_match) and (isinstance(file_import, bytes))
-    
-    # Remove Test File
+
+    ### Append File ###
+    # Test Not Exist, Create, Exist, Data and it's Type
+    assert not path.exists(filepath_append)
+    maci.dumpraw(filepath_append)
+    maci.dumpraw(filepath_append, data_bytes, append=True, byte_data=True)
+    file_import = maci.loadraw(filepath_append, byte_data=True)
+    assert (file_import.decode().strip() == bytes_match) and (isinstance(file_import, bytes))
+
+    # Remove Test Files
     time.sleep(file_delay_timer)
-    try: remove(filepath)
+    try:
+        remove(filepath)
+        remove(filepath_append)
     except: pass
 
 

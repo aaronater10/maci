@@ -103,6 +103,17 @@ def test2_exceptions_macidumpraw_opts_data():
     with pytest.raises(maci.error.DumpRaw):
         maci.dumpraw(filename="")
     with pytest.raises(maci.error.DumpRaw):
+        maci.dumpraw(filename="", byte_data=True)
+    with pytest.raises(maci.error.DumpRaw):
+        maci.dumpraw(filename="", append=True)
+    with pytest.raises(maci.error.DumpRaw):
+        maci.dumpraw(filename=filepath)
+        maci.dumpraw(filepath, "data", append=True, byte_data=True)
+    with pytest.raises(maci.error.DumpRaw):
+        maci.dumpraw(filename=filepath, append=True, encoding="")
+    with pytest.raises(maci.error.DumpRaw):
+        maci.dumpraw(filename="", append=True, byte_data=True)
+    with pytest.raises(maci.error.DumpRaw):
         maci.dumpraw(filepath, 1.0, byte_data=True)
     with pytest.raises(maci.error.DumpRaw):
         maci.dumpraw(filename=filepath, encoding="")
