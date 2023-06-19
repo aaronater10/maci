@@ -39,7 +39,7 @@ def loadraw(filename: str, *, byte_data: bool=False, encoding: _Union[str, None]
         except FileNotFoundError as __err_msg: raise LoadRaw(__err_msg, f'\nGot: "{filename}"')
         except LookupError: raise LoadRaw(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
     
-    if byte_data:
+    if byte_data: # pragma: no branch
         try:
             with open(filename, 'rb') as f:
                 if __path.getsize(filename) == 0:

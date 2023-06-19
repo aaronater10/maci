@@ -201,6 +201,8 @@ def test2_exceptions_maciload_opts_data():
     with pytest.raises(maci.error.Load):
         maci.load(filename="")
     with pytest.raises(maci.error.Load):
+        maci.load(filename="*")
+    with pytest.raises(maci.error.Load):
         maci.load(filename=filepath, encoding="")
 
 ### load Note: Syntax/Parse Errors are already tested in functionality
@@ -265,6 +267,8 @@ def test2_exceptions_maciloaddict_opts_data():
     # Tests
     with pytest.raises(maci.error.LoadDict):
         maci.loaddict(filename="")
+    with pytest.raises(maci.error.LoadDict):
+        maci.loaddict(filename="*")
     with pytest.raises(maci.error.LoadDict):
         maci.loaddict(filename=filepath, encoding="")
 

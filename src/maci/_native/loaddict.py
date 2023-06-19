@@ -83,7 +83,7 @@ def loaddict(filename: str, *, attr_name_dedup: bool=True, encoding: __Union[str
 
     # Remove any Internal Keys
     for remove_key in internal_remove_key_list:
-        if remove_key in dict_data:
+        if remove_key in dict_data: # pragma: no branch
             del dict_data[remove_key]
 
     # Return Final Import

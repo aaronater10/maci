@@ -11,9 +11,11 @@ file_delay_timer = 0.25
 # TESTS
 
 # 1. Load Dict - Test loading attrs from file
-def test1_loaddict_file_import():
+def test1_loaddict_file_imports():
     filename = '1_loaddict_file_import.data'
+    filename_empty = '1_loaddict_file_import_empty.data'
     filepath = test_file_path + filename
+    filepath_empty = test_file_path + filename_empty
 
     # File Import
     file_import = maci.loaddict(filepath)
@@ -31,6 +33,8 @@ def test1_loaddict_file_import():
     assert file_import['data_bytes'] == b'data'
     assert str(file_import['data_datetime']) == "2023-03-13 22:06:00"
 
+    ### Empty Import ###
+    assert maci.loaddict(filename=filepath_empty) == None
 
 # 2. Load Dict: Attr Dedup - Test Attr Dedup OFF/ON
 def test2_loaddict_attr_dedup_off_on():

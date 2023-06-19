@@ -13,7 +13,10 @@ def test1_basic_file_import():
     filename = '1_empty.data'
     filepath = test_file_path + filename
     assert path.getsize(filepath) == 0, f"File Not Empty: {filename}"
-    maci.loadraw(filepath)
+    assert maci.loadraw(filepath) == ''
+
+    ### Empty Import Bytes ###
+    assert maci.loadraw(filename=filepath, byte_data=True) == b''
 
 
 # 2. Raw Data File Import - Importing a File with Raw Data
