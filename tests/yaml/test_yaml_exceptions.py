@@ -27,16 +27,21 @@ def test1_exceptions_yamldump_types():
 # 2. Yaml Dump - Unsupported Options or Data
 def test2_exceptions_yamldump_opts_data():
     filepath = test_file_path + 'exc_yamldump.yaml'
+    filepath_err = test_file_path + 'exc_yamldump_err.yaml'
 
     # Tests
     with pytest.raises(maci.error.YamlDump):
         maci.yamldump(filename='', data={})
     with pytest.raises(maci.error.YamlDump):
+        maci.yamldump(filename=filepath_err, data=type({}))
+    with pytest.raises(maci.error.YamlDump):
         maci.yamldump(filename=filepath, data={}, encoding='')
 
-    # Remove Cache Test File
+    # Remove Test Files
     time.sleep(file_delay_timer)
-    try: remove(filepath)
+    try:
+        remove(filepath)
+        remove(filepath_err)
     except: pass
 
 
@@ -76,10 +81,15 @@ def test1_exceptions_yamlload_types():
 # 2. Yaml Load - Unsupported Options or Data
 def test2_exceptions_yamlload_opts_data():
     filepath = test_file_path + 'exc_yamlload.yml'
+    filepath_err = test_file_path + 'exc_yamlload_err.yml'
 
     # Tests
     with pytest.raises(maci.error.YamlLoad):
         maci.yamlload(filename='')
+    with pytest.raises(maci.error.YamlLoad):
+        maci.yamlload(filename='*')
+    with pytest.raises(maci.error.YamlLoad):
+        maci.yamlload(filename=filepath_err)
     with pytest.raises(maci.error.YamlLoad):
         maci.yamlload(filename=filepath, encoding='')
 
