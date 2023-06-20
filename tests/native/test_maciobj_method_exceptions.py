@@ -6,6 +6,40 @@ import pytest
 ################################################################
 # TESTS
 
+# 1. General: Object Rename Wrapper - TypeError with MaciDataObj.* name
+def test1_exc_maciobj_method_general_object_rename_wrapper():
+    # Build Data
+    maci_data = maci.build() 
+
+    # Tests
+    with pytest.raises(TypeError):
+        maci_data.is_parent_map()
+    with pytest.raises(TypeError):
+        maci_data.is_child_map()
+    with pytest.raises(TypeError):
+        maci_data.get_all_maps('')
+    with pytest.raises(TypeError):
+        maci_data.get_child_maps('')
+    with pytest.raises(TypeError):
+        maci_data.get_parent_maps('')
+    with pytest.raises(TypeError):
+        maci_data.get_parent_map_chains('', '')
+    with pytest.raises(TypeError):
+        maci_data.get_hard_locked_list('')
+    with pytest.raises(TypeError):
+        maci_data.get_locked_list('')
+    with pytest.raises(TypeError):
+        maci_data.hard_lock_attr()
+    with pytest.raises(TypeError):
+        maci_data.lock_attr()
+    with pytest.raises(TypeError):
+        maci_data.unlock_attr()
+    with pytest.raises(TypeError):
+        maci_data.map_attr()
+    with pytest.raises(TypeError):
+        maci_data.unmap_attr()
+
+
 # 1. get_parent_map_chains - Type Checks
 def test1_exc_maciobj_method_get_parent_map_chains_types():
     # Build Data

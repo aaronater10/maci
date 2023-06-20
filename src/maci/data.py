@@ -91,10 +91,10 @@ def _rename_exc_name_to_user_object_name(method):
             return_data = method(*args, **kwargs)
         except exception_names_to_catch as exception:
             for exc_msg in exception.args:
-                if '_MaciDataObjConstructor' in exc_msg:
+                if '_MaciDataObjConstructor' in exc_msg: # pragma: no branch
                     build_err_msg += exc_msg.replace(search_name, replace_name)
                     continue
-                build_err_msg += exc_msg
+                build_err_msg += exc_msg # pragma: no cover
             # Raise with final message and original Exception Type. Remove Double-Trace as it is a Duplicate
             raise type(exception)(build_err_msg) from None
         return return_data
@@ -128,7 +128,7 @@ def _date_time_parse_check(value: str) -> _Union[str, None]:
             if format_type == 'time': return datetime_object.time()
             if format_type == 'timem': return datetime_object.time()
             if format_type == 'time_date': return datetime_object
-            if format_type == 'timem_date': return datetime_object
+            if format_type == 'timem_date': return datetime_object # pragma: no branch
         except ValueError: continue
     else:
         try: return _datetime.fromisoformat(value)
@@ -513,7 +513,7 @@ class _MaciDataObjConstructor:
         # Exception can be caught/bypassed, setting original value is vital to protect value
 
         # General Lock Protection
-        if hasattr(self, '_MaciDataObjConstructor__assignment_locked_attribs'):
+        if hasattr(self, '_MaciDataObjConstructor__assignment_locked_attribs'): # pragma: no branch
             if _name in self.__assignment_locked_attribs:
                 # PROTECT ORIGINAL VALUE
                 self.__dict__[_name] = _orig_value
@@ -570,7 +570,7 @@ class _MaciDataObjConstructor:
             raise GeneralError(self.__assignment_hard_locked_atrribs_err_msg, f'\nATTR_NAME: "{_name}"')
 
         # Release Attribute from Lock & Reference List if Name is Deleted
-        if hasattr(self, _name):
+        if hasattr(self, _name): # pragma: no branch
             self.__reference_deletion_check(_name, _src_ref_list=True, _dst_ref_list=True, _lock_list=True)
 
         # Allow Normal Deletion
@@ -755,7 +755,7 @@ class _MaciDataObjConstructor:
         # Reference Attrs - Must maintain reference map if attr in any locks
         
         # Source Reference List
-        if _src_ref_list:
+        if _src_ref_list: # pragma: no branch
             if _name in self.__assigned_src_reference_attr_map:
                 _is_locked = _name in self.__assignment_locked_attribs
                 _is_hard_locked = _name in self.__assignment_hard_locked_attribs
@@ -775,7 +775,7 @@ class _MaciDataObjConstructor:
                 _is_locked = _name in self.__assignment_locked_attribs
                 _is_hard_locked = _name in self.__assignment_hard_locked_attribs
                 
-                if (not (_is_locked or _is_hard_locked)) or (_ref_removal_request):
+                if (not (_is_locked or _is_hard_locked)) or (_ref_removal_request): # pragma: no branch
                     # Release Source References
                     for key in self.__assigned_dst_reference_attr_map[_name]:
                         self.__assigned_src_reference_attr_map.pop(key)
@@ -1012,7 +1012,7 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
             raise Hint(_init_request_err_msg, f'\n{_init_request_err_msg_help}')
 
         # NORMAL REQUEST
-        if not __constructor_locked:
+        if not __constructor_locked: # pragma: no branch
             super().__init__(
                 filename,
                 attr_name_dedup=attr_name_dedup,
@@ -1244,7 +1244,7 @@ def __dump_data(
 
     ### CUSTOM CLASS: Check if any Class Object with Attributes
     _filter_objects = (str, int, float, bool, list, tuple, set, type(None), bytes, complex, range, frozenset, bytearray, memoryview)
-    if not isinstance(data, _filter_objects):
+    if not isinstance(data, _filter_objects): # pragma: no branch
         # Setup
         _init_attr_header = '# attrs: init'
         __build_data_output_init = _StringIO()
@@ -1326,7 +1326,7 @@ def __dump_data(
             _is_case3_build = True
 
             # First: Init Attrs
-            if '__init__' not in vars(data):
+            if '__init__' not in vars(data): # pragma: no branch
                 for key,value in vars(data).items():
                     # Strip Unneeded Attrs/Methods, and Preserve Dunders if Required
                     if callable(value): continue
@@ -1394,7 +1394,7 @@ def __dump_data(
         # Structure Build
         if _is_case1_build: pass
         elif _is_case2_build: pass
-        elif _is_case3_build:
+        elif _is_case3_build: # pragma: no branch
             if not class_attrs:
                 __build_data_output = __build_data_output_init 
             else: 

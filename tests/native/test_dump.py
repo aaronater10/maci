@@ -401,8 +401,8 @@ def test5_dump_file_attr_types_maciobj():
     file_data._under_data = 'data'
     file_data.__dunder_data = 'data'
     file_data.norm_data2 = 'data2'
-    
-    # Test: All Private Attrs
+
+    # Test: All Private & Normal Attrs
     maci.dump(filepath, file_data, private_attrs=True)
     file_import = maci.load(filepath)
 
@@ -479,6 +479,37 @@ def test6_dump_file_use_symbol_glyphs_maciobj():
     try: remove(filepath)
     except: pass
 
+
+# 7. Dump File - Attr Types: MaciDataObj - Test different attribute types to dump and ensure data is maintained
+def test7_dump_file_repr_signal_maciobj():
+    filename = '7_dump_file_repr_signal_maciobj.data'
+    filepath = test_file_path + filename
+
+    # Remove Any Existing Test File
+    try: remove(filepath)
+    except: pass
+    time.sleep(file_delay_timer)
+
+    # Build Data
+    file_data = maci.build()
+    file_data.date_time = maci.loadstr('date_time = 2023-06-19 21:35:00').date_time
+    file_data.date_time_lock = maci.loadstr('date_time = 2023-06-19 21:35:00').date_time
+    file_data.lock_attr('date_time_lock')
+    file_data.date_time_hard_lock = maci.loadstr('date_time = 2023-06-19 21:35:00').date_time
+    file_data.hard_lock_attr('date_time_hard_lock')
+
+    # Tests
+    maci.dump(filepath, file_data)
+    file_import = maci.load(filepath)
+
+    assert str(file_import.date_time)  == '2023-06-19 21:35:00'
+    assert str(file_import.date_time_lock)  == '2023-06-19 21:35:00'
+    assert str(file_import.date_time_hard_lock)  == '2023-06-19 21:35:00'
+
+    # Remove Test File
+    time.sleep(file_delay_timer)
+    try: remove(filepath)
+    except: pass
 
 
 ### DICT ###
@@ -650,6 +681,37 @@ def test4_dump_and_load_encodings_dict():
     except: pass
 
 
+# 5. Dump File - General: Dict - Test Data Types
+def test5_dump_file_repr_signal_dict():
+    filename = '5_dump_file_repr_signal_dict.data'
+    filepath = test_file_path + filename
+
+    # Remove Any Existing Test File
+    try: remove(filepath)
+    except: pass
+    time.sleep(file_delay_timer)
+
+    # Build Data
+    file_data = {
+    'data_list': [1,2,3],
+    'date_time': maci.loadstr('date_time = 2023-06-19 21:35:00').date_time,
+    'data_tuple': (1,2,3),
+    }
+
+    # Tests
+    maci.dump(filepath, file_data)
+    file_import = maci.load(filepath)
+
+    assert file_import.data_list == [1,2,3]
+    assert str(file_import.date_time) == '2023-06-19 21:35:00'
+    assert file_import.data_tuple == (1,2,3)
+
+    # Remove Test File
+    time.sleep(file_delay_timer)
+    try: remove(filepath)
+    except: pass
+
+
 
 ### Class ###
 
@@ -748,23 +810,124 @@ def test3_dump_file_multiline_str_class():
 
     # Build Data
     class CustomClass:
+        cls_data_int = 1
+        cls_data_multi_str1 = "data line 1\ndata line 2\ndata line 3"
+        cls_data_multi_str2 = "'data line 1\ndata line 2\ndata line 3'"
+        cls_data_multi_str3 = '"data line 1\ndata line 2\ndata line 3"'
+        cls_data_multi_str4 = '"""data line 1\ndata line 2\ndata line 3"""'
+        cls_data_multi_str5 = "'''data line 1\ndata line 2\ndata line 3'''"
+        cls_data_multi_str6 = "data line 1\ndata line ''' 2\ndata line 3"
+        cls_data_multi_str7 = 'data line 1\ndata line """ 2\ndata line 3'
+        cls_data_multi_str8 = 'data line 1\ndata line "" 2\ndata line 3'
+        cls_data_multi_str9 = "data line 1\ndata line '' 2\ndata line 3"
+        cls_data_multi_str10 = "]data line 1\n} data line 2\ndata line 3\n)"
+        cls_data_bool = False
         def __init__(self):
-            self.data_int = 1
-            self.data_multi_str1 = "data line 1\ndata line 2\ndata line 3"
-            self.data_multi_str2 = "'data line 1\ndata line 2\ndata line 3'"
-            self.data_multi_str3 = '"data line 1\ndata line 2\ndata line 3"'
-            self.data_multi_str4 = '"""data line 1\ndata line 2\ndata line 3"""'
-            self.data_multi_str5 = "'''data line 1\ndata line 2\ndata line 3'''"
-            self.data_multi_str6 = "data line 1\ndata line ''' 2\ndata line 3"
-            self.data_multi_str7 = 'data line 1\ndata line """ 2\ndata line 3'
-            self.data_multi_str8 = 'data line 1\ndata line "" 2\ndata line 3'
-            self.data_multi_str9 = "data line 1\ndata line '' 2\ndata line 3"
-            self.data_multi_str10 = "]data line 1\n} data line 2\ndata line 3\n)"
-            self.data_bool = False
+            self.init_data_int = 1
+            self.init_data_multi_str1 = "data line 1\ndata line 2\ndata line 3"
+            self.init_data_multi_str2 = "'data line 1\ndata line 2\ndata line 3'"
+            self.init_data_multi_str3 = '"data line 1\ndata line 2\ndata line 3"'
+            self.init_data_multi_str4 = '"""data line 1\ndata line 2\ndata line 3"""'
+            self.init_data_multi_str5 = "'''data line 1\ndata line 2\ndata line 3'''"
+            self.init_data_multi_str6 = "data line 1\ndata line ''' 2\ndata line 3"
+            self.init_data_multi_str7 = 'data line 1\ndata line """ 2\ndata line 3'
+            self.init_data_multi_str8 = 'data line 1\ndata line "" 2\ndata line 3'
+            self.init_data_multi_str9 = "data line 1\ndata line '' 2\ndata line 3"
+            self.init_data_multi_str10 = "]data line 1\n} data line 2\ndata line 3\n)"
+            self.init_data_bool = False
     file_data = CustomClass()
 
-    # Test Multi-Line String Dump and Load
+    class CustomClassOnly:
+        data_int = 1
+        data_multi_str1 = "data line 1\ndata line 2\ndata line 3"
+        data_multi_str2 = "'data line 1\ndata line 2\ndata line 3'"
+        data_multi_str3 = '"data line 1\ndata line 2\ndata line 3"'
+        data_multi_str4 = '"""data line 1\ndata line 2\ndata line 3"""'
+        data_multi_str5 = "'''data line 1\ndata line 2\ndata line 3'''"
+        data_multi_str6 = "data line 1\ndata line ''' 2\ndata line 3"
+        data_multi_str7 = 'data line 1\ndata line """ 2\ndata line 3'
+        data_multi_str8 = 'data line 1\ndata line "" 2\ndata line 3'
+        data_multi_str9 = "data line 1\ndata line '' 2\ndata line 3"
+        data_multi_str10 = "]data line 1\n} data line 2\ndata line 3\n)"
+        data_bool = False
+    file_data_class_only = CustomClassOnly()
+
+    # Possible scenarios for custom class cases
+    # 1. Class Attrs + Init Attrs (Covered by Case 3)
+    # 2. No Class Attrs + Init Attrs Only (Covered by Case 3)
+    # 3. Class Attrs + No Init Attrs, Init Defined but not INITed (both Covered by Case 2)
+    # 4. Class Attrs Only, not INITed, No Init Defined (Covered by Case 2)
+    # 5. Class Only and INITed, but with No Init Defined (Covered by Case 1)
+    # 6. Class Attrs + No Init Attrs, Init Defined and INITed (Covered by Case 1)
+
+
+    ### Tests ###
+
+    # CASE 3: INIT - Test Multi-Line String Dump and Load
     maci.dump(filepath, file_data, multi_line_str=True)
+    file_import = maci.load(filepath)
+
+    assert file_import.init_data_int == 1
+    assert file_import.init_data_multi_str1 == "\ndata line 1\ndata line 2\ndata line 3\n"
+    assert file_import.init_data_multi_str2 == "\n'data line 1\ndata line 2\ndata line 3'\n"
+    assert file_import.init_data_multi_str3 == '\n"data line 1\ndata line 2\ndata line 3"\n'
+    assert file_import.init_data_multi_str4 == '\n"""data line 1\ndata line 2\ndata line 3"""\n'
+    assert file_import.init_data_multi_str5 == "\n'''data line 1\ndata line 2\ndata line 3'''\n"
+    assert file_import.init_data_multi_str6 == "\ndata line 1\ndata line ''' 2\ndata line 3\n"
+    assert file_import.init_data_multi_str7 == '\ndata line 1\ndata line """ 2\ndata line 3\n'
+    assert file_import.init_data_multi_str8 == '\ndata line 1\ndata line "" 2\ndata line 3\n'
+    assert file_import.init_data_multi_str9 == "\ndata line 1\ndata line '' 2\ndata line 3\n"
+    assert file_import.init_data_multi_str10 == "\n]data line 1\n} data line 2\ndata line 3\n)\n"
+    assert file_import.init_data_bool == False
+
+    # CASE 3: INIT & CLASS - Test Multi-Line String Dump and Load
+    maci.dump(filepath, file_data, multi_line_str=True, class_attrs=True)
+    file_import = maci.load(filepath)
+
+    assert file_import.init_data_int == 1
+    assert file_import.init_data_multi_str1 == "\ndata line 1\ndata line 2\ndata line 3\n"
+    assert file_import.init_data_multi_str2 == "\n'data line 1\ndata line 2\ndata line 3'\n"
+    assert file_import.init_data_multi_str3 == '\n"data line 1\ndata line 2\ndata line 3"\n'
+    assert file_import.init_data_multi_str4 == '\n"""data line 1\ndata line 2\ndata line 3"""\n'
+    assert file_import.init_data_multi_str5 == "\n'''data line 1\ndata line 2\ndata line 3'''\n"
+    assert file_import.init_data_multi_str6 == "\ndata line 1\ndata line ''' 2\ndata line 3\n"
+    assert file_import.init_data_multi_str7 == '\ndata line 1\ndata line """ 2\ndata line 3\n'
+    assert file_import.init_data_multi_str8 == '\ndata line 1\ndata line "" 2\ndata line 3\n'
+    assert file_import.init_data_multi_str9 == "\ndata line 1\ndata line '' 2\ndata line 3\n"
+    assert file_import.init_data_multi_str10 == "\n]data line 1\n} data line 2\ndata line 3\n)\n"
+    assert file_import.init_data_bool == False
+    assert file_import.cls_data_int == 1
+    assert file_import.cls_data_multi_str1 == "\ndata line 1\ndata line 2\ndata line 3\n"
+    assert file_import.cls_data_multi_str2 == "\n'data line 1\ndata line 2\ndata line 3'\n"
+    assert file_import.cls_data_multi_str3 == '\n"data line 1\ndata line 2\ndata line 3"\n'
+    assert file_import.cls_data_multi_str4 == '\n"""data line 1\ndata line 2\ndata line 3"""\n'
+    assert file_import.cls_data_multi_str5 == "\n'''data line 1\ndata line 2\ndata line 3'''\n"
+    assert file_import.cls_data_multi_str6 == "\ndata line 1\ndata line ''' 2\ndata line 3\n"
+    assert file_import.cls_data_multi_str7 == '\ndata line 1\ndata line """ 2\ndata line 3\n'
+    assert file_import.cls_data_multi_str8 == '\ndata line 1\ndata line "" 2\ndata line 3\n'
+    assert file_import.cls_data_multi_str9 == "\ndata line 1\ndata line '' 2\ndata line 3\n"
+    assert file_import.cls_data_multi_str10 == "\n]data line 1\n} data line 2\ndata line 3\n)\n"
+    assert file_import.cls_data_bool == False
+
+    # CASE 2: CLASS - Test Multi-Line String Dump and Load
+    maci.dump(filepath, type(file_data), multi_line_str=True, class_attrs=True)
+    file_import = maci.load(filepath)
+
+    assert file_import.cls_data_int == 1
+    assert file_import.cls_data_multi_str1 == "\ndata line 1\ndata line 2\ndata line 3\n"
+    assert file_import.cls_data_multi_str2 == "\n'data line 1\ndata line 2\ndata line 3'\n"
+    assert file_import.cls_data_multi_str3 == '\n"data line 1\ndata line 2\ndata line 3"\n'
+    assert file_import.cls_data_multi_str4 == '\n"""data line 1\ndata line 2\ndata line 3"""\n'
+    assert file_import.cls_data_multi_str5 == "\n'''data line 1\ndata line 2\ndata line 3'''\n"
+    assert file_import.cls_data_multi_str6 == "\ndata line 1\ndata line ''' 2\ndata line 3\n"
+    assert file_import.cls_data_multi_str7 == '\ndata line 1\ndata line """ 2\ndata line 3\n'
+    assert file_import.cls_data_multi_str8 == '\ndata line 1\ndata line "" 2\ndata line 3\n'
+    assert file_import.cls_data_multi_str9 == "\ndata line 1\ndata line '' 2\ndata line 3\n"
+    assert file_import.cls_data_multi_str10 == "\n]data line 1\n} data line 2\ndata line 3\n)\n"
+    assert file_import.cls_data_bool == False
+
+    # CASE 1: CLASS ONLY - Test Multi-Line String Dump and Load
+    maci.dump(filepath, file_data_class_only, multi_line_str=True, class_attrs=True)
     file_import = maci.load(filepath)
 
     assert file_import.data_int == 1
@@ -836,6 +999,14 @@ def test5_dump_file_attr_types_class():
     except: pass
     time.sleep(file_delay_timer)
 
+    # Possible scenarios for custom class cases
+    # 1. Class Attrs + Init Attrs (Covered by Case 3)
+    # 2. No Class Attrs + Init Attrs Only (Covered by Case 3)
+    # 3. Class Attrs + No Init Attrs, Init Defined but not INITed (both Covered by Case 2)
+    # 4. Class Attrs Only, not INITed, No Init Defined (Covered by Case 2)
+    # 5. Class Only and INITed, but with No Init Defined (Covered by Case 1)
+    # 6. Class Attrs + No Init Attrs, Init Defined and INITed (Covered by Case 1)
+
     # Build Data
     class CustomClass:
         # Class Attrs
@@ -843,15 +1014,34 @@ def test5_dump_file_attr_types_class():
         _cls_under_data = 'data'
         __cls_dunder_data = 'data'
         cls_norm_data2 = 'data2'
+        cls_multline_data = [1,2,3]
+        cls_date_time = maci.loadstr('date_time = 2023-06-19 21:35:00').date_time
         def __init__(self):
             # Init Attrs
             self.init_norm_data1 = 'data1'
             self._init_under_data = 'data'
             self.__init_dunder_data = 'data'
             self.init_norm_data2 = 'data2'
+            self.callable_data = lambda:'data'
+            self.init_multline_data = [1,2,3]
+            self.init_date_time = maci.loadstr('date_time = 2023-06-19 21:35:00').date_time
     file_data = CustomClass()
 
-    ### INIT & CLASS ###
+    class CustomClassOnly:
+        # Class Attrs
+        cls_norm_data1 = 'data1'
+        _cls_under_data = 'data'
+        __cls_dunder_data = 'data'
+        cls_norm_data2 = 'data2'
+        callable_data = lambda:'data'
+        cls_multline_data = [1,2,3]
+        cls_date_time = maci.loadstr('date_time = 2023-06-19 21:35:00').date_time
+    file_data_class_only = CustomClassOnly()
+
+    
+    ### Tests ###
+
+    ### CASE 3: INIT & CLASS ###
 
     # Test: All Normal Init & Class Attrs
     maci.dump(filepath, file_data, class_attrs=True)
@@ -861,6 +1051,8 @@ def test5_dump_file_attr_types_class():
     assert file_import.init_norm_data2 == 'data2'
     assert file_import.cls_norm_data1 == 'data1'
     assert file_import.cls_norm_data2 == 'data2'
+    assert file_import.init_multline_data == [1,2,3]
+    assert str(file_import.init_date_time) == '2023-06-19 21:35:00'
 
     # Test: All Normal/Private Init & Class Attrs
     maci.dump(filepath, file_data, private_attrs=True, class_attrs=True)
@@ -874,6 +1066,7 @@ def test5_dump_file_attr_types_class():
     assert file_import._cls_under_data == 'data'
     assert file_import.__cls_dunder_data == 'data'
     assert file_import.cls_norm_data2 == 'data2'
+    assert str(file_import.cls_date_time) == '2023-06-19 21:35:00'
 
     # Test: All Normal/Under Init & Class Attrs
     maci.dump(filepath, file_data, private_under_attrs=True, class_attrs=True)
@@ -959,8 +1152,69 @@ def test5_dump_file_attr_types_class():
     assert file_import.cls_norm_data1 == 'data1'
     assert file_import.cls_norm_data2 == 'data2'
 
+    ### CASE 1: CLASS ONLY ###
 
-    ### CLASS ONLY ###
+    # Test: Normal Class Attrs
+    maci.dump(filepath, file_data_class_only, class_attrs=True)
+    file_import = maci.load(filepath)
+
+    assert file_import.cls_norm_data1 == 'data1'
+    assert file_import.cls_norm_data2 == 'data2'
+    assert file_import.cls_multline_data == [1,2,3]
+    assert str(file_import.cls_date_time) == '2023-06-19 21:35:00'
+
+    # Test: Normal/Private Class Attrs
+    maci.dump(filepath, file_data_class_only, private_attrs=True, class_attrs=True)
+    file_import = maci.load(filepath)
+
+    assert file_import.cls_norm_data1 == 'data1'
+    assert file_import._cls_under_data == 'data'
+    assert file_import.__cls_dunder_data == 'data'
+    assert file_import.cls_norm_data2 == 'data2'
+
+    # Test: Normal/Private Class Attrs - Alternate Option
+    maci.dump(filepath, file_data_class_only, private_class_attrs=True, class_attrs=True)
+    file_import = maci.load(filepath)
+
+    assert file_import.cls_norm_data1 == 'data1'
+    assert file_import._cls_under_data == 'data'
+    assert file_import.__cls_dunder_data == 'data'
+    assert file_import.cls_norm_data2 == 'data2'
+
+    # Test: Normal/Under Class Attrs
+    maci.dump(filepath, file_data_class_only, private_under_attrs=True, class_attrs=True)
+    file_import = maci.load(filepath)
+
+    assert file_import.cls_norm_data1 == 'data1'
+    assert file_import._cls_under_data == 'data'
+    assert file_import.cls_norm_data2 == 'data2'
+
+    # Test: Normal/Under Class Attrs - Alternate Option
+    maci.dump(filepath, file_data_class_only, private_class_under_attrs=True, class_attrs=True)
+    file_import = maci.load(filepath)
+
+    assert file_import.cls_norm_data1 == 'data1'
+    assert file_import._cls_under_data == 'data'
+    assert file_import.cls_norm_data2 == 'data2'
+
+    # Test: Normal/Dunder Class Attrs
+    maci.dump(filepath, file_data_class_only, private_dunder_attrs=True, class_attrs=True)
+    file_import = maci.load(filepath)
+
+    assert file_import.cls_norm_data1 == 'data1'
+    assert file_import.__cls_dunder_data == 'data'
+    assert file_import.cls_norm_data2 == 'data2'
+
+    # Test: Normal/Dunder Class Attrs - Alternate Option
+    maci.dump(filepath, file_data_class_only, private_class_dunder_attrs=True, class_attrs=True)
+    file_import = maci.load(filepath)
+
+    assert file_import.cls_norm_data1 == 'data1'
+    assert file_import.__cls_dunder_data == 'data'
+    assert file_import.cls_norm_data2 == 'data2'
+
+
+    ### CASE 2: CLASS ONLY ###
 
     # Test: Normal Class Attrs
     maci.dump(filepath, type(file_data), class_attrs=True)
@@ -968,6 +1222,8 @@ def test5_dump_file_attr_types_class():
 
     assert file_import.cls_norm_data1 == 'data1'
     assert file_import.cls_norm_data2 == 'data2'
+    assert file_import.cls_multline_data == [1,2,3]
+    assert str(file_import.cls_date_time) == '2023-06-19 21:35:00'
 
     # Test: Normal/Private Class Attrs
     maci.dump(filepath, type(file_data), private_attrs=True, class_attrs=True)
@@ -1020,7 +1276,7 @@ def test5_dump_file_attr_types_class():
     assert file_import.cls_norm_data2 == 'data2'
 
 
-    ### INIT ONLY ###
+    ### CASE 3: INIT ONLY ###
 
     # Test: Normal Init Attrs
     maci.dump(filepath, file_data)
@@ -1028,6 +1284,7 @@ def test5_dump_file_attr_types_class():
 
     assert file_import.init_norm_data1 == 'data1'
     assert file_import.init_norm_data2 == 'data2'
+    assert file_import.init_multline_data == [1,2,3]
 
     # Test: Normal/Private Init Attrs
     maci.dump(filepath, file_data, private_attrs=True)
