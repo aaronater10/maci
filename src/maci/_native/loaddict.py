@@ -44,8 +44,7 @@ def loaddict(filename: str, *, attr_name_dedup: bool=True, encoding: __Union[str
     try:
         if __path.getsize(filename) == 0:
             return None
-    except FileNotFoundError as __err_msg: raise LoadDict(__err_msg, f'\nGot: "{filename}"')
-    except OSError as __err_msg: raise LoadDict(__err_msg, f'\nGot: "{filename}"')
+    except (FileNotFoundError, OSError) as __err_msg: raise LoadDict(__err_msg, f'\nGot: "{filename}"')
 
     # Syntax/Usage Error Messages
     err_messages = {

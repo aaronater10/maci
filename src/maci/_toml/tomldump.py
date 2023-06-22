@@ -48,4 +48,4 @@ def tomldump(
             _tomli_w.dump(data, f, multiline_strings=multi_line_str)
             if write_mode == 'ab': _dumpraw(filename, '', append=True)
     except TypeError as __err_msg: raise TomlDump(__err_msg, f'\nFILE: "{filename}" \nGot: {repr(data)}')
-    except FileNotFoundError as __err_msg: raise TomlDump(__err_msg, f'\nFILE: "{filename}"')
+    except (FileNotFoundError, OSError) as __err_msg: raise TomlDump(__err_msg, f'\nFILE: "{filename}"')

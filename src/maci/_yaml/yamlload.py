@@ -36,7 +36,6 @@ def yamlload(filename: str, *, encoding: __Union[str, None]=None) -> __Any:
     try:
         with open(filename, 'r', encoding=encoding) as f:
             return __yaml.safe_load(f)
-    except FileNotFoundError as __err_msg: raise YamlLoad(__err_msg, f'\nGot: {repr(filename)}')
-    except OSError as __err_msg: raise YamlLoad(__err_msg, f'\nGot: {repr(filename)}')
+    except (FileNotFoundError, OSError) as __err_msg: raise YamlLoad(__err_msg, f'\nGot: {repr(filename)}')
     except __yaml.error.YAMLError as __err_msg: raise YamlLoad(__err_msg, f'\nGot: {repr(filename)}')
     except LookupError: raise YamlLoad(err_msg_type_encoding, f'\nGot: {repr(encoding)}')

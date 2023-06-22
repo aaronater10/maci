@@ -51,5 +51,5 @@ def jsondump(
             __json.dump(data, f, indent=indent_level)
             if write_mode == 'a': _dumpraw(filename, '', append=True)
     except TypeError as __err_msg: raise JsonDump(__err_msg, f'\nDATA: {repr(data)}')
-    except FileNotFoundError as __err_msg: raise JsonDump(__err_msg, f'\nGOT: "{filename}"')
+    except (FileNotFoundError, OSError) as __err_msg: raise JsonDump(__err_msg, f'\nGOT: "{filename}"')
     except LookupError: raise JsonDump(err_msg_type_encoding, f'\nGot: {repr(encoding)}')

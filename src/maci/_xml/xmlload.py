@@ -34,5 +34,5 @@ def xmlload(filename: str, *, auto_get_root: bool=True) -> _Union[_xml_etree.Ele
         if auto_get_root:
             return _xml_etree.parse(filename).getroot()
         return _xml_etree.parse(filename)
-    except FileNotFoundError as __err_msg: raise XmlLoad(__err_msg, f'\nGot: {repr(filename)}')
+    except (FileNotFoundError, OSError) as __err_msg: raise XmlLoad(__err_msg, f'\nGot: {repr(filename)}')
     except _xml_etree.ParseError as __err_msg: raise XmlLoad(__err_msg, f'\nGot: {repr(filename)}')

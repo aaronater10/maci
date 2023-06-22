@@ -40,5 +40,5 @@ def yamldump(filename: str, data: _Any, *, append: bool=False, encoding: _Union[
         with open(filename, write_mode, encoding=encoding) as f:
             _yaml.safe_dump(data, f)
     except _yaml.error.YAMLError as __err_msg: raise YamlDump(__err_msg, f'\nGot: {repr(data)}')
-    except FileNotFoundError as __err_msg: raise YamlDump(__err_msg, f'\nGot: {repr(filename)}')
+    except (FileNotFoundError, OSError) as __err_msg: raise YamlDump(__err_msg, f'\nGot: {repr(filename)}')
     except LookupError: raise YamlDump(err_msg_type_encoding, f'\nGot: {repr(encoding)}')

@@ -48,7 +48,7 @@ def dumpraw(filename: str, *data: __Any, append: bool=False, byte_data: bool=Fal
             with open(filename, 'w', encoding=encoding) as f:
                 for data_to_write in data:
                     f.writelines(str(data_to_write))
-        except FileNotFoundError as __err_msg: raise DumpRaw(__err_msg, f'\nGot: {repr(filename)}')
+        except (FileNotFoundError, OSError) as __err_msg: raise DumpRaw(__err_msg, f'\nGot: {repr(filename)}')
         except LookupError: raise DumpRaw(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
 
     # Byte Data Converted to File
@@ -59,7 +59,7 @@ def dumpraw(filename: str, *data: __Any, append: bool=False, byte_data: bool=Fal
             with open(filename, 'wb') as f:
                 for data_to_write in data:
                     f.write(data_to_write)
-        except FileNotFoundError as __err_msg: raise DumpRaw(__err_msg, f'\nGot: {repr(filename)}')
+        except (FileNotFoundError, OSError) as __err_msg: raise DumpRaw(__err_msg, f'\nGot: {repr(filename)}')
 
     
     ### Append File ###
@@ -73,7 +73,7 @@ def dumpraw(filename: str, *data: __Any, append: bool=False, byte_data: bool=Fal
             with open(filename, 'a', encoding=encoding) as f:
                 for data_to_write in data:
                     f.writelines(f"{__new_line}{data_to_write}")
-        except FileNotFoundError as __err_msg: raise DumpRaw(__err_msg, f'\nGot: {repr(filename)}')
+        except (FileNotFoundError, OSError) as __err_msg: raise DumpRaw(__err_msg, f'\nGot: {repr(filename)}')
         except LookupError: raise DumpRaw(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
 
     # Byte Data to File
@@ -87,4 +87,4 @@ def dumpraw(filename: str, *data: __Any, append: bool=False, byte_data: bool=Fal
                 for data_to_write in data:
                     f.write(b"\n")
                     f.write(data_to_write)
-        except FileNotFoundError as __err_msg: raise DumpRaw(__err_msg, f'\nGot: {repr(filename)}')
+        except (FileNotFoundError, OSError) as __err_msg: raise DumpRaw(__err_msg, f'\nGot: {repr(filename)}')

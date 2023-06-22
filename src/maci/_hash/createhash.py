@@ -1,4 +1,4 @@
-# createfilehash
+# createhash
 #########################################################################################################
 # Imports
 from typing import Union as _Union
@@ -9,7 +9,7 @@ import hashlib as _hashlib
 from ..error import CreateHash
 
 #########################################################################################################
-# Create file hash
+# Create Hash
 def createhash(data_to_hash: _Union[str, bytes, int, _List[int], _Tuple[int], _Set[int], range, bool], hash_algorithm: str='sha256', *, encoding: str='utf-8') -> str:
     """
     Creates a hash of the provided data
