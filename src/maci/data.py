@@ -91,10 +91,10 @@ def _rename_exc_name_to_user_object_name(method):
             return_data = method(*args, **kwargs)
         except exception_names_to_catch as exception:
             for exc_msg in exception.args:
-                if '_MaciDataObjConstructor' in exc_msg: # pragma: no branch
+                if '_MaciDataObjConstructor' in exc_msg: # pragma: no cover  # py37-39 does not show obj name in msg
                     build_err_msg += exc_msg.replace(search_name, replace_name)
                     continue
-                build_err_msg += exc_msg # pragma: no cover
+                build_err_msg += exc_msg # pragma: no cover  # hits as a catch-all for py37-39
             # Raise with final message and original Exception Type. Remove Double-Trace as it is a Duplicate
             raise type(exception)(build_err_msg) from None
         return return_data
@@ -370,7 +370,7 @@ class _MaciDataObjConstructor:
                     __is_building_data_sw = True
                     __body_build_data_sw = True
                     __end_data_build_sw = True
-                    if __value_token in __end_multistr_markers:
+                    if __value_token in __end_multistr_markers: # pragma: no branch
                         __end_markers_build = __end_multistr_markers
                     continue
 
@@ -1105,7 +1105,7 @@ def __dump_data(
                 if key.startswith(f'__'):
                     if (private_attrs or private_dunder_attrs):
                         _is_dunder_attr = True
-                    else: continue
+                    else: continue  # pragma: no cover  # code does work, but py10+ is only passing cov oddly
                 if (key.startswith('_')) and not (_is_dunder_attr):
                     if not (private_attrs or private_under_attrs):
                         continue
@@ -1245,7 +1245,7 @@ def __dump_data(
                     if (private_attrs) or (private_dunder_attrs) or (private_class_attrs) or (private_class_dunder_attrs):
                         key = key[len(f'_{type(data).__name__}'):]
                         _is_dunder_attr = True
-                    else: continue
+                    else: continue  # pragma: no cover  # code does work, but py10+ is only passing cov oddly
                 if (key.startswith('_')) and not (_is_dunder_attr):
                     if not (private_attrs or private_under_attrs or private_class_attrs or private_class_under_attrs):
                         continue
@@ -1278,7 +1278,7 @@ def __dump_data(
                     if (private_attrs) or (private_dunder_attrs) or (private_class_attrs) or (private_class_dunder_attrs):
                         key = key[len(f'_{data.__name__}'):]
                         _is_dunder_attr = True
-                    else: continue
+                    else: continue  # pragma: no cover  # code does work, but py10+ is only passing cov oddly
                 if (key.startswith('_')) and not (_is_dunder_attr):
                     if not (private_attrs or private_under_attrs or private_class_attrs or private_class_under_attrs):
                         continue
@@ -1312,7 +1312,7 @@ def __dump_data(
                         if (private_attrs) or (private_dunder_attrs) or (private_init_attrs) or (private_init_dunder_attrs):
                             key = key[len(f'_{type(data).__name__}'):]
                             _is_dunder_attr = True
-                        else: continue
+                        else: continue  # pragma: no cover  # code does work, but py10+ is only passing cov oddly
                     if (key.startswith('_')) and not (_is_dunder_attr):
                         if not (private_attrs or private_under_attrs or private_init_attrs or private_init_under_attrs):
                             continue
@@ -1340,10 +1340,10 @@ def __dump_data(
                     if callable(value): continue
                     if (key.startswith('__') and key.endswith('__')): continue
                     if key.startswith(f'_{type(data).__name__}'): # dunder detection (name mangle)
-                        if (private_attrs) or (private_dunder_attrs) or (private_class_attrs) or (private_class_dunder_attrs):
+                        if (private_attrs) or (private_dunder_attrs) or (private_class_attrs) or (private_class_dunder_attrs): 
                             key = key[len(f'_{type(data).__name__}'):]
                             _is_dunder_attr = True
-                        else: continue
+                        else: continue  # pragma: no cover  # code does work, but py10+ is only passing cov oddly
                     if (key.startswith('_')) and not (_is_dunder_attr):
                         if not (private_attrs or private_under_attrs or private_class_attrs or private_class_under_attrs):
                             continue

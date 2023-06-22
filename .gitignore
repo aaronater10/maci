@@ -12,14 +12,15 @@ __pycache__
 .idea/
 
 # Local Only Dirs and Files
-.venv/
-venv/
+.venv*/
+venv*/
 .coverage
 htmlcov/
 priv_tests/
 temp_old/
 main.py
 test_perf*
+run_coverage.*
 
 # Local Tools
 const_test.cmd

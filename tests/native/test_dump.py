@@ -410,6 +410,13 @@ def test5_dump_file_attr_types_maciobj():
     file_data.__dunder_data = 'data'
     file_data.norm_data2 = 'data2'
 
+    # Test: Normal Attrs Only
+    maci.dump(filepath, file_data)
+    file_import = maci.load(filepath)
+
+    assert file_import.norm_data1 == 'data1'
+    assert file_import.norm_data2 == 'data2'
+
     # Test: All Private & Normal Attrs
     maci.dump(filepath, file_data, private_attrs=True)
     file_import = maci.load(filepath)
