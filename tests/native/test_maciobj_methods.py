@@ -223,9 +223,11 @@ def test5_maciobj_methods_map_parent_chains():
     maci_data.map_attr('map_data3', 'norm_data2')
     maci_data.map_attr('map_data4', 'norm_data2')
 
-    # ON: Check if an Exception Raised - Using Maci Base Exception
+    # ON: Check if an Exceptions Raised - Using Maci Base Exception
     with pytest.raises(maci.error.MaciError):
         maci_data.get_parent_map_chains()
+    with pytest.raises(maci.error.MaciError):
+        maci_data.get_parent_map_chains('norm_data1')
     
     # OFF: Test if Links are Re-Built with it OFF
     assert maci_data.get_parent_map_chains(dup_link_check=False) == {'norm_data1': ['norm_data1', 'map_data2'], 'norm_data2': ['norm_data2', 'map_data4']}
@@ -233,7 +235,7 @@ def test5_maciobj_methods_map_parent_chains():
     assert maci_data.get_parent_map_chains('norm_data2', dup_link_check=False) == ['norm_data2', 'map_data4']
 
 
-# 6. MaciDataObj - UNMAP: Test children is following parent data properly
+# 6. MaciDataObj - MAP: Test children is following parent data properly
 def test6_maciobj_methods_map_data_followed():
     # Build Data
     maci_data = maci.build()
@@ -296,6 +298,8 @@ def test7_maciobj_methods_unmap_direct_indirect():
     maci_data.map_data5 = None
     maci_data.map_data6 = None
 
+    maci_data.unmapped_attr = 1.0
+
     # Setup Attrs
     maci_data.map_attr('map_data1', 'norm_data1')
     maci_data.map_attr('map_data2', 'norm_data1')
@@ -353,6 +357,10 @@ def test7_maciobj_methods_unmap_direct_indirect():
     assert maci_data.get_parent_maps() ==  {}
     assert maci_data.get_parent_map_chains() ==  {}
     assert maci_data.get_child_maps() ==  {}
+
+    # Test UnMapping an Attr that Exists, but is not Mapped
+    with pytest.raises(maci.error.GeneralError):
+        maci_data.unmap_attr('unmapped_attr')
 
 
 # 8. MaciDataObj - LOCK: Test general locking protection and indirect unlock

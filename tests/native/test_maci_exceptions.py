@@ -21,6 +21,8 @@ def test1_exceptions_macidump_types():
     with pytest.raises(maci.error.Dump):
         maci.dump(filename="", data=1.0)
     with pytest.raises(maci.error.Dump):
+        maci.dump(filename="", data=maci.data.MaciDataObj)
+    with pytest.raises(maci.error.Dump):
         maci.dump(filename="", data={}, append=1.0)
     with pytest.raises(maci.error.Dump):
         maci.dump(filename="", data={}, indent_level=1.0)
@@ -194,6 +196,7 @@ def test1_exceptions_maciload_types():
 
 
 # 2. Maci Load - Unsupported Options or Data
+### load Note: Syntax/Parse Errors are already tested in functionality
 def test2_exceptions_maciload_opts_data():
     filepath = test_file_path + 'exc_maciload.maci'
 
@@ -204,8 +207,6 @@ def test2_exceptions_maciload_opts_data():
         maci.load(filename="*")
     with pytest.raises(maci.error.Load):
         maci.load(filename=filepath, encoding="")
-
-### load Note: Syntax/Parse Errors are already tested in functionality
 
 
 ### maci.loadattrs ###

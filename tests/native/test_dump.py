@@ -322,7 +322,13 @@ def test3_dump_file_multiline_str_maciobj():
     file_data.data_multi_str8 = 'data line 1\ndata line "" 2\ndata line 3'
     file_data.data_multi_str9 = "data line 1\ndata line '' 2\ndata line 3"
     file_data.data_multi_str10 = "]data line 1\n} data line 2\ndata line 3\n)"
+    file_data.data_multi_str_locked = "data line 1\ndata line 2\ndata line 3"
+    file_data.data_multi_str_hard_locked = "data line 1\ndata line 2\ndata line 3"
     file_data.data_bool = False
+
+    # Lock Attrs
+    file_data.lock_attr('data_multi_str_locked')
+    file_data.hard_lock_attr('data_multi_str_hard_locked')
 
     # Test Multi-Line String Dump and Load
     maci.dump(filepath, file_data, multi_line_str=True)
@@ -339,6 +345,8 @@ def test3_dump_file_multiline_str_maciobj():
     assert file_import.data_multi_str8 == '\ndata line 1\ndata line "" 2\ndata line 3\n'
     assert file_import.data_multi_str9 == "\ndata line 1\ndata line '' 2\ndata line 3\n"
     assert file_import.data_multi_str10 == "\n]data line 1\n} data line 2\ndata line 3\n)\n"
+    assert file_import.data_multi_str_locked == "\ndata line 1\ndata line 2\ndata line 3\n"
+    assert file_import.data_multi_str_hard_locked == "\ndata line 1\ndata line 2\ndata line 3\n"
     assert file_import.data_bool == False
 
     # Remove Test File
@@ -451,11 +459,13 @@ def test6_dump_file_use_symbol_glyphs_maciobj():
     file_data.hard_lock_data = 'data'
     file_data.map_lock = None
     file_data.map_hard_lock = None
+    file_data.hard_lock_multi = [1,2,3]
 
     # Setup Attrs
     file_data.map_attr('map_data', 'norm_data')
     file_data.lock_attr('lock_data')
     file_data.hard_lock_attr('hard_lock_data')
+    file_data.hard_lock_attr('hard_lock_multi')
 
     file_data.map_attr('map_lock', 'lock_data')
     file_data.lock_attr('map_lock')
@@ -473,6 +483,7 @@ def test6_dump_file_use_symbol_glyphs_maciobj():
     assert file_import.hard_lock_data == 'data'
     assert file_import.map_lock == 'data'
     assert file_import.map_hard_lock == 'data'
+    assert file_import.hard_lock_multi == [1,2,3]
 
     # Remove Test File
     time.sleep(file_delay_timer)

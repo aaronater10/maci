@@ -103,7 +103,7 @@ def _rename_exc_name_to_user_object_name(method):
 
 #########################################################################################################
 # MaciDataObj Functions
-def _date_time_parse_check(value: str) -> _Union[str, None]:
+def _date_time_parse_check(value: str) -> _Union[_datetime, None]:
     """
     Check if supported custom datetime format, or ISO8601 format
 
@@ -352,13 +352,7 @@ class _MaciDataObjConstructor:
                 and (__is_building_data_sw == False) \
                 and not (is_attr_reference_glyph):
                     
-                    # Check if var_token is a Pythonic valid name
-                    if not __var_token.isidentifier():
-                        raise Load(
-                            'Must use valid Python name syntax to load attr name',
-                            f'\nFILE: "{filename}" \nLINE: {line_num+1} \nATTR_NAME: {__file_data_line.partition(__assignment_glyph)[0].strip()} \nGOT: {__file_data_line}'
-                        )
-                    
+                    # Check if Attr Dedup
                     if (self.__attrib_name_dedup) and (hasattr(self, __var_token)):
                             raise Load(name_preexists_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')
 
@@ -413,12 +407,6 @@ class _MaciDataObjConstructor:
                 # IMPORT SINGLE LINE VALUES: If not multiline, assume single
                 else:
                     try:
-                        # Check if var_token is a Pythonic valid name
-                        if not __var_token.isidentifier():
-                            raise Load(
-                                'Must use valid Python name syntax to load attr name',
-                                f'\nFILE: "{filename}" \nLINE: {line_num+1} \nATTR_NAME: {__file_data_line.partition(__assignment_glyph)[0].strip()} \nGOT: {__file_data_line}'
-                            )
                         # Check if Attr Dedup
                         if (self.__attrib_name_dedup) and (hasattr(self, __var_token)):
                             raise Load(name_preexists_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')
@@ -460,22 +448,13 @@ class _MaciDataObjConstructor:
                         if __current_assignment_glyph in _assignment_glyphs_for_hard_lock_checks:
                             self.__assignment_hard_locked_attribs.add(__var_token)
                         
-                    except ValueError:
-                        # Check if datetime format and set attr, else raise exception
-                        datetime_format =_date_time_parse_check(__value_token)
-                        if datetime_format is not None:
-                            # Assign Attr to datetime object
-                            setattr(self, __var_token, datetime_format)
-                        else:
-                            raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')
-
                     except AttributeError:
                         # REF_NAME: Ignores Comments to Display Attr Reference Name
                         raise Load(
                             name_reference_does_not_exist,
                             f'\nFILE: "{filename}" \nATTR_NAME: {__var_token} \nREF_NAME: {f"{__value_token} "[:__value_token.find(__skip_markers[2])].rstrip()}'
                         )
-                    except SyntaxError:
+                    except (ValueError, SyntaxError):
                         # Check if datetime format and set attr, else raise exception
                         datetime_format =_date_time_parse_check(__value_token)
                         if datetime_format is not None:
@@ -543,9 +522,8 @@ class _MaciDataObjConstructor:
                             collected_references.append(other_child_ref_name)
                             other_child_ref_name_track.append(other_child_ref_name)
                         
-                        if any(other_child_ref_name_track):
-                            other_ref_name = other_child_ref_name_track.pop()
-                        else: break
+                        other_ref_name = other_child_ref_name_track.pop()
+
 
                     # Assign New Value to All Child or Chained References and Verify None are Locked
                     for ref_name in collected_references:
@@ -684,7 +662,7 @@ class _MaciDataObjConstructor:
         # Error Checks
         __err_msg_attr_name_str = "Only str is allowed for 'attr_name'"
         __err_msg_attr_name_exist = f"Attribute name does not exist! Must be created first and linked to an attribute to unlink"
-        __err_msg_reference_name_exist = f"Attribute name is not linked to anything! Cannot unlink attribute"
+        __err_msg_reference_name_exist = f"Attribute name is not mapped to anything! Cannot unmap attribute"
 
         if not isinstance(attr_name, str): raise GeneralError(__err_msg_attr_name_str, f'\nGOT: {repr(attr_name)}')
 
@@ -1416,13 +1394,6 @@ def __dump_data(
         __write_file_data(filename, __build_data_output, write_mode, encoding=encoding)
         return None
 
-    # Report if no __dict__ Attribute
-    if not hasattr(data, '__dict__'):
-        raise DumpError(__err_msg_no_attrs_found, f'\nDATA: {data}')
-
-    # Report if Error not Definable
-    raise DumpError(__err_msg_general_error, f'\nDATA: {data}')
-
 
 #########################################################################################################
 # Dump: Functions
@@ -1454,9 +1425,9 @@ def __write_file_data(filename: str, data: _Any, write_mode: str, *, encoding: _
         # Append Append File Mode
         if write_mode == 'a':
             _dumpraw(filename, data, append=True, encoding=encoding)        
-        # Raise Exception if No Match
-        if not write_mode in __write_mode_allowed_list:
-            raise Dump(__err_msg_write_mode, f'\nFILE: "{filename}" \nDATA: {write_mode}')
+        # Raise Exception if No Match - Dev Check
+        if not write_mode in __write_mode_allowed_list: # pragma: no cover
+            raise Dump(__err_msg_write_mode, f'\nGot: {write_mode}')
     except DumpRaw as __err_msg: raise Dump(__err_msg, '')
 
 

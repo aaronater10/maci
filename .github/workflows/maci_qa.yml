@@ -52,4 +52,4 @@ jobs:
     - name: Test with pytest Framework
       run: |
         coverage run --branch --source="src" -m pytest tests/ -v
-        coverage report --show-missing --fail-under 90
+        coverage report --show-missing --fail-under 100

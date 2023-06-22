@@ -9,6 +9,7 @@ data_tuple =(1,2,3)
 data_set={1,2,3}
 data_none=None
 data_bytes=b'data'
+
 # Multi
 data_list_multi =[
     1,

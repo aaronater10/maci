@@ -208,26 +208,35 @@ class TestLoad(unittest.TestCase):
         assert (file_import.data_end_token1 == ['normal value', "var = 'value'", 'normal value']) and (isinstance(file_import.data_end_token1, list))
 
     # 11. Single-Line Attr Dedup OFF - Turning OFF Attribute Dedup Feature Test
-    def test11_single_attr_dedup_off(self):
+    def test11_single_attr_dedup_on_off(self):
         filename = '11_attr_dedup_off_single.data'
         filepath = test_file_path + filename
 
-        # Test Turn OFF Attr Dedup Protection
+        # ON: Test Attr Dedup Protection (Default ON)
+        with pytest.raises(maci.error.Load):
+            file_import = maci.load(filepath)
+
+        # OFF: Test Turn OFF Attr Dedup Protection
         file_import = maci.load(filepath, attr_name_dedup=False)
 
         # Test Attributes and Types - Confirm data and it's type was in fact changed inside file
         assert (file_import.data_dict == "changed data") and (isinstance(file_import.data_dict, str))
 
     # 12. Multi-Line Attr Dedup OFF - Turning OFF Attribute Dedup Feature Test
-    def test12_multi_attr_dedup_off(self):
+    def test12_multi_attr_dedup_on_off(self):
         filename = '12_attr_dedup_off_multi.data'
         filepath = test_file_path + filename
 
-        # Test Turn OFF Attr Dedup Protection
+        # ON: Test Attr Dedup Protection (Default ON)
+        with pytest.raises(maci.error.Load):
+            file_import = maci.load(filepath)
+
+        # OFF: Test Turn OFF Attr Dedup Protection
         file_import = maci.load(filepath, attr_name_dedup=False)
 
         # Test Attributes and Types - Confirm data and it's type was in fact changed inside file
-        assert (file_import.data_list == "changed data") and (isinstance(file_import.data_list, str))
+        assert (file_import.data_list == "\nchanged data\n") and (isinstance(file_import.data_list, str))
+        
 
     # 13. Single-Line Attr Lock - Attribute Locked and Cannot Re-Assign
     def test13_single_attr_lock(self):
@@ -304,7 +313,9 @@ class TestLoad(unittest.TestCase):
     # 16. Attr Referencing - Reference Pre-Defined Attr's Value and Confirm Assigned
     def test16_attr_ref_single_multi(self):
         filename = '16_attr_ref_single-multi.data'
+        filename_err = '16_attr_ref_single_not_exist.data'
         filepath = test_file_path + filename
+        filepath_err = test_file_path + filename_err
 
         # Test File Import
         file_import = maci.load(filepath)
@@ -314,6 +325,10 @@ class TestLoad(unittest.TestCase):
         self.assertEqual(file_import.data_float, {'k1':1, 'k2':2, 'k3':3})
         self.assertEqual(file_import.data_bool, {'k1':1, 'k2':2, 'k3':3})
         self.assertEqual(file_import.data_set, (1,2,3))
+
+        # REF NOT EXIST: Reference Name Does not Exist
+        with pytest.raises(maci.error.Load):
+            maci.load(filepath_err)
     
     # 17. Attr Referencing Lock - Reference Pre-Defined Attr's Value, Confirm Assigned, and Locked
     def test17_attr_ref_lock_single_multi(self):
@@ -524,3 +539,24 @@ def test23_load_internal_method_check_off_on():
     # ON: File Import (ON by Default) - Raise Exception
     with pytest.raises(maci.error.Load):
         file_import = maci.load(filepath, attr_name_dedup=False)
+
+
+# 24. Check if Error Raised on Bad Name Syntax
+def test24_python_name_syntax():
+    filepath = test_file_path + '24_python_name_syntax.data'
+    filepath_multi = test_file_path + '24_python_name_syntax_multi.data'
+
+    # Tests
+    with pytest.raises(maci.error.Load):
+        maci.load(filepath)
+    with pytest.raises(maci.error.Load):
+        maci.load(filepath_multi)
+
+
+# 25. Check if Error Raised on Bad MultiLine Syntax
+def test25_python_multi_line_syntax():
+    filepath = test_file_path + '25_python_multi_line_syntax.data'
+
+    # Tests
+    with pytest.raises(maci.error.Load):
+        maci.load(filepath)

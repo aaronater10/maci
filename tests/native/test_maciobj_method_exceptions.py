@@ -209,8 +209,6 @@ def test1_exc_maciobj_method_unmap_attr_types():
 def test2_exc_maciobj_method_unmap_attr_opts_data():
     # Build Data
     maci_data = maci.build()
-    maci_data.child = 1
-    maci_data.parent = 1
 
     # Tests
     with pytest.raises(maci.error.GeneralError):
