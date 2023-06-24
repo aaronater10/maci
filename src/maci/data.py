@@ -9,13 +9,13 @@ from datetime import date as _datetime_date
 from datetime import time as _datetime_time
 from copy import deepcopy
 from typing import Any as _Any
-from typing import NoReturn as _NoReturn
 from typing import Dict as _Dict
 from typing import List as _List
 from typing import Union as _Union
 from typing import Optional as _Optional
 from typing import NamedTuple as _NamedTuple
 from typing import Set as _Set
+from typing import Callable as _Callable
 from .error import Load, GeneralError, Hint
 # Dump Function
 from io import StringIO as _StringIO
@@ -77,8 +77,8 @@ class _Glyphs(_NamedTuple):
 
 #########################################################################################################
 # Method Wrapper for '_MaciDataObjConstructor' -> 'MaciDataObj' Name
-def _rename_exc_name_to_user_object_name(method):
-    def wrapper(*args, **kwargs):
+def _rename_exc_name_to_user_object_name(method: _Callable[..., _Any]) -> _Callable[..., _Any]:
+    def wrapper(*args: _Any, **kwargs: _Any) -> _Callable[..., _Any]:
         # Setup
         build_err_msg = ''
         search_name = '_MaciDataObjConstructor'
@@ -103,7 +103,7 @@ def _rename_exc_name_to_user_object_name(method):
 
 #########################################################################################################
 # MaciDataObj Functions
-def _date_time_parse_check(value: str) -> _Union[_datetime, None]:
+def _date_time_parse_check(value: str) -> _Union[_datetime, _datetime_date, _datetime_time, None]:
     """
     Check if supported custom datetime format, or ISO8601 format
 
@@ -185,8 +185,7 @@ class _MaciDataObjConstructor:
         _is_str_parse_request: bool=False,
         _str_data: str='',
         _is_build_request: bool=False,
-        _is_hint_request: bool=False,
-        _ignore_internal_maci_attr_check: bool=False,
+        _ignore_internal_maci_attr_check: bool=False
     ) -> None:
         # Setup: Reference lists and maps should be first assignment
         self.__assignment_locked_attribs: _Set[str] = set()
@@ -207,10 +206,6 @@ class _MaciDataObjConstructor:
         self.__assignment_locked_atrribs_err_msg = _assignment_locked_atrribs_err_msg
         self.__assignment_hard_locked_atrribs_err_msg = _assignment_hard_locked_atrribs_err_msg
 
-        # HINT REQUEST: If this is an object hinting request,
-        # then end the INIT here with above self.attributes intact
-        if _is_hint_request: return None
-
         # BUILD REQUEST: If this is an object build request,
         # then end the INIT here with above self.attributes intact
         if _is_build_request: return None
@@ -223,8 +218,8 @@ class _MaciDataObjConstructor:
         # PARSE FILE: Assume this is a normal file parse if not string parse
         else:
             # Open and Import Config File Data into Object
-            with open(filename, 'r', encoding=encoding) as file_data:
-                file_data = file_data.read().splitlines()
+            with open(filename, 'r', encoding=encoding) as loaded_file_data:
+                file_data = loaded_file_data.read().splitlines()
 
         # Data Build Setup and Switches        
         __is_building_data_sw = False
@@ -720,7 +715,7 @@ class _MaciDataObjConstructor:
         _dst_ref_list: bool=False,
         _lock_list: bool=False,
         _ref_removal_request: bool=False,
-    ) -> _NoReturn:
+    ) -> None:
         """
         Internal method: check if reference requires deletion from reference list
         if attribute is attempted to be re-assigned or deleted
@@ -782,7 +777,7 @@ class _MaciDataObjConstructor:
 
 
     @_rename_exc_name_to_user_object_name
-    def get_all_maps(self) -> _Dict[str, _Dict[str, _Union[str, _Dict[str, str]]]]:
+    def get_all_maps(self) -> _Dict[str, _Dict[str, _Any]]:
         """
         Get all Parent and Child Links
 
@@ -950,10 +945,10 @@ class _MaciDataObjConstructor:
 
 # Meta for structure references
 class __MaciDataObj(type):
-    def __repr__(self):
+    def __repr__(self: type) -> str:
         return f"<class '{self.__module__}.{self.__name__}'>"
 
-# Main Object Name Reference
+# Main Object Usage
 class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
     def __init__(
         self,
@@ -970,13 +965,11 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
         _str_data: str='',
         _is_load_request: bool=False,
         _is_build_request: bool=False,
-        _is_hint_request: bool=False,
         _ignore_internal_maci_attr_check: bool=False,
     )-> None:
         __constructor_locked = True
         __constructor_locked = False if (_is_load_request
                                         or _is_build_request
-                                        or _is_hint_request
                                     ) else True
 
         # Error Messages
@@ -1003,7 +996,6 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
                 _is_str_parse_request=_is_str_parse_request,
                 _str_data=_str_data,
                 _is_build_request=_is_build_request,
-                _is_hint_request=_is_hint_request,
                 _ignore_internal_maci_attr_check=_ignore_internal_maci_attr_check,
             )
 
@@ -1023,7 +1015,7 @@ def __dump_data(
     *,
     _is_string_request: bool=False,
     filename: str,
-    data: _Union['MaciDataObj', dict, CustomClass], 
+    data: _Any, # MaciDataObj, dict, CustomClass
     append: bool=False,
     indent_level: int=1,
     indentation_on: bool=True,
@@ -1041,15 +1033,21 @@ def __dump_data(
     private_class_dunder_attrs: bool=False,
     use_symbol_glyphs: bool=False,
     __err_msg_no_attrs_found: str=''
-    ) -> _Union[None, str]:
+) -> _Union[str, None]:
     """
     Main dump function for file/string dump
     """
     # DUMP STR REQUEST: If this is a str dump request,
     # then set values accordingly
+    
+    # Error Checks & Collect Error Messages
+    __err_msg_general_error = "Error has occurred and cannot proceed"
+    __err_msg_invalid_maciobj = "Invalid maci object passed in. Please use a valid 'MaciDataObj'"
+    __err_msg_no_attrs_found = __err_msg_no_attrs_found
+
     if _is_string_request:
         # Set Error Type
-        DumpError = DumpStr
+        DumpStrError = DumpStr
         # Set Values
         filename = ''
         __err_msg_invalid_maciobj_item = f'\nDATA: {data}'
@@ -1057,15 +1055,13 @@ def __dump_data(
         DumpError = Dump
         __err_msg_invalid_maciobj_item = f'\nFILE: "{filename}" \nDATA: {data}'
 
-    # Error Checks & Collect Error Messages
-    __err_msg_general_error = "Error has occurred and cannot proceed"
-    __err_msg_invalid_maciobj = "Invalid maci object passed in. Please use a valid 'MaciDataObj'"
-    __err_msg_no_attrs_found = __err_msg_no_attrs_found
+    if isinstance(data, type(MaciDataObj)):
+        if _is_string_request: raise DumpStrError(__err_msg_invalid_maciobj, __err_msg_invalid_maciobj_item)
+        raise DumpError(__err_msg_invalid_maciobj, __err_msg_invalid_maciobj_item)
 
-    if isinstance(data, type(MaciDataObj)): raise DumpError(__err_msg_invalid_maciobj, __err_msg_invalid_maciobj_item)
 
     # Setup
-    __build_data_output = _StringIO()
+    __build_data_output: _Any = _StringIO()
     __assignment_glyphs = _Glyphs()
     __skip_object_key = ('_MaciDataObjConstructor', '__maci_obj_format_id')
     __locked_attr_list_key =  '_MaciDataObjConstructor__assignment_locked_attribs'
@@ -1393,6 +1389,10 @@ def __dump_data(
         # Write File Data and Return None
         __write_file_data(filename, __build_data_output, write_mode, encoding=encoding)
         return None
+    
+    
+    # Return None for type checker
+    return None  # pragma: no cover  # ignore. only for type checker
 
 
 #########################################################################################################

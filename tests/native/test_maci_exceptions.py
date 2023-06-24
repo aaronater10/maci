@@ -134,6 +134,8 @@ def test1_exceptions_macidumpstr_types():
     with pytest.raises(maci.error.DumpStr):
         maci.dumpstr(data=1.0)
     with pytest.raises(maci.error.DumpStr):
+        maci.dumpstr(data=maci.data.MaciDataObj)
+    with pytest.raises(maci.error.DumpStr):
         maci.dumpstr(data={}, indent_level=1.0)
     with pytest.raises(maci.error.DumpStr):
         maci.dumpstr(data={}, indentation_on=1.0)
