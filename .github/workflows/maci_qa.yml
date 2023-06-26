@@ -54,4 +54,4 @@ jobs:
           coverage report --show-missing --fail-under 100
       
       - name: Run - type checks
-        run: echo "placeholder"
+        run: mypy src
