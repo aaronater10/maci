@@ -10,12 +10,10 @@
 #  - Deployment to pypi will only occur if QA Tests all passed
 
 
-### Workflow ###
-
 # Workflow Name
 name: Publish-maci
 
-# Trigger on QA Testing Workflow Completion from "main" branch
+# Trigger on "QA-Testing" workflow completion from "main" branch
 on:
   workflow_run:
     workflows:
@@ -28,65 +26,59 @@ on:
 # Build environment, package, and deploy
 jobs:
 
-  # Tests PASS
+  # PASS: Run this job if tests pass
   on-tests-pass:
-
-    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         python-version: ["3.10"]
         os: [ubuntu-20.04]
+  
+    runs-on: ${{ matrix.os }}
 
-    # Verify QA Tests PASSED and Build to Deploy, otherwise SKIP
+    # Verify QA Tests PASSED and build to deploy, otherwise FAIL
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
-    - name: Tests PASS - Building Env and Deploying maci...
-      run: echo "Tests PASS - Building Env and Deploying maci..."
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - uses: actions/checkout@v2
+      - name: PASSED tests - Building env and deploying maci...
+        run: echo "PASSED tests - Building env and deploying maci..."
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
 
-    - name: Install Dependencies
-      run: |
-        python3 -m pip install --upgrade pip
-        python3 -m pip install -r "deploy/requirements-deploy.txt"
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r "deploy/requirements-deploy.txt"
 
-    - name: Build and Deploy maci
-      env:
-        DEPLOY_PYPI_TOKEN: ${{ secrets.MACI_DEPLOY_PYPI_API_TOKEN }}
-        DEPLOY_SSH_KEY: ${{ secrets.MACI_DEPLOY_GITHUB_KEY }}
-      run: |
-        python3 -B deploy/build_deploy_maci.py "${DEPLOY_PYPI_TOKEN}" "${DEPLOY_SSH_KEY}"
+      - name: Build and deploy maci
+        env:
+          DEPLOY_PYPI_TOKEN: ${{ secrets.MACI_DEPLOY_PYPI_API_TOKEN }}
+          DEPLOY_SSH_KEY: ${{ secrets.MACI_DEPLOY_GITHUB_KEY }}
+        
+        run: python3 -B deploy/build_deploy_maci.py "${DEPLOY_PYPI_TOKEN}" "${DEPLOY_SSH_KEY}"
   
 
-  # Tests FAIL
+  # FAIL: Run this job if tests failed
   on-tests-fail:
-
-    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         python-version: ["3.10"]
         os: [ubuntu-20.04]
 
-    # Verify QA Tests PASSED and Build to Deploy, otherwise SKIP
+    runs-on: ${{ matrix.os }}
+
+    # Verify QA Tests FAILED and report
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
 
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-
-    - name: Tests FAILED - Cannot deploy maci to PyPI
+    - name: QA Tests FAILED - Cannot build & deploy maci to PyPI
       run: |
-        echo "Tests FAILED - Cannot deploy maci to PyPI"
+        echo "QA Tests FAILED - Cannot build & deploy maci to PyPI"
         exit 1

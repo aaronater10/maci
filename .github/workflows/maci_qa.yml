@@ -4,10 +4,8 @@
 
 # Python versions being tested: 3.7 - 3.11
 # OSes being tested: Windows2019-2022, MacOS11-12, Ubuntu20-22
-# Triggered by Push, PR, or Manual run against "main" repo
+# Triggered by Push, PR, or Manual run against "main" or dev repo
 
-
-### Workflow ###
 
 # Workflow Name
 name: QA-Testing
@@ -25,31 +23,35 @@ on:
     branches:
       - '**'
 
-# Build Test Environment, then Run Tests
+# Build test environment, then run tests
 jobs:
-  build:
-
-    runs-on: ${{ matrix.os }}
+  qa-tests:
     strategy:
       fail-fast: false
       matrix:
         python-version: ["3.11", "3.10", "3.9", "3.8", "3.7"]
         os: [ubuntu-20.04, ubuntu-22.04, windows-2019, windows-2022, macos-11, macos-12]
+    
+    runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
 
-    - name: Install Dependencies
-      run: |
-        python3 -m pip install --upgrade pip
-        python3 -m pip install -r "requirements-dev.txt"
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r "requirements-dev.txt"
 
-    - name: Test with pytest Framework
-      run: |
-        coverage run --branch --source="src" -m pytest tests/ -v
-        coverage report --show-missing --fail-under 100
+      - name: Run - test framework & coverage report
+        run: |
+          coverage run --branch --source="src" -m pytest tests/ -v
+          coverage report --show-missing --fail-under 100
+      
+      - name: Run - type checks
+        run: echo "placeholder"
