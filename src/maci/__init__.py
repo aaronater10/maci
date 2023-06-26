@@ -1,7 +1,7 @@
 """
 maci - by aaronater10
 
-Version 0.1.0
+Version 0.3.0
 
 The easy to use library for your data, configuration, and save files.
 
@@ -12,7 +12,7 @@ See tutorials and docs here for more info: https://docs.macilib.org
 
 Source Code: https://github.com/aaronater10/maci
 """
-__version__ = '0.1.0'
+__version__ = '0.3.0'
 
 #########################################################################################################
 # Imports

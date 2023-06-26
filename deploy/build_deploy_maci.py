@@ -4,8 +4,8 @@ import subprocess
 
 # Setup
 MACI_VERSIONS = {
-    'current': "0.2.0",  # New/Current Version
-    'previous': "0.1.0"  # Previous version release to New/Current one 
+    'current': "0.3.0",  # New/Current Version
+    'previous': "0.2.0"  # Previous version release to New/Current one 
 }
 UPDATE_VERSION_FILES = ['README.md', 'src/maci/__init__.py']
 DEPLOY_API_TOKEN = f"{sys.argv[1]}"
