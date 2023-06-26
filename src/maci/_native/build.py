@@ -1,6 +1,7 @@
 # build
 #########################################################################################################
 # Imports
+from typing import Any as _Any
 from ..data import MaciDataObj
 
 #########################################################################################################
@@ -22,7 +23,7 @@ def build() -> 'MaciDataObj':
     More information on object features: https://docs.macilib.org/docs/tools/build-data/python-data-build
     """
     # Syntax/Usage Error Messages
-    err_messages = {
+    err_messages: _Any = {  # ignore type checker
         '_py_syntax_err_msg': "Must have valid Python data types to import, or syntax is not formatted correctly",
         '_name_preexists_err_msg': "Name already preexists. Must give unique attribute names",
         '_name_reference_does_not_exist_msg': "Name reference does not exist! Must reference attribute names that have been defined",

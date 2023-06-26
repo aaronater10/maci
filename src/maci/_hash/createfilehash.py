@@ -4,6 +4,7 @@
 from .._native.loadraw import loadraw as _loadraw
 from .._native.dumpraw import dumpraw as _dumpraw
 from typing import Union as _Union
+from typing import Any as _Any
 import hashlib as _hashlib
 from ..error import CreateFileHash, LoadRaw, DumpRaw
 
@@ -46,6 +47,7 @@ def createfilehash(file_to_hash: str, file_to_store_hash: _Union[str,None], hash
     if not isinstance(encoding, (str, type(None))): raise CreateFileHash(err_msg_str_encoding, f'\nGot: {repr(encoding)}')
 
     # Generate Hash Type
+    _hash_type: _Any  # ignore type checker
     if hash_algorithm == ALGO_OPTIONS[0]: _hash_type = _hashlib.sha256() # sha256
     if hash_algorithm == ALGO_OPTIONS[1]: _hash_type = _hashlib.sha512() # sha512
     if hash_algorithm == ALGO_OPTIONS[2]: _hash_type = _hashlib.sha384() # sha384
@@ -53,6 +55,7 @@ def createfilehash(file_to_hash: str, file_to_store_hash: _Union[str,None], hash
     if hash_algorithm == ALGO_OPTIONS[4]: _hash_type = _hashlib.md5() # md5
 
     # Read source file data and update hash
+    _readbytes: _Any  # ignore type checker
     try: _readbytes = _loadraw(file_to_hash)
     except LoadRaw as err_msg: raise CreateFileHash(err_msg)
 

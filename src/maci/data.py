@@ -1033,7 +1033,7 @@ def __dump_data(
     private_class_dunder_attrs: bool=False,
     use_symbol_glyphs: bool=False,
     __err_msg_no_attrs_found: str=''
-) -> _Union[str, None]:
+) -> _Optional[str]:
     """
     Main dump function for file/string dump
     """

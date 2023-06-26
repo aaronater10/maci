@@ -2,6 +2,7 @@
 #########################################################################################################
 # Imports
 from typing import Union as _Union
+from typing import Any as _Any
 from .createfilehash import createfilehash as _createfilehash
 from .._native.load import load as _load
 from ..error import CompareFileHash, CreateFileHash, Load
@@ -46,7 +47,9 @@ def comparefilehash(file_to_hash: str, stored_hash_file: str, hash_algorithm: st
     try: _hash_data = _createfilehash(file_to_hash, None, hash_algorithm, encoding=encoding)
     except CreateFileHash as err_msg: raise CompareFileHash(err_msg)
 
-    try: _stored_hash_data = _load(stored_hash_file, encoding=encoding)
+    try:
+        _stored_hash_data: _Any  # ignore type checker
+        _stored_hash_data = _load(stored_hash_file, encoding=encoding)
     except Load as err_msg: raise CompareFileHash(err_msg)
 
     return (_hash_data == _stored_hash_data.hash_data)

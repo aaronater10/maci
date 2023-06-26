@@ -1,12 +1,14 @@
 # loadstr
 #########################################################################################################
 # Imports
+from typing import Any as _Any
+from typing import Optional as _Optional
 from ..data import MaciDataObj
 from ..error import LoadStr, Load
 
 #########################################################################################################
 # Import py Data from String
-def loadstr(py_str_data: str, *, attr_name_dedup: bool=True) -> 'MaciDataObj':
+def loadstr(py_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[MaciDataObj]:
     """
     Imports python data from a string.
 
@@ -33,7 +35,7 @@ def loadstr(py_str_data: str, *, attr_name_dedup: bool=True) -> 'MaciDataObj':
     if py_str_data == '': return None
 
     # Syntax/Usage Error Messages
-    __err_messages = {
+    __err_messages: _Any = {  # ignore type checker
         '_py_syntax_err_msg': "Must have valid Python data types to import, or string's syntax is not formatted correctly",
         '_name_preexists_err_msg': "Name already preexists. Must give unique attribute names in string",
         '_name_reference_does_not_exist_msg': "Name reference does not exist! Must reference attribute names in string that have been defined",

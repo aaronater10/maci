@@ -2,6 +2,7 @@
 #########################################################################################################
 # Imports
 from copy import deepcopy as _deepcopy
+from typing import Any as _Any
 from ..data import MaciDataObj
 from ..error import LoadStrDict, Load
 
@@ -31,7 +32,7 @@ def loadstrdict(py_str_data: str, *, attr_name_dedup: bool=True) -> dict:
     if not isinstance(attr_name_dedup, bool): raise LoadStrDict(err_msg_type_attr_name_dedup, f'\nGot: {repr(attr_name_dedup)}')
 
     # Syntax/Usage Error Messages
-    __err_messages = {
+    __err_messages: _Any = {  # ignore type checker
         '_py_syntax_err_msg': "Must have valid Python data types to import, or string's syntax is not formatted correctly",
         '_name_preexists_err_msg': "Name already preexists. Must give unique attribute names in string",
         '_name_reference_does_not_exist_msg': "Name reference does not exist! Must reference attribute names in string that have been defined",

@@ -3,6 +3,7 @@
 # Imports
 from typing import Union as __Union
 from typing import NewType as __NewType
+from typing import Any as _Any
 from ..error import Dump
 from ..data import __dump_data
 from ..data import MaciDataObj as __MaciDataObj
@@ -61,7 +62,7 @@ def dump(
     Indent OFF: dump('path/of/filename', 'data', indentation_on=False)
     """
     # Error Checks & Messages
-    _err_messages = {
+    _err_messages: _Any = {  # ignore type checker
         '__err_msg_no_attrs_found': "Cannot save file. No attributes found in the object passed",
     }
     __err_msg_type_filename = "Only str is allowed for 'filename'"

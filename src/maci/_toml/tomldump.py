@@ -44,8 +44,9 @@ def tomldump(
 
     try:
         # Dump data to toml file
-        with open(filename, write_mode) as f:
-            _tomli_w.dump(data, f, multiline_strings=multi_line_str)
+        file_data: _Any  # ignore type checker
+        with open(filename, write_mode) as file_data:
+            _tomli_w.dump(data, file_data, multiline_strings=multi_line_str)
             if write_mode == 'ab': _dumpraw(filename, '', append=True)
     except TypeError as __err_msg: raise TomlDump(__err_msg, f'\nFILE: "{filename}" \nGot: {repr(data)}')
     except (FileNotFoundError, OSError) as __err_msg: raise TomlDump(__err_msg, f'\nFILE: "{filename}"')

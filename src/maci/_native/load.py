@@ -3,13 +3,14 @@
 # Imports
 from ast import literal_eval as __literal_eval__
 from os import path as __path
-from typing import Union as __Union
+from typing import Any as _Any
+from typing import Optional as _Optional
 from ..data import MaciDataObj
 from ..error import Load, GeneralError
 
 #########################################################################################################
 # Import py Data from File
-def load(filename: str, *, attr_name_dedup: bool=True, encoding: __Union[str, None]=None, _ignore_maci_attr_check: bool=False) -> 'MaciDataObj':
+def load(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=None, _ignore_maci_attr_check: bool=False) -> _Optional[MaciDataObj]:
     """
     Imports saved python data from any text file.
 
@@ -48,7 +49,7 @@ def load(filename: str, *, attr_name_dedup: bool=True, encoding: __Union[str, No
     except (FileNotFoundError, OSError) as __err_msg: raise Load(__err_msg, f'\nGot: {repr(filename)}')
 
     # Syntax/Usage Error Messages
-    __err_messages = {
+    __err_messages: _Any = {  # ignore type checker
         '_py_syntax_err_msg': "Must have valid Python data types to import, or file's syntax is not formatted correctly",
         '_name_preexists_err_msg': "Name already preexists. Must give unique attribute names in file",
         '_name_reference_does_not_exist_msg': "Name reference does not exist! Must reference attribute names in file that have been defined",

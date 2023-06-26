@@ -40,6 +40,6 @@ def xmldump(filename: str, data: _Union[_ElementTree, _Element], *, append: bool
         if isinstance(data, _ElementTree):
             data = data.getroot()
 
-        data = xmldumpstr(data)
-        dumpraw(filename, data, encoding=encoding, append=append)
+        data_str = xmldumpstr(data)
+        dumpraw(filename, data_str, encoding=encoding, append=append)
     except DumpRaw as _err_msg: raise XmlDump(_err_msg) from None

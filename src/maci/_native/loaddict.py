@@ -4,13 +4,14 @@
 from ast import literal_eval as __literal_eval__
 from os import path as __path
 from copy import deepcopy as _deepcopy
-from typing import Union as __Union
+from typing import Any as _Any
+from typing import Optional as _Optional
 from ..data import MaciDataObj
 from ..error import LoadDict, Load
 
 #########################################################################################################
 # Import py Data from File
-def loaddict(filename: str, *, attr_name_dedup: bool=True, encoding: __Union[str, None]=None) -> dict:
+def loaddict(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=None) -> _Optional[dict]:
     """
     Imports pythonic data from any text file
 
@@ -47,7 +48,7 @@ def loaddict(filename: str, *, attr_name_dedup: bool=True, encoding: __Union[str
     except (FileNotFoundError, OSError) as __err_msg: raise LoadDict(__err_msg, f'\nGot: "{filename}"')
 
     # Syntax/Usage Error Messages
-    err_messages = {
+    err_messages: _Any = {  # ignore type checker
         '_py_syntax_err_msg': "Must have valid Python data types to import, or file's syntax is not formatted correctly",
         '_name_preexists_err_msg': "Name already preexists. Must give unique attribute names in file",
         '_name_reference_does_not_exist_msg': "Name reference does not exist! Must reference attribute names in file that have been defined",

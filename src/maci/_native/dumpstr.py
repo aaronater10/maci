@@ -2,7 +2,9 @@
 #########################################################################################################
 # Imports
 from typing import Union as __Union
+from typing import Any as _Any
 from typing import NewType as __NewType
+from typing import Optional as _Optional
 from ..error import DumpStr
 from ..data import __dump_data
 from ..data import MaciDataObj as __MaciDataObj
@@ -30,7 +32,7 @@ def dumpstr(
     private_class_under_attrs: bool=False,
     private_class_dunder_attrs: bool=False,
     use_symbol_glyphs: bool=False,
-    ) -> str:
+    ) -> _Optional[str]:
     """
     Dumps your attributes or key/value pair data to a string
 
@@ -52,7 +54,7 @@ def dumpstr(
     Indent OFF: dumpstr(data, indentation_on=False)
     """
     # Error Checks
-    _err_messages = {
+    _err_messages: _Any = {  # ignore type checker
         '__err_msg_no_attrs_found': "Cannot dump string. No attributes found in the object passed",
     }
     __err_msg_type_indent_level = "Only int is allowed for 'indent_level'"
