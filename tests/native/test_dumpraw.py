@@ -157,3 +157,31 @@ def test5_dumpraw_and_loadraw_encodings():
     time.sleep(file_delay_timer)
     try: remove(filepath)
     except: pass
+
+
+# 6. Newline Separator
+def test6_dumpraw_newline_sep_on_off():
+    filename = '6_dumpraw_newline_sep.data'
+    filepath = test_file_path + filename
+
+    # Remove Any Existing Test File
+    try: remove(filepath)
+    except: pass
+    time.sleep(file_delay_timer)
+
+    # Tests
+
+    # ON: Newline Separator - Default ON
+    maci.dumpraw(filepath, "data", [1,2,3])
+    file_import = maci.loadraw(filepath)
+    assert "data\n[1, 2, 3]" == file_import
+
+    # OFF: Newline Separator
+    maci.dumpraw(filepath, "data", [1,2,3], newline_sep=False)
+    file_import = maci.loadraw(filepath)
+    assert "data[1, 2, 3]" == file_import
+
+    # Remove Test File
+    time.sleep(file_delay_timer)
+    try: remove(filepath)
+    except: pass

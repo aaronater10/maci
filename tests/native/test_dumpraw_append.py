@@ -97,3 +97,33 @@ data_b3 = {data}"""
     time.sleep(file_delay_timer)
     try: remove(filepath)
     except: pass
+
+
+# 4. Newline Separator
+def test4_dumpraw_newline_sep_on_off_append():
+    filename = '6_dumpraw_newline_sep.data'
+    filepath = test_file_path + filename
+
+    # Remove Any Existing Test File
+    try: remove(filepath)
+    except: pass
+    time.sleep(file_delay_timer)
+
+    # Tests
+
+    # ON: Newline Separator - Default ON
+    maci.dumpraw(filepath) # create file
+    maci.dumpraw(filepath, "data", [1,2,3], 1.0, append=True)
+    file_import = maci.loadraw(filepath)
+    assert "data\n[1, 2, 3]\n1.0" == file_import
+
+    # OFF: Newline Separator
+    maci.dumpraw(filepath) # re-create file
+    maci.dumpraw(filepath, "data", [1,2,3], 1.0, newline_sep=False, append=True)
+    file_import = maci.loadraw(filepath)
+    assert "data[1, 2, 3]1.0" == file_import
+
+    # Remove Test File
+    time.sleep(file_delay_timer)
+    try: remove(filepath)
+    except: pass

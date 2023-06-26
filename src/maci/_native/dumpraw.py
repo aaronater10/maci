@@ -8,7 +8,7 @@ from ..error import DumpRaw
 
 #########################################################################################################
 # Export Data to File
-def dumpraw(filename: str, *data: __Any, append: bool=False, byte_data: bool=False, encoding: __Union[str, None]=None):
+def dumpraw(filename: str, *data: __Any, append: bool=False, byte_data: bool=False, newline_sep: bool=True, encoding: __Union[str, None]=None) -> None:
     """
     Exports a new file with the new data.
     
@@ -39,6 +39,9 @@ def dumpraw(filename: str, *data: __Any, append: bool=False, byte_data: bool=Fal
     # Set Write Mode: 'a' = append, 'w' = write
     mode = 'a' if append else 'w'
 
+    # Set Newline Separator
+    set_newline_sep = ''
+
     ### Export data ###
 
     ### New File ###
@@ -47,7 +50,8 @@ def dumpraw(filename: str, *data: __Any, append: bool=False, byte_data: bool=Fal
         try:
             with open(filename, 'w', encoding=encoding) as f:
                 for data_to_write in data:
-                    f.writelines(str(data_to_write))
+                    f.writelines(f"{set_newline_sep}{data_to_write}")
+                    set_newline_sep = '\n' if newline_sep else ''
         except (FileNotFoundError, OSError) as __err_msg: raise DumpRaw(__err_msg, f'\nGot: {repr(filename)}')
         except LookupError: raise DumpRaw(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
 
@@ -63,16 +67,21 @@ def dumpraw(filename: str, *data: __Any, append: bool=False, byte_data: bool=Fal
 
     
     ### Append File ###
-    __new_line: __Union[str, bytes] = '\n'
+    _new_line = '\n'
+    _new_line_bytes = b'\n'
 
     # Raw Data to File
     if (mode == 'a') and (not byte_data):
         # Check if file empty. Throws error if file not found
-        try: 
-            if __path.getsize(filename) == 0: __new_line = ''
+        try:
+            if __path.getsize(filename) == 0:
+                set_newline_sep = ''
+                _new_line = ''
             with open(filename, 'a', encoding=encoding) as f:
                 for data_to_write in data:
-                    f.writelines(f"{__new_line}{data_to_write}")
+                    f.writelines(f"{_new_line}{set_newline_sep}{data_to_write}")
+                    set_newline_sep = '\n' if newline_sep else ''
+                    _new_line = ''
         except (FileNotFoundError, OSError) as __err_msg: raise DumpRaw(__err_msg, f'\nGot: {repr(filename)}')
         except LookupError: raise DumpRaw(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
 
@@ -82,9 +91,9 @@ def dumpraw(filename: str, *data: __Any, append: bool=False, byte_data: bool=Fal
             if not isinstance(data_to_write, bytes): raise DumpRaw(__err_msg_bytes, f'\nGot: {repr(data_to_write)}')
         # Check if file empty. Throws error if file not found
         try: 
-            if __path.getsize(filename) == 0: __new_line = b''
+            if __path.getsize(filename) == 0: _new_line_bytes = b''
             with open(filename, 'ab') as f:
                 for data_to_write in data:
-                    f.write(b"\n")
+                    f.write(_new_line_bytes)
                     f.write(data_to_write)
         except (FileNotFoundError, OSError) as __err_msg: raise DumpRaw(__err_msg, f'\nGot: {repr(filename)}')
