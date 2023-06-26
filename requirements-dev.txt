@@ -3,6 +3,7 @@ pytest==7.3.2
 mypy==1.4.0
 coverage==7.2.7
 # Lib Reqs
-PyYAML>=5.4.1
-tomli >= 2.0.1
-tomli-w >= 1.0.0
+pyyaml==5.4.0
+types-pyyaml==5.4.0
+tomli==2.0.1
+tomli-w==1.0.0
