@@ -1,6 +1,6 @@
 # Test Env Reqs
 pytest==7.3.2
-mypy==1.4.0
+mypy==1.4.1
 coverage==7.2.7
 # Lib Reqs
 pyyaml==5.4.0
