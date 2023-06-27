@@ -4,7 +4,7 @@ from os import path, remove
 import time
 
 test_file_path = './tests/test_files/native/cleanformat_files/'
-file_delay_timer = 0.5
+file_delay_timer = 0.25
 
 
 ################################################################
@@ -49,7 +49,7 @@ def test2_indent_format_export():
     assert not path.exists(filepath)
     maci.dumpraw(filepath, f"data1 = {data_formatted1}")
     assert path.exists(filepath)
-    maci.dumpraw(filepath, f"data2 = {data_formatted2}", mode='a')
+    maci.dumpraw(filepath, f"data2 = {data_formatted2}", append=True)
     file_import = maci.load(filepath)
     assert (file_import.data1 == {'k1':1, 'k2':2, 'k3':3, 'k4':4, 'k5':5}) and (isinstance(file_import.data1, dict))
     assert (file_import.data2 == {'k1':1, 'k2':2, 'k3':3, 'k4':4, 'k5':5}) and (isinstance(file_import.data2, dict))

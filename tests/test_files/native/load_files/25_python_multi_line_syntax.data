@@ -1,0 +1,6 @@
+### Bad Multi Line Syntax ###
+data_list_multi = [
+    1,
+    2
+    3
+]

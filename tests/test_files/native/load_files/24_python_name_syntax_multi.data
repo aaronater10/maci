@@ -1,0 +1,6 @@
+### Bad Name Syntax Multi Line ###
+data_str! = [
+    1,
+    2,
+    3
+]

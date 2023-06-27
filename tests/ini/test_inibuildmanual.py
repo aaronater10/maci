@@ -5,7 +5,7 @@ import time
 from configparser import ConfigParser
 
 test_file_path = './tests/test_files/ini/'
-file_delay_timer = 0.5
+file_delay_timer = 0.25
 
 
 ################################################################

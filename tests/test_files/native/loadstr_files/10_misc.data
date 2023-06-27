@@ -1,0 +1,42 @@
+# Tuples Check
+data_single_tuple_1 = (1,)
+data_single_tuple_2 = (
+    1,
+)
+
+data_tuple_int_1 = (1)
+data_tuple_int_2 = (
+    1
+)
+
+
+# Single Line Values with Spaces
+data_str_1 = "data with internal spaces"
+data_str_2 = " data with internal and end spaces "
+
+data_list = [ 1,2,3 ]
+data_dict = { 'k1':1, 'k2':2, 'k3':3 }
+data_tuple = ( 1,2,3 )
+data_set = { 1,2,3 }
+
+# Validate Tokens are parsed correctly
+data_token1 = [    
+    "normal value",
+
+    "var = 'value'",
+
+    "normal value"
+
+]    
+
+
+# Validate End Token is parsed correctly with no whitespace on blank lines
+data_end_token1 = [
+
+    "normal value",
+
+    "var = 'value'",
+
+    "normal value"
+
+]   

@@ -3,14 +3,24 @@
 *.pyc
 __pycache__
 .pytest_cache/
+.mypy_cache/
 
 # VS Code
 .vscode/
 
-# Local Test Dirs and Files
+# PyCharm
+.idea/
+
+# Local Only Dirs and Files
+.venv*/
+venv*/
+.coverage
+htmlcov/
 priv_tests/
 temp_old/
 main.py
+test_perf*
+run_coverage.*
 
 # Local Tools
 const_test.cmd
