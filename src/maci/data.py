@@ -1015,7 +1015,7 @@ def __dump_data(
     *,
     _is_string_request: bool=False,
     filename: str,
-    data: _Any, # MaciDataObj, dict, CustomClass
+    data: _Any, # objects allowed: MaciDataObj, dict, CustomClass - ignoring type checker
     append: bool=False,
     indent_level: int=1,
     indentation_on: bool=True,
