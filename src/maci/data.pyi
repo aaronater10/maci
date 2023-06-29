@@ -8,13 +8,30 @@ from typing import Dict as _Dict
 from typing import List as _List
 from typing import Union as _Union
 from typing import Optional as _Optional
+from typing import NewType as _NewType
 
 #########################################################################################################
-# Stub data
+# Stub data: Classes
 
-### Classes ###
 class MaciDataObj:
-    
+    def __init__(
+        self,
+        filename: str,
+        *,
+        attr_name_dedup: bool,
+        encoding: _Union[str, None],
+        _py_syntax_err_msg: str='',
+        _name_preexists_err_msg: str='',
+        _name_reference_does_not_exist_msg: str='',
+        _assignment_locked_atrribs_err_msg: str='',
+        _assignment_hard_locked_atrribs_err_msg: str='',
+        _is_str_parse_request: bool=False,
+        _str_data: str='',
+        _is_load_request: bool=False,
+        _is_build_request: bool=False,
+        _ignore_internal_maci_attr_check: bool=False,
+    )-> None: pass
+
     def hard_lock_attr(self, attr_name: str) -> None:
         """
         Hard lock's an attribute name from re-assignment, deletion, and cannot be unlocked
@@ -157,3 +174,37 @@ class MaciDataObj:
 
         Child map will be -> {'attr_child': 'attr_parent'}
         """
+
+
+#########################################################################################################
+# Stub data: Functions
+
+# Hinting reference name for "CustomClass" to denote a CustomClass can be used to dump data
+CustomClass = _NewType('CustomClass', object)
+
+def __dump_data(
+    *,
+    _is_string_request: bool=False,
+    filename: str,
+    data: _Any, # objects allowed: MaciDataObj, dict, CustomClass - ignoring type checker
+    append: bool=False,
+    indent_level: int=1,
+    indentation_on: bool=True,
+    multi_line_str: bool=False,
+    encoding: _Union[str, None]=None,
+    class_attrs: bool=False,
+    private_attrs: bool=False,
+    private_under_attrs: bool=False,
+    private_dunder_attrs: bool=False,
+    private_init_attrs: bool=False,
+    private_init_under_attrs: bool=False,
+    private_init_dunder_attrs: bool=False,
+    private_class_attrs: bool=False,
+    private_class_under_attrs: bool=False,
+    private_class_dunder_attrs: bool=False,
+    use_symbol_glyphs: bool=False,
+    __err_msg_no_attrs_found: str=''
+) -> _Optional[str]:
+    """
+    Main dump function for file/string dump
+    """
