@@ -62,9 +62,6 @@ def dump(
     Indent OFF: dump('path/of/filename', 'data', indentation_on=False)
     """
     # Error Checks & Messages
-    _err_messages: _Any = {  # ignore type checker
-        '__err_msg_no_attrs_found': "Cannot save file. No attributes found in the object passed",
-    }
     __err_msg_type_filename = "Only str is allowed for 'filename'"
     __err_msg_type_data = "Only MaciDataObj|dict|CustomClass is allowed for 'data'"
     __err_msg_type_append = "Only bool is allowed for 'append'"
@@ -87,7 +84,7 @@ def dump(
 
     filter_data_object_types = (str, int, float, bool, list, tuple, set, type(None), bytes, complex, range, frozenset, bytearray, memoryview)
 
-    if not isinstance(filename, str): raise Dump(__err_msg_type_filename, f'\nGot: "{filename}"')
+    if not isinstance(filename, str): raise Dump(__err_msg_type_filename, f'\nGot: {repr(filename)}')
     if isinstance(data, filter_data_object_types): raise Dump(__err_msg_type_data, f'\nGot: {repr(data)}')
     if not isinstance(append, bool): raise Dump(__err_msg_type_append, f'\nGot: {repr(append)}')
     if not isinstance(indent_level, int): raise Dump(__err_msg_type_indent_level, f'\nGot: {repr(indent_level)}')
@@ -125,8 +122,7 @@ def dump(
         private_class_attrs=private_class_attrs,
         private_class_under_attrs=private_class_under_attrs,
         private_class_dunder_attrs=private_class_dunder_attrs,
-        use_symbol_glyphs=use_symbol_glyphs,
-        **_err_messages
+        use_symbol_glyphs=use_symbol_glyphs
     )
 
     return None

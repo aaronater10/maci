@@ -37,13 +37,13 @@ def test1_exceptions_inidump_types():
 
     # Tests
     with pytest.raises(maci.error.IniDump):
-        maci.inidump(filename=1.0, ini_data=config_parser_obj)
+        maci.inidump(filename=1.0, data=config_parser_obj)
     with pytest.raises(maci.error.IniDump):
-        maci.inidump(filename='', ini_data=1.0)
+        maci.inidump(filename='', data=1.0)
     with pytest.raises(maci.error.IniDump):
-        maci.inidump(filename='', ini_data=config_parser_obj, append=1.0)
+        maci.inidump(filename='', data=config_parser_obj, append=1.0)
     with pytest.raises(maci.error.IniDump):
-        maci.inidump(filename='', ini_data=config_parser_obj, append=False, encoding=1.0)
+        maci.inidump(filename='', data=config_parser_obj, append=False, encoding=1.0)
 
 
 # 2. Ini Dump - Unsupported Options or Data
@@ -58,9 +58,9 @@ def test2_exceptions_inidump_opts_data():
 
     # Tests
     with pytest.raises(maci.error.IniDump):
-        maci.inidump(filename='', ini_data=config_parser_obj)
+        maci.inidump(filename='', data=config_parser_obj)
     with pytest.raises(maci.error.IniDump):
-        maci.inidump(filename=filepath, ini_data=config_parser_obj, append=False, encoding='')
+        maci.inidump(filename=filepath, data=config_parser_obj, append=False, encoding='')
 
     # Remove Cache Test File
     time.sleep(file_delay_timer)

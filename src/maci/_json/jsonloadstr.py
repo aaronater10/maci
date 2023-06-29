@@ -23,7 +23,7 @@ def jsonloadstr(json_str_data: str) -> Union[list, dict, str, int, float, bool, 
     information on the json library, visit: https://docs.python.org/3/library/json.html
     """
     # Error Checks
-    err_msg_data_type = "Only str is allowed for 'data'"
+    err_msg_data_type = "Only str is allowed for 'json_str_data'"
 
     if not isinstance(json_str_data, str): raise JsonLoadStr(err_msg_data_type, f'\nGot: {repr(json_str_data)}')
 

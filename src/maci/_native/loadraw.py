@@ -36,7 +36,7 @@ def loadraw(filename: str, *, byte_data: bool=False, encoding: _Union[str, None]
                 if __path.getsize(filename) == 0:
                     return ''
                 return f.read()
-        except (FileNotFoundError, OSError) as __err_msg: raise LoadRaw(__err_msg, f'\nGot: "{filename}"')
+        except (FileNotFoundError, OSError) as __err_msg: raise LoadRaw(__err_msg, f'\nGot: {repr(filename)}')
         except LookupError: raise LoadRaw(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
     
     if byte_data: # pragma: no branch
@@ -45,4 +45,4 @@ def loadraw(filename: str, *, byte_data: bool=False, encoding: _Union[str, None]
                 if __path.getsize(filename) == 0:
                     return b''
                 return f.read()
-        except (FileNotFoundError, OSError) as __err_msg: raise LoadRaw(__err_msg, f'\nGot: "{filename}"')
+        except (FileNotFoundError, OSError) as __err_msg: raise LoadRaw(__err_msg, f'\nGot: {repr(filename)}')

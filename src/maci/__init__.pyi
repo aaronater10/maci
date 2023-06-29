@@ -568,7 +568,7 @@ def iniload(filename: str, *, encoding: _Union[str, None]=None) -> _ConfigParser
     visit: https://docs.python.org/3/library/configparser.html
     """
 
-def inidump(filename: str, ini_data: _ConfigParser, *, append: bool=False, encoding: _Union[str, None]=None) -> None:
+def inidump(filename: str, data: _ConfigParser, *, append: bool=False, encoding: _Union[str, None]=None) -> None:
     """
     Exports a new file from a ini data (ConfigParser) obj
 
@@ -576,7 +576,7 @@ def inidump(filename: str, ini_data: _ConfigParser, *, append: bool=False, encod
     
     [Example Use]
 
-    inidump('path/to/filename.ini', ini_data)
+    inidump('path/to/filename.ini', data)
 
     This is using the native configparser library shipped with the python standard library. Using ConfigParser method.
     For more information on the configparser library, visit: https://docs.python.org/3/library/configparser.html

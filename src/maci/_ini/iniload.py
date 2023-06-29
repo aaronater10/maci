@@ -34,7 +34,7 @@ def iniload(filename: str, *, encoding: _Union[str, None]=None) -> _ConfigParser
     # Load file data
     try:
         with open(filename, 'r', encoding=encoding): pass
-    except (FileNotFoundError, OSError) as _err_msg: raise IniLoad(_err_msg, f'\nFILE: "{filename}"')
+    except (FileNotFoundError, OSError) as _err_msg: raise IniLoad(_err_msg, f'\nGot: {repr(filename)}')
     except LookupError: raise IniLoad(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
 
     _parser = _ConfigParser(interpolation=_ExtendedInterpolation())

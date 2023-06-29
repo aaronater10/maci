@@ -34,10 +34,10 @@ def createfilehash(file_to_hash: str, file_to_store_hash: _Union[str,None], hash
     ALGO_OPTIONS = ('sha256', 'sha512', 'sha384', 'sha1', 'md5')
 
     # Error checks
-    _err_msg_str_file_src = f"Only str is allowed for file_to_hash"
-    _err_msg_file_dst = f"Only str|None is allowed for file_to_store_hash"
-    _err_msg_str_hash = f"Only str is allowed for hash_algorithm"
-    _err_msg_hash = f"Invalid or no hash option chosen for hash_algorithm"
+    _err_msg_str_file_src = f"Only str is allowed for 'file_to_hash'"
+    _err_msg_file_dst = f"Only str|None is allowed for 'file_to_store_hash'"
+    _err_msg_str_hash = f"Only str is allowed for 'hash_algorithm'"
+    _err_msg_hash = f"Invalid or no hash option chosen for 'hash_algorithm'"
     err_msg_str_encoding = f"Only str|None or valid option is allowed for 'encoding'"
 
     if not isinstance(file_to_hash, str): raise CreateFileHash(_err_msg_str_file_src, f'"{file_to_hash}"')

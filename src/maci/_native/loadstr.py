@@ -36,10 +36,11 @@ def loadstr(maci_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[Maci
 
     # Syntax/Usage Error Messages
     __err_messages: _Any = {  # ignore type checker
-        '_py_syntax_err_msg': "Must have valid Python data types to import, or string's syntax is not formatted correctly",
+        '_py_syntax_err_msg': "Must have valid Python data types to import, or string's maci syntax is incorrect",
         '_name_preexists_err_msg': "Name already preexists. Must give unique attribute names in string",
-        '_name_reference_does_not_exist_msg': "Name reference does not exist! Must reference attribute names in string that have been defined",
-        '_assignment_locked_atrribs_err_msg': "Attribute Name Locked! Cannot be reassigned"
+        '_name_reference_does_not_exist_msg': "Map name does not exist! Must map attribute names in string that have been defined",
+        '_assignment_locked_atrribs_err_msg': "Attribute Name Locked! Cannot be reassigned",
+        '_assignment_hard_locked_atrribs_err_msg': "Attribute Name Hard Locked! Cannot be reassigned, deleted, or unlocked"
     }
 
     # Return final import
@@ -54,5 +55,5 @@ def loadstr(maci_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[Maci
                 **__err_messages,
             )
     except Load as __err_msg:
-        __err_msg.item = __err_msg.item.replace('\nFILE: ""', "")
+        __err_msg.item = __err_msg.item.replace("\nFile: ''", "")
         raise LoadStr(__err_msg.msg, f'{__err_msg.item}')

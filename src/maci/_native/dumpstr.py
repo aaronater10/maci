@@ -54,9 +54,6 @@ def dumpstr(
     Indent OFF: dumpstr(data, indentation_on=False)
     """
     # Error Checks
-    _err_messages: _Any = {  # ignore type checker
-        '__err_msg_no_attrs_found': "Cannot dump string. No attributes found in the object passed",
-    }
     __err_msg_type_indent_level = "Only int is allowed for 'indent_level'"
     __err_msg_type_indentation_on = "Only bool is allowed for 'indentation_on'"
     __err_msg_type_data = "Only MaciDataObj|dict|CustomClass is allowed for 'data'"
@@ -112,6 +109,5 @@ def dumpstr(
         private_class_attrs=private_class_attrs,
         private_class_under_attrs=private_class_under_attrs,
         private_class_dunder_attrs=private_class_dunder_attrs,
-        use_symbol_glyphs=use_symbol_glyphs,
-        **_err_messages
+        use_symbol_glyphs=use_symbol_glyphs
     )

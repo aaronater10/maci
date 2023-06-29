@@ -34,9 +34,9 @@ def inibuildauto(data: _Dict[str, _Dict[str, _Any]]) -> _ConfigParser:
     """
     # Error Checks
     err_msg_dict_type = f"Only dict is allowed for 'data'"
-    err_msg_dict_struct = "Please send correct dict structure"
+    err_msg_dict_struct = r"Please use correct dict structure: {'k':{'k':v}} "
 
-    if not isinstance(data, dict): raise IniBuildAuto(err_msg_dict_type, f'\nGOT: {repr(data)}')
+    if not isinstance(data, dict): raise IniBuildAuto(err_msg_dict_type, f'\nGot: {repr(data)}')
 
 
     # Auto Build INI data structure
@@ -50,4 +50,4 @@ def inibuildauto(data: _Dict[str, _Dict[str, _Any]]) -> _ConfigParser:
                         dict_value[sub_key] = 'None'
             __ini_data[section] = dict_value
         return __ini_data
-    except AttributeError as __err_msg: raise IniBuildAuto(f'{__err_msg} - {err_msg_dict_struct}', f'\nGOT: {repr(data)}')
+    except AttributeError as __err_msg: raise IniBuildAuto(f'{__err_msg} - {err_msg_dict_struct}', f'\nGot: {repr(data)}')
