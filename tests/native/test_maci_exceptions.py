@@ -308,9 +308,9 @@ def test2_exceptions_maciloadraw_opts_data():
 def test1_exceptions_maciloadstr_types():
     # Tests
     with pytest.raises(maci.error.LoadStr):
-        maci.loadstr(py_str_data=1.0)
+        maci.loadstr(maci_str_data=1.0)
     with pytest.raises(maci.error.LoadStr):
-        maci.loadstr(py_str_data="", attr_name_dedup=1.0)
+        maci.loadstr(maci_str_data="", attr_name_dedup=1.0)
 
 # 2. Maci Load Str - Unsupported Options or Data
 ### NO OPTS TO TEST ### - Syntax/Parse Errors are already tested in functionality
@@ -322,9 +322,9 @@ def test1_exceptions_maciloadstr_types():
 def test1_exceptions_maciloadstrdict_types():
     # Tests
     with pytest.raises(maci.error.LoadStrDict):
-        maci.loadstrdict(py_str_data=1.0)
+        maci.loadstrdict(maci_str_data=1.0)
     with pytest.raises(maci.error.LoadStrDict):
-        maci.loadstrdict(py_str_data="", attr_name_dedup=1.0)
+        maci.loadstrdict(maci_str_data="", attr_name_dedup=1.0)
 
 # 2. Maci Load Str Dict - Unsupported Options or Data
 ### NO OPTS TO TEST ### - Syntax/Parse Errors are already tested in functionality

@@ -8,7 +8,7 @@ from ..error import LoadStr, Load
 
 #########################################################################################################
 # Import py Data from String
-def loadstr(py_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[MaciDataObj]:
+def loadstr(maci_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[MaciDataObj]:
     """
     Imports python data from a string.
 
@@ -25,14 +25,14 @@ def loadstr(py_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[MaciDa
     loadstr("data1 = 'value1'\\ndata2 = "value2")
     """
     # Error Checks
-    err_msg_type_py_str_data = "Only str is allowed for 'py_str_data'"
+    err_msg_type_maci_str_data = "Only str is allowed for 'maci_str_data'"
     err_msg_type_attr_name_dedup = "Only bool is allowed for 'attr_name_dedup'"
 
-    if not isinstance(py_str_data, str): raise LoadStr(err_msg_type_py_str_data, f'\nGot: {repr(py_str_data)}')
+    if not isinstance(maci_str_data, str): raise LoadStr(err_msg_type_maci_str_data, f'\nGot: {repr(maci_str_data)}')
     if not isinstance(attr_name_dedup, bool): raise LoadStr(err_msg_type_attr_name_dedup, f'\nGot: {repr(attr_name_dedup)}')
 
     # Check if string empty. Returns None if empty
-    if py_str_data == '': return None
+    if maci_str_data == '': return None
 
     # Syntax/Usage Error Messages
     __err_messages: _Any = {  # ignore type checker
@@ -47,7 +47,7 @@ def loadstr(py_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[MaciDa
         return MaciDataObj(
                 '',
                 _is_load_request=True,
-                _str_data=py_str_data,
+                _str_data=maci_str_data,
                 _is_str_parse_request=True,
                 attr_name_dedup=attr_name_dedup,
                 encoding=None,

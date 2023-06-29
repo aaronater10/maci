@@ -75,7 +75,7 @@ def loaddict(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[s
     duplicating an attribute name in a file that has already been created.
     """
 
-def loadstr(py_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[_MaciDataObj]:
+def loadstr(maci_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[_MaciDataObj]:
     """
     Imports python data from a string.
 
@@ -92,7 +92,7 @@ def loadstr(py_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[_MaciD
     loadstr("data1 = 'value1'\\ndata2 = "value2")
     """
 
-def loadstrdict(py_str_data: str, *, attr_name_dedup: bool=True) -> dict:
+def loadstrdict(maci_str_data: str, *, attr_name_dedup: bool=True) -> dict:
     """
     Imports pythonic data from a string.
 

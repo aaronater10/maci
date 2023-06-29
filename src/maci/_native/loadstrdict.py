@@ -8,7 +8,7 @@ from ..error import LoadStrDict, Load
 
 #########################################################################################################
 # Import py Data from String
-def loadstrdict(py_str_data: str, *, attr_name_dedup: bool=True) -> dict:
+def loadstrdict(maci_str_data: str, *, attr_name_dedup: bool=True) -> dict:
     """
     Imports pythonic data from a string.
 
@@ -25,10 +25,10 @@ def loadstrdict(py_str_data: str, *, attr_name_dedup: bool=True) -> dict:
     loadstrdict("data1 = 'value1'\\ndata2 = "value2")
     """
     # Error Checks
-    err_msg_type_py_str_data = "Only str is allowed for 'py_str_data'"
+    err_msg_type_maci_str_data = "Only str is allowed for 'maci_str_data'"
     err_msg_type_attr_name_dedup = "Only bool is allowed for 'attr_name_dedup'"
 
-    if not isinstance(py_str_data, str): raise LoadStrDict(err_msg_type_py_str_data, f'\nGot: {repr(py_str_data)}')
+    if not isinstance(maci_str_data, str): raise LoadStrDict(err_msg_type_maci_str_data, f'\nGot: {repr(maci_str_data)}')
     if not isinstance(attr_name_dedup, bool): raise LoadStrDict(err_msg_type_attr_name_dedup, f'\nGot: {repr(attr_name_dedup)}')
 
     # Syntax/Usage Error Messages
@@ -57,7 +57,7 @@ def loadstrdict(py_str_data: str, *, attr_name_dedup: bool=True) -> dict:
         dict_data = _deepcopy(vars(MaciDataObj(
                 '',
                 _is_load_request=True,
-                _str_data=py_str_data,
+                _str_data=maci_str_data,
                 _is_str_parse_request=True,
                 attr_name_dedup=attr_name_dedup,
                 encoding=None,
