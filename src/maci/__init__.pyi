@@ -14,8 +14,8 @@ from types import ModuleType as _ModuleType
 from configparser import ConfigParser as _ConfigParser
 from xml.etree.ElementTree import ElementTree as _ElementTree
 from xml.etree.ElementTree import Element as _Element
-from .data import MaciDataObj as __MaciDataObj
-from .data import CustomClass as _CustomClass
+from .hint import MaciDataObj as _MaciDataObj
+from .hint import __CustomClass as _CustomClass
 
 #########################################################################################################
 # Stub data: Exceptions, Hints
@@ -31,7 +31,7 @@ from . import hint
 # Stub data: Functions
 
 ### Native Lib ###
-def load(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=None, _ignore_maci_attr_check: bool=False) -> _Optional[__MaciDataObj]:
+def load(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=None, _ignore_maci_attr_check: bool=False) -> _Optional[_MaciDataObj]:
     """
     Imports saved python data from any text file.
 
@@ -75,7 +75,7 @@ def loaddict(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[s
     duplicating an attribute name in a file that has already been created.
     """
 
-def loadstr(py_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[__MaciDataObj]:
+def loadstr(py_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[_MaciDataObj]:
     """
     Imports python data from a string.
 
@@ -142,7 +142,7 @@ def loadattrs(filename: str, class_object: _CustomClass, *, encoding: _Union[str
 
 def dump(
     filename: str, 
-    data: _Union['__MaciDataObj', dict, _CustomClass], 
+    data: _Union['_MaciDataObj', dict, _CustomClass], 
     *,
     append: bool=False,
     indent_level: int=1,
@@ -189,7 +189,7 @@ def dump(
     """
 
 def dumpstr(
-    data: _Union['__MaciDataObj', dict, _CustomClass], 
+    data: _Union['_MaciDataObj', dict, _CustomClass], 
     *,
     indent_level: int=1,
     indentation_on: bool=True,
@@ -261,7 +261,7 @@ def cleanformat(data: _Union[dict,list,tuple,set], indent_level: int=1) -> str:
     var = cleanformat(data)
     """
 
-def build() -> __MaciDataObj:
+def build() -> _MaciDataObj:
     """
     Returns an empty MaciDataObj obj to manually build pythonic data with maci features
     
