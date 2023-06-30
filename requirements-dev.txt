@@ -7,5 +7,6 @@ pyyaml==5.4.0
 tomli==2.0.1
 tomli-w==1.0.0
 # Sec Reqs
+defusedxml
 bandit
 safety

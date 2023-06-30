@@ -53,8 +53,8 @@ def createhash(data_to_hash: _Union[str, bytes, int, _List[int], _Tuple[int], _S
     if hash_algorithm == ALGO_OPTIONS[0]: hash_type = _hashlib.sha256() # sha256
     if hash_algorithm == ALGO_OPTIONS[1]: hash_type = _hashlib.sha512() # sha512
     if hash_algorithm == ALGO_OPTIONS[2]: hash_type = _hashlib.sha384() # sha384
-    if hash_algorithm == ALGO_OPTIONS[3]: hash_type = _hashlib.sha1() # sha1
-    if hash_algorithm == ALGO_OPTIONS[4]: hash_type = _hashlib.md5() # md5
+    if hash_algorithm == ALGO_OPTIONS[3]: hash_type = _hashlib.sha1() # sha1  # nosec: B303  # ignore sec checker - up to dev discretion
+    if hash_algorithm == ALGO_OPTIONS[4]: hash_type = _hashlib.md5() # md5  # nosec: B303  # ignore sec checker - up to dev discretion
 
     # Check and Convert data to bytes and update hash
     try: 

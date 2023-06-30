@@ -4,8 +4,8 @@
 from typing import Union as _Union
 from .._native.dumpraw import dumpraw
 from .xmldumpstr import xmldumpstr
-from xml.etree.ElementTree import ElementTree as _ElementTree
-from xml.etree.ElementTree import Element as _Element
+from xml.etree.ElementTree import ElementTree as _ElementTree  # nosec: B405  # ignore sec checker - upto dev discretion to run provided maci._defuse_xml_stdlib()
+from xml.etree.ElementTree import Element as _Element  # nosec: B405  # ignore sec checker - upto dev discretion to run provided maci._defuse_xml_stdlib()
 from ..error import XmlDump, DumpRaw
 
 #########################################################################################################

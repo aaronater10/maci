@@ -11,5 +11,5 @@ from .data import CustomClass as __CustomClass # for type check param hints
 from configparser import ConfigParser
 
 # XML
-from xml.etree.ElementTree import ElementTree
-from xml.etree.ElementTree import Element
+from xml.etree.ElementTree import ElementTree  # nosec: B405  # ignore sec checker - upto dev discretion to run provided maci._defuse_xml_stdlib()
+from xml.etree.ElementTree import Element  # nosec: B405  # ignore sec checker - upto dev discretion to run provided maci._defuse_xml_stdlib()

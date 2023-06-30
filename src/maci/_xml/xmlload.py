@@ -2,7 +2,7 @@
 #########################################################################################################
 # Imports
 from typing import Union as _Union
-import xml.etree.ElementTree as _xml_etree
+import xml.etree.ElementTree as _xml_etree  # nosec: B405  # ignore sec checker - upto dev discretion to run provided maci._defuse_xml_stdlib()
 from ..error import XmlLoad
 
 #########################################################################################################
@@ -32,7 +32,7 @@ def xmlload(filename: str, *, auto_get_root: bool=True) -> _Union[_xml_etree.Ele
     # Load File Data
     try:
         if auto_get_root:
-            return _xml_etree.parse(filename).getroot()
-        return _xml_etree.parse(filename)
+            return _xml_etree.parse(filename).getroot()  # nosec: B314  # ignore sec checker - upto dev discretion to run provided maci._defuse_xml_stdlib()
+        return _xml_etree.parse(filename)  # nosec: B314  # ignore sec checker - upto dev discretion to run provided maci._defuse_xml_stdlib()
     except (FileNotFoundError, OSError) as __err_msg: raise XmlLoad(__err_msg, f'\nGot: {repr(filename)}')
     except _xml_etree.ParseError as __err_msg: raise XmlLoad(__err_msg, f'\nGot: {repr(filename)}')

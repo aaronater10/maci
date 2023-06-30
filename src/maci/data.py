@@ -324,7 +324,7 @@ class _MaciDataObjConstructor:
                         __last_token = __file_data_line.partition(__assignment_glyph)[2].strip()[-1]
                     
                     try: __start_skip_token = __file_data_line.split(__assignment_glyph)[1].split()[1][0].strip()
-                    except IndexError: __start_skip_token = ''
+                    except IndexError: __start_skip_token = ''  # nosec: B105  # not password
                 
                 # Collect End Token if in Build
                 if __is_building_data_sw:
@@ -333,8 +333,8 @@ class _MaciDataObjConstructor:
                             __end_token = __file_data_line[0]
                         elif __file_data_line[0:3] in __end_markers:
                             __end_token = __file_data_line[0:3]
-                        else: __end_token = ''
-                    except IndexError: __end_token = ''
+                        else: __end_token = ''  # nosec: B105  # not password
+                    except IndexError: __end_token = ''  # nosec: B105  # not password
                 
                 # Verify Assignment Glyph is Not Attr Reference for Multiline Build Check
                 is_attr_reference_glyph = False

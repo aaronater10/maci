@@ -686,3 +686,15 @@ def xmlbuildmanual() -> _ModuleType:
     This is using the native xml library via etree shipped with the python standard library.
     For more information on the xml.etree api, visit: https://docs.python.org/3/library/xml.etree.elementtree.html#module-xml.etree.ElementTree
     """
+
+def _defuse_xml_stdlib() -> dict:
+    """Monkey patch and defuse all stdlib packages
+
+    :warning: The monkey patch is an EXPERIMETNAL feature.
+
+    ___
+    
+    For more information on the provided defusedxml ext pkg, visit: https://pypi.org/project/defusedxml
+
+    Python doc stating std lib xml vulns and recommending defusedxml: https://docs.python.org/3/library/xml.html#xml-vulnerabilities
+    """

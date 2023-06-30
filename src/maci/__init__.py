@@ -66,6 +66,7 @@ from ._ini.inibuildauto import inibuildauto
 from ._ini.inibuildmanual import inibuildmanual
 
 # XML Lib
+from defusedxml import defuse_stdlib as _defuse_xml_stdlib
 from ._xml.xmlload import xmlload
 from ._xml.xmlloadstr import xmlloadstr
 from ._xml.xmldump import xmldump
