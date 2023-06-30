@@ -51,8 +51,8 @@ def createfilehash(file_to_hash: str, file_to_store_hash: _Union[str,None], hash
     if hash_algorithm == ALGO_OPTIONS[0]: _hash_type = _hashlib.sha256() # sha256
     if hash_algorithm == ALGO_OPTIONS[1]: _hash_type = _hashlib.sha512() # sha512
     if hash_algorithm == ALGO_OPTIONS[2]: _hash_type = _hashlib.sha384() # sha384
-    if hash_algorithm == ALGO_OPTIONS[3]: _hash_type = _hashlib.sha1() # sha1  # nosec: B303  # ignore sec checker - up to dev discretion
-    if hash_algorithm == ALGO_OPTIONS[4]: _hash_type = _hashlib.md5() # md5  # nosec: B303  # ignore sec checker - up to dev discretion
+    if hash_algorithm == ALGO_OPTIONS[3]: _hash_type = _hashlib.sha1() # sha1  # nosec: B303,B324  # ignore sec checker - up to dev discretion
+    if hash_algorithm == ALGO_OPTIONS[4]: _hash_type = _hashlib.md5() # md5  # nosec: B303,B324  # ignore sec checker - up to dev discretion
 
     # Read source file data and update hash
     _readbytes: _Any  # ignore type checker

@@ -59,6 +59,7 @@ jobs:
       - name: Run - security checks
         run: |
           echo === bandit ===
-          bandit -r src/; echo;  # check code vulns
+          bandit -r src/  # check code vulns
+          echo
           echo === safety ===
-          safety check;  # check dep vulns
+          safety check  # check dep vulns
