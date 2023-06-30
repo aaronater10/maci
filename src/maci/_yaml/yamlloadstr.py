@@ -2,7 +2,7 @@
 #########################################################################################################
 # Imports
 from typing import Any as __Any
-import yaml as __yaml
+import yaml as __yaml  # type: ignore  # ignoring type checker for ext lib
 from ..error import YamlLoadStr
 
 #########################################################################################################

@@ -55,3 +55,8 @@ jobs:
       
       - name: Run - type checks
         run: mypy src
+      
+      - name: Run - security checks
+        run: |
+          bandit -r src/  # check code vulns
+          safety check  # check dep vulns

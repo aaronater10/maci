@@ -4,6 +4,8 @@ mypy==1.4.1
 coverage==7.2.7
 # Lib Reqs
 pyyaml==5.4.0
-types-pyyaml==5.4.0
 tomli==2.0.1
 tomli-w==1.0.0
+# Sec Reqs
+bandit
+safety

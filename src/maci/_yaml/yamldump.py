@@ -3,7 +3,7 @@
 # Imports
 from typing import Any as _Any
 from typing import Union as _Union
-import yaml as _yaml
+import yaml as _yaml  # type: ignore  # ignoring type checker for ext lib
 from ..error import YamlDump
 
 #########################################################################################################
