@@ -569,3 +569,12 @@ def test26_python_leading_blank_syntax():
     # Tests
     with pytest.raises(maci.error.Load):
         maci.load(filepath)
+
+
+# 27. Check if Error Raised on Last Line Has no End Bracket for Multi-Line for Bad Syntax
+def test27_python_multi_line_last_line_no_end_syntax():
+    filepath = test_file_path + '27_python_multi_line_last_line_no_end_syntax.data'
+
+    # Tests
+    with pytest.raises(maci.error.Load):
+        maci.load(filepath)

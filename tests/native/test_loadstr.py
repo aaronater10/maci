@@ -523,8 +523,15 @@ def test22_loadstr_date_time_syntax():
     assert isinstance(str_import.date_time_iso8601, datetime) and str(str_import.date_time_iso8601) == "2023-03-13 22:06:00"
 
 
-# 26. Check if Error Raised on Leading Blank with Name after for Bad Syntax
+# 23. Check if Error Raised on Leading Blank with Name after for Bad Syntax
 def test23_python_leading_blank_syntax():
     # Tests
     with pytest.raises(maci.error.LoadStr):
         maci.loadstr(' data_str = "data"')
+
+
+# 24. Check if Error Raised on Last Line Has no End Bracket for Multi-Line for Bad Syntax
+def test24_python_multi_line_last_line_no_end_syntax():
+    # Tests
+    with pytest.raises(maci.error.LoadStr):
+        maci.loadstr("data_list = [")

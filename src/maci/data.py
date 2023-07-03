@@ -268,10 +268,11 @@ class _MaciDataObjConstructor:
             # Set Skip Marker
             try:
                 __skip_marker = __file_data_line[0]
-                name_char = __file_data_line.lstrip()[0]
+                potential_name_char = __file_data_line.lstrip()[0]
             except IndexError: __skip_marker = ''
             else:
-                if (__skip_marker in __skip_markers) and (name_char not in __skip_markers) and (__is_building_data_sw == False):
+                # Check if there is a leading blank with data on same line
+                if (__skip_marker in __skip_markers) and (potential_name_char not in __skip_markers) and (__is_building_data_sw == False):
                     raise Load(
                             py_syntax_err_msg,
                             f'\nFile: {repr(filename)} \nLine: {line_num} \nGot: {repr(__file_data_line)}'
@@ -362,6 +363,11 @@ class _MaciDataObjConstructor:
                     # Check for Comment
                     if __skip_markers[2] in __value_token:
                         __value_token = __value_token.partition(__skip_markers[2])[0].strip()
+                    
+                    # Check if starting a build with no remaining lines to read
+                    if (len(file_data) == line_num):
+                        raise Load(py_syntax_err_msg, f'\nFile: {repr(filename)} \nLine: {line_num} \nAttr: {__var_token}')
+                    
                     # Set First Value
                     __build_data = __value_token
 
