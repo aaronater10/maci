@@ -263,7 +263,7 @@ class _MaciDataObjConstructor:
         # Main File/Str Loop
         # To display correct line number, ensure to add +1 when ready to raise. Keeping
         # constant +1 track will add latency to loop, so only provide as needed
-        for line_num,__file_data_line in enumerate(file_data):
+        for line_num,__file_data_line in enumerate(file_data, start=1):
 
             # Set Skip Marker
             try: __skip_marker = __file_data_line[0]
@@ -309,7 +309,7 @@ class _MaciDataObjConstructor:
                     if __file_data_line.partition(__assignment_glyph)[2].strip() == '':
                         raise Load(
                             py_syntax_err_msg,
-                            f'\nFile: {repr(filename)} \nLine: {line_num+1} \nAttr: {__file_data_line.partition(__assignment_glyph)[0].strip()} \nGot: {__file_data_line}'
+                            f'\nFile: {repr(filename)} \nLine: {line_num} \nAttr: {__file_data_line.partition(__assignment_glyph)[0].strip()} \nGot: {__file_data_line}'
                         )
                     
                     __current_assignment_glyph = __assignment_glyph.lower()
@@ -349,7 +349,7 @@ class _MaciDataObjConstructor:
                     
                     # Check if Attr Dedup
                     if (self.__attrib_name_dedup) and (hasattr(self, __var_token)):
-                            raise Load(name_preexists_err_msg, f'\nFile: {repr(filename)} \nLine: {line_num+1} \nAttr: {__var_token}')
+                            raise Load(name_preexists_err_msg, f'\nFile: {repr(filename)} \nLine: {line_num} \nAttr: {__var_token}')
 
                     # Check for Comment
                     if __skip_markers[2] in __value_token:
@@ -385,7 +385,7 @@ class _MaciDataObjConstructor:
                         if __current_assignment_glyph in _assignment_glyphs_for_hard_lock_checks:
                             self.__assignment_hard_locked_attribs.add(__var_token)
 
-                    except SyntaxError: raise Load(py_syntax_err_msg, f'\nFile: {repr(filename)} \nLine: {line_num+1} \nAttr: {__var_token}')
+                    except SyntaxError: raise Load(py_syntax_err_msg, f'\nFile: {repr(filename)} \nLine: {line_num} \nAttr: {__var_token}')
 
                     # Turn OFF/UPDATE Data Build Switches
                     __is_building_data_sw = False
@@ -404,7 +404,7 @@ class _MaciDataObjConstructor:
                     try:
                         # Check if Attr Dedup
                         if (self.__attrib_name_dedup) and (hasattr(self, __var_token)):
-                            raise Load(name_preexists_err_msg, f'\nFile: {repr(filename)} \nLine: {line_num+1} \nAttr: {__var_token}')
+                            raise Load(name_preexists_err_msg, f'\nFile: {repr(filename)} \nLine: {line_num} \nAttr: {__var_token}')
                         
                         # Check if Attr is a Reference to Another Attr's Value for Assignment. Ignore Comments
                         if __current_assignment_glyph in _assignment_glyphs_for_ref_checks:
@@ -447,7 +447,7 @@ class _MaciDataObjConstructor:
                         # Reference Name: Ignores Comments to Display Attr Reference Name
                         raise Load(
                             name_reference_does_not_exist,
-                            f'\nFile: {repr(filename)} \nLine: {line_num+1} \nAttr: {__var_token} \nMap_Name: {f"{__value_token} "[:__value_token.find(__skip_markers[2])].rstrip()}'
+                            f'\nFile: {repr(filename)} \nLine: {line_num} \nAttr: {__var_token} \nMap_Name: {f"{__value_token} "[:__value_token.find(__skip_markers[2])].rstrip()}'
                         )
                     except (ValueError, SyntaxError):
                         # Check if datetime format and set attr, else raise exception
@@ -456,9 +456,9 @@ class _MaciDataObjConstructor:
                             # Assign Attr to datetime object
                             setattr(self, __var_token, datetime_format)
                         else:
-                            raise Load(py_syntax_err_msg, f'\nFile: {repr(filename)} \nLine: {line_num+1} \nAttr: {__var_token}')
+                            raise Load(py_syntax_err_msg, f'\nFile: {repr(filename)} \nLine: {line_num} \nAttr: {__var_token}')
 
-            else: raise Load(py_syntax_err_msg, f'\nFile: {repr(filename)} \nLine: {line_num+1}')
+            else: raise Load(py_syntax_err_msg, f'\nFile: {repr(filename)} \nLine: {line_num}')
     
 
     def __setattr__(self, _name: str, _new_value: _Any) -> None:
