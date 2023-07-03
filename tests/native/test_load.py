@@ -560,3 +560,12 @@ def test25_python_multi_line_syntax():
     # Tests
     with pytest.raises(maci.error.Load):
         maci.load(filepath)
+
+
+# 26. Check if Error Raised on Leading Blank with Name after for Bad Syntax
+def test26_python_leading_blank_syntax():
+    filepath = test_file_path + '26_python_leading_blank_syntax.data'
+
+    # Tests
+    with pytest.raises(maci.error.Load):
+        maci.load(filepath)

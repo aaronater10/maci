@@ -266,8 +266,16 @@ class _MaciDataObjConstructor:
         for line_num,__file_data_line in enumerate(file_data, start=1):
 
             # Set Skip Marker
-            try: __skip_marker = __file_data_line[0]
+            try:
+                __skip_marker = __file_data_line[0]
+                name_char = __file_data_line.lstrip()[0]
             except IndexError: __skip_marker = ''
+            else:
+                if (__skip_marker in __skip_markers) and (name_char not in __skip_markers) and (__is_building_data_sw == False):
+                    raise Load(
+                            py_syntax_err_msg,
+                            f'\nFile: {repr(filename)} \nLine: {line_num} \nGot: {repr(__file_data_line)}'
+                        )
 
             # Skip Any Comments, Blanks, and New Lines. Do not skip during a muli-line build
             if (__is_building_data_sw == False) and (__skip_marker in __skip_markers): continue
@@ -309,7 +317,7 @@ class _MaciDataObjConstructor:
                     if __file_data_line.partition(__assignment_glyph)[2].strip() == '':
                         raise Load(
                             py_syntax_err_msg,
-                            f'\nFile: {repr(filename)} \nLine: {line_num} \nAttr: {__file_data_line.partition(__assignment_glyph)[0].strip()} \nGot: {__file_data_line}'
+                            f'\nFile: {repr(filename)} \nLine: {line_num} \nAttr: {__file_data_line.partition(__assignment_glyph)[0].strip()} \nGot: {repr(__file_data_line)}'
                         )
                     
                     __current_assignment_glyph = __assignment_glyph.lower()
