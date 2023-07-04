@@ -7,7 +7,7 @@ from ast import literal_eval as _literal_eval
 from datetime import datetime as _datetime
 from datetime import date as _datetime_date
 from datetime import time as _datetime_time
-from copy import deepcopy
+from copy import deepcopy as _deepcopy
 from typing import Any as _Any
 from typing import Dict as _Dict
 from typing import List as _List
@@ -807,7 +807,7 @@ class _MaciDataObjConstructor:
 
         Child map will be -> 'child_map': {'attr_child': 'attr_parent'}
         """
-        return {'parent_maps': deepcopy(self.__assigned_dst_reference_attr_map), 'child_maps': deepcopy(self.__assigned_src_reference_attr_map)}
+        return {'parent_maps': _deepcopy(self.__assigned_dst_reference_attr_map), 'child_maps': _deepcopy(self.__assigned_src_reference_attr_map)}
 
 
     @_rename_exc_name_to_user_object_name
@@ -825,7 +825,7 @@ class _MaciDataObjConstructor:
 
         Parent map will be -> {'attr_parent': {'attr_child': 'attr_parent'}}
         """
-        return deepcopy(self.__assigned_dst_reference_attr_map)
+        return _deepcopy(self.__assigned_dst_reference_attr_map)
 
 
     @_rename_exc_name_to_user_object_name
@@ -951,7 +951,7 @@ class _MaciDataObjConstructor:
 
         Child map will be -> {'attr_child': 'attr_parent'}
         """
-        return deepcopy(self.__assigned_src_reference_attr_map)
+        return _deepcopy(self.__assigned_src_reference_attr_map)
 
 
 #########################################################################################################

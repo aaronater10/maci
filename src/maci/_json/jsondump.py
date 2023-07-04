@@ -1,20 +1,20 @@
 # jsondump
 #########################################################################################################
 # Imports
-import json as __json
-from ..error import JsonDump
+import json as _json
 from .._native.dumpraw import dumpraw as _dumpraw
-from typing import Union
+from typing import Union as _Union
+from ..error import JsonDump
 
 #########################################################################################################
 # Export json file
 def jsondump(
     filename: str,
-    data: Union[dict, list, tuple, str, int, float, bool, None],
+    data: _Union[dict, list, tuple, str, int, float, bool, None],
     *,
     append: bool=False,
     indent_level: int=4,
-    encoding: Union[str, None]=None
+    encoding: _Union[str, None]=None
 ) -> None:
     """
     Exports a new file from python data type to json data.
@@ -48,7 +48,7 @@ def jsondump(
     try:
         # Export data to json file
         with open(filename, write_mode, encoding=encoding) as f:
-            __json.dump(data, f, indent=indent_level)
+            _json.dump(data, f, indent=indent_level)
             if write_mode == 'a': _dumpraw(filename, '', append=True)
     except TypeError as __err_msg: raise JsonDump(__err_msg, f'\nGot: {repr(data)}')
     except (FileNotFoundError, OSError) as __err_msg: raise JsonDump(__err_msg, f'\nGot: {repr(filename)}')

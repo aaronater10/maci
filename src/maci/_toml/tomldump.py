@@ -2,10 +2,10 @@
 #########################################################################################################
 # Imports
 import tomli_w as _tomli_w
-from ..error import TomlDump
-from .._native.dumpraw import dumpraw as _dumpraw
 from typing import Dict as _Dict
 from typing import Any as _Any
+from .._native.dumpraw import dumpraw as _dumpraw
+from ..error import TomlDump
 
 #########################################################################################################
 # Dump toml file
@@ -48,5 +48,5 @@ def tomldump(
         with open(filename, write_mode) as file_data:
             _tomli_w.dump(data, file_data, multiline_strings=multi_line_str)
             if write_mode == 'ab': _dumpraw(filename, '', append=True)
-    except TypeError as __err_msg: raise TomlDump(__err_msg, f'\nGot: {repr(filename)} \nGot: {repr(data)}')
-    except (FileNotFoundError, OSError) as __err_msg: raise TomlDump(__err_msg, f'\nGot: {repr(filename)}')
+    except TypeError as err_msg: raise TomlDump(err_msg, f'\nGot: {repr(filename)} \nGot: {repr(data)}')
+    except (FileNotFoundError, OSError) as err_msg: raise TomlDump(err_msg, f'\nGot: {repr(filename)}')

@@ -2,8 +2,8 @@
 #########################################################################################################
 # Imports
 from typing import Union as _Union
-from .._native.dumpraw import dumpraw
-from .xmldumpstr import xmldumpstr
+from .._native.dumpraw import dumpraw as _dumpraw
+from .xmldumpstr import xmldumpstr as _xmldumpstr
 from xml.etree.ElementTree import ElementTree as _ElementTree  # nosec: B405  # ignore sec checker - upto dev discretion to run provided maci._defuse_xml_stdlib()
 from xml.etree.ElementTree import Element as _Element  # nosec: B405  # ignore sec checker - upto dev discretion to run provided maci._defuse_xml_stdlib()
 from ..error import XmlDump, DumpRaw
@@ -40,6 +40,6 @@ def xmldump(filename: str, data: _Union[_ElementTree, _Element], *, append: bool
         if isinstance(data, _ElementTree):
             data = data.getroot()
 
-        data_str = xmldumpstr(data)
-        dumpraw(filename, data_str, encoding=encoding, append=append)
-    except DumpRaw as _err_msg: raise XmlDump(_err_msg) from None
+        data_str = _xmldumpstr(data)
+        _dumpraw(filename, data_str, encoding=encoding, append=append)
+    except DumpRaw as err_msg: raise XmlDump(err_msg) from None

@@ -1,13 +1,12 @@
 # loaddict
 #########################################################################################################
 # Imports
-from ast import literal_eval as __literal_eval__
-from os import path as __path
+from os import path as _path
 from copy import deepcopy as _deepcopy
 from typing import Any as _Any
 from typing import Optional as _Optional
-from ..data import MaciDataObj
 from ..error import LoadDict, Load
+from ..data import MaciDataObj as _MaciDataObj
 
 #########################################################################################################
 # Import py Data from File
@@ -43,7 +42,7 @@ def loaddict(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[s
 
     # Check if file empty. Returns None if empty
     try:
-        if __path.getsize(filename) == 0:
+        if _path.getsize(filename) == 0:
             return None
     except (FileNotFoundError, OSError) as __err_msg: raise LoadDict(__err_msg, f'\nGot: {repr(filename)}')
 
@@ -71,7 +70,7 @@ def loaddict(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[s
 
     # Generate Dict as a Fresh Copy
     try: 
-        dict_data = _deepcopy(vars(MaciDataObj(
+        dict_data = _deepcopy(vars(_MaciDataObj(
                 filename,
                 _is_load_request=True,
                 attr_name_dedup=attr_name_dedup,

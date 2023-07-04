@@ -3,12 +3,12 @@
 # Imports
 from typing import Any as _Any
 from typing import Optional as _Optional
-from ..data import MaciDataObj
 from ..error import LoadStr, Load
+from ..data import MaciDataObj as _MaciDataObj
 
 #########################################################################################################
 # Import py Data from String
-def loadstr(maci_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[MaciDataObj]:
+def loadstr(maci_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[_MaciDataObj]:
     """
     Imports python data from a string.
 
@@ -45,7 +45,7 @@ def loadstr(maci_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[Maci
 
     # Return final import
     try:
-        return MaciDataObj(
+        return _MaciDataObj(
                 '',
                 _is_load_request=True,
                 _str_data=maci_str_data,

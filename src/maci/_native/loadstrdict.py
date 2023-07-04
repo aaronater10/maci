@@ -3,8 +3,8 @@
 # Imports
 from copy import deepcopy as _deepcopy
 from typing import Any as _Any
-from ..data import MaciDataObj
 from ..error import LoadStrDict, Load
+from ..data import MaciDataObj as _MaciDataObj
 
 #########################################################################################################
 # Import py Data from String
@@ -55,7 +55,7 @@ def loadstrdict(maci_str_data: str, *, attr_name_dedup: bool=True) -> dict:
 
     # Generate Dict as a Fresh Copy
     try:
-        dict_data = _deepcopy(vars(MaciDataObj(
+        dict_data = _deepcopy(vars(_MaciDataObj(
                 '',
                 _is_load_request=True,
                 _str_data=maci_str_data,

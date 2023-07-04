@@ -2,11 +2,11 @@
 #########################################################################################################
 # Imports
 from typing import Any as _Any
-from ..data import MaciDataObj
+from ..data import MaciDataObj as _MaciDataObj
 
 #########################################################################################################
 # Build manual MaciDataObj (python data)
-def build() -> 'MaciDataObj':
+def build() -> '_MaciDataObj':
     """
     Returns an empty MaciDataObj obj to manually build pythonic data with maci features
     
@@ -30,7 +30,7 @@ def build() -> 'MaciDataObj':
         '_assignment_locked_atrribs_err_msg': "Attribute Name Locked! Cannot be reassigned",
         '_assignment_hard_locked_atrribs_err_msg': "Attribute Name Hard Locked! Cannot be reassigned, deleted, or unlocked"
     }
-    return MaciDataObj(
+    return _MaciDataObj(
                 '',
                 attr_name_dedup=True,
                 _is_build_request=True,

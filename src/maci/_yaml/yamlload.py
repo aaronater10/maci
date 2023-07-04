@@ -1,14 +1,14 @@
 # yamlload
 #########################################################################################################
 # Imports
-from typing import Any as __Any
-from typing import Union as __Union
-import yaml as __yaml  # type: ignore  # ignoring type checker for ext lib
+from typing import Any as _Any
+from typing import Union as _Union
+import yaml as _yaml  # type: ignore  # ignoring type checker for ext lib
 from ..error import YamlLoad
 
 #########################################################################################################
 # Import yaml file
-def yamlload(filename: str, *, encoding: __Union[str, None]=None) -> __Any:
+def yamlload(filename: str, *, encoding: _Union[str, None]=None) -> _Any:
     """
     Imports yaml data from a file.
 
@@ -35,7 +35,7 @@ def yamlload(filename: str, *, encoding: __Union[str, None]=None) -> __Any:
     # Import yaml file
     try:
         with open(filename, 'r', encoding=encoding) as f:
-            return __yaml.safe_load(f)
-    except (FileNotFoundError, OSError) as __err_msg: raise YamlLoad(__err_msg, f'\nGot: {repr(filename)}')
-    except __yaml.error.YAMLError as __err_msg: raise YamlLoad(__err_msg, f'\nGot: {repr(filename)}')
+            return _yaml.safe_load(f)
+    except (FileNotFoundError, OSError) as err_msg: raise YamlLoad(err_msg, f'\nGot: {repr(filename)}')
+    except _yaml.error.YAMLError as err_msg: raise YamlLoad(err_msg, f'\nGot: {repr(filename)}')
     except LookupError: raise YamlLoad(err_msg_type_encoding, f'\nGot: {repr(encoding)}')

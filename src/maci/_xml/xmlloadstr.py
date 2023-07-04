@@ -26,4 +26,4 @@ def xmlloadstr(xml_str_data: str) -> _xml_etree.Element:
 
     # Load Str Data
     try: return _xml_etree.fromstring(str(xml_str_data))  # nosec: B314  # ignore sec checker - upto dev discretion to run provided maci._defuse_xml_stdlib()
-    except _xml_etree.ParseError as __err_msg: raise XmlLoadStr(__err_msg, f'\nGot: {repr(xml_str_data)}')
+    except _xml_etree.ParseError as err_msg: raise XmlLoadStr(err_msg, f'\nGot: {repr(xml_str_data)}')

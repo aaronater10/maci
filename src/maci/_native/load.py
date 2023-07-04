@@ -1,16 +1,15 @@
 # load
 #########################################################################################################
 # Imports
-from ast import literal_eval as __literal_eval__
-from os import path as __path
+from os import path as _path
 from typing import Any as _Any
 from typing import Optional as _Optional
-from ..data import MaciDataObj
 from ..error import Load, GeneralError
+from ..data import MaciDataObj as _MaciDataObj
 
 #########################################################################################################
 # Import py Data from File
-def load(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=None, _ignore_maci_attr_check: bool=False) -> _Optional[MaciDataObj]:
+def load(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=None, _ignore_maci_attr_check: bool=False) -> _Optional[_MaciDataObj]:
     """
     Imports saved python data from any text file.
 
@@ -44,7 +43,7 @@ def load(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=
 
     # Check if file empty. Returns None if empty
     try:
-        if __path.getsize(filename) == 0:
+        if _path.getsize(filename) == 0:
             return None
     except (FileNotFoundError, OSError) as __err_msg: raise Load(__err_msg, f'\nGot: {repr(filename)}')
 
@@ -59,7 +58,7 @@ def load(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=
 
     # Return Final Import
     try:
-        return MaciDataObj(
+        return _MaciDataObj(
                     filename,
                     _is_load_request=True,
                     _ignore_internal_maci_attr_check=_ignore_maci_attr_check,

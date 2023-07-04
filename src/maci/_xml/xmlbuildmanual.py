@@ -2,11 +2,11 @@
 #########################################################################################################
 # Imports
 import xml.etree.ElementTree as _xml_etree  # nosec: B405  # ignore sec checker - upto dev discretion to run provided maci._defuse_xml_stdlib()
-from types import ModuleType
+from types import ModuleType as _ModuleType
 
 #########################################################################################################
 # Build manual xml data
-def xmlbuildmanual() -> ModuleType:
+def xmlbuildmanual() -> _ModuleType:
     """
     Returns a xml ElementTree module object to build/work with xml data
     
