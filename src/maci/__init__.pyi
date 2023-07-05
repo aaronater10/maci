@@ -250,32 +250,32 @@ def cleanformat(data: _Union[dict,list,tuple,set], indent_level: int=1) -> str:
 
     Returned output will be a str
 
-    Note: Higher indent levels will decrease performance. Indentation is applied to the main data set only.
+    Note: Higher indent levels will decrease performance, and indentation is applied to the main level data set only.
 
-    Tip: Changing indent level to 0 increases cleaning performance by 5%, but output will have no indentation (Default = 1).
+    Tip: Changing indent level to 0 increases format performance by approx 5%, but output will have no indentation (Default level = 1).
 
-    Accepted data types: dict, list, tuple, set 
-
-    [Example Use]
+    [Example: Usage]
     
-    var = cleanformat(data)
+    var = cleanformat([1,2,3])
     """
 
 def build() -> _MaciDataObj:
     """
-    Returns an empty MaciDataObj obj to manually build pythonic data with maci features
+    Returns an empty MaciDataObj object to manually build data with maci features
     
     Assign the output to var
 
-    Literally, just use attribute assignment as you normally would
+    Use attribute assignment as you normally would to build out data
 
-    [Example]
+    [Example: Usage]
 
-    object.attribute1 = [1,2,3]
+    var = maci.build()
 
-    object.attribute2 = 'string data'
+    [Example: Assign Data]
 
-    More information on object features: https://docs.macilib.org/docs/tools/build-data/python-data-build
+    var.my_list = [1,2,3]
+
+    More information on maci object features: https://docs.macilib.org/docs/tools/build-data/python-data-build
     """
 
 
@@ -693,7 +693,11 @@ def _defuse_xml_stdlib() -> dict:
     :warning: The monkey patch is an EXPERIMETNAL feature.
 
     ___
-    
+
+    [Example: Usage]
+
+    maci._defuse_xml_stdlib()
+
     For more information on the provided defusedxml ext pkg, visit: https://pypi.org/project/defusedxml
 
     Python doc stating std lib xml vulns and recommending defusedxml: https://docs.python.org/3/library/xml.html#xml-vulnerabilities
