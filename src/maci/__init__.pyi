@@ -33,17 +33,17 @@ from . import hint
 ### Native Lib ###
 def load(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=None, _ignore_maci_attr_check: bool=False) -> _Optional[_MaciDataObj]:
     """
-    Imports saved python data from any text file.
+    Loads saved python data from any text file.
 
     Returns a class of attributes. Assign the output to var
 
-    Enter file location as str to import.
+    Enter file location as str to Load.
 
     Accepted data types: str, int, float, bool, list, dict, tuple, set, nonetype, bytes, datetime
 
     Returns None if file empty
 
-    [Example Use]
+    [Example: Usage]
     load('filename.data' or 'path/to/filename.data')
 
     [Warning]
@@ -55,17 +55,17 @@ def load(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=
 
 def loaddict(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=None) -> _Optional[dict]:
     """
-    Imports pythonic data from any text file
+    Loads pythonic data from any text file
 
     Returns a dict. Assign the output to var
 
-    Enter file location as str to import.
+    Enter file location as str to Load.
 
     Accepted data types: str, int, float, bool, list, dict, tuple, set, nonetype, bytes, datetime
 
     Returns None if file empty
 
-    [Example Use]
+    [Example: Usage]
     loaddict('path/to/filename.data')
 
     [Warning]
@@ -77,59 +77,59 @@ def loaddict(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[s
 
 def loadstr(maci_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[_MaciDataObj]:
     """
-    Imports python data from a string.
+    Loads python data from a string.
 
     Returns a class of attributes. Assign the output to var
 
-    Enter python data string as str to import.
+    Enter python data string as str to Load.
 
     Accepted data types: str, int, float, bool, list, dict, tuple, set, nonetype, bytes, datetime
 
     Returns None if empty
 
-    [Example Use]
+    [Example: Usage]
 
     loadstr("data1 = 'value1'\\ndata2 = "value2")
     """
 
 def loadstrdict(maci_str_data: str, *, attr_name_dedup: bool=True) -> dict:
     """
-    Imports pythonic data from a string.
+    Loads pythonic data from a string.
 
     Returns a dict. Assign the output to var
 
-    Enter pythonic data string as str to import.
+    Enter pythonic data string as str to Load.
 
     Accepted data types: str, int, float, bool, list, dict, tuple, set, nonetype, bytes, datetime
 
     Returns None if empty
 
-    [Example Use]
+    [Example: Usage]
 
     loadstrdict("data1 = 'value1'\\ndata2 = "value2")
     """
 
 def loadraw(filename: str, *, byte_data: bool=False, encoding: _Union[str, None]=None) -> _Union[str, bytes]:
     """
-    Imports any raw data from a file.
+    Loads any raw data from a file.
 
     Returns a str. Assign the output to var
 
     [Options]
-    byte_data: Set to True if importing byte data
+    byte_data: Set to True if Loading byte data
 
-    [Example Use]
+    [Example: Usage]
 
     loadraw('path/to/filename')
     """
 
 def loadattrs(filename: str, class_object: _CustomClass, *, encoding: _Union[str, None]=None, attr_name_dedup: bool=False, _ignore_maci_attr_check: bool=True) -> None:
     """
-    Import saved attributes from file back into a custom class. This is done in-place
+    Load saved attributes from file back into a custom class. This is done in-place
 
     Enter filename as str, Pass custom class object.
 
-    [Example Use]
+    [Example: Usage]
 
     loadattrs('path/of/filename', 'class_object')
 
@@ -167,11 +167,11 @@ def dump(
 
     [Partner Functions]
 
-    load: Load data back returning a MaciDataObj with maci features
+    load: Load data from file returning a MaciDataObj with maci features
 
-    loadattrs: Load attrs & data back into a custom class/object. This is done in-place
+    loadattrs: Load attrs & data from file into a custom class/object. This is done in-place
 
-    loaddict: Load data back returning a dict representing your attrs & data
+    loaddict: Load data from file returning a dict representing your attrs & data
 
     [Options]
 
@@ -179,7 +179,7 @@ def dump(
 
     indent_level: set indent level for data being list, dict, tuple, or set - Default=1
 
-    [Example Use]
+    [Example: Usage]
     dump('path/of/filename', data)
 
     Maci docs: https://docs.macilib.org
@@ -204,41 +204,40 @@ def dumpstr(
     use_symbol_glyphs: bool=False,
     ) -> _Optional[str]:
     """
-    Dumps your attributes or key/value pair data to a string
+    Dumps maci, dict, or custom object data to a string. Output in string
+    is structured in maci (pythonic) style format
 
-    Pass MaciDataObj, dict, or Custom Class data type for output to str
+    [Partner Functions]
 
-    [Importing Data Back] Functions:
+    loadstr: Load data from str returning a MaciDataObj with maci features
 
-    loadstr: Import data from str returning a class of attributes with Maci features
+    loadstrdict: Load data from str returning a dict representing your attrs & data
 
     [Options]
 
-    indent_level: set indent level for types list, dict, tuple, set (Default 1)
+    indent_level: set indent level for data being list, dict, tuple, or set - Default=1
 
-    indentation_on: set to False to turn OFF indentation on types list, dict, tuple, set (Default ON)
+    [Example: Usage]
 
-    [Example Use]
-    Normal: dumpstr(data)
+    dumpstr(data)
 
-    Indent OFF: dumpstr(data, indentation_on=False)
+    Maci docs: https://docs.macilib.org
     """
 
 def dumpraw(filename: str, *data: _Any, append: bool=False, byte_data: bool=False, newline_sep: bool=True, encoding: _Union[str, None]=None) -> None:
     """
-    Exports a new file with the new data.
-    
-    Enter new filename as str, Pass any data type for output to file.
+    Dumps a new file with the data raw
 
     [Options]
-    append: set to True to append data to a file (Default=False, which writes a new file each time)
+    append: set to True to append data to a file - Default=False, which writes a new file each time
 
-    byte_data: Set to True to write byte data. Default False
+    byte_data: set to True to write byte data - Default=False
 
-    [Example Use]
-    Normal: dump('path/of/filename', 'data')
+    [Example: Usage]
 
-    Byte Data: dump('path/of/filename', b'data', byte_data=True)
+    dumpraw('path/of/filename', data)
+
+    Maci docs: https://docs.macilib.org
     """
 
 def cleanformat(data: _Union[dict,list,tuple,set], indent_level: int=1) -> str:
@@ -336,7 +335,7 @@ def createhash(data_to_hash: _Union[str, bytes, int, _List[int], _Tuple[int], _S
 
     [Example: Usage]
 
-    var = createhash('data')
+    var = createhash(data)
 
     This is using the hashlib library shipped with the python standard library. For more
     information on hashlib, visit: https://docs.python.org/3/library/hashlib.html
@@ -348,34 +347,34 @@ def createhash(data_to_hash: _Union[str, bytes, int, _List[int], _Tuple[int], _S
 ### JSON Lib ###
 def jsonload(filename: str, *, encoding: _Union[str, None]=None) -> _Union[list, dict, str, int, float, bool, None]:
     """
-    Imports json data from a file
+    Loads json data from a file
 
-    Returns data with matching python data type. Assign the output to var
+    Returns data with matching python data type
 
-    Enter json file location as str to import.
-
-    [Example Use]
+    [Example: Usage]
 
     jsonload('path/to/filename.json')
 
     This is using the native json library shipped with the python standard library. For more
     information on the json library, visit: https://docs.python.org/3/library/json.html
+
+    Maci docs: https://docs.macilib.org
     """
 
 def jsonloadstr(json_str_data: str) -> _Union[list, dict, str, int, float, bool, None]:
     """
-    Imports json data from a string
+    Loads json data from a string
 
-    Returns data with matching python data type. Assign the output to var
+    Returns data with matching python data type
 
-    Enter json string as str to import.
-
-    [Example Use]
+    [Example: Usage]
 
     jsonloadstr('string with json data')
 
     This is using the native json library shipped with the python standard library. For more
     information on the json library, visit: https://docs.python.org/3/library/json.html
+
+    Maci docs: https://docs.macilib.org
     """
 
 def jsondump(
@@ -387,93 +386,92 @@ def jsondump(
     encoding: _Union[str, None]=None
 ) -> None:
     """
-    Exports a new file from python data type to json data.
+    Dumps json data to a file from python data
     
-    Enter new filename as str. Pass data for output to file
-    
-    [Example Use]
+    [Example: Usage]
 
     jsondump('path/to/filename.json', data)    
 
     This is using the native json library shipped with the python standard library. For more
     information on the json library, visit: https://docs.python.org/3/library/json.html
 
+    Maci docs: https://docs.macilib.org
     """
 
 def jsondumpstr(data: _Union[dict, list, tuple, str, int, float, bool, None], *, indent_level: int=4) -> str:
     """
-    Exports python data type to json string
+    Dumps json data to a str from python data
 
-    Returns a json formatted str. Assign the output to var
+    Returns a json formatted str
 
-    [Example Use]
+    [Example: Usage]
 
-    jsondumpstr(data, [optional] indent_level)
+    jsondumpstr(data)
 
     This is using the native json library shipped with the python standard library. For more
     information on the json library, visit: https://docs.python.org/3/library/json.html
 
+    Maci docs: https://docs.macilib.org
     """
 
 
 ### YAML Lib ###
 def yamlload(filename: str, *, encoding: _Union[str, None]=None) -> _Any:
     """
-    Imports yaml data from a file.
+    Loads yaml data from a file
 
-    Returns data with matching python data type. Assign the output to var
+    Returns data with matching python data type
 
-    Enter yaml file location as str to import.
+    [Example: Usage]
 
-    [Example Use]
-
-    yamlload('path/to/filename.yml')
+    yamlload('path/to/filename.yaml')
 
     This is using the PyYAML framework installed as a dependency from pypi. It is only using the
     "safe_load" method to protect from untrusted input.
     For more information on PyYAML, visit: https://pypi.org/project/PyYAML/
+    
+    Maci docs: https://docs.macilib.org
     """
 
 def yamlloadstr(yaml_str_data: str) -> _Any:
     """
-    Imports yaml data from a string
+    Loads yaml data from a string
 
-    Returns data with matching python data type. Assign the output to var
+    Returns data with matching python data type
 
-    Enter yaml string as str to import.
-
-    [Example Use]
+    [Example: Usage]
 
     yamlloadstr('string with yaml data')
 
     This is using the PyYAML framework installed as a dependency from pypi. It is only using the
     "safe_load" method to protect from untrusted input.
     For more information on PyYAML, visit: https://pypi.org/project/PyYAML/
+    
+    Maci docs: https://docs.macilib.org
     """
 
 def yamldump(filename: str, data: _Any, *, append: bool=False, encoding: _Union[str, None]=None) -> None:
     """
-    Exports a new file from python data type to yaml data.
+    Dumps yaml data to a file from python data
     
-    Enter new filename as str. Pass any general data for output to file
-    
-    [Example Use]
+    [Example: Usage]
 
-    yamldump('path/to/filename.yml', data)    
+    yamldump('path/to/filename.yaml', data)    
 
     This is using the PyYAML framework installed as a dependency from pypi. It is only using the
     "safe_dump" method, which only supports standard YAML tags and cannot represent an arbitrary Python object.
     For more information on PyYAML, visit: https://pypi.org/project/PyYAML/
     
+    Maci docs: https://docs.macilib.org
     """
 
 def yamldumpstr(data: _Any) -> str:
     """
-    Exports python data type to yaml string
+    Dumps yaml data to a string from python data
 
-    Returns a yaml formatted str. Assign the output to var
+    Returns a yaml formatted str
 
-    [Example Use]
+    [Example: Usage]
 
     yamldumpstr(data)
 
@@ -481,6 +479,7 @@ def yamldumpstr(data: _Any) -> str:
     "safe_dump" method, which only supports standard YAML tags and cannot represent an arbitrary Python object.
     For more information on PyYAML, visit: https://pypi.org/project/PyYAML/
     
+    Maci docs: https://docs.macilib.org
     """
 
 
@@ -489,30 +488,32 @@ def tomlload(filename: str) -> _Dict[str, _Any]:
     """
     Loads toml data from a file
 
-    Returns dict data with matching python data type. Assign the output to var
+    Returns dict data with matching python data type values
 
-    Enter toml file location as str to load
-
-    [Example Use]
+    [Example: Usage]
 
     tomlload('path/to/filename.toml')
 
     This is using the tomli library installed as a dependency from pypi.
     For more information on tomli, visit: https://pypi.org/project/tomli/
+    
+    Maci docs: https://docs.macilib.org
     """
 
 def tomlloadstr(toml_str_data: str) -> _Dict[str, _Any]:
     """
     Load toml data from a string
 
-    Returns dict data with matching python data types. Assign the output to var
+    Returns dict data with matching python data type values
 
-    [Example Use]
+    [Example: Usage]
 
     tomlloadstr('string with toml data')
 
     This is using the tomli library installed as a dependency from pypi.
     For more information on tomli, visit: https://pypi.org/project/tomli/
+    
+    Maci docs: https://docs.macilib.org
     """
 
 def tomldump(
@@ -523,16 +524,16 @@ def tomldump(
     multi_line_str: bool=False
 ) -> None:
     """
-    Dumps a new file from dict to toml data.
+    Dumps toml data to a file from dict
 
-    Enter filename as str. Pass data for output to file
+    [Example: Usage]
 
-    [Example Use]
-
-    tomldump('path/to/filename.toml', data)    
+    tomldump('path/to/filename.toml', data)
 
     This is using the tomli-w library installed as a dependency from pypi.
     For more information on tomli-w, visit: https://pypi.org/project/tomli-w/
+
+    Maci docs: https://docs.macilib.org
     """
 
 def tomldumpstr(
@@ -541,63 +542,65 @@ def tomldumpstr(
     multi_line_str: bool=False
 ) -> str:
     """
-    Dumps dict data to toml string
+    Dumps toml data to a string from dict
 
-    Returns a toml formatted str. Assign the output to var
+    Returns a toml formatted str
 
-    [Example Use]
+    [Example: Usage]
 
     tomldumpstr(data)
 
     This is using the tomli-w library installed as a dependency from pypi.
     For more information on tomli-w, visit: https://pypi.org/project/tomli-w/
+    
+    Maci docs: https://docs.macilib.org
     """
 
 
 ### INI Lib ###
 def iniload(filename: str, *, encoding: _Union[str, None]=None) -> _ConfigParser:
     """
-    Imports ini data from a file.
+    Loads ini data from a file
 
-    Returns a ConfigParser obj. Assign the output to var
+    Returns a ConfigParser object
 
-    Enter ini file location as str to import.
-
-    [Example Use]
+    [Example: Usage]
 
     iniload('path/to/filename.ini')
 
     This is using the native configparser library shipped with the python standard library. Using ConfigParser method
     with ExtendedInterpolation enabled by default. For more information on the configparser library, 
     visit: https://docs.python.org/3/library/configparser.html
+    
+    Maci docs: https://docs.macilib.org
     """
 
 def inidump(filename: str, data: _ConfigParser, *, append: bool=False, encoding: _Union[str, None]=None) -> None:
     """
-    Exports a new file from a ini data (ConfigParser) obj
+    Dumps ini data to a file from a ConfigParser object
 
-    Enter new filename as str. Pass ini data for output to file
-    
-    [Example Use]
+    [Example: Usage]
 
     inidump('path/to/filename.ini', data)
 
     This is using the native configparser library shipped with the python standard library. Using ConfigParser method.
     For more information on the configparser library, visit: https://docs.python.org/3/library/configparser.html
+    
+    Maci docs: https://docs.macilib.org
     """
 
 def inibuildauto(data: _Dict[str, _Dict[str, _Any]]) -> _ConfigParser:
     """
-    Auto converts dict to ini data structure
+    Auto builds ini data object from dict
 
-    Returns a ConfigParser obj with your data. Assign the output to var
+    Returns a ConfigParser object with your data
 
-    All sub-values are converted to strings naturally by the library. However, if your sub-value
-    contains a Nonetype, this function will also auto-convert to a string for you.
+    Note: All sub-values are converted to strings naturally by the library. However, if your sub-value
+    contains a 'NoneType', this function will also auto-convert that to a string for you.
 
-    Enter correctly structured dict to convert data
+    Enter correctly structured dict to build data
 
-    [Example dict structure]
+    [Example: ini dict structure]
 
     {
         'section1': {'key1': 1},
@@ -605,90 +608,106 @@ def inibuildauto(data: _Dict[str, _Dict[str, _Any]]) -> _ConfigParser:
         'section2': {'key2': 2}   
     }
 
+    [Example: Usage]
+
+    var = inibuildauto(data)
+
     This is using the native configparser library shipped with the python standard library. Using ConfigParser method
     with ExtendedInterpolation enabled by default. For more information on the configparser library, 
     visit: https://docs.python.org/3/library/configparser.html
+
+    Maci docs: https://docs.macilib.org
     """
 
 def inibuildmanual() -> _ConfigParser:
     """    
     Returns an empty ConfigParser object to manually build ini data
-    
-    Assign the output to var
+
+    [Example: Usage]
+
+    var = inibuildmanual()
 
     This is using the native configparser library shipped with the python standard library. Using ConfigParser method
     with ExtendedInterpolation enabled by default. For more information on the configparser library, 
     visit: https://docs.python.org/3/library/configparser.html
+
+    Maci docs: https://docs.macilib.org
     """
 
 
 ### XML Lib ###
 def xmlload(filename: str, *, auto_get_root: bool=True) -> _Union[_Element, _ElementTree]:
     """
-    Imports xml data from a file.
+    Loads xml data from a file
 
-    Returns the root Element object of the ElementTree parsed from a xml file by default. Assign the output to var
+    Returns a xml etree root Element object of the ElementTree parsed from a xml file by default
 
-    Enter xml file location as str to import.
-
-    [Example Use]
+    [Example: Usage]
 
     xmlload('path/to/filename.xml')
 
     This is using the native xml library via etree shipped with the python standard library.
     For more information on the xml.etree api, visit: https://docs.python.org/3/library/xml.etree.elementtree.html#module-xml.etree.ElementTree
+    
+    Maci docs: https://docs.macilib.org
     """
 
 def xmlloadstr(xml_str_data: str) -> _Element:
     """
-    Imports xml data from a string
+    Loads xml data from a string
 
-    Returns a xml Element. Assign the output to var
+    Returns a xml etree Element object
 
-    [Example Use]
+    [Example: Usage]
 
-    xmlloadstr('<tag>data</tag>')
+    xmlloadstr('string with xml data')
 
     This is using the native xml library via etree shipped with the python standard library.
     For more information on the xml.etree api, visit: https://docs.python.org/3/library/xml.etree.elementtree.html#module-xml.etree.ElementTree
+    
+    Maci docs: https://docs.macilib.org
     """
 
 def xmldump(filename: str, data: _Union[_ElementTree, _Element], *, append: bool=False, encoding: _Union[str, None]=None) -> None:
     """
-    Exports a new file from xml ElementTree or Element object as xml data
+    Dumps xml data to a file from xml etree ElementTree or Element object
     
-    Enter new filename as str. Pass ElementTree data for output to file
-    
-    [Example Use]
+    [Example: Usage]
 
-    xmldump('path/to/filename.xml', Element_data)
+    xmldump('path/to/filename.xml', data)
 
     This is using the native xml library via etree shipped with the python standard library.
     For more information on the xml.etree api, visit: https://docs.python.org/3/library/xml.etree.elementtree.html#module-xml.etree.ElementTree
+    
+    Maci docs: https://docs.macilib.org
     """
 
 def xmldumpstr(data: _Element, *, encoding: str='utf-8') -> str:
     """
-    Exports xml Element object to a string
+    Dumps xml data to a string from xml etree Element object
 
-    Returns a str. Assign the output to var
+    Returns a xml formatted str
 
-    [Example Use]
+    [Example: Usage]
 
-    xmldumpstr(Element)
+    xmldumpstr(data)
 
     This is using the native xml library via etree shipped with the python standard library.
     For more information on the xml.etree api, visit: https://docs.python.org/3/library/xml.etree.elementtree.html#module-xml.etree.ElementTree
+    
+    Maci docs: https://docs.macilib.org
     """
 
 def xmlbuildmanual() -> _ModuleType:
     """
-    Returns a xml ElementTree module object to build/work with xml data
-    
-    Assign the output to var -> Module('xml')
+    Returns an empty xml ElementTree module object to manually build xml etree data
+
+    Returns etree -> Module('xml')
 
     This is using the native xml library via etree shipped with the python standard library.
     For more information on the xml.etree api, visit: https://docs.python.org/3/library/xml.etree.elementtree.html#module-xml.etree.ElementTree
+    
+    Maci docs: https://docs.macilib.org
     """
 
 def _defuse_xml_stdlib() -> dict:
@@ -705,4 +724,6 @@ def _defuse_xml_stdlib() -> dict:
     For more information on the provided defusedxml ext pkg, visit: https://pypi.org/project/defusedxml
 
     Python doc stating std lib xml vulns and recommending defusedxml: https://docs.python.org/3/library/xml.html#xml-vulnerabilities
+    
+    Maci docs: https://docs.macilib.org
     """
