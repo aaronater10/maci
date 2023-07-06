@@ -162,30 +162,27 @@ def dump(
     use_symbol_glyphs: bool=False,
     ) -> None:
     """
-    Dumps your attributes or key/value pair data to a file
+    Dumps maci, dict, or custom object data to a file. Output in file
+    is structured in maci (pythonic) style format
 
-    Enter filename as str, Pass MaciDataObj, dict, or Custom Class data type for output to file
+    [Partner Functions]
 
-    [Importing Data Back] Functions:
+    load: Load data back returning a MaciDataObj with maci features
 
-    load: Import data back returning a class of attributes with Maci features
+    loadattrs: Load attrs & data back into a custom class/object. This is done in-place
 
-    loadattrs: Import attributes back into a custom class. This is done in-place
+    loaddict: Load data back returning a dict representing your attrs & data
 
     [Options]
 
-    append: set to True to append data to a file (Default=False, which writes a new file each time)
+    append: set to True to append data to a file - Default=False, which writes a new file each time
 
-    indent_level: set indent level for types list, dict, tuple, set (Default 1)
-
-    indentation_on: set to False to turn OFF indentation on types list, dict, tuple, set (Default ON)
+    indent_level: set indent level for data being list, dict, tuple, or set - Default=1
 
     [Example Use]
-    Normal: dump('path/of/filename', 'data')
+    dump('path/of/filename', data)
 
-    Append to File: dump('path/of/filename', 'data', append=True)
-
-    Indent OFF: dump('path/of/filename', 'data', indentation_on=False)
+    Maci docs: https://docs.macilib.org
     """
 
 def dumpstr(
@@ -246,9 +243,7 @@ def dumpraw(filename: str, *data: _Any, append: bool=False, byte_data: bool=Fals
 
 def cleanformat(data: _Union[dict,list,tuple,set], indent_level: int=1) -> str:
     """
-    Formats a (single) dictionary, list, tuple, or set, to have a clean multiline output for exporting to a file.
-
-    Returned output will be a str
+    Formats a single dictionary, list, tuple, or set, to a clean multiline form
 
     Note: Higher indent levels will decrease performance, and indentation is applied to the main level data set only.
 
@@ -257,13 +252,13 @@ def cleanformat(data: _Union[dict,list,tuple,set], indent_level: int=1) -> str:
     [Example: Usage]
     
     var = cleanformat([1,2,3])
+
+    Maci docs: https://docs.macilib.org
     """
 
 def build() -> _MaciDataObj:
     """
     Returns an empty MaciDataObj object to manually build data with maci features
-    
-    Assign the output to var
 
     Use attribute assignment as you normally would to build out data
 
@@ -275,7 +270,7 @@ def build() -> _MaciDataObj:
 
     var.my_list = [1,2,3]
 
-    More information on maci object features: https://docs.macilib.org/docs/tools/build-data/python-data-build
+    Maci docs: https://docs.macilib.org
     """
 
 
@@ -284,60 +279,69 @@ def createfilehash(file_to_hash: str, file_to_store_hash: _Union[str,None], hash
     """
     Creates a hash of any file, and stores the hash data to a new created file
 
-    Always returns a str of the hash as well. Assign the output to var
+    Always returns a str of the hashed file
 
-    Enter file locations as str
+    [Partner Functions]
+
+    comparefilehash: auto compares hashes from src hash of file with stored hash file data
 
     [Options]
-    file_to_store_hash: Set to False if you do not want hash data stored to a file. Hash data is always returned whether or not this is set
+    file_to_store_hash: Set to None if you do not want a file created to store hash. Hash data of the src file is always returned whether or not this is set
 
-    hash_algorithm: Already set to default of 'sha256'. Supported options: 'sha256', 'sha512', 'sha384', 'sha1', 'md5'
+    hash_algorithm: Default is 'sha256' - Other options: 'sha512', 'sha384', 'sha1', 'md5'
 
-    [Example Use]
+    [Example: Usage]
 
-    Default: createfilehash('path/to/src_filename', 'path/to/dst_hash_filename')
-    Hash only, no file: hash_data = createfilehash('path/to/filename', False)
+    createfilehash('path/to/src_filename', 'path/to/dst_hash_filename')
 
     This is using the hashlib library shipped with the python standard library. For more
     information on hashlib, visit: https://docs.python.org/3/library/hashlib.html
+
+    Maci docs: https://docs.macilib.org
     """
 
 def comparefilehash(file_to_hash: str, stored_hash_file: str, hash_algorithm: str='sha256', *, encoding: _Union[str, None]=None) -> bool:
     """
-    Compares hash of any file by importing the previously stored hash file data from using "createfilehash"
+    Compares a hash of any file by comparing the previously created file with hash data stored from using the "createfilehash" partner function
 
     Returns a bool if the hash does/doesn't match
 
-    Enter file locations as str
+    [Partner Functions]
+
+    createfilehash: creates the initial hash file data to compare against
 
     [Options]
 
-    hash_algorithm: Already set to default of 'sha256'. Supported options: 'sha256', 'sha512', 'sha384', 'sha1', 'md5'
+    hash_algorithm: Default is 'sha256' - Other options: 'sha512', 'sha384', 'sha1', 'md5'
 
-    [Example Use]
+    [Example: Usage]
     
     comparefilehash('path/to/src_filename', 'path/to/src_hash_filename')
 
     This is using the hashlib library shipped with the python standard library. For more
     information on hashlib, visit: https://docs.python.org/3/library/hashlib.html
+
+    Maci docs: https://docs.macilib.org
     """
 
 def createhash(data_to_hash: _Union[str, bytes, int, _List[int], _Tuple[int], _Set[int], range, bool], hash_algorithm: str='sha256', *, encoding: str='utf-8') -> str:
     """
     Creates a hash of the provided data
 
-    Returns a str of the hash in hex. Assign the output to var
+    Returns a str of the hash in hex
 
     [Options]
 
-    hash_algorithm: Default is 'sha256'. Supported options: 'sha256', 'sha512', 'sha384', 'sha1', 'md5'
+    hash_algorithm: Default is 'sha256' - Other options: 'sha512', 'sha384', 'sha1', 'md5'
 
-    [Example Use]
+    [Example: Usage]
 
-    createhash('data')
+    var = createhash('data')
 
     This is using the hashlib library shipped with the python standard library. For more
     information on hashlib, visit: https://docs.python.org/3/library/hashlib.html
+
+    Maci docs: https://docs.macilib.org
     """
 
 
