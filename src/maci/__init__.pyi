@@ -33,111 +33,102 @@ from . import hint
 ### Native Lib ###
 def load(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=None, _ignore_maci_attr_check: bool=False) -> _Optional[_MaciDataObj]:
     """
-    Loads saved python data from any text file.
+    Loads maci (pythonic) data from a file
 
-    Returns a class of attributes. Assign the output to var
-
-    Enter file location as str to Load.
-
-    Accepted data types: str, int, float, bool, list, dict, tuple, set, nonetype, bytes, datetime
-
-    Returns None if file empty
+    Returns a MaciDataObj with maci features
 
     [Example: Usage]
-    load('filename.data' or 'path/to/filename.data')
 
-    [Warning]
-    Turning OFF 'attr_name_dedup' is not recommended as you gain the ability to overwrite
-    your attribute names that already preexist. This also may affect MaciDataObj behavior
-    including the ability to overwrite internal dunder names. This feature is meant to protect you from accidentally
+    load('path/to/filename.any')
+
+    [Warning] Turning OFF 'attr_name_dedup' is not recommended as you gain the ability to overwrite
+    your attribute names that already preexist. This feature is meant to protect you from accidentally
     duplicating an attribute name in a file that has already been created.
+
+    Maci docs: https://docs.macilib.org
     """
 
 def loaddict(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=None) -> _Optional[dict]:
     """
-    Loads pythonic data from any text file
+    Loads maci (pythonic) data from a file
 
-    Returns a dict. Assign the output to var
-
-    Enter file location as str to Load.
-
-    Accepted data types: str, int, float, bool, list, dict, tuple, set, nonetype, bytes, datetime
-
-    Returns None if file empty
+    Returns a dict representing your attributes & data values
 
     [Example: Usage]
-    loaddict('path/to/filename.data')
 
-    [Warning]
-    Turning OFF 'attr_name_dedup' is not recommended as you gain the ability to overwrite
-    your attribute names that already preexist. This also may affect MaciDataObj behavior
-    including the ability to overwrite internal dunder names. This feature is meant to protect you from accidentally
+    loaddict('path/to/filename.any')
+
+    [Warning] Turning OFF 'attr_name_dedup' is not recommended as you gain the ability to overwrite
+    your attribute names that already preexist. This feature is meant to protect you from accidentally
     duplicating an attribute name in a file that has already been created.
+
+    Maci docs: https://docs.macilib.org
     """
 
 def loadstr(maci_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[_MaciDataObj]:
     """
-    Loads python data from a string.
+    Loads maci (pythonic) data from a string
 
-    Returns a class of attributes. Assign the output to var
-
-    Enter python data string as str to Load.
-
-    Accepted data types: str, int, float, bool, list, dict, tuple, set, nonetype, bytes, datetime
-
-    Returns None if empty
+    Returns a MaciDataObj with maci features
 
     [Example: Usage]
 
-    loadstr("data1 = 'value1'\\ndata2 = "value2")
+    loadstr('string with maci data')
+
+    [Warning] Turning OFF 'attr_name_dedup' is not recommended as you gain the ability to overwrite
+    your attribute names that already preexist. This feature is meant to protect you from accidentally
+    duplicating an attribute name in a string that has already been created.
+
+    Maci docs: https://docs.macilib.org
     """
 
 def loadstrdict(maci_str_data: str, *, attr_name_dedup: bool=True) -> dict:
     """
-    Loads pythonic data from a string.
+    Loads maci (pythonic) data from a string
 
-    Returns a dict. Assign the output to var
-
-    Enter pythonic data string as str to Load.
-
-    Accepted data types: str, int, float, bool, list, dict, tuple, set, nonetype, bytes, datetime
-
-    Returns None if empty
+    Returns a dict representing your attributes & data values
 
     [Example: Usage]
 
-    loadstrdict("data1 = 'value1'\\ndata2 = "value2")
+    loadstrdict('string with maci data')
+
+    [Warning] Turning OFF 'attr_name_dedup' is not recommended as you gain the ability to overwrite
+    your attribute names that already preexist. This feature is meant to protect you from accidentally
+    duplicating an attribute name in a string that has already been created.
+
+    Maci docs: https://docs.macilib.org
     """
 
 def loadraw(filename: str, *, byte_data: bool=False, encoding: _Union[str, None]=None) -> _Union[str, bytes]:
     """
-    Loads any raw data from a file.
+    Loads raw data from a file
 
-    Returns a str. Assign the output to var
+    Returns a str
 
     [Options]
-    byte_data: Set to True if Loading byte data
+
+    byte_data: set to True if loading byte data
 
     [Example: Usage]
 
-    loadraw('path/to/filename')
+    loadraw('path/to/filename.any')
+
+    Maci docs: https://docs.macilib.org
     """
 
 def loadattrs(filename: str, class_object: _CustomClass, *, encoding: _Union[str, None]=None, attr_name_dedup: bool=False, _ignore_maci_attr_check: bool=True) -> None:
     """
-    Load saved attributes from file back into a custom class. This is done in-place
-
-    Enter filename as str, Pass custom class object.
+    Load attribute data from file into a custom class/object. This is done in-place
 
     [Example: Usage]
 
-    loadattrs('path/of/filename', 'class_object')
+    loadattrs('path/of/filename.any', custom_object)
 
-    [Warning]
-    Turning OFF 'attr_name_dedup' is not recommended as you gain the ability to overwrite
-    your attribute names that already preexist. This also may affect MaciDataObj behavior
-    including the ability to overwrite internal dunder names. This feature is meant to protect you from accidentally
+    [Warning] Turning OFF 'attr_name_dedup' is not recommended as you gain the ability to overwrite
+    your attribute names that already preexist. This feature is meant to protect you from accidentally
     duplicating an attribute name in a file that has already been created.
+
+    Maci docs: https://docs.macilib.org
     """
 
 def dump(
