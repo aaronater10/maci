@@ -35,7 +35,7 @@ def load(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=
     """
     Loads maci (pythonic) data from a file
 
-    Returns a MaciDataObj with maci features
+    Returns a 'MaciDataObj' object with maci features
 
     [Example: Usage]
 
@@ -69,7 +69,7 @@ def loadstr(maci_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[_Mac
     """
     Loads maci (pythonic) data from a string
 
-    Returns a MaciDataObj with maci features
+    Returns a 'MaciDataObj' object with maci features
 
     [Example: Usage]
 
@@ -248,7 +248,7 @@ def cleanformat(data: _Union[dict,list,tuple,set], indent_level: int=1) -> str:
 
 def build() -> _MaciDataObj:
     """
-    Returns an empty MaciDataObj object to manually build data with maci features
+    Returns an empty 'MaciDataObj' object to manually build data with maci features
 
     Use attribute assignment as you normally would to build out data
 
