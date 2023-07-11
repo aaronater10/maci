@@ -1,5 +1,14 @@
+# stub file to document public api functions, errors, object types, and doc string comments
 """
-stub file to document public api functions, errors, object types, and doc string comments
+maci - by aaronater10
+
+A Pythonic Configuration Language & Thin Wrapper Library
+
+Version 0.3.0
+
+Tutorials and docs: https://docs.macilib.org
+
+Source: https://github.com/aaronater10/maci
 """
 #########################################################################################################
 # Imports
@@ -171,6 +180,7 @@ def dump(
     indent_level: set indent level for data being list, dict, tuple, or set - Default=1
 
     [Example: Usage]
+
     dump('path/of/filename', data)
 
     Maci docs: https://docs.macilib.org
@@ -276,6 +286,7 @@ def createfilehash(file_to_hash: str, file_to_store_hash: _Union[str,None], hash
     comparefilehash: auto compares hashes from src hash of file with stored hash file data
 
     [Options]
+    
     file_to_store_hash: Set to None if you do not want a file created to store hash. Hash data of the src file is always returned whether or not this is set
 
     hash_algorithm: Default is 'sha256' - Other options: 'sha512', 'sha384', 'sha1', 'md5'

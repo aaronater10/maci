@@ -1,16 +1,13 @@
 """
 maci - by aaronater10
 
+A Pythonic Configuration Language & Thin Wrapper Library
+
 Version 0.3.0
 
-The easy to use library for your data, configuration, and save files.
+Tutorials and docs: https://docs.macilib.org
 
-Import or Export custom, or industry-common, data, config, and save files easily for
-your python program or script!
-
-See tutorials and docs here for more info: https://docs.macilib.org
-
-Source Code: https://github.com/aaronater10/maci
+Source: https://github.com/aaronater10/maci
 """
 __version__ = '0.3.0'
 

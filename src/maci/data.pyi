@@ -1,6 +1,4 @@
-"""
-stub file to document public api class and methods types, and doc string comments
-"""
+# stub file to document public api class and methods types, and doc string comments
 #########################################################################################################
 # Imports
 from typing import Any as _Any
