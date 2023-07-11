@@ -14,6 +14,9 @@ from typing import NewType as _NewType
 # Stub data: Classes
 
 class MaciDataObj:
+    """
+    maci data object
+    """
     def __init__(
         self,
         filename: str,
@@ -39,109 +42,114 @@ class MaciDataObj:
         
     def lock_attr(self, attr_name: str) -> None:
         """
-        Lock's an attribute name from re-assignment
+        Lock's an attribute name from re-assignment. Can be unlocked
+
+        [Partner Functions]
+
+        unlock_attr: unlocks an attribute from being locked
         """
         
     def unlock_attr(self, attr_name: str) -> None:
         """
-        Unlocks a attribute name from locked re-assignment
+        Unlocks an attribute name that is locked from re-assignment
         """
         
     def map_attr(self, child_attr: str, parent_attr: str) -> None:
         """
-        Create a link of an attribute name to another attribute name
+        Map an attribute name to another attribute name to follow its value
 
-        This will auto assign/track the value of the parent attr to the child attr
+        This works similar to the concept of a pointer, and references
+        the parent attr value it is mapped to. It also maintains reference to the same object in memory naturally
+        from python's inherent optimization design
 
-        Useful to maintain references and follow values of other attributes. Similar
-        to the concept of a pointer.
+        [Partner Functions]
+
+        unmap_attr: unmaps a child attr from being mapped to a parent attr. If parent, unmaps all children
+
+        [Note]
+
+        Re-assignment: If a child attr is re-assigned to another value or attr, it will release its map to the current parent attr
+
+        Locked: If a child attr is locked, and the parent attr changes its value, the parent attr value will change,
+        but the child attr value will not change and throw an exception
+
         """
         
     def unmap_attr(self, attr_name: str) -> None:
         """
-        Unlink an attribute name from another attribute name
+        Unmap a child attribute name from a parent attribute name
 
-        This will detach the link between the child attr and parent attr
+        This will release the map between the child attr and parent attr
 
-        If it is a parent attr, all child links will be detached from that parent
+        If a parent attr is specified, all child maps will be detached from that parent
         """
-        
+
     def is_parent_map(self, attr_name: str) -> bool:
         """
-        Check if attr is a parent link
+        Check if attr is a parent mapped with children
 
         Returns: True if Parent, and False if not
         """
         
     def is_child_map(self, attr_name: str) -> bool:
         """
-        Check if attr is a child link
+        Check if attr is a child mapped to a parent
 
         Returns: True if Child, and False if not
         """
 
     def get_locked_list(self) -> _List[str]:
         """
-        General locked list
-
         Returns a copy of the current list of locked attributes
         """
         
     def get_hard_locked_list(self) -> _List[str]:
         """
-        Hard locked list
-
-        Returns a new list of the current hard locked attributes
+        Returns a copy of the current list of hard locked attributes
         """
         
     def get_all_maps(self) -> _Dict[str, _Dict[str, _Any]]:
         """
-        Get all Parent and Child Links
+        Returns a new dict of the current parent and child reference maps
 
-        Returns a new dict of the current parent and child link reference maps
+        [Example: Map Structure]
 
-        [Example Map Structure]
+        {
+        
+        'parent_maps': {'attr_parent1': {'attr_child1': 'attr_parent1'}},
 
-        attr_parent = 'some value'
-
-        attr_child == attr_parent
-
-        Parent map will be -> 'parent_map': {'attr_parent': {'attr_child': 'attr_parent'}}
-
-        Child map will be -> 'child_map': {'attr_child': 'attr_parent'}
+        'child_maps': {'attr_child1': 'attr_parent1'}
+        
+        }
         """
         
     def get_parent_maps(self) -> _Dict[str, _Dict[str, str]]:
         """
-        Get all Parent Links
+        Returns a new dict of the current parent reference maps
 
-        Returns a new dict of the current parent link reference map
+        [Example: Map Structure]
 
-        [Example Map Structure]
-
-        attr_parent = 'some value'
-
-        attr_child == attr_parent
-
-        Parent map will be -> {'attr_parent': {'attr_child': 'attr_parent'}}
+        {'attr_parent1': {'attr_child1': 'attr_parent1'}, 'attr_parent2': {'attr_child2': 'attr_parent2'}}
         """
         
     def get_parent_map_chains(self, parent_attr: _Optional[str]=None, *, dup_link_check: bool=True) -> _Union[_Dict[str, _List[str]], _List[str]]:
         """
-        Get Parent Map Chains
-
-        Builds and returns a new dict or list of attr name chains that are currently linked together by interconnected children with
+        Builds a unique chain like structure of attr names that are currently linked or chained together by interconnected children with
         the very top chain link being their parent
 
-        Chains are represented as a list with the parent being first and the children to follow
-        
-        Represented chains are built from scratch each time this method is called
+        Actual chains are represented as a list with the parent being first and the children to follow
+
+        Chains are built from scratch each time this is called
+
+        [Example: Chain Structure]
+
+        Parent not specified: {'attr_parent': ['attr_parent', 'attr_child1', 'attr_child2', 'attr_child3']}
+
+        Parent specified: ['attr_parent', 'attr_child1', 'attr_child2', 'attr_child3']
 
         [Options]
 
-        parent_attr: Optional - if specified, gets the chain of the parent name that currently has a chain. returns a list
-
-        dup_link_check: Default=True - Protects against duplicate links to the parent. If disabled and a duplicate is found, it 
+        dup_link_check: Default=True - Protects against duplicate links being built to the parent. If disabled and a duplicate is found, it 
         will still return chain(s), but will cut the chain's previous links to the parent and only continue the chain from the
         last reference to the parent and retain any chain links following the last reference (see note below to clear any concerns).
         
@@ -149,30 +157,15 @@ class MaciDataObj:
         of the attributes linked together in the form of a chain for your reference to help understand what attribute names are connected to each other.
         The true linking is controlled by other mechs, and any real duplicate links are not affected as that is acceptable behavior.
 
-        [Example Chain Structure]
-
-        attr_parent = 'some value'
-
-        attr_child1 == attr_parent
-
-        attr_child2 == attr_child1
-
-        Parent chain will be -> {'attr_parent': ['attr_parent', 'attr_child1', 'attr_child2']}
         """
         
     def get_child_maps(self) -> _Dict[str, str]:
         """
-        Get all Child Links
+        Returns a new dict of the current child reference maps
 
-        Returns a new dict of the current child link reference map
+        [Example: Map Structure]
 
-        [Example Map Structure]
-
-        attr_parent = 'some value'
-
-        attr_child == attr_parent
-
-        Child map will be -> {'attr_child': 'attr_parent'}
+        {'attr_child1': 'attr_parent1', 'attr_child2': 'attr_parent1'}
         """
 
 
