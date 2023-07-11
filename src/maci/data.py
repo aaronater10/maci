@@ -261,8 +261,7 @@ class _MaciDataObjConstructor:
 
 
         # Main File/Str Loop
-        # To display correct line number, ensure to add +1 when ready to raise. Keeping
-        # constant +1 track will add latency to loop, so only provide as needed
+        # To display correct line number start=1
         for line_num,__file_data_line in enumerate(file_data, start=1):
 
             # Set Skip Marker
@@ -350,7 +349,8 @@ class _MaciDataObjConstructor:
                 if __current_assignment_glyph in _assignment_glyphs_for_all_ref_checks:
                     is_attr_reference_glyph = True
 
-                # START BUILD: Check if value in file line is only Start Marker. Check if Multiline or Single Line
+                
+                ### START BUILD: Check if value in file line is only Start Marker. Check if Multiline or Single Line
                 if (__value_token_multi in __start_markers) \
                 and ((__last_token in __start_markers) or (__start_skip_token[0] in __skip_markers)) \
                 and (__is_building_data_sw == False) \
@@ -383,7 +383,7 @@ class _MaciDataObjConstructor:
                         __end_markers_build = __end_multistr_markers
                     continue
 
-                # END BUILD: Check if line of file is an End Data Build Marker. Import Built Data Type if Valid. Check if EOF in case File Missing End Marker.
+                ### END BUILD: Check if line of file is an End Data Build Marker. Import Built Data Type if Valid. Check if EOF in case File Missing End Marker.
                 elif (__end_data_build_sw) and (((__end_token in __end_markers_build) and (not __end_token == __ignore_multistr_marker)) or (f"{__eof_marker}" == f"{__file_data_line}")):
                     __build_data += f"\n{__file_data_line}"
 
@@ -409,11 +409,12 @@ class _MaciDataObjConstructor:
                     __end_markers_build = __end_markers
                     continue
 
-                # CONT BUILD: Continue to Build Data
+                ### CONT BUILD: Continue to Build Data
                 elif __body_build_data_sw:
                     __build_data += f"\n{__file_data_line}"
                     
-                # IMPORT SINGLE LINE VALUES: If not multiline, assume single
+                
+                ### IMPORT SINGLE LINE VALUES: If not multiline, assume single
                 else:
                     try:
                         # Check if Attr Dedup
