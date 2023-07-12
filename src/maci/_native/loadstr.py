@@ -5,6 +5,7 @@ from typing import Any as _Any
 from typing import Optional as _Optional
 from ..error import LoadStr, Load
 from ..data import MaciDataObj as _MaciDataObj
+from .build import build as _build
 
 #########################################################################################################
 # Import py Data from String
@@ -18,7 +19,7 @@ def loadstr(maci_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[_Mac
 
     Accepted data types: str, int, float, bool, list, dict, tuple, set, nonetype, bytes, datetime
 
-    Returns None if empty
+    Returns empty object if string empty
 
     [Example Use]
 
@@ -32,7 +33,7 @@ def loadstr(maci_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[_Mac
     if not isinstance(attr_name_dedup, bool): raise LoadStr(err_msg_type_attr_name_dedup, f'\nGot: {repr(attr_name_dedup)}')
 
     # Check if string empty. Returns None if empty
-    if maci_str_data.strip() == '': return None
+    if maci_str_data.strip() == '': return _build()
 
     # Syntax/Usage Error Messages
     __err_messages: _Any = {  # ignore type checker

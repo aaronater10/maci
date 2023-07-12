@@ -43,7 +43,7 @@ def loaddict(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[s
     # Check if file empty. Returns None if empty
     try:
         if _path.getsize(filename) == 0:
-            return None
+            return dict()
     except (FileNotFoundError, OSError) as __err_msg: raise LoadDict(__err_msg, f'\nGot: {repr(filename)}')
 
     # Syntax/Usage Error Messages

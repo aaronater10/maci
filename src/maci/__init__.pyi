@@ -40,11 +40,11 @@ from . import hint
 # Stub data: Functions
 
 ### Native Lib ###
-def load(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=None, _ignore_maci_attr_check: bool=False) -> _Optional[_MaciDataObj]:
+def load(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=None, _ignore_maci_attr_check: bool=False) -> _MaciDataObj:
     """
     Loads maci (pythonic) data from a file
 
-    Returns a 'MaciDataObj' object with maci features. Returns None if file empty
+    Returns a 'MaciDataObj' object with maci features. Returns empty object if file empty
 
     [Example: Usage]
 
@@ -57,11 +57,11 @@ def load(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=
     Maci docs: https://docs.macilib.org
     """
 
-def loaddict(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=None) -> _Optional[dict]:
+def loaddict(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=None) -> dict:
     """
     Loads maci (pythonic) data from a file
 
-    Returns a dict representing your attributes & data values. Returns None if file empty
+    Returns a dict representing your attributes & data values. Returns empty dict if file empty
 
     [Example: Usage]
 
@@ -74,11 +74,11 @@ def loaddict(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[s
     Maci docs: https://docs.macilib.org
     """
 
-def loadstr(maci_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[_MaciDataObj]:
+def loadstr(maci_str_data: str, *, attr_name_dedup: bool=True) -> _MaciDataObj:
     """
     Loads maci (pythonic) data from a string
 
-    Returns a 'MaciDataObj' object with maci features. Returns None if string empty
+    Returns a 'MaciDataObj' object with maci features. Returns empty object if string empty
 
     [Example: Usage]
 
@@ -91,11 +91,11 @@ def loadstr(maci_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[_Mac
     Maci docs: https://docs.macilib.org
     """
 
-def loadstrdict(maci_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[dict]:
+def loadstrdict(maci_str_data: str, *, attr_name_dedup: bool=True) -> dict:
     """
     Loads maci (pythonic) data from a string
 
-    Returns a dict representing your attributes & data values. Returns None if string empty
+    Returns a dict representing your attributes & data values. Returns empty dict if string empty
 
     [Example: Usage]
 
@@ -112,7 +112,7 @@ def loadraw(filename: str, *, byte_data: bool=False, encoding: _Union[str, None]
     """
     Loads raw data from a file
 
-    Returns a str
+    Returns a str or bytes. Returns empty string if file truly empty. Returns any whitespace if found in file
 
     [Options]
 

@@ -6,10 +6,11 @@ from typing import Any as _Any
 from typing import Optional as _Optional
 from ..error import Load, GeneralError
 from ..data import MaciDataObj as _MaciDataObj
+from .build import build as _build
 
 #########################################################################################################
 # Import py Data from File
-def load(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=None, _ignore_maci_attr_check: bool=False) -> _Optional[_MaciDataObj]:
+def load(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=None, _ignore_maci_attr_check: bool=False) -> _MaciDataObj:
     """
     Imports saved python data from any text file.
 
@@ -19,7 +20,7 @@ def load(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=
 
     Accepted data types: str, int, float, bool, list, dict, tuple, set, nonetype, bytes, datetime
 
-    Returns None if file empty
+    Returns empty object if file empty
 
     [Example Use]
     load('filename.data' or 'path/to/filename.data')
@@ -44,7 +45,7 @@ def load(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=
     # Check if file empty. Returns None if empty
     try:
         if _path.getsize(filename) == 0:
-            return None
+            return _build()
     except (FileNotFoundError, OSError) as __err_msg: raise Load(__err_msg, f'\nGot: {repr(filename)}')
 
     # Syntax/Usage Error Messages
