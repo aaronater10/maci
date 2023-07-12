@@ -3,12 +3,13 @@
 # Imports
 from copy import deepcopy as _deepcopy
 from typing import Any as _Any
+from typing import Optional as _Optional
 from ..error import LoadStrDict, Load
 from ..data import MaciDataObj as _MaciDataObj
 
 #########################################################################################################
 # Import py Data from String
-def loadstrdict(maci_str_data: str, *, attr_name_dedup: bool=True) -> dict:
+def loadstrdict(maci_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[dict]:
     """
     Imports pythonic data from a string.
 
@@ -30,6 +31,9 @@ def loadstrdict(maci_str_data: str, *, attr_name_dedup: bool=True) -> dict:
 
     if not isinstance(maci_str_data, str): raise LoadStrDict(err_msg_type_maci_str_data, f'\nGot: {repr(maci_str_data)}')
     if not isinstance(attr_name_dedup, bool): raise LoadStrDict(err_msg_type_attr_name_dedup, f'\nGot: {repr(attr_name_dedup)}')
+
+    # Check if string empty. Returns None if empty
+    if maci_str_data.strip() == '': return None
 
     # Syntax/Usage Error Messages
     __err_messages: _Any = {  # ignore type checker

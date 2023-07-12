@@ -8,6 +8,17 @@ test_file_path = './tests/test_files/native/builddata_files/'
 file_delay_timer = 0.25
 
 ################################################################
+'''
+NOTICE:
+- Any new tests must not use the unittest class and instead use the pytest framework if needed.
+- Add new tests below the "TestBuildData" class
+- Old tests are still being used/kept to reference consistent functionality
+- Ensure to still continue to number tests in order, or what makes sense for the type of test category
+'''
+################################################################
+
+
+################################################################
 # TESTS
 
 class TestBuildData(unittest.TestCase):
@@ -148,3 +159,23 @@ class TestBuildData(unittest.TestCase):
         time.sleep(file_delay_timer)
         try: remove(filepath)
         except: pass
+
+### END OF OLD TESTS ###
+################################################################
+# SEE AT TOP ABOVE FOR THIS
+################################################################
+### NEW TESTS BELOW ###
+
+# 3. Test MaciDataObj Bool from Empty or With Data
+def test_build_data_maciobj_bool():
+    # Build Data
+    maci_data = maci.build()
+
+    # Tests
+    
+    # Empty Object
+    assert bool(maci_data) == False
+
+    # Object has data
+    maci_data.data_str = 'data'
+    assert bool(maci_data) == True
