@@ -24,7 +24,7 @@ from configparser import ConfigParser as _ConfigParser
 from xml.etree.ElementTree import ElementTree as _ElementTree
 from xml.etree.ElementTree import Element as _Element
 from .hint import MaciDataObj as _MaciDataObj
-from .hint import __CustomClass as _CustomClass
+from .hint import __ClassObject as _ClassObject
 
 #########################################################################################################
 # Stub data: Exceptions, Hints
@@ -44,7 +44,7 @@ def load(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=
     """
     Loads maci (pythonic) data from a file
 
-    Returns a 'MaciDataObj' object with maci features
+    Returns a 'MaciDataObj' object with maci features. Returns None if file empty
 
     [Example: Usage]
 
@@ -61,7 +61,7 @@ def loaddict(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[s
     """
     Loads maci (pythonic) data from a file
 
-    Returns a dict representing your attributes & data values
+    Returns a dict representing your attributes & data values. Returns None if file empty
 
     [Example: Usage]
 
@@ -78,7 +78,7 @@ def loadstr(maci_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[_Mac
     """
     Loads maci (pythonic) data from a string
 
-    Returns a 'MaciDataObj' object with maci features
+    Returns a 'MaciDataObj' object with maci features. Returns None if string empty
 
     [Example: Usage]
 
@@ -91,11 +91,11 @@ def loadstr(maci_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[_Mac
     Maci docs: https://docs.macilib.org
     """
 
-def loadstrdict(maci_str_data: str, *, attr_name_dedup: bool=True) -> dict:
+def loadstrdict(maci_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[dict]:
     """
     Loads maci (pythonic) data from a string
 
-    Returns a dict representing your attributes & data values
+    Returns a dict representing your attributes & data values. Returns None if string empty
 
     [Example: Usage]
 
@@ -125,7 +125,7 @@ def loadraw(filename: str, *, byte_data: bool=False, encoding: _Union[str, None]
     Maci docs: https://docs.macilib.org
     """
 
-def loadattrs(filename: str, class_object: _CustomClass, *, encoding: _Union[str, None]=None, attr_name_dedup: bool=False, _ignore_maci_attr_check: bool=True) -> None:
+def loadattrs(filename: str, class_object: _ClassObject, *, encoding: _Union[str, None]=None, attr_name_dedup: bool=False, _ignore_maci_attr_check: bool=True) -> None:
     """
     Load attribute data from file into a custom class/object. This is done in-place
 
@@ -142,7 +142,7 @@ def loadattrs(filename: str, class_object: _CustomClass, *, encoding: _Union[str
 
 def dump(
     filename: str, 
-    data: _Union['_MaciDataObj', dict, _CustomClass], 
+    data: _Union['_MaciDataObj', dict, _ClassObject], 
     *,
     append: bool=False,
     indent_level: int=1,
@@ -187,7 +187,7 @@ def dump(
     """
 
 def dumpstr(
-    data: _Union['_MaciDataObj', dict, _CustomClass], 
+    data: _Union['_MaciDataObj', dict, _ClassObject], 
     *,
     indent_level: int=1,
     indentation_on: bool=True,

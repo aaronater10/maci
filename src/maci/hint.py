@@ -5,7 +5,7 @@ Contains maci and other objects for type hints
 
 # Native
 from .data import MaciDataObj
-from .data import CustomClass as __CustomClass # for type check param hints
+from .data import ClassObject as __ClassObject # for type check param hints
 
 # INI
 from configparser import ConfigParser

@@ -7,16 +7,13 @@ from typing import Any as _Any
 from ..error import Dump
 from ..data import __dump_data
 from ..data import MaciDataObj as _MaciDataObj
+from ..hint import __ClassObject
 
 #########################################################################################################
 # Dump Data to File
-
-# Hinting reference name for "CustomClass" to denote a CustomClass can be used to dump data
-CustomClass = _NewType('CustomClass', object)
-
 def dump(
     filename: str, 
-    data: _Union['_MaciDataObj', dict, CustomClass], 
+    data: _Union['_MaciDataObj', dict, __ClassObject], 
     *,
     append: bool=False,
     indent_level: int=1,
@@ -63,7 +60,7 @@ def dump(
     """
     # Error Checks & Messages
     err_msg_type_filename = "Only str is allowed for 'filename'"
-    err_msg_type_data = "Only MaciDataObj|dict|CustomClass is allowed for 'data'"
+    err_msg_type_data = "Only MaciDataObj|dict|custom ClassObject is allowed for 'data'"
     err_msg_type_append = "Only bool is allowed for 'append'"
     err_msg_type_indent_level = "Only int is allowed for 'indent_level'"
     err_msg_type_indentation_on = "Only bool is allowed for 'indentation_on'"

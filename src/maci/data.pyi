@@ -6,7 +6,7 @@ from typing import Dict as _Dict
 from typing import List as _List
 from typing import Union as _Union
 from typing import Optional as _Optional
-from typing import NewType as _NewType
+from typing import TypeVar as _TypeVar
 
 #########################################################################################################
 # Stub data: Classes
@@ -170,14 +170,14 @@ class MaciDataObj:
 #########################################################################################################
 # Stub data: Functions
 
-# Hinting reference name for "CustomClass" to denote a CustomClass can be used to dump data
-CustomClass = _NewType('CustomClass', object)
+# Hinting reference name for "ClassObject" to denote a ClassObject can be used to dump data
+ClassObject = _TypeVar('ClassObject')
 
 def __dump_data(
     *,
     _is_string_request: bool=False,
     filename: str,
-    data: _Any, # objects allowed: MaciDataObj, dict, CustomClass - ignoring type checker
+    data: _Any, # objects allowed: MaciDataObj, dict, ClassObject - ignoring type checker
     append: bool=False,
     indent_level: int=1,
     indentation_on: bool=True,

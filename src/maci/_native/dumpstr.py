@@ -8,15 +8,12 @@ from typing import Optional as _Optional
 from ..error import DumpStr
 from ..data import __dump_data
 from ..data import MaciDataObj as _MaciDataObj
+from ..hint import __ClassObject
 
 #########################################################################################################
 # Dump Data to String
-
-# Hinting reference name for "CustomClass" to denote a CustomClass can be used to dump data
-CustomClass = _NewType('CustomClass', object)
-
 def dumpstr(
-    data: _Union['_MaciDataObj', dict, CustomClass], 
+    data: _Union['_MaciDataObj', dict, __ClassObject], 
     *,
     indent_level: int=1,
     indentation_on: bool=True,
@@ -56,7 +53,7 @@ def dumpstr(
     # Error Checks
     err_msg_type_indent_level = "Only int is allowed for 'indent_level'"
     err_msg_type_indentation_on = "Only bool is allowed for 'indentation_on'"
-    err_msg_type_data = "Only MaciDataObj|dict|CustomClass is allowed for 'data'"
+    err_msg_type_data = "Only MaciDataObj|dict|custom ClassObject is allowed for 'data'"
     err_msg_type_indent_level = "Only int is allowed for 'indent_level'"
     err_msg_type_indentation_on = "Only bool is allowed for 'indentation_on'"
     err_msg_type_multi_line_str = "Only bool is allowed for 'multi_line_str'"

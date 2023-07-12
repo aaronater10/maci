@@ -19,7 +19,7 @@ from typing import Callable as _Callable
 from .error import Load, GeneralError, Hint
 # Dump Function
 from io import StringIO as _StringIO
-from typing import NewType as _NewType
+from typing import TypeVar as _TypeVar
 from ._native.dumpraw import dumpraw as _dumpraw
 from ._native.cleanformat import cleanformat as _cleanformat
 from .error import Dump, DumpRaw, DumpStr
@@ -1029,14 +1029,14 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
 #########################################################################################################
 # Main Dump Function
 
-# Hinting reference name for "CustomClass" to denote a CustomClass can be used to dump data
-CustomClass = _NewType('CustomClass', object)
+# Hinting reference name for "ClassObject" to denote a ClassObject can be used to dump data
+ClassObject = _TypeVar('ClassObject')
 
 def __dump_data(
     *,
     _is_string_request: bool=False,
     filename: str,
-    data: _Any, # objects allowed: MaciDataObj, dict, CustomClass - ignoring type checker
+    data: _Any, # objects allowed: MaciDataObj, dict, ClassObject - ignoring type checker
     append: bool=False,
     indent_level: int=1,
     indentation_on: bool=True,

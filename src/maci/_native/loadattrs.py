@@ -6,14 +6,11 @@ from typing import Union as _Union
 from ..error import LoadAttrs, Load
 from .load import load as _load
 from ..data import MaciDataObj as _MaciDataObj
+from ..hint import __ClassObject
 
 #########################################################################################################
 # Import Attributes from File
-
-# Hinting reference name for "CustomClass" to denote a CustomClass can be used to dump data
-CustomClass = _NewType('CustomClass', object)
-
-def loadattrs(filename: str, class_object: CustomClass, *, encoding: _Union[str, None]=None, attr_name_dedup: bool=False, _ignore_maci_attr_check: bool=True) -> None:
+def loadattrs(filename: str, class_object: __ClassObject, *, encoding: _Union[str, None]=None, attr_name_dedup: bool=False, _ignore_maci_attr_check: bool=True) -> None:
     """
     Import saved attributes from file back into a custom class. This is done in-place
 
@@ -31,7 +28,7 @@ def loadattrs(filename: str, class_object: CustomClass, *, encoding: _Union[str,
     """
     # Error Checks
     err_msg_type_filename = "Only str is allowed for 'filename'"
-    err_msg_type_class_obj = "Only a custom class object is allowed for 'class_object'"
+    err_msg_type_class_obj = "Only a custom ClassObject is allowed for 'class_object'"
     err_msg_type_maci_obj = "Please use 'load' function to properly import a 'MaciDataObj' object"
 
     if not isinstance(filename, str): raise LoadAttrs(err_msg_type_filename, f'\nGot: {repr(filename)}')
