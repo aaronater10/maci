@@ -32,7 +32,7 @@ def loadstr(maci_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[_Mac
     if not isinstance(attr_name_dedup, bool): raise LoadStr(err_msg_type_attr_name_dedup, f'\nGot: {repr(attr_name_dedup)}')
 
     # Check if string empty. Returns None if empty
-    if maci_str_data == '': return None
+    if maci_str_data.strip() == '': return None
 
     # Syntax/Usage Error Messages
     __err_messages: _Any = {  # ignore type checker
