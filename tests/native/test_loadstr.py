@@ -19,7 +19,7 @@ def test1_loadstr_empty_str_import():
     
     # Test File is Empty and Data
     assert path.getsize(filepath) == 0, f"File Not Empty: {filename}"
-    assert str_import == None, f"Not None {filename}"
+    assert bool(str_import) == False, f"Not None {filename}"
 
 
 # 2. Single Line Import - Importing Singles Lines of All Primitive Data Types
@@ -521,3 +521,17 @@ def test22_loadstr_date_time_syntax():
     assert isinstance(str_import.custom_time_date, datetime) and str(str_import.custom_time_date) == "2023-03-13 22:06:00"
     assert isinstance(str_import.custom_timem_date, datetime) and str(str_import.custom_timem_date) == "2023-03-13 22:06:00.500000"
     assert isinstance(str_import.date_time_iso8601, datetime) and str(str_import.date_time_iso8601) == "2023-03-13 22:06:00"
+
+
+# 23. Check if Error Raised on Leading Blank with Name after for Bad Syntax
+def test23_python_leading_blank_syntax():
+    # Tests
+    with pytest.raises(maci.error.LoadStr):
+        maci.loadstr(' data_str = "data"')
+
+
+# 24. Check if Error Raised on Last Line Has no End Bracket for Multi-Line for Bad Syntax
+def test24_python_multi_line_last_line_no_end_syntax():
+    # Tests
+    with pytest.raises(maci.error.LoadStr):
+        maci.loadstr("data_list = [")

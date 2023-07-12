@@ -34,16 +34,16 @@ def createfilehash(file_to_hash: str, file_to_store_hash: _Union[str,None], hash
     ALGO_OPTIONS = ('sha256', 'sha512', 'sha384', 'sha1', 'md5')
 
     # Error checks
-    _err_msg_str_file_src = f"Only str is allowed for file_to_hash"
-    _err_msg_file_dst = f"Only str|None is allowed for file_to_store_hash"
-    _err_msg_str_hash = f"Only str is allowed for hash_algorithm"
-    _err_msg_hash = f"Invalid or no hash option chosen for hash_algorithm"
+    err_msg_str_file_src = f"Only str is allowed for 'file_to_hash'"
+    err_msg_file_dst = f"Only str|None is allowed for 'file_to_store_hash'"
+    err_msg_str_hash = f"Only str is allowed for 'hash_algorithm'"
+    err_msg_hash = f"Invalid or no hash option chosen for 'hash_algorithm'"
     err_msg_str_encoding = f"Only str|None or valid option is allowed for 'encoding'"
 
-    if not isinstance(file_to_hash, str): raise CreateFileHash(_err_msg_str_file_src, f'"{file_to_hash}"')
-    if not isinstance(file_to_store_hash, (str, type(None))): raise CreateFileHash(_err_msg_file_dst, f'"{file_to_store_hash}"')
-    if not isinstance(hash_algorithm, str): raise CreateFileHash(_err_msg_str_hash, f'"{hash_algorithm}"')
-    if not hash_algorithm in ALGO_OPTIONS: raise CreateFileHash(_err_msg_hash, f'"{hash_algorithm}"')
+    if not isinstance(file_to_hash, str): raise CreateFileHash(err_msg_str_file_src, f'"{file_to_hash}"')
+    if not isinstance(file_to_store_hash, (str, type(None))): raise CreateFileHash(err_msg_file_dst, f'"{file_to_store_hash}"')
+    if not isinstance(hash_algorithm, str): raise CreateFileHash(err_msg_str_hash, f'"{hash_algorithm}"')
+    if not hash_algorithm in ALGO_OPTIONS: raise CreateFileHash(err_msg_hash, f'"{hash_algorithm}"')
     if not isinstance(encoding, (str, type(None))): raise CreateFileHash(err_msg_str_encoding, f'\nGot: {repr(encoding)}')
 
     # Generate Hash Type
@@ -51,8 +51,8 @@ def createfilehash(file_to_hash: str, file_to_store_hash: _Union[str,None], hash
     if hash_algorithm == ALGO_OPTIONS[0]: _hash_type = _hashlib.sha256() # sha256
     if hash_algorithm == ALGO_OPTIONS[1]: _hash_type = _hashlib.sha512() # sha512
     if hash_algorithm == ALGO_OPTIONS[2]: _hash_type = _hashlib.sha384() # sha384
-    if hash_algorithm == ALGO_OPTIONS[3]: _hash_type = _hashlib.sha1() # sha1
-    if hash_algorithm == ALGO_OPTIONS[4]: _hash_type = _hashlib.md5() # md5
+    if hash_algorithm == ALGO_OPTIONS[3]: _hash_type = _hashlib.sha1() # sha1  # nosec: B303, B324  # ignore sec checker - up to dev discretion
+    if hash_algorithm == ALGO_OPTIONS[4]: _hash_type = _hashlib.md5() # md5  # nosec: B303, B324  # ignore sec checker - up to dev discretion
 
     # Read source file data and update hash
     _readbytes: _Any  # ignore type checker

@@ -1,6 +1,6 @@
-# error - Contains exception names and handling
+# error - Contains maci and other exception names for handling
 """
-Contains exception names for handling
+Contains maci and other exception names for handling
 """
 from typing import Any as _Any
 

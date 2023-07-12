@@ -1,12 +1,12 @@
 # cleanformat
 #########################################################################################################
 # Imports
-from typing import Union as __Union
+from typing import Union as _Union
 from ..error import CleanFormat
 
 #########################################################################################################
 # Format/Prep Dictionary, List, Tuple, or Set Data for Export
-def cleanformat(data: __Union[dict,list,tuple,set], indent_level: int=1) -> str:
+def cleanformat(data: _Union[dict,list,tuple,set], indent_level: int=1) -> str:
     """
     Formats a (single) dictionary, list, tuple, or set, to have a clean multiline output for exporting to a file.
 
@@ -22,45 +22,45 @@ def cleanformat(data: __Union[dict,list,tuple,set], indent_level: int=1) -> str:
     
     var = cleanformat(data)
     """
-    __err_type = "Only dict|list|tuple|set is allowed for 'data'"
-    __err_indent = "Only int is allowed for 'indent_level'"
+    err_type = "Only dict|list|tuple|set is allowed for 'data'"
+    err_indent = "Only int is allowed for 'indent_level'"
 
     # Error Checks, Set indent level
     if not isinstance(indent_level, int):
-        raise CleanFormat(__err_indent, f'\nGot: {repr(indent_level)}')
+        raise CleanFormat(err_indent, f'\nGot: {repr(indent_level)}')
     indent_level = '    '*indent_level
 
     if not isinstance(data, (dict,list,tuple,set)):
-        raise CleanFormat(__err_type, f'\nGot: {repr(data)}')
+        raise CleanFormat(err_type, f'\nGot: {repr(data)}')
 
 
     # Format Data Type and Return as str
-    __build_data = ""
+    build_data = ""
 
     # Dict
     if isinstance(data, dict):
         for key,value in data.items():
-            __build_data += f"\n{indent_level}{repr(key)}: {repr(value)},"
-        __build_data = f"{{{__build_data}\n}}"
-        return __build_data
+            build_data += f"\n{indent_level}{repr(key)}: {repr(value)},"
+        build_data = f"{{{build_data}\n}}"
+        return build_data
 
     # List
     if isinstance(data, list):
         for value in data:
-            __build_data += f"\n{indent_level}{repr(value)},"
-        __build_data = f"[{__build_data}\n]"
-        return __build_data
+            build_data += f"\n{indent_level}{repr(value)},"
+        build_data = f"[{build_data}\n]"
+        return build_data
 
     # Tuple
     if isinstance(data, tuple):
         for value in data:
-            __build_data += f"\n{indent_level}{repr(value)},"
-        __build_data = f"({__build_data}\n)"
-        return __build_data
+            build_data += f"\n{indent_level}{repr(value)},"
+        build_data = f"({build_data}\n)"
+        return build_data
 
     # Set
     if isinstance(data, set): # pragma: no branch
         for value in data:
-            __build_data += f"\n{indent_level}{repr(value)},"
-        __build_data = f"{{{__build_data}\n}}"
-        return __build_data
+            build_data += f"\n{indent_level}{repr(value)},"
+        build_data = f"{{{build_data}\n}}"
+        return build_data

@@ -31,16 +31,16 @@ def comparefilehash(file_to_hash: str, stored_hash_file: str, hash_algorithm: st
     ALGO_OPTIONS = ('sha256', 'sha512', 'sha384', 'sha1', 'md5')
 
     # Error checks
-    _err_msg_str_file_src = f"Only str is allowed for file_to_hash"
-    _err_msg_hash_file = f"Only str is allowed for stored_hash_file"
-    _err_msg_str_hash = f"Only str is allowed for hash_algorithm"
-    _err_msg_hash = f"Invalid or no hash option chosen for hash_algorithm"
+    err_msg_str_file_src = f"Only str is allowed for 'file_to_hash'"
+    err_msg_hash_file = f"Only str is allowed for 'stored_hash_file'"
+    err_msg_str_hash = f"Only str is allowed for 'hash_algorithm'"
+    err_msg_hash = f"Invalid or no hash option chosen for 'hash_algorithm'"
     err_msg_str_encoding = f"Only str|None or valid option is allowed for 'encoding'"
 
-    if not isinstance(file_to_hash, str): raise CompareFileHash(_err_msg_str_file_src, f'"{file_to_hash}"')
-    if not isinstance(stored_hash_file, str): raise CompareFileHash(_err_msg_hash_file, f'"{stored_hash_file}"')
-    if not isinstance(hash_algorithm, str): raise CompareFileHash(_err_msg_str_hash, f'"{hash_algorithm}"')
-    if not hash_algorithm in ALGO_OPTIONS: raise CompareFileHash(_err_msg_hash, f'"{hash_algorithm}"')
+    if not isinstance(file_to_hash, str): raise CompareFileHash(err_msg_str_file_src, f'"{file_to_hash}"')
+    if not isinstance(stored_hash_file, str): raise CompareFileHash(err_msg_hash_file, f'"{stored_hash_file}"')
+    if not isinstance(hash_algorithm, str): raise CompareFileHash(err_msg_str_hash, f'"{hash_algorithm}"')
+    if not hash_algorithm in ALGO_OPTIONS: raise CompareFileHash(err_msg_hash, f'"{hash_algorithm}"')
     if not isinstance(encoding, (str, type(None))): raise CompareFileHash(err_msg_str_encoding, f'\nGot: {repr(encoding)}')
 
     # Collect hash data, then return result

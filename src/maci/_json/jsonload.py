@@ -1,13 +1,13 @@
 # jsonload
 #########################################################################################################
 # Imports
-import json as __json
+import json as _json
+from typing import Union as _Union
 from ..error import JsonLoad
-from typing import Union
 
 #########################################################################################################
 # Import json file
-def jsonload(filename: str, *, encoding: Union[str, None]=None) -> Union[list, dict, str, int, float, bool, None]:
+def jsonload(filename: str, *, encoding: _Union[str, None]=None) -> _Union[list, dict, str, int, float, bool, None]:
     """
     Imports json data from a file
 
@@ -33,7 +33,7 @@ def jsonload(filename: str, *, encoding: Union[str, None]=None) -> Union[list, d
     # Import json file
     try:
         with open(filename, 'r', encoding=encoding) as f:
-            return __json.load(f)
-    except (FileNotFoundError, OSError) as __err_msg: raise JsonLoad(__err_msg, f'\nFILE: "{filename}"')
-    except __json.decoder.JSONDecodeError as __err_msg: raise JsonLoad(__err_msg, f'\nFILE: "{filename}"')
+            return _json.load(f)
+    except (FileNotFoundError, OSError) as __err_msg: raise JsonLoad(__err_msg, f'\nGot: {repr(filename)}')
+    except _json.decoder.JSONDecodeError as __err_msg: raise JsonLoad(__err_msg, f'\nGot: {repr(filename)}')
     except LookupError: raise JsonLoad(err_msg_type_encoding, f'\nGot: {repr(encoding)}')

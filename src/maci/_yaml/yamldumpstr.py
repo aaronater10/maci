@@ -1,13 +1,13 @@
 # yamldumpstr
 #########################################################################################################
 # Imports
-from typing import Any as __Any
-import yaml as __yaml
+from typing import Any as _Any
+import yaml as _yaml  # type: ignore  # ignoring type checker for ext lib
 from ..error import YamlDumpStr
 
 #########################################################################################################
 # Export yaml str
-def yamldumpstr(data: __Any) -> str:
+def yamldumpstr(data: _Any) -> str:
     """
     Exports python data type to yaml string
 
@@ -23,5 +23,5 @@ def yamldumpstr(data: __Any) -> str:
     
     """
     # Export data to yaml str
-    try: return __yaml.safe_dump(data, stream=None).rstrip() # Strip trailing \n, yaml parser adds this automatically
-    except __yaml.error.YAMLError as __err_msg: raise YamlDumpStr(__err_msg, f'\nGot: {repr(data)}')
+    try: return _yaml.safe_dump(data, stream=None).rstrip() # Strip trailing \n, yaml parser adds this automatically
+    except _yaml.error.YAMLError as err_msg: raise YamlDumpStr(err_msg, f'\nGot: {repr(data)}')

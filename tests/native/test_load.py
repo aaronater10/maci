@@ -12,7 +12,7 @@ NOTICE:
 - Any new tests must not use the unittest class and instead use the pytest framework if needed.
 - Add new tests below the "TestLoad" class
 - Old tests are still being used/kept to reference consistent functionality
-- Ensure to still continue to number tests in order
+- Ensure to still continue to number tests in order, or what makes sense for the type of test category
 '''
 ################################################################
 
@@ -27,7 +27,7 @@ class TestLoad(unittest.TestCase):
         filename = '1_empty.data'
         filepath = test_file_path + filename
         assert path.getsize(filepath) == 0, f"File Not Empty: {filename}"
-        assert (maci.load(filepath)) == None, f"Not None {filename}"
+        assert bool(maci.load(filepath)) == False, f"Not None {filename}"
 
     # 2. Single Line Import - Importing Singles Lines of All Accepted Data Types
     def test2_single_line_import(self):
@@ -556,6 +556,24 @@ def test24_python_name_syntax():
 # 25. Check if Error Raised on Bad MultiLine Syntax
 def test25_python_multi_line_syntax():
     filepath = test_file_path + '25_python_multi_line_syntax.data'
+
+    # Tests
+    with pytest.raises(maci.error.Load):
+        maci.load(filepath)
+
+
+# 26. Check if Error Raised on Leading Blank with Name after for Bad Syntax
+def test26_python_leading_blank_syntax():
+    filepath = test_file_path + '26_python_leading_blank_syntax.data'
+
+    # Tests
+    with pytest.raises(maci.error.Load):
+        maci.load(filepath)
+
+
+# 27. Check if Error Raised on Last Line Has no End Bracket for Multi-Line for Bad Syntax
+def test27_python_multi_line_last_line_no_end_syntax():
+    filepath = test_file_path + '27_python_multi_line_last_line_no_end_syntax.data'
 
     # Tests
     with pytest.raises(maci.error.Load):

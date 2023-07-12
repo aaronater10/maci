@@ -7,7 +7,7 @@ from ast import literal_eval as _literal_eval
 from datetime import datetime as _datetime
 from datetime import date as _datetime_date
 from datetime import time as _datetime_time
-from copy import deepcopy
+from copy import deepcopy as _deepcopy
 from typing import Any as _Any
 from typing import Dict as _Dict
 from typing import List as _List
@@ -19,7 +19,7 @@ from typing import Callable as _Callable
 from .error import Load, GeneralError, Hint
 # Dump Function
 from io import StringIO as _StringIO
-from typing import NewType as _NewType
+from typing import TypeVar as _TypeVar
 from ._native.dumpraw import dumpraw as _dumpraw
 from ._native.cleanformat import cleanformat as _cleanformat
 from .error import Dump, DumpRaw, DumpStr
@@ -261,13 +261,21 @@ class _MaciDataObjConstructor:
 
 
         # Main File/Str Loop
-        # To display correct line number, ensure to add +1 when ready to raise. Keeping
-        # constant +1 track will add latency to loop, so only provide as needed
-        for line_num,__file_data_line in enumerate(file_data):
+        # To display correct line number start=1
+        for line_num,__file_data_line in enumerate(file_data, start=1):
 
             # Set Skip Marker
-            try: __skip_marker = __file_data_line[0]
+            try:
+                __skip_marker = __file_data_line[0]
+                potential_name_char = __file_data_line.lstrip()[0]
             except IndexError: __skip_marker = ''
+            else:
+                # Check if there is a leading blank with data on same line
+                if (__skip_marker in __skip_markers) and (potential_name_char not in __skip_markers) and (__is_building_data_sw == False):
+                    raise Load(
+                            py_syntax_err_msg,
+                            f'\nFile: {repr(filename)} \nLine: {line_num} \nGot: {repr(__file_data_line)}'
+                        )
 
             # Skip Any Comments, Blanks, and New Lines. Do not skip during a muli-line build
             if (__is_building_data_sw == False) and (__skip_marker in __skip_markers): continue
@@ -309,7 +317,7 @@ class _MaciDataObjConstructor:
                     if __file_data_line.partition(__assignment_glyph)[2].strip() == '':
                         raise Load(
                             py_syntax_err_msg,
-                            f'\nFILE: "{filename}" \nLINE: {line_num+1} \nATTR_NAME: {__file_data_line.partition(__assignment_glyph)[0].strip()} \nGOT: {__file_data_line}'
+                            f'\nFile: {repr(filename)} \nLine: {line_num} \nAttr: {__file_data_line.partition(__assignment_glyph)[0].strip()} \nGot: {repr(__file_data_line)}'
                         )
                     
                     __current_assignment_glyph = __assignment_glyph.lower()
@@ -324,7 +332,7 @@ class _MaciDataObjConstructor:
                         __last_token = __file_data_line.partition(__assignment_glyph)[2].strip()[-1]
                     
                     try: __start_skip_token = __file_data_line.split(__assignment_glyph)[1].split()[1][0].strip()
-                    except IndexError: __start_skip_token = ''
+                    except IndexError: __start_skip_token = ''  # nosec: B105  # not password
                 
                 # Collect End Token if in Build
                 if __is_building_data_sw:
@@ -333,15 +341,16 @@ class _MaciDataObjConstructor:
                             __end_token = __file_data_line[0]
                         elif __file_data_line[0:3] in __end_markers:
                             __end_token = __file_data_line[0:3]
-                        else: __end_token = ''
-                    except IndexError: __end_token = ''
+                        else: __end_token = ''  # nosec: B105  # not password
+                    except IndexError: __end_token = ''  # nosec: B105  # not password
                 
                 # Verify Assignment Glyph is Not Attr Reference for Multiline Build Check
                 is_attr_reference_glyph = False
                 if __current_assignment_glyph in _assignment_glyphs_for_all_ref_checks:
                     is_attr_reference_glyph = True
 
-                # START BUILD: Check if value in file line is only Start Marker. Check if Multiline or Single Line
+                
+                ### START BUILD: Check if value in file line is only Start Marker. Check if Multiline or Single Line
                 if (__value_token_multi in __start_markers) \
                 and ((__last_token in __start_markers) or (__start_skip_token[0] in __skip_markers)) \
                 and (__is_building_data_sw == False) \
@@ -349,11 +358,16 @@ class _MaciDataObjConstructor:
                     
                     # Check if Attr Dedup
                     if (self.__attrib_name_dedup) and (hasattr(self, __var_token)):
-                            raise Load(name_preexists_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')
+                            raise Load(name_preexists_err_msg, f'\nFile: {repr(filename)} \nLine: {line_num} \nAttr: {__var_token}')
 
                     # Check for Comment
                     if __skip_markers[2] in __value_token:
                         __value_token = __value_token.partition(__skip_markers[2])[0].strip()
+                    
+                    # Check if starting a build with no remaining lines to read
+                    if (len(file_data) == line_num):
+                        raise Load(py_syntax_err_msg, f'\nFile: {repr(filename)} \nLine: {line_num} \nAttr: {__var_token}')
+                    
                     # Set First Value
                     __build_data = __value_token
 
@@ -369,7 +383,7 @@ class _MaciDataObjConstructor:
                         __end_markers_build = __end_multistr_markers
                     continue
 
-                # END BUILD: Check if line of file is an End Data Build Marker. Import Built Data Type if Valid. Check if EOF in case File Missing End Marker.
+                ### END BUILD: Check if line of file is an End Data Build Marker. Import Built Data Type if Valid. Check if EOF in case File Missing End Marker.
                 elif (__end_data_build_sw) and (((__end_token in __end_markers_build) and (not __end_token == __ignore_multistr_marker)) or (f"{__eof_marker}" == f"{__file_data_line}")):
                     __build_data += f"\n{__file_data_line}"
 
@@ -385,7 +399,7 @@ class _MaciDataObjConstructor:
                         if __current_assignment_glyph in _assignment_glyphs_for_hard_lock_checks:
                             self.__assignment_hard_locked_attribs.add(__var_token)
 
-                    except SyntaxError: raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')
+                    except SyntaxError: raise Load(py_syntax_err_msg, f'\nFile: {repr(filename)} \nLine: {line_num} \nAttr: {__var_token}')
 
                     # Turn OFF/UPDATE Data Build Switches
                     __is_building_data_sw = False
@@ -395,16 +409,17 @@ class _MaciDataObjConstructor:
                     __end_markers_build = __end_markers
                     continue
 
-                # CONT BUILD: Continue to Build Data
+                ### CONT BUILD: Continue to Build Data
                 elif __body_build_data_sw:
                     __build_data += f"\n{__file_data_line}"
                     
-                # IMPORT SINGLE LINE VALUES: If not multiline, assume single
+                
+                ### IMPORT SINGLE LINE VALUES: If not multiline, assume single
                 else:
                     try:
                         # Check if Attr Dedup
                         if (self.__attrib_name_dedup) and (hasattr(self, __var_token)):
-                            raise Load(name_preexists_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')
+                            raise Load(name_preexists_err_msg, f'\nFile: {repr(filename)} \nLine: {line_num} \nAttr: {__var_token}')
                         
                         # Check if Attr is a Reference to Another Attr's Value for Assignment. Ignore Comments
                         if __current_assignment_glyph in _assignment_glyphs_for_ref_checks:
@@ -444,10 +459,10 @@ class _MaciDataObjConstructor:
                             self.__assignment_hard_locked_attribs.add(__var_token)
                         
                     except AttributeError:
-                        # REF_NAME: Ignores Comments to Display Attr Reference Name
+                        # Reference Name: Ignores Comments to Display Attr Reference Name
                         raise Load(
                             name_reference_does_not_exist,
-                            f'\nFILE: "{filename}" \nATTR_NAME: {__var_token} \nREF_NAME: {f"{__value_token} "[:__value_token.find(__skip_markers[2])].rstrip()}'
+                            f'\nFile: {repr(filename)} \nLine: {line_num} \nAttr: {__var_token} \nMap_Name: {f"{__value_token} "[:__value_token.find(__skip_markers[2])].rstrip()}'
                         )
                     except (ValueError, SyntaxError):
                         # Check if datetime format and set attr, else raise exception
@@ -456,9 +471,9 @@ class _MaciDataObjConstructor:
                             # Assign Attr to datetime object
                             setattr(self, __var_token, datetime_format)
                         else:
-                            raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nATTR_NAME: {__var_token}')
+                            raise Load(py_syntax_err_msg, f'\nFile: {repr(filename)} \nLine: {line_num} \nAttr: {__var_token}')
 
-            else: raise Load(py_syntax_err_msg, f'\nFILE: "{filename}" \nLINE: {line_num+1}')
+            else: raise Load(py_syntax_err_msg, f'\nFile: {repr(filename)} \nLine: {line_num}')
     
 
     def __setattr__(self, _name: str, _new_value: _Any) -> None:
@@ -472,11 +487,11 @@ class _MaciDataObjConstructor:
 
         # Protect Internal List/Reference Attrs and Methods from Re-Assignment
         if hasattr(self, _name) and (_name in _MaciDataObjConstructor.__internal_check_lists_setattr_maci_names):
-            raise GeneralError('Cannot re-assign internal MaciDataObj attribute name!', f'\nATTR_NAME: "{_name}"')
+            raise GeneralError('Cannot re-assign internal MaciDataObj attribute name!', f'\nAttr: {repr(_name)}')
         
         # Protect Internal Method Names from Re-Assignment. Can be switched OFF by User
         if hasattr(self, _name) and (_name in _MaciDataObjConstructor.__internal_check_lists_setattr_maci_methods) and (not self.__ignore_internal_maci_attr_check):
-            raise GeneralError('Cannot re-assign internal MaciDataObj method name!', f'\nMETHOD_NAME: "{_name}"')
+            raise GeneralError('Cannot re-assign internal MaciDataObj method name!', f'\nMethod_Name: {repr(_name)}')
 
 
         # Always Assign Value 
@@ -492,7 +507,7 @@ class _MaciDataObjConstructor:
                 # PROTECT ORIGINAL VALUE
                 self.__dict__[_name] = _orig_value
                 # RAISE EXCEPTION
-                raise GeneralError(self.__assignment_locked_atrribs_err_msg, f'\nATTR_NAME: "{_name}"')
+                raise GeneralError(self.__assignment_locked_atrribs_err_msg, f'\nAttr: {repr(_name)}')
 
         # Hard Lock Protection
         if hasattr(self, '_MaciDataObjConstructor__assignment_hard_locked_attribs'):
@@ -500,7 +515,7 @@ class _MaciDataObjConstructor:
                 # PROTECT ORIGINAL VALUE
                 self.__dict__[_name] = _orig_value
                 # RAISE EXCEPTION
-                raise GeneralError(self.__assignment_hard_locked_atrribs_err_msg, f'\nATTR_NAME: "{_name}"')
+                raise GeneralError(self.__assignment_hard_locked_atrribs_err_msg, f'\nAttr: {repr(_name)}')
         
         # Always Re-Reference Attr New Value if Source not Locked
         if hasattr(self, '_MaciDataObjConstructor__assigned_dst_reference_attr_map'):
@@ -525,8 +540,8 @@ class _MaciDataObjConstructor:
                         # If Source is Locked, Block Update
                         _is_locked = ref_name in self.__assignment_locked_attribs
                         _is_hard_locked = ref_name in self.__assignment_hard_locked_attribs
-                        if _is_locked: raise GeneralError(self.__assignment_locked_atrribs_err_msg, f'\nATTR_NAME: "{ref_name}"')
-                        if _is_hard_locked: raise GeneralError(self.__assignment_hard_locked_atrribs_err_msg, f'\nATTR_NAME: "{ref_name}"')
+                        if _is_locked: raise GeneralError(self.__assignment_locked_atrribs_err_msg, f'\nAttr: {repr(ref_name)}')
+                        if _is_hard_locked: raise GeneralError(self.__assignment_hard_locked_atrribs_err_msg, f'\nAttr: {repr(ref_name)}')
 
                         # Update Reference(s) to New Value
                         self.__dict__[ref_name] = _new_value
@@ -535,12 +550,12 @@ class _MaciDataObjConstructor:
     def __delattr__(self, _name: str) -> None:
         # Protect Internal List/Reference Attrs from Deletion
         if _name in _MaciDataObjConstructor.__internal_check_lists_delattr:
-            raise GeneralError('Cannot delete internal MaciDataObj attribute name!', f'\nATTR_NAME: "{_name}"')
+            raise GeneralError('Cannot delete internal MaciDataObj attribute name!', f'\nAttr: {repr(_name)}')
 
         # Protect Hard Locked Attr from Deletion
         if _name in self.__assignment_hard_locked_attribs:
             # RAISE EXCEPTION
-            raise GeneralError(self.__assignment_hard_locked_atrribs_err_msg, f'\nATTR_NAME: "{_name}"')
+            raise GeneralError(self.__assignment_hard_locked_atrribs_err_msg, f'\nAttr: {repr(_name)}')
 
         # Release Attribute from Lock & Reference List if Name is Deleted
         if hasattr(self, _name): # pragma: no branch
@@ -561,14 +576,14 @@ class _MaciDataObjConstructor:
         __err_msg_attr_name_locked = "Attribute name already hard locked! Cannot be re-locked once locked"
         __err_msg_attr_name_other_lock = "Attribute name exists with other lock (lock_attr) already! Cannot be locked with multiple locks"
 
-        if not isinstance(attr_name, str): raise GeneralError(__err_msg_attr_name_str, f'\nATTR_NAME: "{attr_name}"')
-        if not attr_name in self.__dict__: raise GeneralError(__err_msg_attr_name_exist, f'\nATTR_NAME: "{attr_name}"')
+        if not isinstance(attr_name, str): raise GeneralError(__err_msg_attr_name_str, f'\nAttr: {repr(attr_name)}')
+        if not attr_name in self.__dict__: raise GeneralError(__err_msg_attr_name_exist, f'\nAttr: {repr(attr_name)}')
 
         # Assign Attr to Locked Tuple if Does Not Preexist
         if attr_name in self.__assignment_hard_locked_attribs:
-            raise GeneralError(__err_msg_attr_name_locked, f'\nATTR_NAME: "{attr_name}"')
+            raise GeneralError(__err_msg_attr_name_locked, f'\nAttr: {repr(attr_name)}')
         if attr_name in self.__assignment_locked_attribs:
-            raise GeneralError(__err_msg_attr_name_other_lock, f'\nATTR_NAME: "{attr_name}"')
+            raise GeneralError(__err_msg_attr_name_other_lock, f'\nAttr: {repr(attr_name)}')
 
         self.__assignment_hard_locked_attribs.add(attr_name)
 
@@ -584,14 +599,14 @@ class _MaciDataObjConstructor:
         __err_msg_attr_name_locked = "Attribute name already locked! Cannot be re-locked once locked"
         __err_msg_attr_name_other_lock = "Attribute name exists with other lock (hard_lock_attr) already! Cannot be locked with multiple locks"
 
-        if not isinstance(attr_name, str): raise GeneralError(__err_msg_attr_name_str, f'\nATTR_NAME: "{attr_name}"')
-        if not attr_name in self.__dict__: raise GeneralError(__err_msg_attr_name_exist, f'\nATTR_NAME: "{attr_name}"')
+        if not isinstance(attr_name, str): raise GeneralError(__err_msg_attr_name_str, f'\nAttr: {repr(attr_name)}')
+        if not attr_name in self.__dict__: raise GeneralError(__err_msg_attr_name_exist, f'\nAttr: {repr(attr_name)}')
 
         # Assign Attr to Locked List if Does Not Preexist
         if attr_name in self.__assignment_locked_attribs:
-            raise GeneralError(__err_msg_attr_name_locked, f'\nATTR_NAME: "{attr_name}"')
+            raise GeneralError(__err_msg_attr_name_locked, f'\nAttr: {repr(attr_name)}')
         if attr_name in self.__assignment_hard_locked_attribs:
-            raise GeneralError(__err_msg_attr_name_other_lock, f'\nATTR_NAME: "{attr_name}"')
+            raise GeneralError(__err_msg_attr_name_other_lock, f'\nAttr: {repr(attr_name)}')
 
         self.__assignment_locked_attribs.add(attr_name)
 
@@ -606,12 +621,12 @@ class _MaciDataObjConstructor:
         __err_msg_attr_name_exist = "Unlock attribute name does not exist"
         __err_msg_attr_name_exist_unlock = "Unlock attribute name does not exist in lock! Could not find name to unlock"
 
-        if not isinstance(attr_name, str): raise GeneralError(__err_msg_attr_name_str, f'\nATTR_NAME: "{attr_name}"')
-        if not attr_name in self.__dict__: raise GeneralError(__err_msg_attr_name_exist, f'\nATTR_NAME: "{attr_name}"')
+        if not isinstance(attr_name, str): raise GeneralError(__err_msg_attr_name_str, f'\nAttr: {repr(attr_name)}')
+        if not attr_name in self.__dict__: raise GeneralError(__err_msg_attr_name_exist, f'\nAttr: {repr(attr_name)}')
 
         # Remove Attr from Locked List
         try: self.__assignment_locked_attribs.remove(attr_name)
-        except KeyError: raise GeneralError(__err_msg_attr_name_exist_unlock, f'\nATTR_NAME: "{attr_name}"')
+        except KeyError: raise GeneralError(__err_msg_attr_name_exist_unlock, f'\nAttr: {repr(attr_name)}')
 
 
     @_rename_exc_name_to_user_object_name
@@ -630,12 +645,12 @@ class _MaciDataObjConstructor:
         __err_msg_attr_name_exist = f"Attribute name '{child_attr}' does not exist! Must be created first to assign to parent attribute"
         __err_msg_reference_name_exist = f"Attribute name '{parent_attr}' does not exist! Cannot assign value to child attribute"
 
-        if not isinstance(child_attr, str): raise GeneralError(__err_msg_attr_name_str, f'\nATTR_NAME: "{child_attr}"')
-        if not isinstance(parent_attr, str): raise GeneralError(__err_msg_reference_name_str, f'\nATTR_NAME: "{parent_attr}"')
+        if not isinstance(child_attr, str): raise GeneralError(__err_msg_attr_name_str, f'\nAttr: {repr(child_attr)}')
+        if not isinstance(parent_attr, str): raise GeneralError(__err_msg_reference_name_str, f'\nAttr: {repr(parent_attr)}')
 
         # Look up if Attr or Reference Name Exists
-        if not child_attr in self.__dict__: raise GeneralError(__err_msg_attr_name_exist, f'\nATTR_NAME: "{child_attr}"')
-        if not parent_attr in self.__dict__: raise GeneralError(__err_msg_reference_name_exist, f'\nATTR_NAME: "{parent_attr}"')
+        if not child_attr in self.__dict__: raise GeneralError(__err_msg_attr_name_exist, f'\nAttr: {repr(child_attr)}')
+        if not parent_attr in self.__dict__: raise GeneralError(__err_msg_reference_name_exist, f'\nAttr: {repr(parent_attr)}')
 
         # Set Value to Reference Value
         setattr(self, child_attr, getattr(self, parent_attr))
@@ -659,14 +674,14 @@ class _MaciDataObjConstructor:
         __err_msg_attr_name_exist = f"Attribute name does not exist! Must be created first and linked to an attribute to unlink"
         __err_msg_reference_name_exist = f"Attribute name is not mapped to anything! Cannot unmap attribute"
 
-        if not isinstance(attr_name, str): raise GeneralError(__err_msg_attr_name_str, f'\nGOT: {repr(attr_name)}')
+        if not isinstance(attr_name, str): raise GeneralError(__err_msg_attr_name_str, f'\nGot: {repr(attr_name)}')
 
         # Look up if Attr or Reference Name Exists at all or in Reference Maps
-        if not attr_name in self.__dict__: raise GeneralError(__err_msg_attr_name_exist, f'\nGOT: {repr(attr_name)}')
+        if not attr_name in self.__dict__: raise GeneralError(__err_msg_attr_name_exist, f'\nGot: {repr(attr_name)}')
 
         if (attr_name not in self.__assigned_src_reference_attr_map) \
         and (attr_name not in self.__assigned_dst_reference_attr_map):
-            raise GeneralError(__err_msg_reference_name_exist, f'\nATTR_NAME: {attr_name}')
+            raise GeneralError(__err_msg_reference_name_exist, f'\nAttr: {attr_name}')
         
         self.__reference_deletion_check(attr_name, _src_ref_list=True, _dst_ref_list=True, _ref_removal_request=True)
 
@@ -682,8 +697,8 @@ class _MaciDataObjConstructor:
         __err_msg_attr_name_str = "Only str is allowed for 'attr_name'"
         __err_msg_attr_name_exist = f"Attribute name does not exist! Must be created first to check link type"
 
-        if not isinstance(attr_name, str): raise GeneralError(__err_msg_attr_name_str, f'\nGOT: {repr(attr_name)}')
-        if not attr_name in self.__dict__: raise GeneralError(__err_msg_attr_name_exist, f'\nGOT: {repr(attr_name)}')
+        if not isinstance(attr_name, str): raise GeneralError(__err_msg_attr_name_str, f'\nGot: {repr(attr_name)}')
+        if not attr_name in self.__dict__: raise GeneralError(__err_msg_attr_name_exist, f'\nGot: {repr(attr_name)}')
 
         # Check Link Type
         return (attr_name in self.__assigned_dst_reference_attr_map)
@@ -700,8 +715,8 @@ class _MaciDataObjConstructor:
         __err_msg_attr_name_str = "Only str is allowed for 'attr_name'"
         __err_msg_attr_name_exist = f"Attribute name does not exist! Must be created first to check link type"
 
-        if not isinstance(attr_name, str): raise GeneralError(__err_msg_attr_name_str, f'\nGOT: {repr(attr_name)}')
-        if not attr_name in self.__dict__: raise GeneralError(__err_msg_attr_name_exist, f'\nGOT: {repr(attr_name)}')
+        if not isinstance(attr_name, str): raise GeneralError(__err_msg_attr_name_str, f'\nGot: {repr(attr_name)}')
+        if not attr_name in self.__dict__: raise GeneralError(__err_msg_attr_name_exist, f'\nGot: {repr(attr_name)}')
 
         # Check Link Type
         return (attr_name in self.__assigned_src_reference_attr_map)
@@ -793,7 +808,7 @@ class _MaciDataObjConstructor:
 
         Child map will be -> 'child_map': {'attr_child': 'attr_parent'}
         """
-        return {'parent_maps': deepcopy(self.__assigned_dst_reference_attr_map), 'child_maps': deepcopy(self.__assigned_src_reference_attr_map)}
+        return {'parent_maps': _deepcopy(self.__assigned_dst_reference_attr_map), 'child_maps': _deepcopy(self.__assigned_src_reference_attr_map)}
 
 
     @_rename_exc_name_to_user_object_name
@@ -811,7 +826,7 @@ class _MaciDataObjConstructor:
 
         Parent map will be -> {'attr_parent': {'attr_child': 'attr_parent'}}
         """
-        return deepcopy(self.__assigned_dst_reference_attr_map)
+        return _deepcopy(self.__assigned_dst_reference_attr_map)
 
 
     @_rename_exc_name_to_user_object_name
@@ -854,8 +869,8 @@ class _MaciDataObjConstructor:
         err_msg_chain_conflict = f"Cannot build chain due to duplicate child name(s) already linked to parent! Disable this check with 'dup_link_check'"
         err_msg_parent_not_found = f"Name '{parent_attr}' does not have a chain that exists!"
 
-        if not isinstance(parent_attr, (str, type(None))): raise GeneralError(err_msg_parent_name_type, f'\nGOT: {parent_attr}')
-        if not isinstance(dup_link_check, bool): raise GeneralError(err_msg_dup_link_chk_type, f'\nGOT: {dup_link_check}')
+        if not isinstance(parent_attr, (str, type(None))): raise GeneralError(err_msg_parent_name_type, f'\nGot: {parent_attr}')
+        if not isinstance(dup_link_check, bool): raise GeneralError(err_msg_dup_link_chk_type, f'\nGot: {dup_link_check}')
 
         # Always use new objects
         all_parent_chains = {}
@@ -911,7 +926,7 @@ class _MaciDataObjConstructor:
         if (parent_attr is not None) and (parent_attr not in all_parent_chains):
             raise GeneralError(
                 err_msg_parent_not_found,
-                f"\nGOT: {parent_attr}"
+                f"\nGot: {parent_attr}"
             )
 
         # Return single parent chain if specified, otherwise continue build
@@ -937,7 +952,7 @@ class _MaciDataObjConstructor:
 
         Child map will be -> {'attr_child': 'attr_parent'}
         """
-        return deepcopy(self.__assigned_src_reference_attr_map)
+        return _deepcopy(self.__assigned_src_reference_attr_map)
 
 
 #########################################################################################################
@@ -998,24 +1013,37 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
                 _is_build_request=_is_build_request,
                 _ignore_internal_maci_attr_check=_ignore_internal_maci_attr_check,
             )
+    
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, MaciDataObj):
+            return NotImplemented
+        else:
+            # Compare str repr of maci objects, which contain actual attrs & values in strings
+            return str(self) == str(other)
+
+    def __bool__(self) -> bool:
+        skip_name_keys = ('_MaciDataObjConstructor', '__maci_obj_format_id')
+        if [attr for attr in vars(self) if not attr.startswith(skip_name_keys)]:
+            return True
+        return False
 
     def __repr__(self) -> str:
         skip_name_keys = ('_MaciDataObjConstructor', '__maci_obj_format_id')
-        build_repr = ', '.join([f"{name}={value!r}" for name,value in vars(self).items() if not name.startswith(skip_name_keys)])
+        build_repr = ', '.join(f"{name}={value!r}" for name,value in vars(self).items() if not name.startswith(skip_name_keys))
         return f"{type(self).__name__}({build_repr})"
 
 
 #########################################################################################################
 # Main Dump Function
 
-# Hinting reference name for "CustomClass" to denote a CustomClass can be used to dump data
-CustomClass = _NewType('CustomClass', object)
+# Hinting reference name for "ClassObject" to denote a ClassObject can be used to dump data
+ClassObject = _TypeVar('ClassObject')
 
 def __dump_data(
     *,
     _is_string_request: bool=False,
     filename: str,
-    data: _Any, # MaciDataObj, dict, CustomClass
+    data: _Any, # objects allowed: MaciDataObj, dict, ClassObject - ignoring type checker
     append: bool=False,
     indent_level: int=1,
     indentation_on: bool=True,
@@ -1050,10 +1078,10 @@ def __dump_data(
         DumpStrError = DumpStr
         # Set Values
         filename = ''
-        __err_msg_invalid_maciobj_item = f'\nDATA: {data}'
+        __err_msg_invalid_maciobj_item = f'\nGot: {repr(data)}'
     else:
         DumpError = Dump
-        __err_msg_invalid_maciobj_item = f'\nFILE: "{filename}" \nDATA: {data}'
+        __err_msg_invalid_maciobj_item = f'\nFile: {repr(filename)} \nGot: {repr(data)}'
 
     if isinstance(data, type(MaciDataObj)):
         if _is_string_request: raise DumpStrError(__err_msg_invalid_maciobj, __err_msg_invalid_maciobj_item)
@@ -1083,7 +1111,7 @@ def __dump_data(
         )
 
     
-    ### MACI DATA: Check if MaciDataObj ###
+    ### MACI Got: Check if MaciDataObj ###
 
     # Build Out Data
     if (isinstance(data, MaciDataObj)) and (data.__maci_obj_format_id__ == __maci_obj_format_id_match):
@@ -1424,10 +1452,10 @@ def __write_file_data(filename: str, data: _Any, write_mode: str, *, encoding: _
             _dumpraw(filename, data, encoding=encoding)
         # Append Append File Mode
         if write_mode == 'a':
-            _dumpraw(filename, data, append=True, encoding=encoding)        
+            _dumpraw(filename, data, append=True, encoding=encoding)
         # Raise Exception if No Match - Dev Check
         if not write_mode in __write_mode_allowed_list: # pragma: no cover
-            raise Dump(__err_msg_write_mode, f'\nGot: {write_mode}')
+            raise Dump(__err_msg_write_mode, f'\nGot: {repr(write_mode)}')
     except DumpRaw as __err_msg: raise Dump(__err_msg, '')
 
 

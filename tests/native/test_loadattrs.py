@@ -12,9 +12,9 @@ file_delay_timer = 0.25
 '''
 NOTICE:
 - Any new tests must not use the unittest class and instead use the pytest framework if needed.
-- Add new tests below the "TestLoad" class
+- Add new tests below the "TestLoadAttrs" class
 - Old tests are still being used/kept to reference consistent functionality
-- Ensure to still continue to number tests in order
+- Ensure to still continue to number tests in order, or what makes sense for the type of test category
 '''
 ################################################################
 

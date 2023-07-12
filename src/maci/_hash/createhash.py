@@ -30,7 +30,7 @@ def createhash(data_to_hash: _Union[str, bytes, int, _List[int], _Tuple[int], _S
     ALGO_OPTIONS = ('sha256', 'sha512', 'sha384', 'sha1', 'md5')
 
     # Error checks
-    err_msg_data = f"Only str | bytes | int | List[int] | Tuple[int] | Set[int] | range | bool is allowed for 'data_to_hash'"
+    err_msg_data = f"Only str|bytes|int|List[int]|Tuple[int]|Set[int]|range|bool is allowed for 'data_to_hash'"
     err_msg_str_hash = f"Only str is allowed for 'hash_algorithm'"
     err_msg_hash = f"Invalid hash option chosen for 'hash_algorithm'. Valid options: 'sha256', 'sha512', 'sha384', 'sha1', 'md5'"
     err_msg_str_encoding = f"Only str or valid option is allowed for 'encoding'"
@@ -53,8 +53,8 @@ def createhash(data_to_hash: _Union[str, bytes, int, _List[int], _Tuple[int], _S
     if hash_algorithm == ALGO_OPTIONS[0]: hash_type = _hashlib.sha256() # sha256
     if hash_algorithm == ALGO_OPTIONS[1]: hash_type = _hashlib.sha512() # sha512
     if hash_algorithm == ALGO_OPTIONS[2]: hash_type = _hashlib.sha384() # sha384
-    if hash_algorithm == ALGO_OPTIONS[3]: hash_type = _hashlib.sha1() # sha1
-    if hash_algorithm == ALGO_OPTIONS[4]: hash_type = _hashlib.md5() # md5
+    if hash_algorithm == ALGO_OPTIONS[3]: hash_type = _hashlib.sha1() # sha1  # nosec: B303, B324  # ignore sec checker - up to dev discretion
+    if hash_algorithm == ALGO_OPTIONS[4]: hash_type = _hashlib.md5() # md5  # nosec: B303, B324  # ignore sec checker - up to dev discretion
 
     # Check and Convert data to bytes and update hash
     try: 

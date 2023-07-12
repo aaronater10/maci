@@ -1,23 +1,20 @@
 """
 maci - by aaronater10
 
-Version 0.3.0
+A Pythonic Configuration Language & Thin Wrapper Library
 
-The easy to use library for your data, configuration, and save files.
+Version 0.4.0
 
-Import or Export custom, or industry-common, data, config, and save files easily for
-your python program or script!
+Tutorials and docs: https://docs.macilib.org
 
-See tutorials and docs here for more info: https://docs.macilib.org
-
-Source Code: https://github.com/aaronater10/maci
+Source: https://github.com/aaronater10/maci
 """
-__version__ = '0.3.0'
+__version__ = '0.4.0'
 
 #########################################################################################################
 # Imports
 
-# Base Exceptions
+# Exceptions
 from . import error
 
 # Hints
@@ -66,6 +63,7 @@ from ._ini.inibuildauto import inibuildauto
 from ._ini.inibuildmanual import inibuildmanual
 
 # XML Lib
+from defusedxml import defuse_stdlib as _defuse_xml_stdlib
 from ._xml.xmlload import xmlload
 from ._xml.xmlloadstr import xmlloadstr
 from ._xml.xmldump import xmldump

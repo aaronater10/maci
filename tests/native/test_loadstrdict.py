@@ -45,3 +45,9 @@ def test2_loadstrdict_attr_dedup_off_on():
      # ATTR DEDUP ON (Default): File Import
     with pytest.raises(maci.error.LoadStrDict):
         maci.loadstrdict(str_data)
+
+
+# 3. Load Str Dict: Attr Dedup - Test Attr Dedup OFF/ON
+def test3_loadstrdict_returns_none():
+    # Tests
+    assert maci.loadstrdict('') == dict()

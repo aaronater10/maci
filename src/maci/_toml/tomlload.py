@@ -2,9 +2,9 @@
 #########################################################################################################
 # Imports
 import tomli as _tomli
-from ..error import TomlLoad
 from typing import Dict as _Dict
 from typing import Any as _Any
+from ..error import TomlLoad
 
 #########################################################################################################
 # Load toml file
@@ -32,5 +32,5 @@ def tomlload(filename: str) -> _Dict[str, _Any]:
     try:
         with open(filename, 'rb') as f:
             return _tomli.load(f)
-    except (FileNotFoundError, OSError) as _err_msg: raise TomlLoad(_err_msg, f'\nFILE: "{filename}"')
-    except _tomli.TOMLDecodeError as _err_msg: raise TomlLoad(_err_msg, f'\nFILE: "{filename}"')
+    except (FileNotFoundError, OSError) as err_msg: raise TomlLoad(err_msg, f'\nGot: {repr(filename)}')
+    except _tomli.TOMLDecodeError as err_msg: raise TomlLoad(err_msg, f'\nGot: {repr(filename)}')

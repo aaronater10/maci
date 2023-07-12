@@ -1,13 +1,13 @@
 # jsondumpstr
 #########################################################################################################
 # Imports
-import json as __json
+import json as _json
+from typing import Union as _Union
 from ..error import JsonDumpStr
-from typing import Union
 
 #########################################################################################################
 # Export json str
-def jsondumpstr(data: Union[dict, list, tuple, str, int, float, bool, None], *, indent_level: int=4) -> str:
+def jsondumpstr(data: _Union[dict, list, tuple, str, int, float, bool, None], *, indent_level: int=4) -> str:
     """
     Exports python data type to json string
 
@@ -30,5 +30,5 @@ def jsondumpstr(data: Union[dict, list, tuple, str, int, float, bool, None], *, 
 
     try:
         # Export dict data to json string
-        return __json.dumps(data, indent=indent_level)
+        return _json.dumps(data, indent=indent_level)
     except TypeError as __err_msg: raise JsonDumpStr(__err_msg, f'\nGot: {data} \nINDENT_LEVEL: {indent_level}')

@@ -1,16 +1,16 @@
 # load
 #########################################################################################################
 # Imports
-from ast import literal_eval as __literal_eval__
-from os import path as __path
+from os import path as _path
 from typing import Any as _Any
 from typing import Optional as _Optional
-from ..data import MaciDataObj
 from ..error import Load, GeneralError
+from ..data import MaciDataObj as _MaciDataObj
+from .build import build as _build
 
 #########################################################################################################
 # Import py Data from File
-def load(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=None, _ignore_maci_attr_check: bool=False) -> _Optional[MaciDataObj]:
+def load(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=None, _ignore_maci_attr_check: bool=False) -> _MaciDataObj:
     """
     Imports saved python data from any text file.
 
@@ -20,7 +20,7 @@ def load(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=
 
     Accepted data types: str, int, float, bool, list, dict, tuple, set, nonetype, bytes, datetime
 
-    Returns None if file empty
+    Returns empty object if file empty
 
     [Example Use]
     load('filename.data' or 'path/to/filename.data')
@@ -44,22 +44,22 @@ def load(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=
 
     # Check if file empty. Returns None if empty
     try:
-        if __path.getsize(filename) == 0:
-            return None
+        if _path.getsize(filename) == 0:
+            return _build()
     except (FileNotFoundError, OSError) as __err_msg: raise Load(__err_msg, f'\nGot: {repr(filename)}')
 
     # Syntax/Usage Error Messages
     __err_messages: _Any = {  # ignore type checker
-        '_py_syntax_err_msg': "Must have valid Python data types to import, or file's syntax is not formatted correctly",
+        '_py_syntax_err_msg': "Must have valid Python data types to import, or file's maci syntax is incorrect",
         '_name_preexists_err_msg': "Name already preexists. Must give unique attribute names in file",
-        '_name_reference_does_not_exist_msg': "Name reference does not exist! Must reference attribute names in file that have been defined",
+        '_name_reference_does_not_exist_msg': "Map name does not exist! Must map attribute names in file that have been defined",
         '_assignment_locked_atrribs_err_msg': "Attribute Name Locked! Cannot be reassigned",
         '_assignment_hard_locked_atrribs_err_msg': "Attribute Name Hard Locked! Cannot be reassigned, deleted, or unlocked"
     }
 
     # Return Final Import
     try:
-        return MaciDataObj(
+        return _MaciDataObj(
                     filename,
                     _is_load_request=True,
                     _ignore_internal_maci_attr_check=_ignore_maci_attr_check,

@@ -2,7 +2,7 @@
 #########################################################################################################
 # Imports
 from typing import Union as _Union
-from os import path as __path
+from os import path as _path
 from ..error import LoadRaw
 
 #########################################################################################################
@@ -33,16 +33,16 @@ def loadraw(filename: str, *, byte_data: bool=False, encoding: _Union[str, None]
     if not byte_data:
         try:
             with open(filename, 'r', encoding=encoding) as f:
-                if __path.getsize(filename) == 0:
+                if _path.getsize(filename) == 0:
                     return ''
                 return f.read()
-        except (FileNotFoundError, OSError) as __err_msg: raise LoadRaw(__err_msg, f'\nGot: "{filename}"')
+        except (FileNotFoundError, OSError) as __err_msg: raise LoadRaw(__err_msg, f'\nGot: {repr(filename)}')
         except LookupError: raise LoadRaw(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
     
     if byte_data: # pragma: no branch
         try:
             with open(filename, 'rb') as f:
-                if __path.getsize(filename) == 0:
+                if _path.getsize(filename) == 0:
                     return b''
                 return f.read()
-        except (FileNotFoundError, OSError) as __err_msg: raise LoadRaw(__err_msg, f'\nGot: "{filename}"')
+        except (FileNotFoundError, OSError) as __err_msg: raise LoadRaw(__err_msg, f'\nGot: {repr(filename)}')

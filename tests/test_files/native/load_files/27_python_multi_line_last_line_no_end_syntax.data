@@ -1,0 +1,2 @@
+### Bad Syntax: Last Line Has no End Bracket for Multi-Line ###
+data_list = [

@@ -1,0 +1,2 @@
+### Bad Syntax: Leading Blank with Name ###
+ data_str = "data"
