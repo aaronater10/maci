@@ -27,7 +27,7 @@ class TestLoad(unittest.TestCase):
         filename = '1_empty.data'
         filepath = test_file_path + filename
         assert path.getsize(filepath) == 0, f"File Not Empty: {filename}"
-        assert (maci.load(filepath)) == None, f"Not None {filename}"
+        assert bool(maci.load(filepath)) == False, f"Not None {filename}"
 
     # 2. Single Line Import - Importing Singles Lines of All Accepted Data Types
     def test2_single_line_import(self):

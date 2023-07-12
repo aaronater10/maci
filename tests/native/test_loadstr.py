@@ -19,7 +19,7 @@ def test1_loadstr_empty_str_import():
     
     # Test File is Empty and Data
     assert path.getsize(filepath) == 0, f"File Not Empty: {filename}"
-    assert str_import == None, f"Not None {filename}"
+    assert bool(str_import) == False, f"Not None {filename}"
 
 
 # 2. Single Line Import - Importing Singles Lines of All Primitive Data Types

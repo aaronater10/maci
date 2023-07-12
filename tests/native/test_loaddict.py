@@ -34,7 +34,7 @@ def test1_loaddict_file_imports():
     assert str(file_import['data_datetime']) == "2023-03-13 22:06:00"
 
     ### Empty Import ###
-    assert maci.loaddict(filename=filepath_empty) == None
+    assert maci.loaddict(filename=filepath_empty) == dict()
 
 # 2. Load Dict: Attr Dedup - Test Attr Dedup OFF/ON
 def test2_loaddict_attr_dedup_off_on():
