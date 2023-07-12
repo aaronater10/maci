@@ -167,7 +167,7 @@ class TestBuildData(unittest.TestCase):
 ### NEW TESTS BELOW ###
 
 # 3. Test MaciDataObj Bool from Empty or With Data
-def test_build_data_maciobj_bool():
+def test3_build_data_maciobj_bool():
     # Build Data
     maci_data = maci.build()
 
@@ -179,3 +179,21 @@ def test_build_data_maciobj_bool():
     # Object has data
     maci_data.data_str = 'data'
     assert bool(maci_data) == True
+
+
+# 4. Test MaciDataObj EQ Comparison
+def test4_build_data_maciobj_eq():
+    # Build Data
+    maci_data = maci.build()
+
+    # Tests
+    
+    # Equal Objects: both empty
+    assert (maci_data == maci.build()) == True
+
+    # Unequal Objects: one has data
+    maci_data.data_str = 'data'
+    assert (maci_data == maci.build()) == False
+
+    # Unlike Objects: 2 different object types compared
+    assert (maci_data == []) == False

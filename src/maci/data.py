@@ -1013,6 +1013,13 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
                 _is_build_request=_is_build_request,
                 _ignore_internal_maci_attr_check=_ignore_internal_maci_attr_check,
             )
+    
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, MaciDataObj):
+            return NotImplemented
+        else:
+            # Compare str repr of maci objects, which contain actual attrs & values in strings
+            return str(self) == str(other)
 
     def __bool__(self) -> bool:
         skip_name_keys = ('_MaciDataObjConstructor', '__maci_obj_format_id')
