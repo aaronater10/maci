@@ -165,6 +165,20 @@ class MaciDataObj:
 
         {'attr_child1': 'attr_parent1', 'attr_child2': 'attr_parent1'}
         """
+    
+    def get_attrs(self) -> _Dict[str, str]:
+        """
+        Returns a dict copy of the MaciDataObj's current attribute names and values
+        """
+
+    def load_attrs(self, data: dict) -> None:
+        """
+        Loads data from a dict into the MaciDataObj in-place
+        
+        Creates new attribute names with their values retained based on the top level key names of the dict
+
+        Note: If the key name is not a valid pythonic name convention, it will be skipped
+        """
 
 
 #########################################################################################################

@@ -953,6 +953,34 @@ class _MaciDataObjConstructor:
         Child map will be -> {'attr_child': 'attr_parent'}
         """
         return _deepcopy(self.__assigned_src_reference_attr_map)
+    
+
+    @_rename_exc_name_to_user_object_name
+    def get_attrs(self) -> _Dict[str, str]:
+        """
+        Returns a dict copy of the MaciDataObj's current attribute names and values
+        """
+        skip_name_keys = ('_MaciDataObjConstructor', '__maci_obj_format_id')
+        return {name:value for name,value in self.__dict__.items() if not name.startswith(skip_name_keys)}
+    
+
+    @_rename_exc_name_to_user_object_name
+    def load_attrs(self, data: _Dict[str, _Any]) -> None:
+        """
+        Loads data from a dict into the MaciDataObj in-place
+        
+        Creates new attribute names with their values retained based on the top level key names of the dict
+
+        Note: If the key name is not a valid pythonic name convention, it will be skipped
+        """
+        err_msg_type_data = "Only dict is allowed for 'data'"
+        if not isinstance(data, dict): raise GeneralError(err_msg_type_data, f'\nGot: {repr(data)}')
+
+        for attr,value in data.items():
+            # Validate is String and Identifier for valid Attr Names, otherwise skip
+            if not isinstance(attr, str): continue
+            if not attr.isidentifier(): continue            
+            setattr(self, attr, value)
 
 
 #########################################################################################################
