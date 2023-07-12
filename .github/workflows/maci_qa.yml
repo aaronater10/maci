@@ -54,7 +54,9 @@ jobs:
           coverage report --show-missing --fail-under 100
       
       - name: Run - type checks
-        run: mypy src
+        run: |
+          mypy src
+          mypy tests/support/type_interfaces.py
       
       - name: Run - security checks
         run: |
