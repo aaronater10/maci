@@ -1013,7 +1013,7 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
                 _is_build_request=_is_build_request,
                 _ignore_internal_maci_attr_check=_ignore_internal_maci_attr_check,
             )
-    
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, MaciDataObj):
             return NotImplemented
@@ -1023,13 +1023,13 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
 
     def __bool__(self) -> bool:
         skip_name_keys = ('_MaciDataObjConstructor', '__maci_obj_format_id')
-        if [attr for attr in vars(self) if not attr.startswith(skip_name_keys)]:
+        if [attr for attr in self.__dict__ if not attr.startswith(skip_name_keys)]:
             return True
         return False
 
     def __repr__(self) -> str:
         skip_name_keys = ('_MaciDataObjConstructor', '__maci_obj_format_id')
-        build_repr = ', '.join(f"{name}={value!r}" for name,value in vars(self).items() if not name.startswith(skip_name_keys))
+        build_repr = ', '.join(f"{name}={value!r}" for name,value in self.__dict__.items() if not name.startswith(skip_name_keys))
         return f"{type(self).__name__}({build_repr})"
 
 
