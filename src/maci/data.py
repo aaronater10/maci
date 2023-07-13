@@ -956,7 +956,7 @@ class _MaciDataObjConstructor:
     
 
     @_rename_exc_name_to_user_object_name
-    def get_attrs(self) -> _Dict[str, str]:
+    def get_attrs(self) -> _Dict[str, _Any]:
         """
         Returns a dict copy of the MaciDataObj's current attribute names and values
         """

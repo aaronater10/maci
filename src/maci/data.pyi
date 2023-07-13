@@ -166,12 +166,12 @@ class MaciDataObj:
         {'attr_child1': 'attr_parent1', 'attr_child2': 'attr_parent1'}
         """
     
-    def get_attrs(self) -> _Dict[str, str]:
+    def get_attrs(self) -> _Dict[str, _Any]:
         """
         Returns a dict copy of the MaciDataObj's current attribute names and values
         """
 
-    def load_attrs(self, data: dict) -> None:
+    def load_attrs(self, data: _Dict[str, _Any]) -> None:
         """
         Loads data from a dict into the MaciDataObj in-place
         
