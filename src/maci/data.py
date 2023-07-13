@@ -476,6 +476,13 @@ class _MaciDataObjConstructor:
             else: raise Load(py_syntax_err_msg, f'\nFile: {repr(filename)} \nLine: {line_num}')
     
 
+
+    def __getattr__(self, _name: str) -> _Any:
+        if _name in self.__dict__:  # pragma: no cover  # not evaluating but is used/operating
+            return self.__dict__[_name]
+        raise AttributeError(f"'{self.__class__.__name__}' object has no attribute '{_name}'")
+
+
     def __setattr__(self, _name: str, _new_value: _Any) -> None:
         # Check if Attr Already Exists, if so, Collect Original Value
         if hasattr(self, _name):
@@ -1059,6 +1066,12 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
         skip_name_keys = ('_MaciDataObjConstructor', '__maci_obj_format_id')
         build_repr = ', '.join(f"{name}={value!r}" for name,value in self.__dict__.items() if not name.startswith(skip_name_keys))
         return f"{type(self).__name__}({build_repr})"
+    
+    def __dir__(self) -> _List[str]:
+        skip_name_keys = ('_MaciDataObjConstructor', '__maci_obj_format_id')
+        default_attrs = list(name for name in dir(MaciDataObj) if not name.startswith(skip_name_keys))
+        user_attrs = list(name for name in self.__dict__ if not name.startswith(skip_name_keys))
+        return default_attrs + user_attrs
 
 
 #########################################################################################################

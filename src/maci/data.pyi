@@ -179,6 +179,15 @@ class MaciDataObj:
 
         Note: If the key name is not a valid pythonic name convention, it will be skipped
         """
+    
+    def __getattr__(self, _name: str) -> _Any:
+        ...
+
+    def __setattr__(self, _name: str, _new_value: _Any) -> None:
+        ...
+    
+    def __dir__(self) -> _List[str]:
+        ...
 
 
 #########################################################################################################
