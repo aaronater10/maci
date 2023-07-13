@@ -213,3 +213,25 @@ def test2_exc_maciobj_method_unmap_attr_opts_data():
     # Tests
     with pytest.raises(maci.error.GeneralError):
         maci_data.unmap_attr(attr_name="")
+
+
+
+# 1. load_attrs - Type Checks
+def test1_exc_maciobj_method_load_attrs_types():
+    # Build Data
+    maci_data = maci.build()
+
+    # Tests
+    with pytest.raises(maci.error.GeneralError):
+        maci_data.load_attrs(data=1.0)
+
+
+# 2. load_attrs - Unsupported Options or Data
+def test2_exc_maciobj_method_load_attrs_opts_data():
+    # Build Data
+    maci_data = maci.build()
+
+    # Tests
+    maci_data.load_attrs(data={1:'data'}) # not str
+    maci_data.load_attrs(data={'':'data'}) # not identifier
+    assert bool(maci_data) == False

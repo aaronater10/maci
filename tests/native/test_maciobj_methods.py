@@ -542,3 +542,27 @@ def test11_maciobj_methods_mixed_concepts():
     # Re-Map raises exception cause still hard locked
     with pytest.raises(maci.error.MaciError):
         maci_data.map_attr('data_b1', 'data_b0')
+
+
+# 12. MaciDataObj - Load Attrs: Test loading attrs into maci object from dict
+def test12_maciobj_methods_load_attrs():
+    # Build Data
+    dict_data = {'k1': 1, 'k2': 2}
+    maci_data = maci.build()
+    
+    # Tests
+    maci_data.load_attrs(dict_data)
+    assert maci_data.k1 == 1
+    assert maci_data.k2 == 2
+
+
+# 13. MaciDataObj - Get Attrs: Test getting dict representation of attrs from maci object
+def test13_maciobj_methods_get_attrs():
+    # Build Data
+    maci_data = maci.build()
+    maci_data.data_str = "data"
+    maci_data.data_int = 1
+
+    # Tests
+    data_dict = maci_data.get_attrs()
+    assert data_dict == {'data_str': 'data', 'data_int': 1}
