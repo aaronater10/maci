@@ -6,7 +6,7 @@ from typing import Union as _Union
 from ..error import LoadAttrs, Load
 from .load import load as _load
 from ..data import MaciDataObj as _MaciDataObj
-from ..hint import __ClassObject
+from ..hint import __ClassObject  # type: ignore  # ignoring attr export
 
 #########################################################################################################
 # Import Attributes from File

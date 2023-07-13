@@ -191,7 +191,7 @@ def __dump_data(
     *,
     _is_string_request: bool=False,
     filename: str,
-    data: _Any, # objects allowed: MaciDataObj, dict, ClassObject - ignoring type checker
+    data: _Union[MaciDataObj, dict, ClassObject],
     append: bool=False,
     indent_level: int=1,
     indentation_on: bool=True,
