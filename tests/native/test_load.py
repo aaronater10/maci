@@ -578,3 +578,21 @@ def test27_python_multi_line_last_line_no_end_syntax():
     # Tests
     with pytest.raises(maci.error.Load):
         maci.load(filepath)
+
+
+# 28. Check if Error Raised on Last Line Has no End Bracket for Multi-Line for Bad Syntax
+def test28_start_marker_eval_at_end_comment():
+    filepath = test_file_path + '28_start_marker_eval_at_end_comment.data'
+
+    # Tests
+    maci_data =  maci.load(filepath)
+    assert maci_data.single_data == [1,2,3]
+
+
+# 29. Check if Error Raised on Last Line Has no End Bracket for Multi-Line for Bad Syntax
+def test29_comment_touching_start_marker():
+    filepath = test_file_path + '29_comment_touching_start_marker.data'
+
+    # Tests
+    maci_data =  maci.load(filepath)
+    assert maci_data.multi_data == [1,2,3]

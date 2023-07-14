@@ -323,13 +323,13 @@ class _MaciDataObjConstructor:
                     __current_assignment_glyph = __assignment_glyph.lower()
                     __var_token = __file_data_line.partition(__assignment_glyph)[0].strip()
                     __value_token = __file_data_line.partition(__assignment_glyph)[2].strip()
-                    __value_token_multi = __file_data_line.partition(__assignment_glyph)[2].split()[0].strip()
+                    __value_token_multi = __file_data_line.partition(__assignment_glyph)[2].partition(__skip_markers[2])[0].strip()
 
                     # Set Last Token with Accommodation to Multi-Line String
                     if __file_data_line.partition(__assignment_glyph)[2].strip()[-3:] in __start_markers:
                         __last_token = __file_data_line.partition(__assignment_glyph)[2].strip()[-3:]
                     else:
-                        __last_token = __file_data_line.partition(__assignment_glyph)[2].strip()[-1]
+                        __last_token = __file_data_line.partition(__assignment_glyph)[2].strip().rpartition(__skip_markers[2])[0].strip()
                     
                     try: __start_skip_token = __file_data_line.split(__assignment_glyph)[1].split()[1][0].strip()
                     except IndexError: __start_skip_token = ''  # nosec: B105  # not password
