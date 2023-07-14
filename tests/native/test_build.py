@@ -197,3 +197,21 @@ def test4_build_data_maciobj_eq():
 
     # Unlike Objects: 2 different object types compared
     assert (maci_data == []) == False
+
+# 5. Test MaciDataObj dir
+def test5_build_data_maciobj_dir():
+    # Build Data
+    maci_data = maci.build()
+
+    # Tests
+    assert isinstance(dir(maci_data), list)
+
+
+# 6. Test MaciDataObj dir - test can pull value with getattr
+def test6_build_data_maciobj_getattr():
+    # Build Data
+    maci_data = maci.build()
+    maci_data.d1 = 'data'
+
+    # Tests
+    assert getattr(maci_data, 'd1') == 'data'

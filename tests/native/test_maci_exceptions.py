@@ -328,3 +328,15 @@ def test1_exceptions_maciloadstrdict_types():
 
 # 2. Maci Load Str Dict - Unsupported Options or Data
 ### NO OPTS TO TEST ### - Syntax/Parse Errors are already tested in functionality
+
+
+### MISC: maci ###
+
+# 1. Test MaciDataObj getattr - test attr error thrown
+def test1_exceptions_maciobj_getattr():
+    # Build Data
+    maci_data = maci.build()
+
+    # Tests
+    with pytest.raises(AttributeError):
+        maci_data.data_str

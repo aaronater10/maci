@@ -4,7 +4,7 @@ maci - by aaronater10
 
 A Pythonic Configuration Language & Thin Wrapper Library
 
-Version 0.4.0
+Version 0.5.0
 
 Tutorials and docs: https://docs.macilib.org
 
@@ -24,7 +24,7 @@ from configparser import ConfigParser as _ConfigParser
 from xml.etree.ElementTree import ElementTree as _ElementTree
 from xml.etree.ElementTree import Element as _Element
 from .hint import MaciDataObj as _MaciDataObj
-from .hint import __ClassObject as _ClassObject
+from .hint import __ClassObject as _ClassObject  # type: ignore  # ignoring attr export
 
 #########################################################################################################
 # Stub data: Exceptions, Hints

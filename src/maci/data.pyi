@@ -165,6 +165,29 @@ class MaciDataObj:
 
         {'attr_child1': 'attr_parent1', 'attr_child2': 'attr_parent1'}
         """
+    
+    def get_attrs(self) -> _Dict[str, _Any]:
+        """
+        Returns a dict copy of the MaciDataObj's current attribute names and values
+        """
+
+    def load_attrs(self, data: _Dict[str, _Any]) -> None:
+        """
+        Loads data from a dict into the MaciDataObj in-place
+        
+        Creates new attribute names with their values retained based on the top level key names of the dict
+
+        Note: If the key name is not a valid pythonic name convention, it will be skipped
+        """
+    
+    def __getattr__(self, _name: str) -> _Any:
+        ...
+
+    def __setattr__(self, _name: str, _new_value: _Any) -> None:
+        ...
+    
+    def __dir__(self) -> _List[str]:
+        ...
 
 
 #########################################################################################################
@@ -177,7 +200,7 @@ def __dump_data(
     *,
     _is_string_request: bool=False,
     filename: str,
-    data: _Any, # objects allowed: MaciDataObj, dict, ClassObject - ignoring type checker
+    data: _Union[MaciDataObj, dict, ClassObject],
     append: bool=False,
     indent_level: int=1,
     indentation_on: bool=True,

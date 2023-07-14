@@ -7,7 +7,7 @@ from typing import Any as _Any
 from ..error import Dump
 from ..data import __dump_data
 from ..data import MaciDataObj as _MaciDataObj
-from ..hint import __ClassObject
+from ..hint import __ClassObject  # type: ignore  # ignoring attr export
 
 #########################################################################################################
 # Dump Data to File

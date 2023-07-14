@@ -323,13 +323,13 @@ class _MaciDataObjConstructor:
                     __current_assignment_glyph = __assignment_glyph.lower()
                     __var_token = __file_data_line.partition(__assignment_glyph)[0].strip()
                     __value_token = __file_data_line.partition(__assignment_glyph)[2].strip()
-                    __value_token_multi = __file_data_line.partition(__assignment_glyph)[2].split()[0].strip()
+                    __value_token_multi = __file_data_line.partition(__assignment_glyph)[2].partition(__skip_markers[2])[0].strip()
 
                     # Set Last Token with Accommodation to Multi-Line String
                     if __file_data_line.partition(__assignment_glyph)[2].strip()[-3:] in __start_markers:
                         __last_token = __file_data_line.partition(__assignment_glyph)[2].strip()[-3:]
                     else:
-                        __last_token = __file_data_line.partition(__assignment_glyph)[2].strip()[-1]
+                        __last_token = __file_data_line.partition(__assignment_glyph)[2].strip().rpartition(__skip_markers[2])[0].strip()
                     
                     try: __start_skip_token = __file_data_line.split(__assignment_glyph)[1].split()[1][0].strip()
                     except IndexError: __start_skip_token = ''  # nosec: B105  # not password
@@ -475,6 +475,13 @@ class _MaciDataObjConstructor:
 
             else: raise Load(py_syntax_err_msg, f'\nFile: {repr(filename)} \nLine: {line_num}')
     
+
+
+    def __getattr__(self, _name: str) -> _Any:
+        if _name in self.__dict__:  # pragma: no cover  # not evaluating but is used/operating
+            return self.__dict__[_name]
+        raise AttributeError(f"'{self.__class__.__name__}' object has no attribute '{_name}'")
+
 
     def __setattr__(self, _name: str, _new_value: _Any) -> None:
         # Check if Attr Already Exists, if so, Collect Original Value
@@ -953,6 +960,34 @@ class _MaciDataObjConstructor:
         Child map will be -> {'attr_child': 'attr_parent'}
         """
         return _deepcopy(self.__assigned_src_reference_attr_map)
+    
+
+    @_rename_exc_name_to_user_object_name
+    def get_attrs(self) -> _Dict[str, _Any]:
+        """
+        Returns a dict copy of the MaciDataObj's current attribute names and values
+        """
+        skip_name_keys = ('_MaciDataObjConstructor', '__maci_obj_format_id')
+        return {name:value for name,value in self.__dict__.items() if not name.startswith(skip_name_keys)}
+    
+
+    @_rename_exc_name_to_user_object_name
+    def load_attrs(self, data: _Dict[str, _Any]) -> None:
+        """
+        Loads data from a dict into the MaciDataObj in-place
+        
+        Creates new attribute names with their values retained based on the top level key names of the dict
+
+        Note: If the key name is not a valid pythonic name convention, it will be skipped
+        """
+        err_msg_type_data = "Only dict is allowed for 'data'"
+        if not isinstance(data, dict): raise GeneralError(err_msg_type_data, f'\nGot: {repr(data)}')
+
+        for attr,value in data.items():
+            # Validate is String and Identifier for valid Attr Names, otherwise skip
+            if not isinstance(attr, str): continue
+            if not attr.isidentifier(): continue            
+            setattr(self, attr, value)
 
 
 #########################################################################################################
@@ -1013,7 +1048,7 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
                 _is_build_request=_is_build_request,
                 _ignore_internal_maci_attr_check=_ignore_internal_maci_attr_check,
             )
-    
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, MaciDataObj):
             return NotImplemented
@@ -1023,14 +1058,20 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
 
     def __bool__(self) -> bool:
         skip_name_keys = ('_MaciDataObjConstructor', '__maci_obj_format_id')
-        if [attr for attr in vars(self) if not attr.startswith(skip_name_keys)]:
+        if [attr for attr in self.__dict__ if not attr.startswith(skip_name_keys)]:
             return True
         return False
 
     def __repr__(self) -> str:
         skip_name_keys = ('_MaciDataObjConstructor', '__maci_obj_format_id')
-        build_repr = ', '.join(f"{name}={value!r}" for name,value in vars(self).items() if not name.startswith(skip_name_keys))
+        build_repr = ', '.join(f"{name}={value!r}" for name,value in self.__dict__.items() if not name.startswith(skip_name_keys))
         return f"{type(self).__name__}({build_repr})"
+    
+    def __dir__(self) -> _List[str]:
+        skip_name_keys = ('_MaciDataObjConstructor', '__maci_obj_format_id')
+        default_attrs = list(name for name in dir(MaciDataObj) if not name.startswith(skip_name_keys))
+        user_attrs = list(name for name in self.__dict__ if not name.startswith(skip_name_keys))
+        return default_attrs + user_attrs
 
 
 #########################################################################################################
