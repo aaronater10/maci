@@ -399,7 +399,7 @@ class _MaciDataObjConstructor:
                         if __current_assignment_glyph in _assignment_glyphs_for_hard_lock_checks:
                             self.__assignment_hard_locked_attribs.add(__var_token)
 
-                    except SyntaxError: raise Load(py_syntax_err_msg, f'\nFile: {repr(filename)} \nLine: {line_num} \nAttr: {__var_token}')
+                    except (ValueError, SyntaxError): raise Load(py_syntax_err_msg, f'\nFile: {repr(filename)} \nLine: {line_num} \nAttr: {__var_token}')
 
                     # Turn OFF/UPDATE Data Build Switches
                     __is_building_data_sw = False
