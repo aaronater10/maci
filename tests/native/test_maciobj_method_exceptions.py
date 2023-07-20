@@ -171,6 +171,8 @@ def test2_exc_maciobj_method_map_attr_opts_data():
         maci_data.map_attr(child_attr="", parent_attr="parent")
     with pytest.raises(maci.error.GeneralError):
         maci_data.map_attr(child_attr="child", parent_attr="")
+    with pytest.raises(maci.error.GeneralError):
+        maci_data.map_attr(child_attr="child", parent_attr="child")
 
 
 

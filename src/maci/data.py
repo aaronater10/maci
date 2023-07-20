@@ -651,6 +651,7 @@ class _MaciDataObjConstructor:
         __err_msg_reference_name_str = "Only str is allowed for 'parent_attr'"
         __err_msg_attr_name_exist = f"Attribute name '{child_attr}' does not exist! Must be created first to assign to parent attribute"
         __err_msg_reference_name_exist = f"Attribute name '{parent_attr}' does not exist! Cannot assign value to child attribute"
+        __err_msg_map_to_itself = f"Mapping to same name! Attribute name cannot be mapped to itself"
 
         if not isinstance(child_attr, str): raise GeneralError(__err_msg_attr_name_str, f'\nAttr: {repr(child_attr)}')
         if not isinstance(parent_attr, str): raise GeneralError(__err_msg_reference_name_str, f'\nAttr: {repr(parent_attr)}')
@@ -658,6 +659,9 @@ class _MaciDataObjConstructor:
         # Look up if Attr or Reference Name Exists
         if not child_attr in self.__dict__: raise GeneralError(__err_msg_attr_name_exist, f'\nAttr: {repr(child_attr)}')
         if not parent_attr in self.__dict__: raise GeneralError(__err_msg_reference_name_exist, f'\nAttr: {repr(parent_attr)}')
+
+        # Verify Attr Names not Referencing Itself
+        if child_attr == parent_attr: raise GeneralError(__err_msg_map_to_itself, f'\nAttr: {repr(child_attr)}')
 
         # Set Value to Reference Value
         setattr(self, child_attr, getattr(self, parent_attr))
