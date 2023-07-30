@@ -5,6 +5,7 @@ coverage==7.2.7
 # Misc Required for Test Env
 setuptools==67.7.2
 # Lib Reqs
+cython==0.29.36
 pyyaml==5.4.0
 tomli==2.0.1
 tomli-w==1.0.0
