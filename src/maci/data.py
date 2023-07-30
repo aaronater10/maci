@@ -1116,7 +1116,6 @@ def __dump_data(
     # then set values accordingly
     
     # Error Checks & Collect Error Messages
-    __err_msg_general_error = "Error has occurred and cannot proceed"
     __err_msg_invalid_maciobj = "Invalid maci object passed in. Please use a valid 'MaciDataObj'"
     __err_msg_no_attrs_found = __err_msg_no_attrs_found
 
@@ -1141,7 +1140,8 @@ def __dump_data(
     __skip_object_key = ('_MaciDataObjConstructor', '__maci_obj_format_id')
     __locked_attr_list_key =  '_MaciDataObjConstructor__assignment_locked_attribs'
     __hard_locked_attr_list_key =  '_MaciDataObjConstructor__assignment_hard_locked_attribs'
-    __reference_attr_list_key =  '_MaciDataObjConstructor__assigned_src_reference_attr_map'
+    __src_reference_attr_list_key =  '_MaciDataObjConstructor__assigned_src_reference_attr_map'
+    __dst_reference_attr_list_key =  '_MaciDataObjConstructor__assigned_dst_reference_attr_map'
     __maci_obj_format_id_match = "48448910-fa49-45ca-bd3e-38d7af136af5-7bcece52-e5ee-4272-989d-103f07aa6c0f"
 
     # Set Write Mode: 'a' = append, 'w' = write
@@ -1158,18 +1158,28 @@ def __dump_data(
         )
 
     
-    ### MACI Got: Check if MaciDataObj ###
+    ### MACI OBJ: Check if MaciDataObj ###
 
     # Build Out Data
     if (isinstance(data, MaciDataObj)) and (data.__maci_obj_format_id__ == __maci_obj_format_id_match):
-        for key,value in data.__dict__.items():
-            # If Match Prefixes, Skip
+        
+        # Create Reference, Restructure and Shift Parent/Child Key Names to Maintain Relationship Order in Dump Output
+        _maci_data_dict_ref = _deepcopy(data.__dict__)
+
+        # If Found, Move Parent(s) to End of Dict and Maintain Value
+        for parent_name,child_data in data.__dict__[__dst_reference_attr_list_key].items():
+            parent_value = _maci_data_dict_ref.pop(parent_name)
+            _maci_data_dict_ref[parent_name] = parent_value
+            # Move all Children to End of Dict
+            for child_name in child_data:
+                _maci_data_dict_ref.pop(child_name)
+                _maci_data_dict_ref[child_name] = None # does not need original value as it is a reference
+
+        # Build and Set Data
+        for key,value in _maci_data_dict_ref.items():
+            # If Match Skip Prefixes, then Skip
             if not key.startswith(__skip_object_key):
                 # Check Glyph Type and Build Accordingly
-
-                # Reset Values
-                is_set_start_new_line = ''
-                is_set_end_new_line = ''
 
                 # Check for Dunder or Unders
                 _is_dunder_attr = False
@@ -1183,16 +1193,16 @@ def __dump_data(
                 _is_dunder_attr = False # reset dunder check for single under's
 
                 # Reference Name and Locked
-                if (key in data.__dict__[__reference_attr_list_key]) and (key in data.__dict__[__locked_attr_list_key]):
-                    __build_data_output.write(f'{key} {__assignment_glyphs.ml} {data.__dict__[__reference_attr_list_key][key]}\n')
+                if (key in data.__dict__[__src_reference_attr_list_key]) and (key in data.__dict__[__locked_attr_list_key]):
+                    __build_data_output.write(f'{key} {__assignment_glyphs.ml} {data.__dict__[__src_reference_attr_list_key][key]}\n')
                     continue
                 # Reference Name and Hard Locked
-                if (key in data.__dict__[__reference_attr_list_key]) and (key in data.__dict__[__hard_locked_attr_list_key]):
-                    __build_data_output.write(f'{key} {__assignment_glyphs.mh} {data.__dict__[__reference_attr_list_key][key]}\n')
+                if (key in data.__dict__[__src_reference_attr_list_key]) and (key in data.__dict__[__hard_locked_attr_list_key]):
+                    __build_data_output.write(f'{key} {__assignment_glyphs.mh} {data.__dict__[__src_reference_attr_list_key][key]}\n')
                     continue
                 # Reference Name Only
-                if key in data.__dict__[__reference_attr_list_key]:
-                    __build_data_output.write(f'{key} {__assignment_glyphs.m} {data.__dict__[__reference_attr_list_key][key]}\n')
+                if key in data.__dict__[__src_reference_attr_list_key]:
+                    __build_data_output.write(f'{key} {__assignment_glyphs.m} {data.__dict__[__src_reference_attr_list_key][key]}\n')
                     continue
 
                 # REPR SIGNAL: If certain object type matches, disable repr use

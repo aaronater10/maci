@@ -3,13 +3,13 @@ maci - by aaronater10
 
 A Pythonic Configuration Language & Thin Wrapper Library
 
-Version 0.5.1
+Version 0.5.2
 
 Tutorials and docs: https://docs.macilib.org
 
 Source: https://github.com/aaronater10/maci
 """
-__version__ = '0.5.1'
+__version__ = '0.5.2'
 
 #########################################################################################################
 # Imports
