@@ -10,6 +10,8 @@ Tutorials and docs: https://docs.macilib.org
 
 Source: https://github.com/aaronater10/maci
 """
+__version__: str
+
 #########################################################################################################
 # Imports
 from typing import Any as _Any
