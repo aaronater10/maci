@@ -530,6 +530,39 @@ def test7_dump_file_repr_signal_maciobj():
     except: pass
 
 
+# 8. Dump File - Map Ordering: MaciDataObj - Test map ordering is maintained after dump from natural dict order
+def test8_dump_file_map_ordering_maciobj():
+    filename = '8_dump_file_map_ordering_maciobj.data'
+    filepath = test_file_path + filename
+
+    # Remove Any Existing Test File
+    try: remove(filepath)
+    except: pass
+    time.sleep(file_delay_timer)
+
+    # Build Data
+    data = maci.build()
+    data.data_child = True
+    data.data_parent = None
+    data.map_attr('data_child', 'data_parent')
+
+    # Tests
+
+    # Dump will process names in the order of the dict. if the child attr is mapped to a parent that
+    # is inited later, then dump will reflect the child attr first then the parent attr.
+    
+    # This issue is fixed by shifting only parent and child relationships in a reference dict to the end
+    # for dump to reference, which maintains integrity for loading the dump output back properly
+    maci.dump(filepath, data)
+    maci.load(filepath)
+
+    # Remove Test File
+    time.sleep(file_delay_timer)
+    try: remove(filepath)
+    except: pass
+
+
+
 ### DICT ###
 
 # 1. Dump File - Append: Dict - Test Appending
