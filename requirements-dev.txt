@@ -5,7 +5,7 @@ coverage==7.2.7
 # Misc Required for Test Env
 setuptools==67.7.2
 # Lib Reqs
-pyyaml==5.4.0
+pyyaml>=5.4.0 # py37-39 not affected by cython bug, but py310+ require pyyaml>=6.01
 tomli==2.0.1
 tomli-w==1.0.0
 # Sec Reqs
