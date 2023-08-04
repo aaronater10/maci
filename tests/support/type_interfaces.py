@@ -188,7 +188,13 @@ xmlload: Union[maci.hint.Element, maci.hint.ElementTree] = maci.xmlload(
     filename='',
     auto_get_root=True
 )
+xmlloaddict: dict = maci.xmlloaddict(
+    filename='',
+)
 xmlloadstr: maci.hint.Element = maci.xmlloadstr(
+    xml_str_data=''
+)
+xmlloadstrdict: dict = maci.xmlloadstrdict(
     xml_str_data=''
 )
 defuse_xml_stdlib: dict = maci._defuse_xml_stdlib()

@@ -102,6 +102,27 @@ def test2_exceptions_xmlload_opts_data():
         maci.xmlload(filename=filepath)
 
 
+### xmlloaddict ###
+
+# 1. Xml Load Dict - Type Checks
+def test1_exceptions_xmlloaddict_types():
+    # Tests
+    with pytest.raises(maci.error.XmlLoadDict):
+        maci.xmlloaddict(filename=1.0)
+
+
+# 2. Xml Load Dict - Unsupported Options or Data
+def test2_exceptions_xmlloaddict_opts_data():
+    filepath = test_file_path + 'exc_xmlload.xml'
+    filepath_valid = '1_export_str_data.xml'
+
+    # Tests
+    with pytest.raises(maci.error.XmlLoadDict):
+        maci.xmlloaddict(filename='')
+    with pytest.raises(maci.error.XmlLoadDict):
+        maci.xmlloaddict(filename=filepath)
+
+
 ### xmlloadstr ###
 
 # 1. Xml Load Str - Type Checks
@@ -116,3 +137,19 @@ def test2_exceptions_xmlloadstr_opts_data():
     # Tests
     with pytest.raises(maci.error.XmlLoadStr):
         maci.xmlloadstr(xml_str_data='')
+
+
+### xmlloadstrdict ###
+
+# 1. Xml Load Str Dict - Type Checks
+def test1_exceptions_xmlloadstrdict_types():
+    # Tests
+    with pytest.raises(maci.error.XmlLoadStrDict):
+        maci.xmlloadstrdict(xml_str_data=1.0)
+
+
+# 2. Xml Load Str Dict - Unsupported Options or Data
+def test2_exceptions_xmlloadstrdict_opts_data():
+    # Tests
+    with pytest.raises(maci.error.XmlLoadStrDict):
+        maci.xmlloadstrdict(xml_str_data='')

@@ -67,9 +67,13 @@ class IniBuildAuto(MaciError): pass
 
 # XML
 class XmlLoad(MaciError): pass
+class XmlLoadDict(MaciError): pass
 class XmlLoadStr(MaciError): pass
+class XmlLoadStrDict(MaciError): pass
 class XmlDump(MaciError): pass
+class XmlDumpDict(MaciError): pass
 class XmlDumpStr(MaciError): pass
+class XmlDumpStrDict(MaciError): pass
 
 
 # Name compatibility aliases/deprecation from ported library

@@ -21,6 +21,7 @@ from typing import Tuple as _Tuple
 from typing import Union as _Union
 from typing import Optional as _Optional
 from typing import Set as _Set
+from typing import OrderedDict as _OrderedDict
 from types import ModuleType as _ModuleType
 from configparser import ConfigParser as _ConfigParser
 from xml.etree.ElementTree import ElementTree as _ElementTree
@@ -656,6 +657,22 @@ def xmlload(filename: str, *, auto_get_root: bool=True) -> _Union[_Element, _Ele
     Maci docs: https://docs.macilib.org
     """
 
+def xmlloaddict(filename: str) -> _OrderedDict[str, _Any]:
+    """
+    Loads xml data from a file
+
+    Returns dict representing your xml data
+
+    [Example: Usage]
+
+    xmlloaddict('path/to/filename.xml')
+
+    This is using the xmltodict library installed as a dependency from pypi.
+    For more information on xmltodict, visit: https://pypi.org/project/xmltodict/
+    
+    Maci docs: https://docs.macilib.org
+    """
+
 def xmlloadstr(xml_str_data: str) -> _Element:
     """
     Loads xml data from a string
@@ -671,6 +688,22 @@ def xmlloadstr(xml_str_data: str) -> _Element:
     
     Maci docs: https://docs.macilib.org
     """
+
+def xmlloadstrdict(xml_str_data: str) -> _OrderedDict[str, _Any]:
+    """
+    Loads xml data from a string
+
+    Returns dict representing your xml data
+
+    [Example: Usage]
+
+    xmlloadstrdict('<tag>data</tag>')
+
+    This is using the xmltodict library installed as a dependency from pypi.
+    For more information on xmltodict, visit: https://pypi.org/project/xmltodict/
+    
+    Maci docs: https://docs.macilib.org
+    """    
 
 def xmldump(filename: str, data: _Union[_ElementTree, _Element], *, append: bool=False, encoding: _Union[str, None]=None) -> None:
     """
