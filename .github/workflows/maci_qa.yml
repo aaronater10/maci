@@ -14,7 +14,7 @@ name: QA-Testing
 on:
   push:
     branches:
-      - 1.0.0 # Current Dev Branch
+      - 0.6.0 # Current Dev Branch
       - main
   pull_request:
     branches:
