@@ -640,7 +640,7 @@ def inibuildmanual() -> _ConfigParser:
     """
 
 
-### XML Lib ###
+### XML Libs ###
 def xmlload(filename: str, *, auto_get_root: bool=True) -> _Union[_Element, _ElementTree]:
     """
     Loads xml data from a file
