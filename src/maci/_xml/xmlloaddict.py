@@ -1,7 +1,6 @@
 # xmlloaddict
 #########################################################################################################
 # Imports
-from typing import Union as _Union
 from typing import Any as _Any
 from typing import OrderedDict as _OrderedDict
 import xmltodict as _xmltodict  # type: ignore  # ignoring type checker for ext lib
@@ -35,4 +34,4 @@ def xmlloaddict(filename: str) -> _OrderedDict[str, _Any]:
         with open(filename, 'rb') as file_data:
             return _xmltodict.parse(xml_input=file_data)
     except (FileNotFoundError, OSError) as err_msg: raise XmlLoadDict(err_msg, f'\nGot: {repr(filename)}')
-    except (ExpatError) as err_msg: raise XmlLoadDict(err_msg, f'\nGot: {repr(filename)}')
+    except ExpatError as err_msg: raise XmlLoadDict(err_msg, f'\nGot: {repr(filename)}')
