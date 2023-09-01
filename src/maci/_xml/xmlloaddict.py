@@ -8,7 +8,7 @@ from xml.parsers.expat import ExpatError
 from ..error import XmlLoadDict
 
 #########################################################################################################
-# Import xml file
+# Load xml file
 def xmlloaddict(filename: str) -> _OrderedDict[str, _Any]:
     """
     Loads xml data from a file

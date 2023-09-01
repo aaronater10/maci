@@ -69,7 +69,9 @@ from ._xml.xmlloaddict import xmlloaddict
 from ._xml.xmlloadstr import xmlloadstr
 from ._xml.xmlloadstrdict import xmlloadstrdict
 from ._xml.xmldump import xmldump
+from ._xml.xmldumpdict import xmldumpdict
 from ._xml.xmldumpstr import xmldumpstr
+from ._xml.xmldumpstrdict import xmldumpstrdict
 from ._xml.xmlbuildmanual import xmlbuildmanual
 
 

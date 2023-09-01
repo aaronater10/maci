@@ -9,7 +9,7 @@ from xml.parsers.expat import ExpatError
 from ..error import XmlLoadStrDict
 
 #########################################################################################################
-# Import xml file
+# Load xml string
 def xmlloadstrdict(xml_str_data: str) -> _OrderedDict[str, _Any]:
     """
     Loads xml data from a string

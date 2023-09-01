@@ -7,7 +7,7 @@ from typing import Any as _Any
 from ..error import TomlLoadStr
 
 #########################################################################################################
-# Load toml file
+# Load toml string
 def tomlloadstr(toml_str_data: str) -> _Dict[str, _Any]:
     """
     Load toml data from a string

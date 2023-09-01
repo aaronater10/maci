@@ -7,7 +7,7 @@ from typing import Any as _Any
 from ..error import TomlDumpStr
 
 #########################################################################################################
-# Dump toml file
+# Dump toml string
 def tomldumpstr(
     data: _Dict[str, _Any],
     *,
