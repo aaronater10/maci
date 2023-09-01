@@ -719,6 +719,22 @@ def xmldump(filename: str, data: _Union[_ElementTree, _Element], *, append: bool
     Maci docs: https://docs.macilib.org
     """
 
+def xmldumpdict(filename: str, data: _Dict[str, _Any], *, append: bool=False, pretty: bool=True, full_doc: bool=True) -> None:
+    """
+    Dumps a new file from dict to xml data.
+
+    Enter filename as str. Pass data for output to file
+
+    [Example Use]
+
+    xmldumpdict('path/to/filename.xml', data) 
+
+    This is using the xmltodict library installed as a dependency from pypi.
+    For more information on xmltodict, visit: https://pypi.org/project/xmltodict/
+    
+    Maci docs: https://docs.macilib.org
+    """
+
 def xmldumpstr(data: _Element, *, encoding: str='utf-8') -> str:
     """
     Dumps xml data to a string from xml etree Element object
@@ -731,6 +747,22 @@ def xmldumpstr(data: _Element, *, encoding: str='utf-8') -> str:
 
     This is using the native xml library via etree shipped with the python standard library.
     For more information on the xml.etree api, visit: https://docs.python.org/3/library/xml.etree.elementtree.html#module-xml.etree.ElementTree
+    
+    Maci docs: https://docs.macilib.org
+    """
+
+def xmldumpstrdict(data: _Dict[str, _Any], *, pretty: bool=True, full_doc: bool=True) -> str:
+    """
+    Dumps dict data to xml string
+
+    Returns a xml formatted str. Assign the output to var
+
+    [Example Use]
+
+    xmldumpstrdict(data)
+
+    This is using the xmltodict library installed as a dependency from pypi.
+    For more information on xmltodict, visit: https://pypi.org/project/xmltodict/
     
     Maci docs: https://docs.macilib.org
     """

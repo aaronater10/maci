@@ -23,7 +23,7 @@ def xmldumpstrdict(data: _Dict[str, _Any], *, pretty: bool=True, full_doc: bool=
     For more information on xmltodict, visit: https://pypi.org/project/xmltodict/
     
     Maci docs: https://docs.macilib.org
-    """    
+    """
     # Error Checks
     err_msg_type_data = "Only dict is allowed for 'data'"
     err_msg_type_pretty = "Only bool is allowed for 'pretty'"

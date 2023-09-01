@@ -23,7 +23,7 @@ def xmldumpdict(filename: str, data: _Dict[str, _Any], *, append: bool=False, pr
     For more information on xmltodict, visit: https://pypi.org/project/xmltodict/
     
     Maci docs: https://docs.macilib.org
-    """    
+    """
     # Error Checks
     err_msg_type_file = "Only str is allowed for 'filename'"
     err_msg_type_data = "Only dict is allowed for 'data'"
@@ -44,7 +44,7 @@ def xmldumpdict(filename: str, data: _Dict[str, _Any], *, append: bool=False, pr
         # Dump data to xml file
         file_data: _Any  # ignore type checker
         with open(filename, write_mode) as file_data:
-            _xmltodict.unparse(input_dict=data, output=file_data, pretty=pretty, full_document=full_doc)
             if write_mode == 'a': _dumpraw(filename, '', append=True)
+            _xmltodict.unparse(input_dict=data, output=file_data, pretty=pretty, full_document=full_doc)
     except TypeError as err_msg: raise XmlDumpDict(err_msg, f'\nFile: {repr(filename)} \nGot: {repr(data)}')
     except (FileNotFoundError, OSError) as err_msg: raise XmlDumpDict(err_msg, f'\nGot: {repr(filename)}')
