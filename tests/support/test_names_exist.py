@@ -44,11 +44,16 @@ def test1_function_names_exist():
     maci.inibuildauto
     maci.inibuildmanual
     # XML
+    maci._defuse_xml_stdlib
     maci.xmlload
+    maci.xmlloaddict
     maci.xmlloadstr
+    maci.xmlloadstrdict
     maci.xmldump
+    maci.xmldumpdict
     maci.xmldumpstr
-    maci.xmlbuildmanual    
+    maci.xmldumpstrdict
+    maci.xmlbuildmanual
 
 
 # 2. Test all Exception attr names are present
@@ -93,9 +98,13 @@ def test2_exception_names_exist():
     maci.error.IniBuildAuto
     # XML
     maci.error.XmlLoad
+    maci.error.XmlLoadDict
     maci.error.XmlLoadStr
+    maci.error.XmlLoadStrDict
     maci.error.XmlDump
+    maci.error.XmlDumpDict
     maci.error.XmlDumpStr
+    maci.error.XmlDumpStrDict
 
 
 # 3. Test all MaciDataObj method names are present
@@ -108,11 +117,13 @@ def test3_macidataobj_method_names_exist():
     maci_obj.hard_lock_attr
     maci_obj.map_attr
     maci_obj.unmap_attr
+    maci_obj.get_attrs
     maci_obj.get_locked_list
     maci_obj.get_hard_locked_list
     maci_obj.get_all_maps
     maci_obj.get_parent_maps
     maci_obj.get_child_maps
     maci_obj.get_parent_map_chains
+    maci_obj.load_attrs
     maci_obj.is_parent_map
     maci_obj.is_child_map

@@ -180,9 +180,21 @@ maci.xmldump(
     append=False,
     encoding=None
 )
+maci.xmldumpdict(
+    filename='',
+    data={},
+    append=False,
+    pretty=True,
+    full_doc=True
+)
 xmldumpstr: str = maci.xmldumpstr(
     data=maci.xmlloadstr(''),
     encoding=''
+)
+xmldumpstrdict: str = maci.xmldumpstrdict(
+    data={},
+    pretty=True,
+    full_doc=True
 )
 xmlload: Union[maci.hint.Element, maci.hint.ElementTree] = maci.xmlload(
     filename='',
