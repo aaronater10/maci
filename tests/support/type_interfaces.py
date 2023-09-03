@@ -7,6 +7,7 @@ from typing import Union
 from typing import Any
 from typing import Dict
 from typing import List
+from typing import Iterator
 from types import ModuleType
 from src import maci
 
@@ -218,10 +219,20 @@ maci.yamldump(
     append=False,
     encoding=None
 )
+maci.yamldumpall(
+    filename='',
+    data=[],
+    append=False,
+    encoding=None
+)
 yamldumpstr: str = maci.yamldumpstr(
     data={}
 )
 yamlload: Any = maci.yamlload(
+    filename='',
+    encoding=None
+)
+yamlloadall: Iterator[Any] = maci.yamlloadall(
     filename='',
     encoding=None
 )
