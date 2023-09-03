@@ -1,4 +1,4 @@
-# xmldumpdict - Tests
+# xmldumpstrdict - Tests
 from src import maci
 import xmltodict
 

@@ -5,6 +5,7 @@ from typing import Any as _Any
 from typing import Union as _Union
 from typing import Iterable as _Iterable 
 import yaml as _yaml  # type: ignore  # ignoring type checker for ext lib
+from .._native.dumpraw import dumpraw as _dumpraw
 from ..error import YamlDumpAll
 
 #########################################################################################################
@@ -40,6 +41,7 @@ def yamldumpall(filename: str, data: _Iterable[_Any], *, append: bool=False, enc
     # Export data to yaml file
     try:
         with open(filename, write_mode, encoding=encoding) as f:
+            if write_mode == 'a': _dumpraw(filename, '---\n', append=True)
             _yaml.safe_dump_all(data, f)
     except _yaml.error.YAMLError as err_msg: raise YamlDumpAll(err_msg, f'\nGot: {repr(data)}')
     except (FileNotFoundError, OSError) as err_msg: raise YamlDumpAll(err_msg, f'\nGot: {repr(filename)}')
