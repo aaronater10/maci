@@ -22,6 +22,7 @@ from typing import Union as _Union
 from typing import Optional as _Optional
 from typing import Set as _Set
 from typing import OrderedDict as _OrderedDict
+from typing import Iterator as _Iterator
 from types import ModuleType as _ModuleType
 from configparser import ConfigParser as _ConfigParser
 from xml.etree.ElementTree import ElementTree as _ElementTree
@@ -436,6 +437,23 @@ def yamlload(filename: str, *, encoding: _Union[str, None]=None) -> _Any:
     For more information on PyYAML, visit: https://pypi.org/project/PyYAML/
     
     Maci docs: https://docs.macilib.org
+    """
+
+def yamlloadall(filename: str, *, encoding: _Union[str, None]=None) -> _Iterator[_Any]:
+    """
+    Imports all yaml docs from a file.
+
+    Returns a generator of matching python data types. Assign the output to var
+
+    Enter yaml file location as str to import.
+
+    [Example Use]
+
+    yamlloadall('path/to/filename.yml')
+
+    This is using the PyYAML framework installed as a dependency from pypi. It is only using the
+    "safe_load_all" method to protect from untrusted input.
+    For more information on PyYAML, visit: https://pypi.org/project/PyYAML/
     """
 
 def yamlloadstr(yaml_str_data: str) -> _Any:

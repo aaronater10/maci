@@ -46,6 +46,7 @@ from ._json.jsondumpstr import jsondumpstr
 
 # YAML Lib
 from ._yaml.yamlload import yamlload
+from ._yaml.yamlloadall import yamlloadall
 from ._yaml.yamlloadstr import yamlloadstr
 from ._yaml.yamldump import yamldump
 from ._yaml.yamldumpstr import yamldumpstr

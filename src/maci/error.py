@@ -50,8 +50,10 @@ class JsonDumpStr(MaciError): pass
 
 # YAML
 class YamlLoad(MaciError): pass
+class YamlLoadAll(MaciError): pass
 class YamlLoadStr(MaciError): pass
 class YamlDump(MaciError): pass
+class YamlDumpAll(MaciError): pass
 class YamlDumpStr(MaciError): pass
 
 # TOML
