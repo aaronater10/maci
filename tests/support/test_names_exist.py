@@ -30,8 +30,10 @@ def test1_function_names_exist():
     maci.jsondumpstr
     # YAML
     maci.yamlload
+    maci.yamlloadall
     maci.yamlloadstr
     maci.yamldump
+    maci.yamldumpall
     maci.yamldumpstr
     # TOML
     maci.tomlload
@@ -84,8 +86,10 @@ def test2_exception_names_exist():
     maci.error.JsonDumpStr
     # YAML
     maci.error.YamlLoad
+    maci.error.YamlLoadAll
     maci.error.YamlLoadStr
     maci.error.YamlDump
+    maci.error.YamlDumpAll
     maci.error.YamlDumpStr
     # TOML
     maci.error.TomlLoad
