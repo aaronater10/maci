@@ -23,6 +23,7 @@ from typing import Optional as _Optional
 from typing import Set as _Set
 from typing import OrderedDict as _OrderedDict
 from typing import Iterator as _Iterator
+from typing import Iterable as _Iterable
 from types import ModuleType as _ModuleType
 from configparser import ConfigParser as _ConfigParser
 from xml.etree.ElementTree import ElementTree as _ElementTree
@@ -454,6 +455,8 @@ def yamlloadall(filename: str, *, encoding: _Union[str, None]=None) -> _Iterator
     This is using the PyYAML framework installed as a dependency from pypi. It is only using the
     "safe_load_all" method to protect from untrusted input.
     For more information on PyYAML, visit: https://pypi.org/project/PyYAML/
+
+    Maci docs: https://docs.macilib.org
     """
 
 def yamlloadstr(yaml_str_data: str) -> _Any:
@@ -485,6 +488,23 @@ def yamldump(filename: str, data: _Any, *, append: bool=False, encoding: _Union[
     "safe_dump" method, which only supports standard YAML tags and cannot represent an arbitrary Python object.
     For more information on PyYAML, visit: https://pypi.org/project/PyYAML/
     
+    Maci docs: https://docs.macilib.org
+    """
+
+def yamldumpall(filename: str, data: _Iterable[_Any], *, append: bool=False, encoding: _Union[str, None]=None) -> None:
+    """
+    Exports a new file from an iterable object that produces a yaml doc from each item to the file.
+    
+    Enter new filename as str. Pass an iterable for output to file
+    
+    [Example Use]
+
+    yamldumpall('path/to/filename.yml', data)    
+
+    This is using the PyYAML framework installed as a dependency from pypi. It is only using the
+    "safe_dump_all" method, which only supports standard YAML tags and cannot represent arbitrary Python objects.
+    For more information on PyYAML, visit: https://pypi.org/project/PyYAML/
+
     Maci docs: https://docs.macilib.org
     """
 
