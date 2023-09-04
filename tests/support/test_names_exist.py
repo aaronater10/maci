@@ -56,6 +56,9 @@ def test1_function_names_exist():
     maci.xmldumpstr
     maci.xmldumpstrdict
     maci.xmlbuildmanual
+    # PICKLE
+    maci.pickledumpbytes
+    maci.pickleloadbytes
 
 
 # 2. Test all Exception attr names are present
