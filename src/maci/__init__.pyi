@@ -837,7 +837,7 @@ def _defuse_xml_stdlib() -> dict:
 
 
 ### Pickle Lib ###
-def pickleloadbytes(pickle_byte_data: bytes) -> _Any:
+def pickleloadbytes(pickled_byte_data: bytes) -> _Any:
     """
     Load data from a pickled byte string
 

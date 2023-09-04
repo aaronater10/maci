@@ -29,5 +29,5 @@ def pickleloadbytes(pickled_byte_data: bytes) -> _Any:
 
     # Load pickle byte data
     try:
-        return _pickle.loads(pickled_byte_data)  # nosec: B301  # ignore sec checker - upto dev discretion to unpickle data
+        return _pickle.loads(data=pickled_byte_data)  # nosec: B301  # ignore sec checker - upto dev discretion to unpickle data
     except _pickle.PickleError as err_msg: raise PickleLoadBytes(err_msg, f'\nGot: {repr(pickled_byte_data)}')

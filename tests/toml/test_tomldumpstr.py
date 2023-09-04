@@ -1,7 +1,5 @@
 # tomldumpstr - Tests
 from src import maci
-from os import remove, path
-import time
 
 
 ################################################################

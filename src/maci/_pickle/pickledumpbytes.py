@@ -24,5 +24,6 @@ def pickledumpbytes(data: _Any) -> bytes:
     """
     # Dump pickle byte data
     try:
-        return _pickle.dumps(data)
-    except _pickle.PickleError as err_msg: raise PickleDumpBytes(err_msg, f'\nGot: {repr(data)}')
+        return _pickle.dumps(obj=data)
+    except _pickle.PickleError as err_msg: raise PickleDumpBytes(err_msg, f'\nGot: {repr(data)}')  # pragma: no cover  # catch all. inconvenient examples to test
+    except TypeError as err_msg: raise PickleDumpBytes(err_msg, f'\nGot: {repr(data)}')
