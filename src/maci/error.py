@@ -77,6 +77,10 @@ class XmlDumpDict(MaciError): pass
 class XmlDumpStr(MaciError): pass
 class XmlDumpStrDict(MaciError): pass
 
+# Pickle
+class PickleLoadBytes(MaciError): pass
+class PickleDumpBytes(MaciError): pass
+
 
 # Name compatibility aliases/deprecation from ported library
 def __getattr__(attr_name: str) -> object:

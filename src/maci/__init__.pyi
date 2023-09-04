@@ -834,3 +834,37 @@ def _defuse_xml_stdlib() -> dict:
     
     Maci docs: https://docs.macilib.org
     """
+
+
+### Pickle Lib ###
+def pickleloadbytes(pickle_byte_data: bytes) -> _Any:
+    """
+    Load data from a pickled byte string
+
+    [Example Use]
+
+    pickleloadbytes(b'byte string with pickled data')
+
+    *** Only unpickle data you trust! ***
+
+    This is using the native pickle library shipped with the python standard library. For more
+    information on the pickle library and official security concerns with pickling, visit: https://docs.python.org/3/library/pickle.html
+
+    Maci docs: https://docs.macilib.org
+    """
+
+def pickledumpbytes(data: _Any) -> bytes:
+    """
+    Dump data to a pickled byte string
+
+    [Example Use]
+
+    pickledumpbytes(data)
+
+    *** Only pickle data you trust! ***
+
+    This is using the native pickle library shipped with the python standard library. For more
+    information on the pickle library and official security concerns with pickling, visit: https://docs.python.org/3/library/pickle.html
+
+    Maci docs: https://docs.macilib.org
+    """

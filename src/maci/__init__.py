@@ -76,6 +76,10 @@ from ._xml.xmldumpstr import xmldumpstr
 from ._xml.xmldumpstrdict import xmldumpstrdict
 from ._xml.xmlbuildmanual import xmlbuildmanual
 
+# Pickle Lib
+from ._pickle.pickleloadbytes import pickleloadbytes
+from ._pickle.pickledumpbytes import pickledumpbytes
+
 
 # Name compatibility aliases/deprecation from ported library
 def __getattr__(attr_name: str) -> object:
