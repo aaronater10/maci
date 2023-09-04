@@ -25,6 +25,7 @@ from typing import OrderedDict as _OrderedDict
 from typing import Iterator as _Iterator
 from typing import Iterable as _Iterable
 from types import ModuleType as _ModuleType
+from pathlib import Path as _PathObj
 from configparser import ConfigParser as _ConfigParser
 from xml.etree.ElementTree import ElementTree as _ElementTree
 from xml.etree.ElementTree import Element as _Element
@@ -230,7 +231,7 @@ def dumpstr(
     Maci docs: https://docs.macilib.org
     """
 
-def dumpraw(filename: str, *data: _Any, append: bool=False, byte_data: bool=False, newline_sep: bool=True, encoding: _Union[str, None]=None) -> None:
+def dumpraw(filename: _Union[str, _PathObj], *data: _Any, append: bool=False, byte_data: bool=False, newline_sep: bool=True, encoding: _Union[str, None]=None) -> None:
     """
     Dumps a new file with the data raw
 
