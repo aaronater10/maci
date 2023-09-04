@@ -240,6 +240,10 @@ yamlloadstr: Any = maci.yamlloadstr(
     yaml_str_data=''
 )
 
+### PICKLE ###
+pickleloadbytes: dict = maci.pickleloadbytes(b'')
+pickledumpbytes: bytes = maci.pickledumpbytes({})
+
 
 ################################################################
 # Methods
