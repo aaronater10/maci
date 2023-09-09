@@ -10,9 +10,7 @@ from ..error import CleanFormat
 # Format data cleanly for string
 def cleanformat(data: _Union[dict,list,tuple,set], indent_level: int=1) -> str:
     """
-    Formats a dict, list, tuple, or set, to have a clean formatted multiline output to string
-
-    Accepted data types: dict, list, tuple, set 
+    Formats a dict, list, tuple, or set, to a clean multiline structure to string
 
     [Example Use]
     
@@ -40,23 +38,23 @@ def cleanformat(data: _Union[dict,list,tuple,set], indent_level: int=1) -> str:
         build_data_stack.extend([*data])
         return __format_data(stack=build_data_stack, initial_type='list', indent_level=indent_level, dict_kv_marker_signal=dict_kv_marker_signal)
 
-    # Set
-    if isinstance(data, set): # pragma: no branch
-        build_data_stack.extend([*data])
-        return __format_data(stack=build_data_stack, initial_type='set', indent_level=indent_level, dict_kv_marker_signal=dict_kv_marker_signal)
-   
-    # Tuple
-    if isinstance(data, tuple):
-        build_data_stack.extend([*data])
-        return __format_data(stack=build_data_stack, initial_type='tuple', indent_level=indent_level, dict_kv_marker_signal=dict_kv_marker_signal)
-
     # Dict
-    if isinstance(data, dict):        
+    elif isinstance(data, dict):        
         build_data_stack.extend([(dict_kv_marker_signal, key, value)  # build a 3-tuple of kv signal, true key, true value
             for key,value in data.items()
             ]
         )
         return __format_data(stack=build_data_stack, initial_type='dict', indent_level=indent_level, dict_kv_marker_signal=dict_kv_marker_signal)
+
+    # Tuple
+    elif isinstance(data, tuple):
+        build_data_stack.extend([*data])
+        return __format_data(stack=build_data_stack, initial_type='tuple', indent_level=indent_level, dict_kv_marker_signal=dict_kv_marker_signal)
+
+    # Set
+    elif isinstance(data, set):  # pragma: no branch
+        build_data_stack.extend([*data])
+        return __format_data(stack=build_data_stack, initial_type='set', indent_level=indent_level, dict_kv_marker_signal=dict_kv_marker_signal)
 
 
 #########################################################################################################
@@ -68,10 +66,10 @@ def __format_data(stack: _List[_Any], initial_type: str, indent_level: int, dict
     "initial_type" options: 'list', 'set', 'tuple', 'dict'
     """
     # Error Checks - Internal
-    if not isinstance(stack, list): raise Exception(f"'stack' received non-list type: Got\n{stack!r}")
-    if not isinstance(initial_type, str): raise Exception(f"'initial_type' received non-str type: Got\n{initial_type!r}")
-    if not isinstance(indent_level, int): raise Exception(f"'indent_level' received non-int type: Got\n{indent_level!r}")
-    if not (type(dict_kv_marker_signal) == type(object())): raise Exception(f"'dict_kv_marker_signal' received not pure 'object' type: Got\n{indent_level!r}")
+    if not isinstance(stack, list): raise Exception(f"'stack' received non-list type: Got\n{stack!r}")  # pragma: no cover  # internal check only
+    if not isinstance(initial_type, str): raise Exception(f"'initial_type' received non-str type: Got\n{initial_type!r}")  # pragma: no cover  # internal check only
+    if not isinstance(indent_level, int): raise Exception(f"'indent_level' received non-int type: Got\n{indent_level!r}")  # pragma: no cover  # internal check only
+    if not (type(dict_kv_marker_signal) == type(object())): raise Exception(f"'dict_kv_marker_signal' received not pure 'object' type: Got\n{indent_level!r}")  # pragma: no cover  # internal check only
 
     # Setup
     indent_space = '    ' * indent_level  # str is 4x spaces
@@ -96,7 +94,7 @@ def __format_data(stack: _List[_Any], initial_type: str, indent_level: int, dict
         write_str_list_build.append('(')  # start marker
         stack.append(tuple_end_marker_signal)  # end marker
     
-    elif initial_type == 'set':
+    elif initial_type == 'set':  # pragma: no branch
         write_str_list_build.append('{')  # start marker
         stack.append(set_end_marker_signal)  # end marker    
     

@@ -249,15 +249,11 @@ def dumpraw(filename: _Union[str, _PathObj], *data: _Any, append: bool=False, by
 
 def cleanformat(data: _Union[dict,list,tuple,set], indent_level: int=1) -> str:
     """
-    Formats a single dictionary, list, tuple, or set, to a clean multiline form
+    Formats a dict, list, tuple, or set, to a clean multiline structure to string
 
-    Note: Higher indent levels will decrease performance, and indentation is applied to the main level data set only.
-
-    Tip: Changing indent level to 0 increases format performance by approx 5%, but output will have no indentation (Default level = 1).
-
-    [Example: Usage]
+    [Example Use]
     
-    var = cleanformat([1,2,3])
+    var = cleanformat(data)
 
     Maci docs: https://docs.macilib.org
     """
