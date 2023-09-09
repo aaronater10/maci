@@ -9,6 +9,7 @@ from typing import Dict
 from typing import List
 from typing import Iterator
 from types import ModuleType
+from pathlib import Path as PathObj
 from src import maci
 
 ### Data for Tests ###
@@ -50,7 +51,7 @@ loadstrdict: dict = maci.loadstrdict(
     maci_str_data='',
     attr_name_dedup=True
 )
-maci.dump(
+maci.dump(  # str path
     filename='',
     data=MyClass(),
     append=False,
@@ -70,8 +71,36 @@ maci.dump(
     private_class_dunder_attrs=False,
     use_symbol_glyphs=False
 )
-maci.dumpraw(
+maci.dump(  # Path obj
+    filename=PathObj(''),
+    data=MyClass(),
+    append=False,
+    indent_level=1,
+    indentation_on=True,
+    multi_line_str=False,
+    encoding=None,
+    private_attrs=False,
+    private_under_attrs=False,
+    private_dunder_attrs=False,
+    class_attrs=False,
+    private_init_attrs=False,
+    private_init_under_attrs=False,
+    private_init_dunder_attrs=False,
+    private_class_attrs=False,
+    private_class_under_attrs=False,
+    private_class_dunder_attrs=False,
+    use_symbol_glyphs=False
+)
+maci.dumpraw(  # str path
     filename='',
+    data=[],
+    append=False,
+    byte_data=False,
+    newline_sep=True,
+    encoding=None
+)
+maci.dumpraw(  # Path obj
+    filename=PathObj(''),
     data=[],
     append=False,
     byte_data=False,

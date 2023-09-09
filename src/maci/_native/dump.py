@@ -2,8 +2,7 @@
 #########################################################################################################
 # Imports
 from typing import Union as _Union
-from typing import NewType as _NewType
-from typing import Any as _Any
+from pathlib import Path as _PathObj
 from ..error import Dump
 from ..data import __dump_data
 from ..data import MaciDataObj as _MaciDataObj
@@ -12,7 +11,7 @@ from ..hint import __ClassObject  # type: ignore  # ignoring attr export
 #########################################################################################################
 # Dump Data to File
 def dump(
-    filename: str, 
+    filename: _Union[str, _PathObj], 
     data: _Union['_MaciDataObj', dict, __ClassObject], 
     *,
     append: bool=False,
@@ -81,7 +80,7 @@ def dump(
 
     filter_data_object_types = (str, int, float, bool, list, tuple, set, type(None), bytes, complex, range, frozenset, bytearray, memoryview)
 
-    if not isinstance(filename, str): raise Dump(err_msg_type_filename, f'\nGot: {repr(filename)}')
+    if not isinstance(filename, (str, _PathObj)): raise Dump(err_msg_type_filename, f'\nGot: {repr(filename)}')
     if isinstance(data, filter_data_object_types): raise Dump(err_msg_type_data, f'\nGot: {repr(data)}')
     if not isinstance(append, bool): raise Dump(err_msg_type_append, f'\nGot: {repr(append)}')
     if not isinstance(indent_level, int): raise Dump(err_msg_type_indent_level, f'\nGot: {repr(indent_level)}')
@@ -99,6 +98,9 @@ def dump(
     if not isinstance(private_class_under_attrs, bool): raise Dump(err_msg_type_private_class_under_attrs, f'\nGot: {repr(private_class_under_attrs)}')
     if not isinstance(private_class_dunder_attrs, bool): raise Dump(err_msg_type_private_class_dunder_attrs, f'\nGot: {repr(private_class_dunder_attrs)}')
     if not isinstance(use_symbol_glyphs, bool): raise Dump(err_msg_type_use_symbol_glyphs, f'\nGot: {repr(use_symbol_glyphs)}')
+
+    # Convert filename to str to catch Path objects
+    filename = str(filename)
 
     # Write built data to file, return None
     __dump_data(

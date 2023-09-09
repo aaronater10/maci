@@ -147,7 +147,7 @@ def loadattrs(filename: str, class_object: _ClassObject, *, encoding: _Union[str
     """
 
 def dump(
-    filename: str, 
+    filename: _Union[str, _PathObj], 
     data: _Union['_MaciDataObj', dict, _ClassObject], 
     *,
     append: bool=False,
