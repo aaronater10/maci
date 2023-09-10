@@ -5,12 +5,14 @@ from os import path as _path
 from copy import deepcopy as _deepcopy
 from typing import Any as _Any
 from typing import Optional as _Optional
+from typing import Union as _Union
+from pathlib import Path as _PathObj
 from ..error import LoadDict, Load
 from ..data import MaciDataObj as _MaciDataObj
 
 #########################################################################################################
 # Import py Data from File
-def loaddict(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=None) -> _Optional[dict]:
+def loaddict(filename: _Union[str, _PathObj], *, attr_name_dedup: bool=True, encoding: _Optional[str]=None) -> _Optional[dict]:
     """
     Imports pythonic data from any text file
 
@@ -36,9 +38,12 @@ def loaddict(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[s
     err_msg_type_attr_name_dedup = "Only bool is allowed for 'attr_name_dedup'"
     err_msg_type_encoding = "Only str|None or valid option is allowed for 'encoding'"
 
-    if not isinstance(filename, str): raise LoadDict(err_msg_type_filename, f'\nGot: {repr(filename)}')
+    if not isinstance(filename, (str, _PathObj)): raise LoadDict(err_msg_type_filename, f'\nGot: {repr(filename)}')
     if not isinstance(attr_name_dedup, bool): raise LoadDict(err_msg_type_attr_name_dedup, f'\nGot: {repr(attr_name_dedup)}')
     if not isinstance(encoding, (str, type(None))): raise LoadDict(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
+
+    # Convert filename to str to catch Path objects
+    filename = str(filename)
 
     # Check if file empty. Returns None if empty
     try:

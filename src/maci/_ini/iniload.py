@@ -2,13 +2,14 @@
 #########################################################################################################
 # Imports
 from typing import Union as _Union
+from pathlib import Path as _PathObj
 from configparser import ConfigParser as _ConfigParser
 from configparser import ExtendedInterpolation as _ExtendedInterpolation
 from ..error import IniLoad
 
 #########################################################################################################
 # Import ini file
-def iniload(filename: str, *, encoding: _Union[str, None]=None) -> _ConfigParser:
+def iniload(filename: _Union[str, _PathObj], *, encoding: _Union[str, None]=None) -> _ConfigParser:
     """
     Imports ini data from a file.
 
@@ -28,8 +29,11 @@ def iniload(filename: str, *, encoding: _Union[str, None]=None) -> _ConfigParser
     err_msg_file_type = "Only str is allowed for 'filename'"
     err_msg_type_encoding = "Only str|None or valid option is allowed for 'encoding'"
 
-    if not isinstance(filename, str): raise IniLoad(err_msg_file_type, f'\nGot: {repr(filename)}')
+    if not isinstance(filename, (str, _PathObj)): raise IniLoad(err_msg_file_type, f'\nGot: {repr(filename)}')
     if not isinstance(encoding, (str, type(None))): raise IniLoad(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
+
+    # Convert filename to str to catch Path objects
+    filename = str(filename)
 
     # Load file data
     try:

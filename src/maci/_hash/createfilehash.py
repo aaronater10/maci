@@ -5,12 +5,13 @@ from .._native.loadraw import loadraw as _loadraw
 from .._native.dumpraw import dumpraw as _dumpraw
 from typing import Union as _Union
 from typing import Any as _Any
+from pathlib import Path as _PathObj
 import hashlib as _hashlib
 from ..error import CreateFileHash, LoadRaw, DumpRaw
 
 #########################################################################################################
 # Create file hash
-def createfilehash(file_to_hash: str, file_to_store_hash: _Union[str,None], hash_algorithm: str='sha256', *, encoding: _Union[str, None]=None) -> str:
+def createfilehash(file_to_hash: _Union[str, _PathObj], file_to_store_hash: _Union[str, _PathObj, None], hash_algorithm: str='sha256', *, encoding: _Union[str, None]=None) -> str:
     """
     Creates a hash of any file, and stores the hash data to a new created file
 
@@ -40,11 +41,15 @@ def createfilehash(file_to_hash: str, file_to_store_hash: _Union[str,None], hash
     err_msg_hash = f"Invalid or no hash option chosen for 'hash_algorithm'"
     err_msg_str_encoding = f"Only str|None or valid option is allowed for 'encoding'"
 
-    if not isinstance(file_to_hash, str): raise CreateFileHash(err_msg_str_file_src, f'"{file_to_hash}"')
-    if not isinstance(file_to_store_hash, (str, type(None))): raise CreateFileHash(err_msg_file_dst, f'"{file_to_store_hash}"')
+    if not isinstance(file_to_hash, (str, _PathObj)): raise CreateFileHash(err_msg_str_file_src, f'"{file_to_hash}"')
+    if not isinstance(file_to_store_hash, (str, _PathObj, type(None))): raise CreateFileHash(err_msg_file_dst, f'"{file_to_store_hash}"')
     if not isinstance(hash_algorithm, str): raise CreateFileHash(err_msg_str_hash, f'"{hash_algorithm}"')
     if not hash_algorithm in ALGO_OPTIONS: raise CreateFileHash(err_msg_hash, f'"{hash_algorithm}"')
     if not isinstance(encoding, (str, type(None))): raise CreateFileHash(err_msg_str_encoding, f'\nGot: {repr(encoding)}')
+
+    # Convert filenames to str to catch Path objects
+    file_to_hash = str(file_to_hash)
+    file_to_store_hash = str(file_to_store_hash) if file_to_store_hash is not None else None
 
     # Generate Hash Type
     _hash_type: _Any  # ignore type checker

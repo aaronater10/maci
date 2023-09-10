@@ -4,13 +4,15 @@
 import tomli_w as _tomli_w
 from typing import Dict as _Dict
 from typing import Any as _Any
+from typing import Union as _Union
+from pathlib import Path as _PathObj
 from .._native.dumpraw import dumpraw as _dumpraw
 from ..error import TomlDump
 
 #########################################################################################################
 # Dump toml file
 def tomldump(
-    filename: str,
+    filename: _Union[str, _PathObj],
     data: _Dict[str, _Any],
     *,
     append: bool=False,
@@ -34,10 +36,13 @@ def tomldump(
     err_msg_type_append = "Only bool is allowed for 'append'"
     err_msg_type_mls = "Only bool is allowed for 'multi_line_str'"
 
-    if not isinstance(filename, str): raise TomlDump(err_msg_type_file, f'\nGot: {repr(filename)}')
+    if not isinstance(filename, (str, _PathObj)): raise TomlDump(err_msg_type_file, f'\nGot: {repr(filename)}')
     if not isinstance(data, dict): raise TomlDump(err_msg_type_data, f'\nGot: {repr(data)}')
     if not isinstance(append, bool): raise TomlDump(err_msg_type_append, f'\nGot: {repr(append)}')
     if not isinstance(multi_line_str, bool): raise TomlDump(err_msg_type_mls, f'\nGot: {repr(multi_line_str)}')
+
+    # Convert filename to str to catch Path objects
+    filename = str(filename)
 
     # Set Write Mode: 'a' = append, 'w' = write
     write_mode = 'ab' if append else 'wb'

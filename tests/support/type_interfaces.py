@@ -20,26 +20,49 @@ class MyClass: ...
 
 ### Native ###
 build: maci.hint.MaciDataObj = maci.build()
-load: maci.hint.MaciDataObj = maci.load(
+load_str: maci.hint.MaciDataObj = maci.load(  # str path
     filename='',
     attr_name_dedup=True, 
     encoding=None, 
     _ignore_maci_attr_check=False
 )
-maci.loadattrs(
+load_path: maci.hint.MaciDataObj = maci.load(  # Path obj
+    filename=PathObj(''),
+    attr_name_dedup=True, 
+    encoding=None, 
+    _ignore_maci_attr_check=False
+)
+maci.loadattrs(  # str path
     filename='',
     class_object=MyClass(),
     encoding=None, 
     attr_name_dedup=True, 
     _ignore_maci_attr_check=True
 )
-loaddict: dict = maci.loaddict(
+maci.loadattrs(  # Path obj
+    filename=PathObj(''),
+    class_object=MyClass(),
+    encoding=None, 
+    attr_name_dedup=True, 
+    _ignore_maci_attr_check=True
+)
+loaddict_str: dict = maci.loaddict(  # str path
     filename='',
     attr_name_dedup=True,
     encoding=None
 )
-loadraw: Union[str, bytes] = maci.loadraw(
+loaddict_path: dict = maci.loaddict(  # Path obj
+    filename=PathObj(''),
+    attr_name_dedup=True,
+    encoding=None
+)
+loadraw_str: Union[str, bytes] = maci.loadraw(  # str path
     filename='',
+    byte_data=False,
+    encoding=None
+)
+loadraw_path: Union[str, bytes] = maci.loadraw(  # Path obj
+    filename=PathObj(''),
     byte_data=False,
     encoding=None
 )
@@ -130,15 +153,27 @@ cleanformat: str = maci.cleanformat(
 )
 
 ### Hash ###
-comparefilehash: bool = maci.comparefilehash(
+comparefilehash_str: bool = maci.comparefilehash(  # str path
     file_to_hash='',
     stored_hash_file='',
     hash_algorithm='',
     encoding=None
 )
-createfilehash: str = maci.createfilehash(
+comparefilehash_path: bool = maci.comparefilehash(  # Path obj
+    file_to_hash=PathObj(''),
+    stored_hash_file=PathObj(''),
+    hash_algorithm='',
+    encoding=None
+)
+createfilehash_str: str = maci.createfilehash(  # str path
     file_to_hash='',
     file_to_store_hash='',
+    hash_algorithm='',
+    encoding=None
+)
+createfilehash_path: str = maci.createfilehash(  # Path obj
+    file_to_hash=PathObj(''),
+    file_to_store_hash=PathObj(''),
     hash_algorithm='',
     encoding=None
 )
@@ -153,20 +188,38 @@ inibuildauto: maci.hint.ConfigParser = maci.inibuildauto(
     data={'k': {'k': 1}}
 )
 inibuildmanual: maci.hint.ConfigParser = maci.inibuildmanual()
-maci.inidump(
+maci.inidump( # str path
     filename='',
     data=maci.inibuildmanual(),
     append=False,
     encoding=None
 )
-iniload: maci.hint.ConfigParser = maci.iniload(
+maci.inidump( # Path obj
+    filename=PathObj(''),
+    data=maci.inibuildmanual(),
+    append=False,
+    encoding=None
+)
+iniload_str: maci.hint.ConfigParser = maci.iniload(  # str path
     filename='',
     encoding=None
 )
+iniload_path: maci.hint.ConfigParser = maci.iniload(  # Path obj
+    filename=PathObj(''),
+    encoding=None
+)
+
 
 ### JSON ###
-maci.jsondump(
+maci.jsondump(  # str path
     filename='',
+    data={},
+    append=False,
+    indent_level=4,
+    encoding=None
+)
+maci.jsondump(  # Path obj
+    filename=PathObj(''),
     data={},
     append=False,
     indent_level=4,
@@ -176,8 +229,12 @@ jsondumpstr: str = maci.jsondumpstr(
     data={},
     indent_level=4
 )
-jsonload: Union[list, dict, str, int, float, bool, None] = maci.jsonload(
+jsonload_str: Union[list, dict, str, int, float, bool, None] = maci.jsonload(  # str path
     filename='',
+    encoding=None
+)
+jsonload_path: Union[list, dict, str, int, float, bool, None] = maci.jsonload(  # Path obj
+    filename=PathObj(''),
     encoding=None
 )
 jsonloadstr: Union[list, dict, str, int, float, bool, None] = maci.jsonloadstr(
@@ -185,8 +242,14 @@ jsonloadstr: Union[list, dict, str, int, float, bool, None] = maci.jsonloadstr(
 )
 
 ### TOML ###
-maci.tomldump(
+maci.tomldump(  # str path
     filename='',
+    data={'k': 1},
+    append=False,
+    multi_line_str=False
+)
+maci.tomldump(  # Path obj
+    filename=PathObj(''),
     data={'k': 1},
     append=False,
     multi_line_str=False
@@ -195,8 +258,11 @@ tomldumpstr: str = maci.tomldumpstr(
     data={'k': 1},
     multi_line_str=False
 )
-tomlload: Dict[str, Any] = maci.tomlload(
+tomlload_str: Dict[str, Any] = maci.tomlload(  # str path
     filename=''
+)
+tomlload_path: Dict[str, Any] = maci.tomlload(  # Path obj
+    filename=PathObj('')
 )
 tomlloadstr: Dict[str, Any] = maci.tomlloadstr(
     toml_str_data=''
@@ -204,14 +270,27 @@ tomlloadstr: Dict[str, Any] = maci.tomlloadstr(
 
 ### XML ###
 xmlbuildmanual: ModuleType = maci.xmlbuildmanual()
-maci.xmldump(
+maci.xmldump(  # str path
     filename='',
     data=maci.xmlloadstr(''),
     append=False,
     encoding=None
 )
-maci.xmldumpdict(
+maci.xmldump(  # Path obj
+    filename=PathObj(''),
+    data=maci.xmlloadstr(''),
+    append=False,
+    encoding=None
+)
+maci.xmldumpdict(  # str path
     filename='',
+    data={},
+    append=False,
+    pretty=True,
+    full_doc=True
+)
+maci.xmldumpdict(  # Path obj
+    filename=PathObj(''),
     data={},
     append=False,
     pretty=True,
@@ -226,12 +305,19 @@ xmldumpstrdict: str = maci.xmldumpstrdict(
     pretty=True,
     full_doc=True
 )
-xmlload: Union[maci.hint.Element, maci.hint.ElementTree] = maci.xmlload(
+xmlload_str: Union[maci.hint.Element, maci.hint.ElementTree] = maci.xmlload(  # str path
     filename='',
     auto_get_root=True
 )
-xmlloaddict: dict = maci.xmlloaddict(
+xmlload_path: Union[maci.hint.Element, maci.hint.ElementTree] = maci.xmlload(  # Path obj
+    filename=PathObj(''),
+    auto_get_root=True
+)
+xmlloaddict_str: dict = maci.xmlloaddict(  # str path
     filename='',
+)
+xmlloaddict_path: dict = maci.xmlloaddict(  # Path obj
+    filename=PathObj(''),
 )
 xmlloadstr: maci.hint.Element = maci.xmlloadstr(
     xml_str_data=''
@@ -242,14 +328,26 @@ xmlloadstrdict: dict = maci.xmlloadstrdict(
 defuse_xml_stdlib: dict = maci._defuse_xml_stdlib()
 
 ### YAML ###
-maci.yamldump(
+maci.yamldump(  # str path
     filename='',
     data={},
     append=False,
     encoding=None
 )
-maci.yamldumpall(
+maci.yamldump(  # Path obj
+    filename=PathObj(''),
+    data={},
+    append=False,
+    encoding=None
+)
+maci.yamldumpall(  # str path
     filename='',
+    data=[],
+    append=False,
+    encoding=None
+)
+maci.yamldumpall(  # Path obj
+    filename=PathObj(''),
     data=[],
     append=False,
     encoding=None
@@ -257,12 +355,20 @@ maci.yamldumpall(
 yamldumpstr: str = maci.yamldumpstr(
     data={}
 )
-yamlload: Any = maci.yamlload(
+yamlload_str: Any = maci.yamlload(  # str path
     filename='',
     encoding=None
 )
-yamlloadall: Iterator[Any] = maci.yamlloadall(
+yamlload_path: Any = maci.yamlload(  # Path obj
+    filename=PathObj(''),
+    encoding=None
+)
+yamlloadall_str: Iterator[Any] = maci.yamlloadall(  # str path
     filename='',
+    encoding=None
+)
+yamlloadall_path: Iterator[Any] = maci.yamlloadall(  # Path obj
+    filename=PathObj(''),
     encoding=None
 )
 yamlloadstr: Any = maci.yamlloadstr(

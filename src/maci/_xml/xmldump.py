@@ -2,6 +2,7 @@
 #########################################################################################################
 # Imports
 from typing import Union as _Union
+from pathlib import Path as _PathObj
 from .._native.dumpraw import dumpraw as _dumpraw
 from .xmldumpstr import xmldumpstr as _xmldumpstr
 from xml.etree.ElementTree import ElementTree as _ElementTree  # nosec: B405  # ignore sec checker - upto dev discretion to run provided maci._defuse_xml_stdlib()
@@ -10,7 +11,7 @@ from ..error import XmlDump, DumpRaw
 
 #########################################################################################################
 # Export xml file
-def xmldump(filename: str, data: _Union[_ElementTree, _Element], *, append: bool=False, encoding: _Union[str, None]=None) -> None:
+def xmldump(filename: _Union[str, _PathObj], data: _Union[_ElementTree, _Element], *, append: bool=False, encoding: _Union[str, None]=None) -> None:
     """
     Exports a new file from xml ElementTree or Element object as xml data
     
@@ -29,10 +30,13 @@ def xmldump(filename: str, data: _Union[_ElementTree, _Element], *, append: bool
     err_msg_type_str_append = "Only bool is allowed for 'append'"
     err_msg_type_encoding = "Only str|None or valid option is allowed for 'encoding'"
 
-    if not isinstance(filename, str): raise XmlDump(err_msg_str, f'\nGot: {repr(filename)}')
+    if not isinstance(filename, (str, _PathObj)): raise XmlDump(err_msg_str, f'\nGot: {repr(filename)}')
     if not isinstance(data, (_ElementTree, _Element)): raise XmlDump(err_msg_etree, f"\nGot: {repr(data)}")
     if not isinstance(append, bool): raise XmlDump(err_msg_type_str_append, f'\nGot: {repr(append)}')
     if not isinstance(encoding, (str, type(None))): raise XmlDump(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
+
+    # Convert filename to str to catch Path objects
+    filename = str(filename)
 
     # Export Data
     try:

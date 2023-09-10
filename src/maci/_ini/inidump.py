@@ -3,11 +3,12 @@
 # Imports
 from configparser import ConfigParser as _ConfigParser
 from typing import Union as _Union
+from pathlib import Path as _PathObj
 from ..error import IniDump
 
 #########################################################################################################
 # Export ini file
-def inidump(filename: str, data: _ConfigParser, *, append: bool=False, encoding: _Union[str, None]=None) -> None:
+def inidump(filename: _Union[str, _PathObj], data: _ConfigParser, *, append: bool=False, encoding: _Union[str, None]=None) -> None:
     """
     Exports a new file from a ini data (ConfigParser) obj
 
@@ -26,10 +27,13 @@ def inidump(filename: str, data: _ConfigParser, *, append: bool=False, encoding:
     err_msg_type_append = "Only bool is allowed for 'append'"
     err_msg_type_encoding = "Only str|None or valid option is allowed for 'encoding'"
 
-    if not isinstance(filename, str): raise IniDump(err_msg_file_type, f'\nGot: {repr(filename)}')
+    if not isinstance(filename, (str, _PathObj)): raise IniDump(err_msg_file_type, f'\nGot: {repr(filename)}')
     if not isinstance(data, _ConfigParser): raise IniDump(err_msg_parser, f'\nGot: {repr(data)}')
     if not isinstance(append, bool): raise IniDump(err_msg_type_append, f'\nGot: {repr(append)}')
     if not isinstance(encoding, (str, type(None))): raise IniDump(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
+
+    # Convert filename to str to catch Path objects
+    filename = str(filename)
 
     # Set Write Mode: 'a' = append, 'w' = write
     write_mode = 'a' if append else 'w'

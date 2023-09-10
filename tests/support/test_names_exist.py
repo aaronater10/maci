@@ -112,6 +112,9 @@ def test2_exception_names_exist():
     maci.error.XmlDumpDict
     maci.error.XmlDumpStr
     maci.error.XmlDumpStrDict
+    # PICKLE
+    maci.error.PickleDumpBytes
+    maci.error.PickleLoadBytes
 
 
 # 3. Test all MaciDataObj method names are present

@@ -4,11 +4,13 @@
 import tomli as _tomli
 from typing import Dict as _Dict
 from typing import Any as _Any
+from typing import Union as _Union
+from pathlib import Path as _PathObj
 from ..error import TomlLoad
 
 #########################################################################################################
 # Load toml file
-def tomlload(filename: str) -> _Dict[str, _Any]:
+def tomlload(filename: _Union[str, _PathObj]) -> _Dict[str, _Any]:
     """
     Loads toml data from a file
 
@@ -26,7 +28,10 @@ def tomlload(filename: str) -> _Dict[str, _Any]:
     # Error Checks
     err_msg_type_file = "Only str is allowed for 'filename'"
 
-    if not isinstance(filename, str): raise TomlLoad(err_msg_type_file, f'\nGot: {repr(filename)}')
+    if not isinstance(filename, (str, _PathObj)): raise TomlLoad(err_msg_type_file, f'\nGot: {repr(filename)}')
+
+    # Convert filename to str to catch Path objects
+    filename = str(filename)
 
     # Load toml file
     try:

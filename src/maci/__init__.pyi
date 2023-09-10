@@ -46,7 +46,7 @@ from . import hint
 # Stub data: Functions
 
 ### Native Lib ###
-def load(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=None, _ignore_maci_attr_check: bool=False) -> _MaciDataObj:
+def load(filename: _Union[str, _PathObj], *, attr_name_dedup: bool=True, encoding: _Optional[str]=None, _ignore_maci_attr_check: bool=False) -> _MaciDataObj:
     """
     Loads maci (pythonic) data from a file
 
@@ -63,7 +63,7 @@ def load(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=
     Maci docs: https://docs.macilib.org
     """
 
-def loaddict(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=None) -> dict:
+def loaddict(filename: _Union[str, _PathObj], *, attr_name_dedup: bool=True, encoding: _Optional[str]=None) -> dict:
     """
     Loads maci (pythonic) data from a file
 
@@ -114,7 +114,7 @@ def loadstrdict(maci_str_data: str, *, attr_name_dedup: bool=True) -> dict:
     Maci docs: https://docs.macilib.org
     """
 
-def loadraw(filename: str, *, byte_data: bool=False, encoding: _Union[str, None]=None) -> _Union[str, bytes]:
+def loadraw(filename: _Union[str, _PathObj], *, byte_data: bool=False, encoding: _Union[str, None]=None) -> _Union[str, bytes]:
     """
     Loads raw data from a file
 
@@ -131,7 +131,7 @@ def loadraw(filename: str, *, byte_data: bool=False, encoding: _Union[str, None]
     Maci docs: https://docs.macilib.org
     """
 
-def loadattrs(filename: str, class_object: _ClassObject, *, encoding: _Union[str, None]=None, attr_name_dedup: bool=False, _ignore_maci_attr_check: bool=True) -> None:
+def loadattrs(filename: _Union[str, _PathObj], class_object: _ClassObject, *, encoding: _Union[str, None]=None, attr_name_dedup: bool=False, _ignore_maci_attr_check: bool=True) -> None:
     """
     Load attribute data from file into a custom class/object. This is done in-place
 
@@ -277,7 +277,7 @@ def build() -> _MaciDataObj:
 
 
 ### Hash Lib ###
-def createfilehash(file_to_hash: str, file_to_store_hash: _Union[str,None], hash_algorithm: str='sha256', *, encoding: _Union[str, None]=None) -> str:
+def createfilehash(file_to_hash: _Union[str, _PathObj], file_to_store_hash: _Union[str, _PathObj, None], hash_algorithm: str='sha256', *, encoding: _Union[str, None]=None) -> str:
     """
     Creates a hash of any file, and stores the hash data to a new created file
 
@@ -303,7 +303,7 @@ def createfilehash(file_to_hash: str, file_to_store_hash: _Union[str,None], hash
     Maci docs: https://docs.macilib.org
     """
 
-def comparefilehash(file_to_hash: str, stored_hash_file: str, hash_algorithm: str='sha256', *, encoding: _Union[str, None]=None) -> bool:
+def comparefilehash(file_to_hash: _Union[str, _PathObj], stored_hash_file: _Union[str, _PathObj], hash_algorithm: str='sha256', *, encoding: _Union[str, None]=None) -> bool:
     """
     Compares a hash of any file by comparing the previously created file with hash data stored from using the "createfilehash" partner function
 
@@ -349,7 +349,7 @@ def createhash(data_to_hash: _Union[str, bytes, int, _List[int], _Tuple[int], _S
 
 
 ### JSON Lib ###
-def jsonload(filename: str, *, encoding: _Union[str, None]=None) -> _Union[list, dict, str, int, float, bool, None]:
+def jsonload(filename: _Union[str, _PathObj], *, encoding: _Union[str, None]=None) -> _Union[list, dict, str, int, float, bool, None]:
     """
     Loads json data from a file
 
@@ -382,7 +382,7 @@ def jsonloadstr(json_str_data: str) -> _Union[list, dict, str, int, float, bool,
     """
 
 def jsondump(
-    filename: str,
+    filename: _Union[str, _PathObj],
     data: _Union[dict, list, tuple, str, int, float, bool, None],
     *,
     append: bool=False,
@@ -420,7 +420,7 @@ def jsondumpstr(data: _Union[dict, list, tuple, str, int, float, bool, None], *,
 
 
 ### YAML Lib ###
-def yamlload(filename: str, *, encoding: _Union[str, None]=None) -> _Any:
+def yamlload(filename: _Union[str, _PathObj], *, encoding: _Union[str, None]=None) -> _Any:
     """
     Loads yaml data from a file
 
@@ -437,7 +437,7 @@ def yamlload(filename: str, *, encoding: _Union[str, None]=None) -> _Any:
     Maci docs: https://docs.macilib.org
     """
 
-def yamlloadall(filename: str, *, encoding: _Union[str, None]=None) -> _Iterator[_Any]:
+def yamlloadall(filename: _Union[str, _PathObj], *, encoding: _Union[str, None]=None) -> _Iterator[_Any]:
     """
     Imports all yaml docs from a file.
 
@@ -473,7 +473,7 @@ def yamlloadstr(yaml_str_data: str) -> _Any:
     Maci docs: https://docs.macilib.org
     """
 
-def yamldump(filename: str, data: _Any, *, append: bool=False, encoding: _Union[str, None]=None) -> None:
+def yamldump(filename: _Union[str, _PathObj], data: _Any, *, append: bool=False, encoding: _Union[str, None]=None) -> None:
     """
     Dumps yaml data to a file from python data
     
@@ -488,7 +488,7 @@ def yamldump(filename: str, data: _Any, *, append: bool=False, encoding: _Union[
     Maci docs: https://docs.macilib.org
     """
 
-def yamldumpall(filename: str, data: _Iterable[_Any], *, append: bool=False, encoding: _Union[str, None]=None) -> None:
+def yamldumpall(filename: _Union[str, _PathObj], data: _Iterable[_Any], *, append: bool=False, encoding: _Union[str, None]=None) -> None:
     """
     Exports a new file from an iterable object that produces a yaml doc from each item to the file.
     
@@ -524,7 +524,7 @@ def yamldumpstr(data: _Any) -> str:
 
 
 ### TOML Lib ###
-def tomlload(filename: str) -> _Dict[str, _Any]:
+def tomlload(filename: _Union[str, _PathObj]) -> _Dict[str, _Any]:
     """
     Loads toml data from a file
 
@@ -557,7 +557,7 @@ def tomlloadstr(toml_str_data: str) -> _Dict[str, _Any]:
     """
 
 def tomldump(
-    filename: str,
+    filename: _Union[str, _PathObj],
     data: _Dict[str, _Any],
     *,
     append: bool=False,
@@ -598,7 +598,7 @@ def tomldumpstr(
 
 
 ### INI Lib ###
-def iniload(filename: str, *, encoding: _Union[str, None]=None) -> _ConfigParser:
+def iniload(filename: _Union[str, _PathObj], *, encoding: _Union[str, None]=None) -> _ConfigParser:
     """
     Loads ini data from a file
 
@@ -615,7 +615,7 @@ def iniload(filename: str, *, encoding: _Union[str, None]=None) -> _ConfigParser
     Maci docs: https://docs.macilib.org
     """
 
-def inidump(filename: str, data: _ConfigParser, *, append: bool=False, encoding: _Union[str, None]=None) -> None:
+def inidump(filename: _Union[str, _PathObj], data: _ConfigParser, *, append: bool=False, encoding: _Union[str, None]=None) -> None:
     """
     Dumps ini data to a file from a ConfigParser object
 
@@ -676,7 +676,7 @@ def inibuildmanual() -> _ConfigParser:
 
 
 ### XML Libs ###
-def xmlload(filename: str, *, auto_get_root: bool=True) -> _Union[_Element, _ElementTree]:
+def xmlload(filename: _Union[str, _PathObj], *, auto_get_root: bool=True) -> _Union[_Element, _ElementTree]:
     """
     Loads xml data from a file
 
@@ -692,7 +692,7 @@ def xmlload(filename: str, *, auto_get_root: bool=True) -> _Union[_Element, _Ele
     Maci docs: https://docs.macilib.org
     """
 
-def xmlloaddict(filename: str) -> _OrderedDict[str, _Any]:
+def xmlloaddict(filename: _Union[str, _PathObj]) -> _OrderedDict[str, _Any]:
     """
     Loads xml data from a file
 
@@ -740,7 +740,7 @@ def xmlloadstrdict(xml_str_data: str) -> _OrderedDict[str, _Any]:
     Maci docs: https://docs.macilib.org
     """    
 
-def xmldump(filename: str, data: _Union[_ElementTree, _Element], *, append: bool=False, encoding: _Union[str, None]=None) -> None:
+def xmldump(filename: _Union[str, _PathObj], data: _Union[_ElementTree, _Element], *, append: bool=False, encoding: _Union[str, None]=None) -> None:
     """
     Dumps xml data to a file from xml etree ElementTree or Element object
     
@@ -754,7 +754,7 @@ def xmldump(filename: str, data: _Union[_ElementTree, _Element], *, append: bool
     Maci docs: https://docs.macilib.org
     """
 
-def xmldumpdict(filename: str, data: _Dict[str, _Any], *, append: bool=False, pretty: bool=True, full_doc: bool=True) -> None:
+def xmldumpdict(filename: _Union[str, _PathObj], data: _Dict[str, _Any], *, append: bool=False, pretty: bool=True, full_doc: bool=True) -> None:
     """
     Dumps a new file from dict to xml data.
 

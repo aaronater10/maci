@@ -3,12 +3,13 @@
 # Imports
 from typing import Any as _Any
 from typing import Union as _Union
+from pathlib import Path as _PathObj
 import yaml as _yaml  # type: ignore  # ignoring type checker for ext lib
 from ..error import YamlDump
 
 #########################################################################################################
 # Export yaml file
-def yamldump(filename: str, data: _Any, *, append: bool=False, encoding: _Union[str, None]=None) -> None:
+def yamldump(filename: _Union[str, _PathObj], data: _Any, *, append: bool=False, encoding: _Union[str, None]=None) -> None:
     """
     Exports a new file from python data type to yaml data.
     
@@ -28,9 +29,12 @@ def yamldump(filename: str, data: _Any, *, append: bool=False, encoding: _Union[
     err_msg_type_append = "Only bool is allowed for 'append'"
     err_msg_type_encoding = "Only str|None or valid option is allowed for 'encoding'"
 
-    if not isinstance(filename, str): raise YamlDump(err_msg_type_file, f'\nGot: {repr(filename)}')
+    if not isinstance(filename, (str, _PathObj)): raise YamlDump(err_msg_type_file, f'\nGot: {repr(filename)}')
     if not isinstance(append, bool): raise YamlDump(err_msg_type_append, f'\nGot: {repr(append)}')
     if not isinstance(encoding, (str, type(None))): raise YamlDump(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
+
+    # Convert filename to str to catch Path objects
+    filename = str(filename)
 
     # Set Write Mode: 'a' = append, 'w' = write
     write_mode = 'a' if append else 'w'

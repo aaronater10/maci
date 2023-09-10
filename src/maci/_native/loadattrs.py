@@ -1,8 +1,8 @@
 # loadattrs
 #########################################################################################################
 # Imports
-from typing import NewType as _NewType
 from typing import Union as _Union
+from pathlib import Path as _PathObj
 from ..error import LoadAttrs, Load
 from .load import load as _load
 from ..data import MaciDataObj as _MaciDataObj
@@ -10,7 +10,7 @@ from ..hint import __ClassObject  # type: ignore  # ignoring attr export
 
 #########################################################################################################
 # Import Attributes from File
-def loadattrs(filename: str, class_object: __ClassObject, *, encoding: _Union[str, None]=None, attr_name_dedup: bool=False, _ignore_maci_attr_check: bool=True) -> None:
+def loadattrs(filename: _Union[str, _PathObj], class_object: __ClassObject, *, encoding: _Union[str, None]=None, attr_name_dedup: bool=False, _ignore_maci_attr_check: bool=True) -> None:
     """
     Import saved attributes from file back into a custom class. This is done in-place
 
@@ -31,7 +31,10 @@ def loadattrs(filename: str, class_object: __ClassObject, *, encoding: _Union[st
     err_msg_type_class_obj = "Only a custom ClassObject is allowed for 'class_object'"
     err_msg_type_maci_obj = "Please use 'load' function to properly import a 'MaciDataObj' object"
 
-    if not isinstance(filename, str): raise LoadAttrs(err_msg_type_filename, f'\nGot: {repr(filename)}')
+    if not isinstance(filename, (str, _PathObj)): raise LoadAttrs(err_msg_type_filename, f'\nGot: {repr(filename)}')
+
+    # Convert filename to str to catch Path objects
+    filename = str(filename)
 
     # Verify if Custom Class Obj
     _filter_objects = (str, int, float, bool, list, dict, tuple, set, type(None), bytes, complex, range, frozenset, bytearray, memoryview)

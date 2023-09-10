@@ -4,12 +4,13 @@
 from typing import Any as _Any
 from typing import Union as _Union
 from typing import Iterator as _Iterator
+from pathlib import Path as _PathObj
 import yaml as _yaml  # type: ignore  # ignoring type checker for ext lib
 from ..error import YamlLoadAll
 
 #########################################################################################################
 # Import yaml file
-def yamlloadall(filename: str, *, encoding: _Union[str, None]=None) -> _Iterator[_Any]:
+def yamlloadall(filename: _Union[str, _PathObj], *, encoding: _Union[str, None]=None) -> _Iterator[_Any]:
     """
     Imports all yaml docs from a file.
 
@@ -29,9 +30,11 @@ def yamlloadall(filename: str, *, encoding: _Union[str, None]=None) -> _Iterator
     err_msg_type_file = "Only str is allowed for 'filename'"
     err_msg_type_encoding = "Only str|None or valid option is allowed for 'encoding'"
 
-    if not isinstance(filename, str): raise YamlLoadAll(err_msg_type_file, f'\nGot: {repr(filename)}')
+    if not isinstance(filename, (str, _PathObj)): raise YamlLoadAll(err_msg_type_file, f'\nGot: {repr(filename)}')
     if not isinstance(encoding, (str, type(None))): raise YamlLoadAll(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
 
+    # Convert filename to str to catch Path objects
+    filename = str(filename)
 
     # Import yaml docs from file
     try:

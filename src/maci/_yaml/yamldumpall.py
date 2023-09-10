@@ -3,14 +3,15 @@
 # Imports
 from typing import Any as _Any
 from typing import Union as _Union
-from typing import Iterable as _Iterable 
+from typing import Iterable as _Iterable
+from pathlib import Path as _PathObj
 import yaml as _yaml  # type: ignore  # ignoring type checker for ext lib
 from .._native.dumpraw import dumpraw as _dumpraw
 from ..error import YamlDumpAll
 
 #########################################################################################################
 # Export yaml file
-def yamldumpall(filename: str, data: _Iterable[_Any], *, append: bool=False, encoding: _Union[str, None]=None) -> None:
+def yamldumpall(filename: _Union[str, _PathObj], data: _Iterable[_Any], *, append: bool=False, encoding: _Union[str, None]=None) -> None:
     """
     Exports a new file from an iterable object that produces a yaml doc from each item to the file.
     
@@ -30,10 +31,13 @@ def yamldumpall(filename: str, data: _Iterable[_Any], *, append: bool=False, enc
     err_msg_type_append = "Only bool is allowed for 'append'"
     err_msg_type_encoding = "Only str|None or valid option is allowed for 'encoding'"
 
-    if not isinstance(filename, str): raise YamlDumpAll(err_msg_type_file, f'\nGot: {repr(filename)}')
+    if not isinstance(filename, (str, _PathObj)): raise YamlDumpAll(err_msg_type_file, f'\nGot: {repr(filename)}')
     if not isinstance(data, _Iterable): raise YamlDumpAll(err_msg_type_data, f'\nGot: {repr(data)}')
     if not isinstance(append, bool): raise YamlDumpAll(err_msg_type_append, f'\nGot: {repr(append)}')
     if not isinstance(encoding, (str, type(None))): raise YamlDumpAll(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
+
+    # Convert filename to str to catch Path objects
+    filename = str(filename)
 
     # Set Write Mode: 'a' = append, 'w' = write
     write_mode = 'a' if append else 'w'
