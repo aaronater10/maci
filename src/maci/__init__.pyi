@@ -439,11 +439,9 @@ def yamlload(filename: _Union[str, _PathObj], *, encoding: _Union[str, None]=Non
 
 def yamlloadall(filename: _Union[str, _PathObj], *, encoding: _Union[str, None]=None) -> _Iterator[_Any]:
     """
-    Imports all yaml docs from a file.
+    Loads all yaml docs from a file
 
-    Returns a generator of matching python data types. Assign the output to var
-
-    Enter yaml file location as str to import.
+    Returns a generator of matching python data types
 
     [Example Use]
 
@@ -490,10 +488,8 @@ def yamldump(filename: _Union[str, _PathObj], data: _Any, *, append: bool=False,
 
 def yamldumpall(filename: _Union[str, _PathObj], data: _Iterable[_Any], *, append: bool=False, encoding: _Union[str, None]=None) -> None:
     """
-    Exports a new file from an iterable object that produces a yaml doc from each item to the file.
-    
-    Enter new filename as str. Pass an iterable for output to file
-    
+    Dumps a file from an iterable object that produces a yaml doc from each item to the file
+
     [Example Use]
 
     yamldumpall('path/to/filename.yml', data)    
@@ -716,7 +712,7 @@ def xmlloadstr(xml_str_data: str) -> _Element:
 
     [Example: Usage]
 
-    xmlloadstr('string with xml data')
+    xmlloadstr('<tag>data</tag>')
 
     This is using the native xml library via etree shipped with the python standard library.
     For more information on the xml.etree api, visit: https://docs.python.org/3/library/xml.etree.elementtree.html#module-xml.etree.ElementTree
@@ -756,9 +752,7 @@ def xmldump(filename: _Union[str, _PathObj], data: _Union[_ElementTree, _Element
 
 def xmldumpdict(filename: _Union[str, _PathObj], data: _Dict[str, _Any], *, append: bool=False, pretty: bool=True, full_doc: bool=True) -> None:
     """
-    Dumps a new file from dict to xml data.
-
-    Enter filename as str. Pass data for output to file
+    Dumps xml data to a file from dict
 
     [Example Use]
 
@@ -790,7 +784,7 @@ def xmldumpstrdict(data: _Dict[str, _Any], *, pretty: bool=True, full_doc: bool=
     """
     Dumps dict data to xml string
 
-    Returns a xml formatted str. Assign the output to var
+    Returns a xml formatted str
 
     [Example Use]
 
