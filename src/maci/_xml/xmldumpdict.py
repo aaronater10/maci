@@ -13,9 +13,7 @@ from ..error import XmlDumpDict
 # Dump xml file
 def xmldumpdict(filename: _Union[str, _PathObj], data: _Dict[str, _Any], *, append: bool=False, pretty: bool=True, full_doc: bool=True) -> None:
     """
-    Dumps a new file from dict to xml data.
-
-    Enter filename as str. Pass data for output to file
+    Dumps xml data to a file from dict
 
     [Example Use]
 

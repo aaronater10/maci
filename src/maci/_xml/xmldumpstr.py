@@ -8,16 +8,18 @@ from ..error import XmlDumpStr
 # Export xml str
 def xmldumpstr(data: _xml_etree.Element, *, encoding: str='utf-8') -> str:
     """
-    Exports xml Element object to a string
+    Dumps xml data to a string from xml etree Element object
 
-    Returns a str. Assign the output to var
+    Returns a xml formatted str
 
-    [Example Use]
+    [Example: Usage]
 
-    xmldumpstr(Element)
+    xmldumpstr(data)
 
     This is using the native xml library via etree shipped with the python standard library.
     For more information on the xml.etree api, visit: https://docs.python.org/3/library/xml.etree.elementtree.html#module-xml.etree.ElementTree
+    
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks
     err_msg_type_etree = "Only Element is allowed for 'data'"

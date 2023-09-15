@@ -24,7 +24,7 @@ def xmlloadstrdict(xml_str_data: str) -> _OrderedDict[str, _Any]:
     For more information on xmltodict, visit: https://pypi.org/project/xmltodict/
     
     Maci docs: https://docs.macilib.org
-    """    
+    """
     # Error Checks
     err_msg_str = f"Only str is allowed for 'xml_str_data'"
 

@@ -13,16 +13,16 @@ from ..error import XmlDump, DumpRaw
 # Export xml file
 def xmldump(filename: _Union[str, _PathObj], data: _Union[_ElementTree, _Element], *, append: bool=False, encoding: _Union[str, None]=None) -> None:
     """
-    Exports a new file from xml ElementTree or Element object as xml data
+    Dumps xml data to a file from xml etree ElementTree or Element object
     
-    Enter new filename as str. Pass ElementTree data for output to file
-    
-    [Example Use]
+    [Example: Usage]
 
-    xmldump('path/to/filename.xml', Element_data)
+    xmldump('path/to/filename.xml', data)
 
     This is using the native xml library via etree shipped with the python standard library.
     For more information on the xml.etree api, visit: https://docs.python.org/3/library/xml.etree.elementtree.html#module-xml.etree.ElementTree
+    
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks
     err_msg_str = "Only str is allowed for 'filename'"

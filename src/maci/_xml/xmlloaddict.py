@@ -25,7 +25,7 @@ def xmlloaddict(filename: _Union[str, _PathObj]) -> _OrderedDict[str, _Any]:
     For more information on xmltodict, visit: https://pypi.org/project/xmltodict/
     
     Maci docs: https://docs.macilib.org
-    """    
+    """
     # Error Checks
     err_msg_type_filename = "Only str is allowed for 'filename'"
 

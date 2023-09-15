@@ -13,7 +13,7 @@ def xmldumpstrdict(data: _Dict[str, _Any], *, pretty: bool=True, full_doc: bool=
     """
     Dumps dict data to xml string
 
-    Returns a xml formatted str. Assign the output to var
+    Returns a xml formatted str
 
     [Example Use]
 

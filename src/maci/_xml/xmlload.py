@@ -10,18 +10,18 @@ from ..error import XmlLoad
 # Import xml file
 def xmlload(filename: _Union[str, _PathObj], *, auto_get_root: bool=True) -> _Union[_xml_etree.Element, _xml_etree.ElementTree]:
     """
-    Imports xml data from a file.
+    Loads xml data from a file
 
-    Returns the root Element object of the ElementTree parsed from a xml file by default. Assign the output to var
+    Returns a xml etree root Element object of the ElementTree parsed from a xml file by default
 
-    Enter xml file location as str to import.
-
-    [Example Use]
+    [Example: Usage]
 
     xmlload('path/to/filename.xml')
 
     This is using the native xml library via etree shipped with the python standard library.
     For more information on the xml.etree api, visit: https://docs.python.org/3/library/xml.etree.elementtree.html#module-xml.etree.ElementTree
+    
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks
     err_msg_type_filename = "Only str is allowed for 'filename'"
