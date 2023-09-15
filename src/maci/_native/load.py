@@ -14,24 +14,19 @@ from .build import build as _build
 # Import py Data from File
 def load(filename: _Union[str, _PathObj], *, attr_name_dedup: bool=True, encoding: _Optional[str]=None, _ignore_maci_attr_check: bool=False) -> _MaciDataObj:
     """
-    Imports saved python data from any text file.
+    Loads maci (pythonic) data from a file
 
-    Returns a class of attributes. Assign the output to var
+    Returns a 'MaciDataObj' object with maci features. Returns empty object if file empty
 
-    Enter file location as str to import.
+    [Example: Usage]
 
-    Accepted data types: str, int, float, bool, list, dict, tuple, set, nonetype, bytes, datetime
+    load('path/to/filename.any')
 
-    Returns empty object if file empty
-
-    [Example Use]
-    load('filename.data' or 'path/to/filename.data')
-
-    [Warning]
-    Turning OFF 'attr_name_dedup' is not recommended as you gain the ability to overwrite
-    your attribute names that already preexist. This also may affect MaciDataObj behavior
-    including the ability to overwrite internal dunder names. This feature is meant to protect you from accidentally
+    [Warning] Turning OFF 'attr_name_dedup' is not recommended as you gain the ability to overwrite
+    your attribute names that already preexist. This feature is meant to protect you from accidentally
     duplicating an attribute name in a file that has already been created.
+
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks
     err_msg_type_filename = "Only str is allowed for 'filename'"

@@ -14,24 +14,19 @@ from ..data import MaciDataObj as _MaciDataObj
 # Import py Data from File
 def loaddict(filename: _Union[str, _PathObj], *, attr_name_dedup: bool=True, encoding: _Optional[str]=None) -> _Optional[dict]:
     """
-    Imports pythonic data from any text file
+    Loads maci (pythonic) data from a file
 
-    Returns a dict. Assign the output to var
+    Returns a dict representing your attributes & data values. Returns empty dict if file empty
 
-    Enter file location as str to import.
+    [Example: Usage]
 
-    Accepted data types: str, int, float, bool, list, dict, tuple, set, nonetype, bytes, datetime
+    loaddict('path/to/filename.any')
 
-    Returns None if file empty
-
-    [Example Use]
-    loaddict('path/to/filename.data')
-
-    [Warning]
-    Turning OFF 'attr_name_dedup' is not recommended as you gain the ability to overwrite
-    your attribute names that already preexist. This also may affect MaciDataObj behavior
-    including the ability to overwrite internal dunder names. This feature is meant to protect you from accidentally
+    [Warning] Turning OFF 'attr_name_dedup' is not recommended as you gain the ability to overwrite
+    your attribute names that already preexist. This feature is meant to protect you from accidentally
     duplicating an attribute name in a file that has already been created.
+
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks
     err_msg_type_filename = "Only str is allowed for 'filename'"

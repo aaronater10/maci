@@ -15,6 +15,8 @@ def cleanformat(data: _Union[dict,list,tuple,set], indent_level: int=1) -> str:
     [Example Use]
     
     var = cleanformat(data)
+
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks, Set indent level
     err_type = "Only dict|list|tuple|set is allowed for 'data'"

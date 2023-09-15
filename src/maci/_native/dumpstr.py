@@ -31,24 +31,24 @@ def dumpstr(
     use_symbol_glyphs: bool=False,
     ) -> _Optional[str]:
     """
-    Dumps your attributes or key/value pair data to a string
+    Dumps maci, dict, or custom object data to a string. Output in string
+    is structured in maci (pythonic) style format
 
-    Pass MaciDataObj, dict, or Custom Class data type for output to str
+    [Partner Functions]
 
-    [Importing Data Back] Functions:
+    loadstr: Load data from str returning a MaciDataObj with maci features
 
-    loadstr: Import data from str returning a class of attributes with Maci features
+    loadstrdict: Load data from str returning a dict representing your attrs & data
 
     [Options]
 
-    indent_level: set indent level for types list, dict, tuple, set (Default 1)
+    indent_level: set indent level for data being list, dict, tuple, or set - Default=1
 
-    indentation_on: set to False to turn OFF indentation on types list, dict, tuple, set (Default ON)
+    [Example: Usage]
 
-    [Example Use]
-    Normal: dumpstr(data)
+    dumpstr(data)
 
-    Indent OFF: dumpstr(data, indentation_on=False)
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks
     err_msg_type_indent_level = "Only int is allowed for 'indent_level'"

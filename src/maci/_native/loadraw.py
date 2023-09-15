@@ -10,16 +10,19 @@ from ..error import LoadRaw
 # Import raw data from file
 def loadraw(filename: _Union[str, _PathObj], *, byte_data: bool=False, encoding: _Union[str, None]=None) -> _Union[str, bytes]:
     """
-    Imports any raw data from a file.
+    Loads raw data from a file
 
-    Returns a str. Assign the output to var
+    Returns a str or bytes. Returns empty string if file truly empty. Returns any whitespace if found in file
 
     [Options]
-    byte_data: Set to True if importing byte data
 
-    [Example Use]
+    byte_data: set to True if loading byte data
 
-    loadraw('path/to/filename')
+    [Example: Usage]
+
+    loadraw('path/to/filename.any')
+
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks
     err_msg_type_filename = "Only str is allowed for 'filename'"

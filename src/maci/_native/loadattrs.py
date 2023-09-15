@@ -12,19 +12,17 @@ from ..hint import __ClassObject  # type: ignore  # ignoring attr export
 # Import Attributes from File
 def loadattrs(filename: _Union[str, _PathObj], class_object: __ClassObject, *, encoding: _Union[str, None]=None, attr_name_dedup: bool=False, _ignore_maci_attr_check: bool=True) -> None:
     """
-    Import saved attributes from file back into a custom class. This is done in-place
+    Load attribute data from file into a custom class/object. This is done in-place
 
-    Enter filename as str, Pass custom class object.
+    [Example: Usage]
 
-    [Example Use]
+    loadattrs('path/of/filename.any', custom_object)
 
-    loadattrs('path/of/filename', 'class_object')
-
-    [Warning]
-    Turning OFF 'attr_name_dedup' is not recommended as you gain the ability to overwrite
-    your attribute names that already preexist. This also may affect MaciDataObj behavior
-    including the ability to overwrite internal dunder names. This feature is meant to protect you from accidentally
+    [Warning] Turning OFF 'attr_name_dedup' is not recommended as you gain the ability to overwrite
+    your attribute names that already preexist. This feature is meant to protect you from accidentally
     duplicating an attribute name in a file that has already been created.
+
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks
     err_msg_type_filename = "Only str is allowed for 'filename'"

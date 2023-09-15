@@ -11,19 +11,18 @@ from ..error import DumpRaw
 # Export Data to File
 def dumpraw(filename: _Union[str, _PathObj], *data: _Any, append: bool=False, byte_data: bool=False, newline_sep: bool=True, encoding: _Union[str, None]=None) -> None:
     """
-    Exports a new file with the new data.
-    
-    Enter new filename as str, Pass any data type for output to file.
+    Dumps a new file with the data raw
 
     [Options]
-    append: set to True to append data to a file (Default=False, which writes a new file each time)
+    append: set to True to append data to a file - Default=False, which writes a new file each time
 
-    byte_data: Set to True to write byte data. Default False
+    byte_data: set to True to write byte data - Default=False
 
-    [Example Use]
-    Normal: dump('path/of/filename', 'data')
+    [Example: Usage]
 
-    Byte Data: dump('path/of/filename', b'data', byte_data=True)
+    dumpraw('path/of/filename', data)
+
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks
     err_msg_bytes = "Only bytes is allowed if using 'byte_data' option"
