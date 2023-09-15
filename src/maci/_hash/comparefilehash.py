@@ -12,22 +12,26 @@ from ..error import CompareFileHash, CreateFileHash, Load
 # Compare file hashes
 def comparefilehash(file_to_hash: _Union[str, _PathObj], stored_hash_file: _Union[str, _PathObj], hash_algorithm: str='sha256', *, encoding: _Union[str, None]=None) -> bool:
     """
-    Compares hash of any file by importing the previously stored hash file data from using "createfilehash"
+    Compares a hash of any file by comparing the previously created file with hash data stored from using the "createfilehash" partner function
 
     Returns a bool if the hash does/doesn't match
 
-    Enter file locations as str
+    [Partner Functions]
+
+    createfilehash: creates the initial hash file data to compare against
 
     [Options]
 
-    hash_algorithm: Already set to default of 'sha256'. Supported options: 'sha256', 'sha512', 'sha384', 'sha1', 'md5'
+    hash_algorithm: Default is 'sha256' - Other options: 'sha512', 'sha384', 'sha1', 'md5'
 
-    [Example Use]
+    [Example: Usage]
     
     comparefilehash('path/to/src_filename', 'path/to/src_hash_filename')
 
     This is using the hashlib library shipped with the python standard library. For more
     information on hashlib, visit: https://docs.python.org/3/library/hashlib.html
+
+    Maci docs: https://docs.macilib.org
     """
     ALGO_OPTIONS = ('sha256', 'sha512', 'sha384', 'sha1', 'md5')
 

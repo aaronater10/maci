@@ -14,18 +14,20 @@ def createhash(data_to_hash: _Union[str, bytes, int, _List[int], _Tuple[int], _S
     """
     Creates a hash of the provided data
 
-    Returns a str of the hash in hex. Assign the output to var
+    Returns a str of the hash in hex
 
     [Options]
 
-    hash_algorithm: Default is 'sha256'. Supported options: 'sha256', 'sha512', 'sha384', 'sha1', 'md5'
+    hash_algorithm: Default is 'sha256' - Other options: 'sha512', 'sha384', 'sha1', 'md5'
 
-    [Example Use]
+    [Example: Usage]
 
-    createhash('data')
+    var = createhash(data)
 
     This is using the hashlib library shipped with the python standard library. For more
     information on hashlib, visit: https://docs.python.org/3/library/hashlib.html
+
+    Maci docs: https://docs.macilib.org
     """
     ALGO_OPTIONS = ('sha256', 'sha512', 'sha384', 'sha1', 'md5')
 

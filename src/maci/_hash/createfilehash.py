@@ -15,22 +15,26 @@ def createfilehash(file_to_hash: _Union[str, _PathObj], file_to_store_hash: _Uni
     """
     Creates a hash of any file, and stores the hash data to a new created file
 
-    Always returns a str of the hash as well. Assign the output to var
+    Always returns a str of the hashed file
 
-    Enter file locations as str
+    [Partner Functions]
+
+    comparefilehash: auto compares hashes from src hash of file with stored hash file data
 
     [Options]
-    file_to_store_hash: Set to False if you do not want hash data stored to a file. Hash data is always returned whether or not this is set
+    
+    file_to_store_hash: Set to None if you do not want a file created to store hash. Hash data of the src file is always returned whether or not this is set
 
-    hash_algorithm: Already set to default of 'sha256'. Supported options: 'sha256', 'sha512', 'sha384', 'sha1', 'md5'
+    hash_algorithm: Default is 'sha256' - Other options: 'sha512', 'sha384', 'sha1', 'md5'
 
-    [Example Use]
+    [Example: Usage]
 
-    Default: createfilehash('path/to/src_filename', 'path/to/dst_hash_filename')
-    Hash only, no file: hash_data = createfilehash('path/to/filename', False)
+    createfilehash('path/to/src_filename', 'path/to/dst_hash_filename')
 
     This is using the hashlib library shipped with the python standard library. For more
     information on hashlib, visit: https://docs.python.org/3/library/hashlib.html
+
+    Maci docs: https://docs.macilib.org
     """
     ALGO_OPTIONS = ('sha256', 'sha512', 'sha384', 'sha1', 'md5')
 
