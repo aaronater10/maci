@@ -11,19 +11,19 @@ from ..error import IniLoad
 # Import ini file
 def iniload(filename: _Union[str, _PathObj], *, encoding: _Union[str, None]=None) -> _ConfigParser:
     """
-    Imports ini data from a file.
+    Loads ini data from a file
 
-    Returns a ConfigParser obj. Assign the output to var
+    Returns a ConfigParser object
 
-    Enter ini file location as str to import.
-
-    [Example Use]
+    [Example: Usage]
 
     iniload('path/to/filename.ini')
 
     This is using the native configparser library shipped with the python standard library. Using ConfigParser method
     with ExtendedInterpolation enabled by default. For more information on the configparser library, 
     visit: https://docs.python.org/3/library/configparser.html
+    
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks
     err_msg_file_type = "Only str is allowed for 'filename'"

@@ -10,16 +10,16 @@ from ..error import IniDump
 # Export ini file
 def inidump(filename: _Union[str, _PathObj], data: _ConfigParser, *, append: bool=False, encoding: _Union[str, None]=None) -> None:
     """
-    Exports a new file from a ini data (ConfigParser) obj
+    Dumps ini data to a file from a ConfigParser object
 
-    Enter new filename as str. Pass ini data for output to file
-    
-    [Example Use]
+    [Example: Usage]
 
     inidump('path/to/filename.ini', data)
 
     This is using the native configparser library shipped with the python standard library. Using ConfigParser method.
     For more information on the configparser library, visit: https://docs.python.org/3/library/configparser.html
+    
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks
     err_msg_file_type = "Only str is allowed for 'filename'"
