@@ -10,18 +10,18 @@ from ..error import JsonLoad
 # Import json file
 def jsonload(filename: _Union[str, _PathObj], *, encoding: _Union[str, None]=None) -> _Union[list, dict, str, int, float, bool, None]:
     """
-    Imports json data from a file
+    Loads json data from a file
 
-    Returns data with matching python data type. Assign the output to var
+    Returns data with matching python data type
 
-    Enter json file location as str to import.
-
-    [Example Use]
+    [Example: Usage]
 
     jsonload('path/to/filename.json')
 
     This is using the native json library shipped with the python standard library. For more
     information on the json library, visit: https://docs.python.org/3/library/json.html
+
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks
     err_msg_file_type = "Only str is allowed for 'filename'"

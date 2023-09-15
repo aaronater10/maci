@@ -9,17 +9,18 @@ from ..error import JsonDumpStr
 # Export json str
 def jsondumpstr(data: _Union[dict, list, tuple, str, int, float, bool, None], *, indent_level: int=4) -> str:
     """
-    Exports python data type to json string
+    Dumps json data to a str from python data
 
-    Returns a json formatted str. Assign the output to var
+    Returns a json formatted str
 
-    [Example Use]
+    [Example: Usage]
 
-    jsondumpstr(data, [optional] indent_level)
+    jsondumpstr(data)
 
     This is using the native json library shipped with the python standard library. For more
     information on the json library, visit: https://docs.python.org/3/library/json.html
 
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks
     err_msg_type_data = "Only dict|list|tuple|str|int|float|bool|None is allowed for 'data'"
