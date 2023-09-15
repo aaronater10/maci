@@ -14,16 +14,16 @@ def tomlload(filename: _Union[str, _PathObj]) -> _Dict[str, _Any]:
     """
     Loads toml data from a file
 
-    Returns dict data with matching python data type. Assign the output to var
+    Returns dict data with matching python data type values
 
-    Enter toml file location as str to load
-
-    [Example Use]
+    [Example: Usage]
 
     tomlload('path/to/filename.toml')
 
     This is using the tomli library installed as a dependency from pypi.
     For more information on tomli, visit: https://pypi.org/project/tomli/
+    
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks
     err_msg_type_file = "Only str is allowed for 'filename'"

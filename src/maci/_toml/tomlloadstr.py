@@ -12,14 +12,16 @@ def tomlloadstr(toml_str_data: str) -> _Dict[str, _Any]:
     """
     Load toml data from a string
 
-    Returns dict data with matching python data types. Assign the output to var
+    Returns dict data with matching python data type values
 
-    [Example Use]
+    [Example: Usage]
 
     tomlloadstr('string with toml data')
 
     This is using the tomli library installed as a dependency from pypi.
     For more information on tomli, visit: https://pypi.org/project/tomli/
+    
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks
     err_msg_type_str = "Only str is allowed for 'toml_str_data'"

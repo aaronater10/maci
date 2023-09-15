@@ -19,16 +19,16 @@ def tomldump(
     multi_line_str: bool=False
 ) -> None:
     """
-    Dumps a new file from dict to toml data.
+    Dumps toml data to a file from dict
 
-    Enter filename as str. Pass data for output to file
+    [Example: Usage]
 
-    [Example Use]
-
-    tomldump('path/to/filename.toml', data)    
+    tomldump('path/to/filename.toml', data)
 
     This is using the tomli-w library installed as a dependency from pypi.
     For more information on tomli-w, visit: https://pypi.org/project/tomli-w/
+
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks
     err_msg_type_file = "Only str is allowed for 'filename'"
