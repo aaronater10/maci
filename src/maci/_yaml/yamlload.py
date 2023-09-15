@@ -11,19 +11,19 @@ from ..error import YamlLoad
 # Import yaml file
 def yamlload(filename: _Union[str, _PathObj], *, encoding: _Union[str, None]=None) -> _Any:
     """
-    Imports yaml data from a file.
+    Loads yaml data from a file
 
-    Returns data with matching python data type. Assign the output to var
+    Returns data with matching python data type
 
-    Enter yaml file location as str to import.
+    [Example: Usage]
 
-    [Example Use]
-
-    yamlload('path/to/filename.yml')
+    yamlload('path/to/filename.yaml')
 
     This is using the PyYAML framework installed as a dependency from pypi. It is only using the
     "safe_load" method to protect from untrusted input.
     For more information on PyYAML, visit: https://pypi.org/project/PyYAML/
+    
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks
     err_msg_type_file = "Only str is allowed for 'filename'"

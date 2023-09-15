@@ -13,10 +13,8 @@ from ..error import YamlDumpAll
 # Export yaml file
 def yamldumpall(filename: _Union[str, _PathObj], data: _Iterable[_Any], *, append: bool=False, encoding: _Union[str, None]=None) -> None:
     """
-    Exports a new file from an iterable object that produces a yaml doc from each item to the file.
-    
-    Enter new filename as str. Pass an iterable for output to file
-    
+    Dumps a file from an iterable object that produces a yaml doc from each item to the file
+
     [Example Use]
 
     yamldumpall('path/to/filename.yml', data)    
@@ -24,6 +22,8 @@ def yamldumpall(filename: _Union[str, _PathObj], data: _Iterable[_Any], *, appen
     This is using the PyYAML framework installed as a dependency from pypi. It is only using the
     "safe_dump_all" method, which only supports standard YAML tags and cannot represent arbitrary Python objects.
     For more information on PyYAML, visit: https://pypi.org/project/PyYAML/
+
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks
     err_msg_type_file = "Only str is allowed for 'filename'"

@@ -12,11 +12,9 @@ from ..error import YamlLoadAll
 # Import yaml file
 def yamlloadall(filename: _Union[str, _PathObj], *, encoding: _Union[str, None]=None) -> _Iterator[_Any]:
     """
-    Imports all yaml docs from a file.
+    Loads all yaml docs from a file
 
-    Returns a generator of matching python data types. Assign the output to var
-
-    Enter yaml file location as str to import.
+    Returns a generator of matching python data types
 
     [Example Use]
 
@@ -25,6 +23,8 @@ def yamlloadall(filename: _Union[str, _PathObj], *, encoding: _Union[str, None]=
     This is using the PyYAML framework installed as a dependency from pypi. It is only using the
     "safe_load_all" method to protect from untrusted input.
     For more information on PyYAML, visit: https://pypi.org/project/PyYAML/
+
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks
     err_msg_type_file = "Only str is allowed for 'filename'"
