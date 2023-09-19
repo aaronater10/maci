@@ -4,7 +4,7 @@ maci - by aaronater10
 
 A Pythonic Configuration Language & Thin Wrapper Library
 
-Version 0.5.2
+Version 0.6.0
 
 Tutorials and docs: https://docs.macilib.org
 
