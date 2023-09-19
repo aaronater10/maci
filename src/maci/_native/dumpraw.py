@@ -4,25 +4,25 @@
 from typing import Any as _Any
 from typing import Union as _Union
 from os import path as _path
+from pathlib import Path as _PathObj
 from ..error import DumpRaw
 
 #########################################################################################################
 # Export Data to File
-def dumpraw(filename: str, *data: _Any, append: bool=False, byte_data: bool=False, newline_sep: bool=True, encoding: _Union[str, None]=None) -> None:
+def dumpraw(filename: _Union[str, _PathObj], *data: _Any, append: bool=False, byte_data: bool=False, newline_sep: bool=True, encoding: _Union[str, None]=None) -> None:
     """
-    Exports a new file with the new data.
-    
-    Enter new filename as str, Pass any data type for output to file.
+    Dumps a new file with the data raw
 
     [Options]
-    append: set to True to append data to a file (Default=False, which writes a new file each time)
+    append: set to True to append data to a file - Default=False, which writes a new file each time
 
-    byte_data: Set to True to write byte data. Default False
+    byte_data: set to True to write byte data - Default=False
 
-    [Example Use]
-    Normal: dump('path/of/filename', 'data')
+    [Example: Usage]
 
-    Byte Data: dump('path/of/filename', b'data', byte_data=True)
+    dumpraw('path/of/filename', data)
+
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks
     err_msg_bytes = "Only bytes is allowed if using 'byte_data' option"
@@ -32,9 +32,12 @@ def dumpraw(filename: str, *data: _Any, append: bool=False, byte_data: bool=Fals
     err_msg_type_encoding = "Only str|None or valid option is allowed for 'encoding'"
 
     if not isinstance(byte_data, bool): raise DumpRaw(err_msg_type_bytes, f'\nGot: {repr(byte_data)}')
-    if not isinstance(filename, str): raise DumpRaw(err_msg_type_str, f'\nGot: {repr(filename)}')
+    if not isinstance(filename, (str, _PathObj)): raise DumpRaw(err_msg_type_str, f'\nGot: {repr(filename)}')
     if (not isinstance(append, bool)): raise DumpRaw(err_msg_append, f'\nGot: {repr(append)}')
     if (not isinstance(encoding, (str, type(None)))): raise DumpRaw(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
+
+    # Convert filename to str to catch Path objects
+    filename = str(filename)
 
     # Set Write Mode: 'a' = append, 'w' = write
     mode = 'a' if append else 'w'

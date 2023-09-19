@@ -5,31 +5,36 @@ from .._native.loadraw import loadraw as _loadraw
 from .._native.dumpraw import dumpraw as _dumpraw
 from typing import Union as _Union
 from typing import Any as _Any
+from pathlib import Path as _PathObj
 import hashlib as _hashlib
 from ..error import CreateFileHash, LoadRaw, DumpRaw
 
 #########################################################################################################
 # Create file hash
-def createfilehash(file_to_hash: str, file_to_store_hash: _Union[str,None], hash_algorithm: str='sha256', *, encoding: _Union[str, None]=None) -> str:
+def createfilehash(file_to_hash: _Union[str, _PathObj], file_to_store_hash: _Union[str, _PathObj, None], hash_algorithm: str='sha256', *, encoding: _Union[str, None]=None) -> str:
     """
     Creates a hash of any file, and stores the hash data to a new created file
 
-    Always returns a str of the hash as well. Assign the output to var
+    Always returns a str of the hashed file
 
-    Enter file locations as str
+    [Partner Functions]
+
+    comparefilehash: auto compares hashes from src hash of file with stored hash file data
 
     [Options]
-    file_to_store_hash: Set to False if you do not want hash data stored to a file. Hash data is always returned whether or not this is set
+    
+    file_to_store_hash: Set to None if you do not want a file created to store hash. Hash data of the src file is always returned whether or not this is set
 
-    hash_algorithm: Already set to default of 'sha256'. Supported options: 'sha256', 'sha512', 'sha384', 'sha1', 'md5'
+    hash_algorithm: Default is 'sha256' - Other options: 'sha512', 'sha384', 'sha1', 'md5'
 
-    [Example Use]
+    [Example: Usage]
 
-    Default: createfilehash('path/to/src_filename', 'path/to/dst_hash_filename')
-    Hash only, no file: hash_data = createfilehash('path/to/filename', False)
+    createfilehash('path/to/src_filename', 'path/to/dst_hash_filename')
 
     This is using the hashlib library shipped with the python standard library. For more
     information on hashlib, visit: https://docs.python.org/3/library/hashlib.html
+
+    Maci docs: https://docs.macilib.org
     """
     ALGO_OPTIONS = ('sha256', 'sha512', 'sha384', 'sha1', 'md5')
 
@@ -40,11 +45,15 @@ def createfilehash(file_to_hash: str, file_to_store_hash: _Union[str,None], hash
     err_msg_hash = f"Invalid or no hash option chosen for 'hash_algorithm'"
     err_msg_str_encoding = f"Only str|None or valid option is allowed for 'encoding'"
 
-    if not isinstance(file_to_hash, str): raise CreateFileHash(err_msg_str_file_src, f'"{file_to_hash}"')
-    if not isinstance(file_to_store_hash, (str, type(None))): raise CreateFileHash(err_msg_file_dst, f'"{file_to_store_hash}"')
+    if not isinstance(file_to_hash, (str, _PathObj)): raise CreateFileHash(err_msg_str_file_src, f'"{file_to_hash}"')
+    if not isinstance(file_to_store_hash, (str, _PathObj, type(None))): raise CreateFileHash(err_msg_file_dst, f'"{file_to_store_hash}"')
     if not isinstance(hash_algorithm, str): raise CreateFileHash(err_msg_str_hash, f'"{hash_algorithm}"')
     if not hash_algorithm in ALGO_OPTIONS: raise CreateFileHash(err_msg_hash, f'"{hash_algorithm}"')
     if not isinstance(encoding, (str, type(None))): raise CreateFileHash(err_msg_str_encoding, f'\nGot: {repr(encoding)}')
+
+    # Convert filenames to str to catch Path objects
+    file_to_hash = str(file_to_hash)
+    file_to_store_hash = str(file_to_store_hash) if file_to_store_hash is not None else None
 
     # Generate Hash Type
     _hash_type: _Any  # ignore type checker

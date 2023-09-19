@@ -45,6 +45,42 @@ def test2_exceptions_yamldump_opts_data():
     except: pass
 
 
+### yamldumpall ###
+
+# 1. Yaml Dump All - Type Checks
+def test1_exceptions_yamldumpall_types():
+    # Tests
+    with pytest.raises(maci.error.YamlDumpAll):
+        maci.yamldumpall(filename=1.0, data=[])
+    with pytest.raises(maci.error.YamlDumpAll):
+        maci.yamldumpall(filename='', data=1.0)
+    with pytest.raises(maci.error.YamlDumpAll):
+        maci.yamldumpall(filename='', data=[], append=1.0)
+    with pytest.raises(maci.error.YamlDumpAll):
+        maci.yamldumpall(filename='', data=[], encoding=1.0)
+
+
+# 2. Yaml Dump All - Unsupported Options or Data
+def test2_exceptions_yamldumpall_opts_data():
+    filepath = test_file_path + 'exc_yamldump.yaml'
+    filepath_err = test_file_path + 'exc_yamldump_err.yaml'
+
+    # Tests
+    with pytest.raises(maci.error.YamlDumpAll):
+        maci.yamldumpall(filename='', data=[])
+    with pytest.raises(maci.error.YamlDumpAll):
+        maci.yamldumpall(filename=filepath_err, data=[{'k': type({})}])
+    with pytest.raises(maci.error.YamlDumpAll):
+        maci.yamldumpall(filename=filepath, data={}, encoding='')
+
+    # Remove Test Files
+    time.sleep(file_delay_timer)
+    try:
+        remove(filepath)
+        remove(filepath_err)
+    except: pass
+
+
 ### yamldumpstr ###
 
 # 1. Yaml Dump Str - Type Checks
@@ -92,6 +128,33 @@ def test2_exceptions_yamlload_opts_data():
         maci.yamlload(filename=filepath_err)
     with pytest.raises(maci.error.YamlLoad):
         maci.yamlload(filename=filepath, encoding='')
+
+
+### yamlloadall ###
+
+# 1. Yaml Load All - Type Checks
+def test1_exceptions_yamlloadall_types():
+    # Tests
+    with pytest.raises(maci.error.YamlLoadAll):
+        maci.yamlloadall(filename=1.0)
+    with pytest.raises(maci.error.YamlLoadAll):
+        maci.yamlloadall(filename='', encoding=1.0)
+
+
+# 2. Yaml Load All - Unsupported Options or Data
+def test2_exceptions_yamlloadall_opts_data():
+    filepath = test_file_path + 'exc_yamlload.yml'
+    filepath_err = test_file_path + 'exc_yamlload_err.yml'
+
+    # Tests
+    with pytest.raises(maci.error.YamlLoadAll):
+        maci.yamlloadall(filename='')
+    with pytest.raises(maci.error.YamlLoadAll):
+        maci.yamlloadall(filename='*')
+    with pytest.raises(maci.error.YamlLoadAll):
+        maci.yamlloadall(filename=filepath_err)
+    with pytest.raises(maci.error.YamlLoadAll):
+        maci.yamlloadall(filename=filepath, encoding='')
 
 
 # ### yamlloadstr ###

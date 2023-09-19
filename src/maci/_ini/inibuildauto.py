@@ -11,16 +11,16 @@ from ..error import IniBuildAuto
 # Auto Build ini data
 def inibuildauto(data: _Dict[str, _Dict[str, _Any]]) -> _ConfigParser:
     """
-    Auto converts dict to ini data structure
+    Auto builds ini data object from dict
 
-    Returns a ConfigParser obj with your data. Assign the output to var
+    Returns a ConfigParser object with your data
 
-    All sub-values are converted to strings naturally by the library. However, if your sub-value
-    contains a Nonetype, this function will also auto-convert to a string for you.
+    Note: All sub-values are converted to strings naturally by the library. However, if your sub-value
+    contains a 'NoneType', this function will also auto-convert that to a string for you.
 
-    Enter correctly structured dict to convert data
+    Enter correctly structured dict to build data
 
-    [Example dict structure]
+    [Example: ini dict structure]
 
     {
         'section1': {'key1': 1},
@@ -28,9 +28,15 @@ def inibuildauto(data: _Dict[str, _Dict[str, _Any]]) -> _ConfigParser:
         'section2': {'key2': 2}   
     }
 
+    [Example: Usage]
+
+    var = inibuildauto(data)
+
     This is using the native configparser library shipped with the python standard library. Using ConfigParser method
     with ExtendedInterpolation enabled by default. For more information on the configparser library, 
     visit: https://docs.python.org/3/library/configparser.html
+
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks
     err_msg_dict_type = f"Only dict is allowed for 'data'"

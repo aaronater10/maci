@@ -16,13 +16,17 @@ from typing import Optional as _Optional
 from typing import NamedTuple as _NamedTuple
 from typing import Set as _Set
 from typing import Callable as _Callable
-from .error import Load, GeneralError, Hint
+from .error import Load
+from .error import GeneralError
+from .error import Hint
 # Dump Function
 from io import StringIO as _StringIO
 from typing import TypeVar as _TypeVar
 from ._native.dumpraw import dumpraw as _dumpraw
 from ._native.cleanformat import cleanformat as _cleanformat
-from .error import Dump, DumpRaw, DumpStr
+from .error import Dump
+from .error import DumpRaw
+from .error import DumpStr
 
 #########################################################################################################
 # Assignment Glyphs
@@ -233,7 +237,7 @@ class _MaciDataObjConstructor:
         __end_multistr_markers = {"'''", '"""'}
         __end_markers_build = __end_markers
         __skip_markers = ('', ' ', '#', '\n')
-        __eof_marker = file_data[-1]
+        __eof_marker = file_data[-1] if file_data else ''
         __ignore_multistr_markers = ("'''", '"""', "r'''", 'r"""')
         __ignore_multistr_marker = ''
 
@@ -1204,7 +1208,7 @@ def __dump_data(
                 if key in data.__dict__[__src_reference_attr_list_key]:
                     __build_data_output.write(f'{key} {__assignment_glyphs.m} {data.__dict__[__src_reference_attr_list_key][key]}\n')
                     continue
-
+                
                 # REPR SIGNAL: If certain object type matches, disable repr use
                 repr_signal = __repr_signal(value)
 
@@ -1252,10 +1256,12 @@ def __dump_data(
         # Strip Last \n Char
         __build_data_output = __build_data_output.rstrip()
 
+        # Validate Accepted Value Types in Data
+        __block_non_accepted_types(maci_str_data=__build_data_output, data=data)
 
         # Check if DUMP STR REQUEST: Return built string
         if _is_string_request:
-            return __build_data_output
+            return __build_data_output        
 
         # Write File Data and Return None
         __write_file_data(filename, __build_data_output, write_mode, encoding=encoding)
@@ -1291,6 +1297,8 @@ def __dump_data(
         # Strip Last \n Char
         __build_data_output = __build_data_output.rstrip()
 
+        # Validate Accepted Value Types in Data
+        __block_non_accepted_types(maci_str_data=__build_data_output, data=data)
         
         # Check if DUMP STR REQUEST: Return built string
         if _is_string_request:
@@ -1466,6 +1474,8 @@ def __dump_data(
         # Strip Last \n Char
         __build_data_output = __build_data_output.rstrip()
 
+        # Validate Accepted Value Types in Data
+        __block_non_accepted_types(maci_str_data=__build_data_output, data=data)
 
         # Check if DUMP STR REQUEST: Return built string
         if _is_string_request:
@@ -1524,7 +1534,7 @@ def __setup_multi_string(key: str, assignment_glyph: str, value: str,) -> str:
     return f'{key} {assignment_glyph} {surrounding_quote_type}{is_set_start_new_line}{value}{is_set_end_new_line}{surrounding_quote_type}\n'
 
 
-# Set DateTime Object to String
+# Set Certain Object Types to String
 def __repr_signal(value: _Any) -> bool:
     """
     Returns a bool to signal whether to use repr for certain object types
@@ -1533,3 +1543,46 @@ def __repr_signal(value: _Any) -> bool:
     if isinstance(value, types_to_signal_disable_repr):
         return False
     return True
+
+
+# Block Non-Primitive or Accepted Types for Dump
+def __block_non_accepted_types(
+    maci_str_data: str,
+    data: _Any, # objects allowed: MaciDataObj, dict, ClassObject - ignoring type checker
+) -> None:
+    """
+    Validates if value being written has primitive or accepted data types by testing the build str
+    """
+    err_msg_type = "Only str|int|float|bool|list|dict|tuple|set|bytes|None|datetime are valid attribute value types to dump data"
+    
+    # Syntax/Usage Error Messages
+    __err_messages: _Any = {  # ignore type checker
+        '_py_syntax_err_msg': "Must have valid Python data types to import, or string's maci syntax is incorrect",
+        '_name_preexists_err_msg': "Name already preexists. Must give unique attribute names in string",
+        '_name_reference_does_not_exist_msg': "Map name does not exist! Must map attribute names in string that have been defined",
+        '_assignment_locked_atrribs_err_msg': "Attribute Name Locked! Cannot be reassigned",
+        '_assignment_hard_locked_atrribs_err_msg': "Attribute Name Hard Locked! Cannot be reassigned, deleted, or unlocked"
+    }
+
+    # Validate data
+    try:
+        MaciDataObj(
+                '',
+                _is_load_request=True,
+                _str_data=maci_str_data,
+                _is_str_parse_request=True,
+                attr_name_dedup=True,
+                encoding=None,
+                **__err_messages,
+            )
+    except Load as __err_msg:
+        __err_msg.item = f"\n{''.join([item for item in __err_msg.item.splitlines() if 'Attr' in item])}"
+        
+        attr_name = __err_msg.item.partition(':')[2].strip()
+        
+        if isinstance(data, dict):
+            attr_value = data.get(attr_name)
+        else:
+            attr_value = getattr(data, attr_name)        
+
+        raise Dump(err_msg_type, f'{__err_msg.item}\nCheck object: {type(attr_value).__name__}')

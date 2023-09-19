@@ -9,18 +9,18 @@ from ..error import JsonLoadStr
 # Import json string
 def jsonloadstr(json_str_data: str) -> _Union[list, dict, str, int, float, bool, None]:
     """
-    Imports json data from a string
+    Loads json data from a string
 
-    Returns data with matching python data type. Assign the output to var
+    Returns data with matching python data type
 
-    Enter json string as str to import.
-
-    [Example Use]
+    [Example: Usage]
 
     jsonloadstr('string with json data')
 
     This is using the native json library shipped with the python standard library. For more
     information on the json library, visit: https://docs.python.org/3/library/json.html
+
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks
     err_msg_data_type = "Only str is allowed for 'json_str_data'"

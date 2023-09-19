@@ -2,14 +2,15 @@
 #########################################################################################################
 # Imports
 import json as _json
-from .._native.dumpraw import dumpraw as _dumpraw
 from typing import Union as _Union
+from pathlib import Path as _PathObj
+from .._native.dumpraw import dumpraw as _dumpraw
 from ..error import JsonDump
 
 #########################################################################################################
 # Export json file
 def jsondump(
-    filename: str,
+    filename: _Union[str, _PathObj],
     data: _Union[dict, list, tuple, str, int, float, bool, None],
     *,
     append: bool=False,
@@ -17,17 +18,16 @@ def jsondump(
     encoding: _Union[str, None]=None
 ) -> None:
     """
-    Exports a new file from python data type to json data.
+    Dumps json data to a file from python data
     
-    Enter new filename as str. Pass data for output to file
-    
-    [Example Use]
+    [Example: Usage]
 
     jsondump('path/to/filename.json', data)    
 
     This is using the native json library shipped with the python standard library. For more
     information on the json library, visit: https://docs.python.org/3/library/json.html
 
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks
     err_msg_file_type = "Only str is allowed for 'filename'"
@@ -36,11 +36,14 @@ def jsondump(
     err_msg_type_indent = "Only int is allowed for 'indent_level'"
     err_msg_type_encoding = "Only str|None or valid option is allowed for 'encoding'"
 
-    if not isinstance(filename, str): raise JsonDump(err_msg_file_type, f'\nGot: {repr(filename)}')
+    if not isinstance(filename, (str, _PathObj)): raise JsonDump(err_msg_file_type, f'\nGot: {repr(filename)}')
     if not isinstance(data, (list, dict, tuple, str, int, float, bool, type(None))): raise JsonDump(err_msg_parser, f'\nGot: {repr(data)}')
     if not isinstance(append, bool): raise JsonDump(err_msg_type_append, f'\nGot: {repr(append)}')
     if not isinstance(indent_level, int): raise JsonDump(err_msg_type_indent, f'\nGot: {repr(indent_level)}')
     if not isinstance(encoding, (str, type(None))): raise JsonDump(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
+
+    # Convert filename to str to catch Path objects
+    filename = str(filename)
 
     # Set Write Mode: 'a' = append, 'w' = write
     write_mode = 'a' if append else 'w'

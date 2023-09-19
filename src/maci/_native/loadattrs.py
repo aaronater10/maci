@@ -1,8 +1,8 @@
 # loadattrs
 #########################################################################################################
 # Imports
-from typing import NewType as _NewType
 from typing import Union as _Union
+from pathlib import Path as _PathObj
 from ..error import LoadAttrs, Load
 from .load import load as _load
 from ..data import MaciDataObj as _MaciDataObj
@@ -10,28 +10,29 @@ from ..hint import __ClassObject  # type: ignore  # ignoring attr export
 
 #########################################################################################################
 # Import Attributes from File
-def loadattrs(filename: str, class_object: __ClassObject, *, encoding: _Union[str, None]=None, attr_name_dedup: bool=False, _ignore_maci_attr_check: bool=True) -> None:
+def loadattrs(filename: _Union[str, _PathObj], class_object: __ClassObject, *, encoding: _Union[str, None]=None, attr_name_dedup: bool=False, _ignore_maci_attr_check: bool=True) -> None:
     """
-    Import saved attributes from file back into a custom class. This is done in-place
+    Load attribute data from file into a custom class/object. This is done in-place
 
-    Enter filename as str, Pass custom class object.
+    [Example: Usage]
 
-    [Example Use]
+    loadattrs('path/of/filename.any', custom_object)
 
-    loadattrs('path/of/filename', 'class_object')
-
-    [Warning]
-    Turning OFF 'attr_name_dedup' is not recommended as you gain the ability to overwrite
-    your attribute names that already preexist. This also may affect MaciDataObj behavior
-    including the ability to overwrite internal dunder names. This feature is meant to protect you from accidentally
+    [Warning] Turning OFF 'attr_name_dedup' is not recommended as you gain the ability to overwrite
+    your attribute names that already preexist. This feature is meant to protect you from accidentally
     duplicating an attribute name in a file that has already been created.
+
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks
     err_msg_type_filename = "Only str is allowed for 'filename'"
     err_msg_type_class_obj = "Only a custom ClassObject is allowed for 'class_object'"
     err_msg_type_maci_obj = "Please use 'load' function to properly import a 'MaciDataObj' object"
 
-    if not isinstance(filename, str): raise LoadAttrs(err_msg_type_filename, f'\nGot: {repr(filename)}')
+    if not isinstance(filename, (str, _PathObj)): raise LoadAttrs(err_msg_type_filename, f'\nGot: {repr(filename)}')
+
+    # Convert filename to str to catch Path objects
+    filename = str(filename)
 
     # Verify if Custom Class Obj
     _filter_objects = (str, int, float, bool, list, dict, tuple, set, type(None), bytes, complex, range, frozenset, bytearray, memoryview)

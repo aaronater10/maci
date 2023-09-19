@@ -8,19 +8,19 @@ from ..data import MaciDataObj as _MaciDataObj
 # Build manual MaciDataObj (python data)
 def build() -> '_MaciDataObj':
     """
-    Returns an empty MaciDataObj obj to manually build pythonic data with maci features
-    
-    Assign the output to var
+    Returns an empty 'MaciDataObj' object to manually build data with maci features
 
-    Literally, just use attribute assignment as you normally would
+    Use attribute assignment as you normally would to build out data
 
-    [Example]
+    [Example: Usage]
 
-    object.attribute1 = [1,2,3]
+    var = maci.build()
 
-    object.attribute2 = 'string data'
+    [Example: Assign Data]
 
-    More information on object features: https://docs.macilib.org/docs/tools/build-data/python-data-build
+    var.my_list = [1,2,3]
+
+    Maci docs: https://docs.macilib.org
     """
     # Syntax/Usage Error Messages
     err_messages: _Any = {  # ignore type checker

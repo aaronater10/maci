@@ -96,3 +96,42 @@ def test3_all_formats_export():
     time.sleep(file_delay_timer)
     try: remove(filepath)
     except: pass
+
+
+# 4. All Nested Data - Formatting All Data with Nested Structures Cleanly
+def test4_cleanformat_all_nested_data_export():
+    filename = '4_cleanformat_all_nested_data.data'
+    filepath = test_file_path + filename
+    data_dict = {'k1':1, 'k2': ['list',('tuple',2,{'set',2,3}), {'k1': 1}, 3], 'k3': {'k_list': [1,2,3], 'k_tuple': (1,2,3), 'k_set': {1,2,3}}, 'k4': 4}
+    data_list = [1,{'k1': 1, 'k2': ['list',('tuple',2,{'set',2,3}), {'k1': 1}, 3], 'k3': 3},3, [1,2,3]]
+    data_tuple = (1,{'k1': 1, 'k2': ['list',('tuple',2,{'set',2,3}), {'k1': 1}, 3], 'k3': 3},3)
+    data_set = {1,('tuple',('sub_tuple',5),3),3}
+
+    # Remove Any Existing Test File
+    try: remove(filepath)
+    except: pass
+    time.sleep(file_delay_timer)
+
+    # Test Formatted Data then Export it and Read it
+    data_dict = maci.cleanformat(data_dict)
+    data_list = maci.cleanformat(data_list)
+    data_tuple = maci.cleanformat(data_tuple)
+    data_set = maci.cleanformat(data_set)
+
+    maci.dumpraw(filepath,
+        f"data_dict = {data_dict}\n",
+        f"data_list = {data_list}\n",
+        f"data_tuple = {data_tuple}\n",
+        f"data_set = {data_set}\n"
+    )
+    
+    file_import = maci.load(filepath)
+    assert file_import.data_dict == {'k1':1, 'k2': ['list',('tuple',2,{'set',2,3}), {'k1': 1}, 3], 'k3': {'k_list': [1,2,3], 'k_tuple': (1,2,3), 'k_set': {1,2,3}}, 'k4': 4}
+    assert file_import.data_list == [1,{'k1': 1, 'k2': ['list',('tuple',2,{'set',2,3}), {'k1': 1}, 3], 'k3': 3},3, [1,2,3]]
+    assert file_import.data_tuple == (1,{'k1': 1, 'k2': ['list',('tuple',2,{'set',2,3}), {'k1': 1}, 3], 'k3': 3},3)
+    assert file_import.data_set == {1,('tuple',('sub_tuple',5),3),3}
+
+    # Remove Test File
+    time.sleep(file_delay_timer)
+    try: remove(filepath)
+    except: pass

@@ -60,6 +60,13 @@ def test1_exceptions_macidump_types():
 def test2_exceptions_macidump_opts_data():
     filepath = test_file_path + 'exc_macidump.maci'
 
+    # Build Data
+    maci_obj = maci.build()
+    maci_data = maci.build()
+    maci_data.maci_obj = maci_obj
+    dict_data = {'k1': maci_obj}
+
+
     # Remove Any Existing Cache Test File
     try: remove(filepath)
     except: pass
@@ -70,6 +77,10 @@ def test2_exceptions_macidump_opts_data():
         maci.dump(filename="", data={})
     with pytest.raises(maci.error.Dump):
         maci.dump(filename=filepath, data={}, encoding="")
+    with pytest.raises(maci.error.Dump):
+        maci.dump(filename="", data=maci_data)
+    with pytest.raises(maci.error.Dump):
+        maci.dump(filename="", data=dict_data)
 
     # Remove Cache Test File
     time.sleep(file_delay_timer)

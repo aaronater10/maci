@@ -7,23 +7,25 @@ from typing import Any as _Any
 from ..error import TomlDumpStr
 
 #########################################################################################################
-# Dump toml file
+# Dump toml string
 def tomldumpstr(
     data: _Dict[str, _Any],
     *,
     multi_line_str: bool=False
 ) -> str:
     """
-    Dumps dict data to toml string
+    Dumps toml data to a string from dict
 
-    Returns a toml formatted str. Assign the output to var
+    Returns a toml formatted str
 
-    [Example Use]
+    [Example: Usage]
 
     tomldumpstr(data)
 
     This is using the tomli-w library installed as a dependency from pypi.
     For more information on tomli-w, visit: https://pypi.org/project/tomli-w/
+    
+    Maci docs: https://docs.macilib.org
     """
     err_msg_type_str_data = "Only dict is allowed for 'data'"
     err_msg_type_str_mls = "Only bool is allowed for 'multi_line_str'"

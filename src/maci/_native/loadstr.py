@@ -11,19 +11,19 @@ from .build import build as _build
 # Import py Data from String
 def loadstr(maci_str_data: str, *, attr_name_dedup: bool=True) -> _Optional[_MaciDataObj]:
     """
-    Imports python data from a string.
+    Loads maci (pythonic) data from a string
 
-    Returns a class of attributes. Assign the output to var
+    Returns a 'MaciDataObj' object with maci features. Returns empty object if string empty
 
-    Enter python data string as str to import.
+    [Example: Usage]
 
-    Accepted data types: str, int, float, bool, list, dict, tuple, set, nonetype, bytes, datetime
+    loadstr('string with maci data')
 
-    Returns empty object if string empty
+    [Warning] Turning OFF 'attr_name_dedup' is not recommended as you gain the ability to overwrite
+    your attribute names that already preexist. This feature is meant to protect you from accidentally
+    duplicating an attribute name in a string that has already been created.
 
-    [Example Use]
-
-    loadstr("data1 = 'value1'\\ndata2 = "value2")
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks
     err_msg_type_maci_str_data = "Only str is allowed for 'maci_str_data'"

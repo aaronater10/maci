@@ -2,32 +2,39 @@
 #########################################################################################################
 # Imports
 from typing import Union as _Union
+from pathlib import Path as _PathObj
 from os import path as _path
 from ..error import LoadRaw
 
 #########################################################################################################
 # Import raw data from file
-def loadraw(filename: str, *, byte_data: bool=False, encoding: _Union[str, None]=None) -> _Union[str, bytes]:
+def loadraw(filename: _Union[str, _PathObj], *, byte_data: bool=False, encoding: _Union[str, None]=None) -> _Union[str, bytes]:
     """
-    Imports any raw data from a file.
+    Loads raw data from a file
 
-    Returns a str. Assign the output to var
+    Returns a str or bytes. Returns empty string if file truly empty. Returns any whitespace if found in file
 
     [Options]
-    byte_data: Set to True if importing byte data
 
-    [Example Use]
+    byte_data: set to True if loading byte data
 
-    loadraw('path/to/filename')
+    [Example: Usage]
+
+    loadraw('path/to/filename.any')
+
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks
     err_msg_type_filename = "Only str is allowed for 'filename'"
     err_msg_type_byte_data = "Only bool is allowed for 'byte_data'"
     err_msg_type_encoding = "Only str|None or valid option is allowed for 'encoding'"
 
-    if not isinstance(filename, str): raise LoadRaw(err_msg_type_filename, f'\nGot: {repr(filename)}')
+    if not isinstance(filename, (str, _PathObj)): raise LoadRaw(err_msg_type_filename, f'\nGot: {repr(filename)}')
     if not isinstance(byte_data, bool): raise LoadRaw(err_msg_type_byte_data, f'\nGot: {repr(byte_data)}')
     if not isinstance(encoding, (str, type(None))): raise LoadRaw(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
+
+    # Convert filename to str to catch Path objects
+    filename = str(filename)
 
     # Validate file exists. Import File then return the raw data
     if not byte_data:

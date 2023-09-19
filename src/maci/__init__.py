@@ -3,13 +3,13 @@ maci - by aaronater10
 
 A Pythonic Configuration Language & Thin Wrapper Library
 
-Version 0.5.2
+Version 0.6.0
 
 Tutorials and docs: https://docs.macilib.org
 
 Source: https://github.com/aaronater10/maci
 """
-__version__ = '0.5.2'
+__version__ = '0.6.0'
 
 #########################################################################################################
 # Imports
@@ -46,8 +46,10 @@ from ._json.jsondumpstr import jsondumpstr
 
 # YAML Lib
 from ._yaml.yamlload import yamlload
+from ._yaml.yamlloadall import yamlloadall
 from ._yaml.yamlloadstr import yamlloadstr
 from ._yaml.yamldump import yamldump
+from ._yaml.yamldumpall import yamldumpall
 from ._yaml.yamldumpstr import yamldumpstr
 
 # TOML Lib
@@ -65,10 +67,18 @@ from ._ini.inibuildmanual import inibuildmanual
 # XML Lib
 from defusedxml import defuse_stdlib as _defuse_xml_stdlib
 from ._xml.xmlload import xmlload
+from ._xml.xmlloaddict import xmlloaddict
 from ._xml.xmlloadstr import xmlloadstr
+from ._xml.xmlloadstrdict import xmlloadstrdict
 from ._xml.xmldump import xmldump
+from ._xml.xmldumpdict import xmldumpdict
 from ._xml.xmldumpstr import xmldumpstr
+from ._xml.xmldumpstrdict import xmldumpstrdict
 from ._xml.xmlbuildmanual import xmlbuildmanual
+
+# Pickle Lib
+from ._pickle.pickleloadbytes import pickleloadbytes
+from ._pickle.pickledumpbytes import pickledumpbytes
 
 
 # Name compatibility aliases/deprecation from ported library

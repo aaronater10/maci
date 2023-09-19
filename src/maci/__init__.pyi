@@ -4,12 +4,14 @@ maci - by aaronater10
 
 A Pythonic Configuration Language & Thin Wrapper Library
 
-Version 0.5.2
+Version 0.6.0
 
 Tutorials and docs: https://docs.macilib.org
 
 Source: https://github.com/aaronater10/maci
 """
+__version__: str
+
 #########################################################################################################
 # Imports
 from typing import Any as _Any
@@ -19,7 +21,11 @@ from typing import Tuple as _Tuple
 from typing import Union as _Union
 from typing import Optional as _Optional
 from typing import Set as _Set
+from typing import OrderedDict as _OrderedDict
+from typing import Iterator as _Iterator
+from typing import Iterable as _Iterable
 from types import ModuleType as _ModuleType
+from pathlib import Path as _PathObj
 from configparser import ConfigParser as _ConfigParser
 from xml.etree.ElementTree import ElementTree as _ElementTree
 from xml.etree.ElementTree import Element as _Element
@@ -40,7 +46,7 @@ from . import hint
 # Stub data: Functions
 
 ### Native Lib ###
-def load(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=None, _ignore_maci_attr_check: bool=False) -> _MaciDataObj:
+def load(filename: _Union[str, _PathObj], *, attr_name_dedup: bool=True, encoding: _Optional[str]=None, _ignore_maci_attr_check: bool=False) -> _MaciDataObj:
     """
     Loads maci (pythonic) data from a file
 
@@ -57,7 +63,7 @@ def load(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=
     Maci docs: https://docs.macilib.org
     """
 
-def loaddict(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=None) -> dict:
+def loaddict(filename: _Union[str, _PathObj], *, attr_name_dedup: bool=True, encoding: _Optional[str]=None) -> dict:
     """
     Loads maci (pythonic) data from a file
 
@@ -108,7 +114,7 @@ def loadstrdict(maci_str_data: str, *, attr_name_dedup: bool=True) -> dict:
     Maci docs: https://docs.macilib.org
     """
 
-def loadraw(filename: str, *, byte_data: bool=False, encoding: _Union[str, None]=None) -> _Union[str, bytes]:
+def loadraw(filename: _Union[str, _PathObj], *, byte_data: bool=False, encoding: _Union[str, None]=None) -> _Union[str, bytes]:
     """
     Loads raw data from a file
 
@@ -125,7 +131,7 @@ def loadraw(filename: str, *, byte_data: bool=False, encoding: _Union[str, None]
     Maci docs: https://docs.macilib.org
     """
 
-def loadattrs(filename: str, class_object: _ClassObject, *, encoding: _Union[str, None]=None, attr_name_dedup: bool=False, _ignore_maci_attr_check: bool=True) -> None:
+def loadattrs(filename: _Union[str, _PathObj], class_object: _ClassObject, *, encoding: _Union[str, None]=None, attr_name_dedup: bool=False, _ignore_maci_attr_check: bool=True) -> None:
     """
     Load attribute data from file into a custom class/object. This is done in-place
 
@@ -141,7 +147,7 @@ def loadattrs(filename: str, class_object: _ClassObject, *, encoding: _Union[str
     """
 
 def dump(
-    filename: str, 
+    filename: _Union[str, _PathObj], 
     data: _Union['_MaciDataObj', dict, _ClassObject], 
     *,
     append: bool=False,
@@ -225,7 +231,7 @@ def dumpstr(
     Maci docs: https://docs.macilib.org
     """
 
-def dumpraw(filename: str, *data: _Any, append: bool=False, byte_data: bool=False, newline_sep: bool=True, encoding: _Union[str, None]=None) -> None:
+def dumpraw(filename: _Union[str, _PathObj], *data: _Any, append: bool=False, byte_data: bool=False, newline_sep: bool=True, encoding: _Union[str, None]=None) -> None:
     """
     Dumps a new file with the data raw
 
@@ -243,15 +249,11 @@ def dumpraw(filename: str, *data: _Any, append: bool=False, byte_data: bool=Fals
 
 def cleanformat(data: _Union[dict,list,tuple,set], indent_level: int=1) -> str:
     """
-    Formats a single dictionary, list, tuple, or set, to a clean multiline form
+    Formats a dict, list, tuple, or set, to a clean multiline structure to string
 
-    Note: Higher indent levels will decrease performance, and indentation is applied to the main level data set only.
-
-    Tip: Changing indent level to 0 increases format performance by approx 5%, but output will have no indentation (Default level = 1).
-
-    [Example: Usage]
+    [Example Use]
     
-    var = cleanformat([1,2,3])
+    var = cleanformat(data)
 
     Maci docs: https://docs.macilib.org
     """
@@ -275,7 +277,7 @@ def build() -> _MaciDataObj:
 
 
 ### Hash Lib ###
-def createfilehash(file_to_hash: str, file_to_store_hash: _Union[str,None], hash_algorithm: str='sha256', *, encoding: _Union[str, None]=None) -> str:
+def createfilehash(file_to_hash: _Union[str, _PathObj], file_to_store_hash: _Union[str, _PathObj, None], hash_algorithm: str='sha256', *, encoding: _Union[str, None]=None) -> str:
     """
     Creates a hash of any file, and stores the hash data to a new created file
 
@@ -301,7 +303,7 @@ def createfilehash(file_to_hash: str, file_to_store_hash: _Union[str,None], hash
     Maci docs: https://docs.macilib.org
     """
 
-def comparefilehash(file_to_hash: str, stored_hash_file: str, hash_algorithm: str='sha256', *, encoding: _Union[str, None]=None) -> bool:
+def comparefilehash(file_to_hash: _Union[str, _PathObj], stored_hash_file: _Union[str, _PathObj], hash_algorithm: str='sha256', *, encoding: _Union[str, None]=None) -> bool:
     """
     Compares a hash of any file by comparing the previously created file with hash data stored from using the "createfilehash" partner function
 
@@ -347,7 +349,7 @@ def createhash(data_to_hash: _Union[str, bytes, int, _List[int], _Tuple[int], _S
 
 
 ### JSON Lib ###
-def jsonload(filename: str, *, encoding: _Union[str, None]=None) -> _Union[list, dict, str, int, float, bool, None]:
+def jsonload(filename: _Union[str, _PathObj], *, encoding: _Union[str, None]=None) -> _Union[list, dict, str, int, float, bool, None]:
     """
     Loads json data from a file
 
@@ -380,7 +382,7 @@ def jsonloadstr(json_str_data: str) -> _Union[list, dict, str, int, float, bool,
     """
 
 def jsondump(
-    filename: str,
+    filename: _Union[str, _PathObj],
     data: _Union[dict, list, tuple, str, int, float, bool, None],
     *,
     append: bool=False,
@@ -418,7 +420,7 @@ def jsondumpstr(data: _Union[dict, list, tuple, str, int, float, bool, None], *,
 
 
 ### YAML Lib ###
-def yamlload(filename: str, *, encoding: _Union[str, None]=None) -> _Any:
+def yamlload(filename: _Union[str, _PathObj], *, encoding: _Union[str, None]=None) -> _Any:
     """
     Loads yaml data from a file
 
@@ -432,6 +434,23 @@ def yamlload(filename: str, *, encoding: _Union[str, None]=None) -> _Any:
     "safe_load" method to protect from untrusted input.
     For more information on PyYAML, visit: https://pypi.org/project/PyYAML/
     
+    Maci docs: https://docs.macilib.org
+    """
+
+def yamlloadall(filename: _Union[str, _PathObj], *, encoding: _Union[str, None]=None) -> _Iterator[_Any]:
+    """
+    Loads all yaml docs from a file
+
+    Returns a generator of matching python data types
+
+    [Example Use]
+
+    yamlloadall('path/to/filename.yml')
+
+    This is using the PyYAML framework installed as a dependency from pypi. It is only using the
+    "safe_load_all" method to protect from untrusted input.
+    For more information on PyYAML, visit: https://pypi.org/project/PyYAML/
+
     Maci docs: https://docs.macilib.org
     """
 
@@ -452,7 +471,7 @@ def yamlloadstr(yaml_str_data: str) -> _Any:
     Maci docs: https://docs.macilib.org
     """
 
-def yamldump(filename: str, data: _Any, *, append: bool=False, encoding: _Union[str, None]=None) -> None:
+def yamldump(filename: _Union[str, _PathObj], data: _Any, *, append: bool=False, encoding: _Union[str, None]=None) -> None:
     """
     Dumps yaml data to a file from python data
     
@@ -464,6 +483,21 @@ def yamldump(filename: str, data: _Any, *, append: bool=False, encoding: _Union[
     "safe_dump" method, which only supports standard YAML tags and cannot represent an arbitrary Python object.
     For more information on PyYAML, visit: https://pypi.org/project/PyYAML/
     
+    Maci docs: https://docs.macilib.org
+    """
+
+def yamldumpall(filename: _Union[str, _PathObj], data: _Iterable[_Any], *, append: bool=False, encoding: _Union[str, None]=None) -> None:
+    """
+    Dumps a file from an iterable object that produces a yaml doc from each item to the file
+
+    [Example Use]
+
+    yamldumpall('path/to/filename.yml', data)    
+
+    This is using the PyYAML framework installed as a dependency from pypi. It is only using the
+    "safe_dump_all" method, which only supports standard YAML tags and cannot represent arbitrary Python objects.
+    For more information on PyYAML, visit: https://pypi.org/project/PyYAML/
+
     Maci docs: https://docs.macilib.org
     """
 
@@ -486,7 +520,7 @@ def yamldumpstr(data: _Any) -> str:
 
 
 ### TOML Lib ###
-def tomlload(filename: str) -> _Dict[str, _Any]:
+def tomlload(filename: _Union[str, _PathObj]) -> _Dict[str, _Any]:
     """
     Loads toml data from a file
 
@@ -519,7 +553,7 @@ def tomlloadstr(toml_str_data: str) -> _Dict[str, _Any]:
     """
 
 def tomldump(
-    filename: str,
+    filename: _Union[str, _PathObj],
     data: _Dict[str, _Any],
     *,
     append: bool=False,
@@ -560,7 +594,7 @@ def tomldumpstr(
 
 
 ### INI Lib ###
-def iniload(filename: str, *, encoding: _Union[str, None]=None) -> _ConfigParser:
+def iniload(filename: _Union[str, _PathObj], *, encoding: _Union[str, None]=None) -> _ConfigParser:
     """
     Loads ini data from a file
 
@@ -577,7 +611,7 @@ def iniload(filename: str, *, encoding: _Union[str, None]=None) -> _ConfigParser
     Maci docs: https://docs.macilib.org
     """
 
-def inidump(filename: str, data: _ConfigParser, *, append: bool=False, encoding: _Union[str, None]=None) -> None:
+def inidump(filename: _Union[str, _PathObj], data: _ConfigParser, *, append: bool=False, encoding: _Union[str, None]=None) -> None:
     """
     Dumps ini data to a file from a ConfigParser object
 
@@ -637,8 +671,8 @@ def inibuildmanual() -> _ConfigParser:
     """
 
 
-### XML Lib ###
-def xmlload(filename: str, *, auto_get_root: bool=True) -> _Union[_Element, _ElementTree]:
+### XML Libs ###
+def xmlload(filename: _Union[str, _PathObj], *, auto_get_root: bool=True) -> _Union[_Element, _ElementTree]:
     """
     Loads xml data from a file
 
@@ -654,6 +688,22 @@ def xmlload(filename: str, *, auto_get_root: bool=True) -> _Union[_Element, _Ele
     Maci docs: https://docs.macilib.org
     """
 
+def xmlloaddict(filename: _Union[str, _PathObj]) -> _OrderedDict[str, _Any]:
+    """
+    Loads xml data from a file
+
+    Returns dict representing your xml data
+
+    [Example: Usage]
+
+    xmlloaddict('path/to/filename.xml')
+
+    This is using the xmltodict library installed as a dependency from pypi.
+    For more information on xmltodict, visit: https://pypi.org/project/xmltodict/
+    
+    Maci docs: https://docs.macilib.org
+    """
+
 def xmlloadstr(xml_str_data: str) -> _Element:
     """
     Loads xml data from a string
@@ -662,7 +712,7 @@ def xmlloadstr(xml_str_data: str) -> _Element:
 
     [Example: Usage]
 
-    xmlloadstr('string with xml data')
+    xmlloadstr('<tag>data</tag>')
 
     This is using the native xml library via etree shipped with the python standard library.
     For more information on the xml.etree api, visit: https://docs.python.org/3/library/xml.etree.elementtree.html#module-xml.etree.ElementTree
@@ -670,7 +720,23 @@ def xmlloadstr(xml_str_data: str) -> _Element:
     Maci docs: https://docs.macilib.org
     """
 
-def xmldump(filename: str, data: _Union[_ElementTree, _Element], *, append: bool=False, encoding: _Union[str, None]=None) -> None:
+def xmlloadstrdict(xml_str_data: str) -> _OrderedDict[str, _Any]:
+    """
+    Loads xml data from a string
+
+    Returns dict representing your xml data
+
+    [Example: Usage]
+
+    xmlloadstrdict('<tag>data</tag>')
+
+    This is using the xmltodict library installed as a dependency from pypi.
+    For more information on xmltodict, visit: https://pypi.org/project/xmltodict/
+    
+    Maci docs: https://docs.macilib.org
+    """    
+
+def xmldump(filename: _Union[str, _PathObj], data: _Union[_ElementTree, _Element], *, append: bool=False, encoding: _Union[str, None]=None) -> None:
     """
     Dumps xml data to a file from xml etree ElementTree or Element object
     
@@ -680,6 +746,20 @@ def xmldump(filename: str, data: _Union[_ElementTree, _Element], *, append: bool
 
     This is using the native xml library via etree shipped with the python standard library.
     For more information on the xml.etree api, visit: https://docs.python.org/3/library/xml.etree.elementtree.html#module-xml.etree.ElementTree
+    
+    Maci docs: https://docs.macilib.org
+    """
+
+def xmldumpdict(filename: _Union[str, _PathObj], data: _Dict[str, _Any], *, append: bool=False, pretty: bool=True, full_doc: bool=True) -> None:
+    """
+    Dumps xml data to a file from dict
+
+    [Example Use]
+
+    xmldumpdict('path/to/filename.xml', data) 
+
+    This is using the xmltodict library installed as a dependency from pypi.
+    For more information on xmltodict, visit: https://pypi.org/project/xmltodict/
     
     Maci docs: https://docs.macilib.org
     """
@@ -696,6 +776,22 @@ def xmldumpstr(data: _Element, *, encoding: str='utf-8') -> str:
 
     This is using the native xml library via etree shipped with the python standard library.
     For more information on the xml.etree api, visit: https://docs.python.org/3/library/xml.etree.elementtree.html#module-xml.etree.ElementTree
+    
+    Maci docs: https://docs.macilib.org
+    """
+
+def xmldumpstrdict(data: _Dict[str, _Any], *, pretty: bool=True, full_doc: bool=True) -> str:
+    """
+    Dumps dict data to xml string
+
+    Returns a xml formatted str
+
+    [Example Use]
+
+    xmldumpstrdict(data)
+
+    This is using the xmltodict library installed as a dependency from pypi.
+    For more information on xmltodict, visit: https://pypi.org/project/xmltodict/
     
     Maci docs: https://docs.macilib.org
     """
@@ -727,5 +823,39 @@ def _defuse_xml_stdlib() -> dict:
 
     Python doc stating std lib xml vulns and recommending defusedxml: https://docs.python.org/3/library/xml.html#xml-vulnerabilities
     
+    Maci docs: https://docs.macilib.org
+    """
+
+
+### Pickle Lib ###
+def pickleloadbytes(pickled_byte_data: bytes) -> _Any:
+    """
+    Load data from a pickled byte string
+
+    [Example Use]
+
+    pickleloadbytes(b'byte string with pickled data')
+
+    *** Only unpickle data you trust! ***
+
+    This is using the native pickle library shipped with the python standard library. For more
+    information on the pickle library and official security concerns with pickling, visit: https://docs.python.org/3/library/pickle.html
+
+    Maci docs: https://docs.macilib.org
+    """
+
+def pickledumpbytes(data: _Any) -> bytes:
+    """
+    Dump data to a pickled byte string
+
+    [Example Use]
+
+    pickledumpbytes(data)
+
+    *** Only pickle data you trust! ***
+
+    This is using the native pickle library shipped with the python standard library. For more
+    information on the pickle library and official security concerns with pickling, visit: https://docs.python.org/3/library/pickle.html
+
     Maci docs: https://docs.macilib.org
     """

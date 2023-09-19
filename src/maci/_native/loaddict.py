@@ -5,40 +5,40 @@ from os import path as _path
 from copy import deepcopy as _deepcopy
 from typing import Any as _Any
 from typing import Optional as _Optional
+from typing import Union as _Union
+from pathlib import Path as _PathObj
 from ..error import LoadDict, Load
 from ..data import MaciDataObj as _MaciDataObj
 
 #########################################################################################################
 # Import py Data from File
-def loaddict(filename: str, *, attr_name_dedup: bool=True, encoding: _Optional[str]=None) -> _Optional[dict]:
+def loaddict(filename: _Union[str, _PathObj], *, attr_name_dedup: bool=True, encoding: _Optional[str]=None) -> _Optional[dict]:
     """
-    Imports pythonic data from any text file
+    Loads maci (pythonic) data from a file
 
-    Returns a dict. Assign the output to var
+    Returns a dict representing your attributes & data values. Returns empty dict if file empty
 
-    Enter file location as str to import.
+    [Example: Usage]
 
-    Accepted data types: str, int, float, bool, list, dict, tuple, set, nonetype, bytes, datetime
+    loaddict('path/to/filename.any')
 
-    Returns None if file empty
-
-    [Example Use]
-    loaddict('path/to/filename.data')
-
-    [Warning]
-    Turning OFF 'attr_name_dedup' is not recommended as you gain the ability to overwrite
-    your attribute names that already preexist. This also may affect MaciDataObj behavior
-    including the ability to overwrite internal dunder names. This feature is meant to protect you from accidentally
+    [Warning] Turning OFF 'attr_name_dedup' is not recommended as you gain the ability to overwrite
+    your attribute names that already preexist. This feature is meant to protect you from accidentally
     duplicating an attribute name in a file that has already been created.
+
+    Maci docs: https://docs.macilib.org
     """
     # Error Checks
     err_msg_type_filename = "Only str is allowed for 'filename'"
     err_msg_type_attr_name_dedup = "Only bool is allowed for 'attr_name_dedup'"
     err_msg_type_encoding = "Only str|None or valid option is allowed for 'encoding'"
 
-    if not isinstance(filename, str): raise LoadDict(err_msg_type_filename, f'\nGot: {repr(filename)}')
+    if not isinstance(filename, (str, _PathObj)): raise LoadDict(err_msg_type_filename, f'\nGot: {repr(filename)}')
     if not isinstance(attr_name_dedup, bool): raise LoadDict(err_msg_type_attr_name_dedup, f'\nGot: {repr(attr_name_dedup)}')
     if not isinstance(encoding, (str, type(None))): raise LoadDict(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
+
+    # Convert filename to str to catch Path objects
+    filename = str(filename)
 
     # Check if file empty. Returns None if empty
     try:
