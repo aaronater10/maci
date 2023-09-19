@@ -56,12 +56,25 @@ jobs:
           python3 -m pip install --upgrade pip
           python3 -m pip install -r "deploy/requirements-deploy.txt"
 
-      - name: Build and deploy maci
+      - name: Build and deploy -> maci
         env:
           DEPLOY_PYPI_TOKEN: ${{ secrets.MACI_DEPLOY_PYPI_API_TOKEN }}
           DEPLOY_SSH_KEY: ${{ secrets.MACI_DEPLOY_GITHUB_KEY }}
         
-        run: python3 -B deploy/build_deploy_maci.py "${DEPLOY_PYPI_TOKEN}" "${DEPLOY_SSH_KEY}"
+        run: python3 -B deploy/build_deploy_maci.py "maci" "${DEPLOY_PYPI_TOKEN}" "${DEPLOY_SSH_KEY}"
+      
+      - name: Build and deploy -> maci-std
+        env:
+          DEPLOY_PYPI_TOKEN: ${{ secrets.MACI_STD_DEPLOY_PYPI_API_TOKEN }}
+        
+        run: python3 -B deploy/build_deploy_maci.py "maci-std" "${DEPLOY_PYPI_TOKEN}"
+
+      - name: Build and deploy -> maci-only
+        env:
+          DEPLOY_PYPI_TOKEN: ${{ secrets.MACI_ONLY_DEPLOY_PYPI_API_TOKEN }}
+        
+        run: python3 -B deploy/build_deploy_maci.py "maci-only" "${DEPLOY_PYPI_TOKEN}"
+
   
 
   # FAIL: Run this job if tests failed

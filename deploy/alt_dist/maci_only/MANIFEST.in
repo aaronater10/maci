@@ -1,0 +1,15 @@
+recursive-include maci/_native *.py
+recursive-include maci/_hash *.py
+
+include maci/__init__.py
+include maci/__init__.pyi
+
+include maci/data.py
+include maci/data.pyi
+
+include maci/error.py
+
+include maci/hint.py
+include maci/hint.pyi
+
+include maci/py.typed

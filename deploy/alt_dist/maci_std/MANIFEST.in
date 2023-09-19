@@ -1,0 +1,23 @@
+recursive-include maci/_native *.py
+recursive-include maci/_hash *.py
+recursive-include maci/_ini *.py
+recursive-include maci/_json *.py
+recursive-include maci/_pickle *.py
+recursive-include maci/_xml *.py
+exclude xmldumpdict.py
+exclude xmldumpstrdict.py
+exclude xmlloaddict.py
+exclude xmlloadstrdict.py
+
+include maci/__init__.py
+include maci/__init__.pyi
+
+include maci/data.py
+include maci/data.pyi
+
+include maci/error.py
+
+include maci/hint.py
+include maci/hint.pyi
+
+include maci/py.typed
