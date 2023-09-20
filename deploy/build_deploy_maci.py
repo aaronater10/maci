@@ -25,10 +25,10 @@ ignore_github_deploy_list = (
 
 # Create SSH Path, Key File, and Set Permissions
 if DEPLOY_SSH_KEY is not None:
-    subprocess.run(('mkdir', '-p', f'"{USER_HOMEPATH}/.ssh"'))
+    subprocess.run(('mkdir', '-p', f'{USER_HOMEPATH}/.ssh'))
     with open(USER_SSH_KEY_FILE, 'w') as f:
         f.write(DEPLOY_SSH_KEY)
-        subprocess.run(('chmod', '600', f'"{USER_SSH_KEY_FILE}"'))
+        subprocess.run(('chmod', '600', USER_SSH_KEY_FILE))
 
     # Create SSH Config File for SSH Auth
     with open(USER_SSH_CFG_FILE, 'w') as f:
@@ -110,9 +110,9 @@ try:
 
     # Clone and Tag New Release Number if required
     if DEPLOY_TYPE not in ignore_github_deploy_list:
-        subprocess.run(('git', 'clone', f'{GITHUB_MACI_REPO}', './maci_tag')).check_returncode()
+        subprocess.run(('git', 'clone', GITHUB_MACI_REPO, './maci_tag')).check_returncode()
         os.chdir('maci_tag/')
-        subprocess.run(('git', 'tag', f'v{MACI_VERSION}', '-m', f"'Release v{MACI_VERSION}'")).check_returncode()
+        subprocess.run(('git', 'tag', f'v{MACI_VERSION}', '-m', f"Release v{MACI_VERSION}")).check_returncode()
         subprocess.run(('git', 'push', 'origin', f'v{MACI_VERSION}')).check_returncode()
         os.chdir('..')
 
@@ -126,9 +126,9 @@ except BaseException as err_msg:
 finally:
     try:
         # Cleanup PyPI Config with API Token
-        subprocess.run(('rm', '-f', f'{USER_PYPI_CFG_FILE}')).check_returncode()
+        subprocess.run(('rm', '-f', USER_PYPI_CFG_FILE)).check_returncode()
         # Cleanup SSH Key File
-        subprocess.run(('rm', '-f', f'{USER_SSH_KEY_FILE}')).check_returncode()
+        subprocess.run(('rm', '-f', USER_SSH_KEY_FILE)).check_returncode()
 
     except BaseException as err_msg:
         print('FAILED: CLEANUP step...')
