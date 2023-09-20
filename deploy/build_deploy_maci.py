@@ -5,7 +5,7 @@ from glob import glob
 
 
 # Setup
-MACI_VERSION = '0.6.1'
+MACI_VERSION = '0.6.2'
 DEPLOY_TYPE = f"{sys.argv[1]}"
 DEPLOY_API_TOKEN = f"{sys.argv[2]}"
 DEPLOY_SSH_KEY = f"{sys.argv[3]}" if len(sys.argv) == 4 else None
