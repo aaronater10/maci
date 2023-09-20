@@ -1,7 +1,7 @@
 # maci
 The easy to use library for your data, configuration, and save files
 
-##### Latest Version: 0.6.1
+##### Latest Version: 0.6.2
 
 #
 
