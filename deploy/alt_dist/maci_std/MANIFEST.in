@@ -4,10 +4,10 @@ recursive-include maci/_ini *.py
 recursive-include maci/_json *.py
 recursive-include maci/_pickle *.py
 recursive-include maci/_xml *.py
-exclude xmldumpdict.py
-exclude xmldumpstrdict.py
-exclude xmlloaddict.py
-exclude xmlloadstrdict.py
+exclude maci/_xml/xmldumpdict.py
+exclude maci/_xml/xmldumpstrdict.py
+exclude maci/_xml/xmlloaddict.py
+exclude maci/_xml/xmlloadstrdict.py
 
 include maci/__init__.py
 include maci/__init__.pyi
