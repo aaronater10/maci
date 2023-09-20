@@ -29,7 +29,7 @@ jobs:
   # PASS: Run jobs if QA tests pass
   on-tests-pass:
     # Verify QA Tests PASSED and build to deploy, otherwise FAIL
-    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow == 'QA-Testing' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
     - name: Tests passed
