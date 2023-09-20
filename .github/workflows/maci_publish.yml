@@ -29,8 +29,11 @@ jobs:
   # PASS: Run jobs if QA tests pass
   on-tests-pass:
     # Verify QA Tests PASSED and build to deploy, otherwise FAIL
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow == 'QA-Testing' }}
     runs-on: ubuntu-latest
+    steps:
+    - name: Tests passed
+      run: echo "tests passed"
     
 
   # Deploy maci if on-tests-pass success
@@ -73,7 +76,7 @@ jobs:
   
   # Deploy maci-std if deploy-maci success
   deploy-maci-std:
-    needs: deploy-maci
+    needs: ["deploy-maci", "on-tests-pass"]
     if: success()
 
     strategy:
@@ -110,7 +113,7 @@ jobs:
 
   # Deploy maci-only if deploy-maci-std success
   deploy-maci-only:
-    needs: deploy-maci-std
+    needs: ["deploy-maci", "on-tests-pass"]
     if: success()
 
     strategy:
