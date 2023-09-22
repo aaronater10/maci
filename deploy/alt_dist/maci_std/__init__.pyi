@@ -1,8 +1,8 @@
 # stub file to document public api functions, errors, object types, and doc string comments
 """
-maci - by aaronater10
+maci - by aaronater10 (flavor: standard lib)
 
-A Pythonic Configuration Language & Thin Wrapper Library
+Python-styled Serialization Language & Thin Wrapper Library
 
 Version 0.6.2
 

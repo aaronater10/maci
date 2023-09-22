@@ -2,7 +2,7 @@
 """
 maci - by aaronater10
 
-A Pythonic Configuration Language & Thin Wrapper Library
+Python-styled Serialization Language & Thin Wrapper Library
 
 Version 0.6.2
 
