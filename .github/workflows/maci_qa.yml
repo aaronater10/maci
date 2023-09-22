@@ -8,12 +8,13 @@
 
 
 # Workflow Name
-name: QA-Testing
+name: qa-testing
 
 # Trigger on Push, PR, and Manual
 on:
   push:
     branches:
+      - 1.0.0
       - main
   pull_request:
     branches:

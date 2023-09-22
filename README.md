@@ -3,7 +3,13 @@
 # maci
 The easy to use library for data serialization
 
-[![QA-Testing](https://github.com/aaronater10/maci/actions/workflows/maci_qa.yml/badge.svg)](https://github.com/aaronater10/maci/actions/workflows/maci_qa.yml)
+[![qa-testing](https://github.com/aaronater10/maci/actions/workflows/maci_qa.yml/badge.svg)](https://github.com/aaronater10/maci/actions/workflows/maci_qa.yml)
+![Static Badge](https://img.shields.io/badge/coverage-100%25-red)
+![maci](https://img.shields.io/badge/maci-v1.0.0-blue)
+![py-versions](https://img.shields.io/badge/py_versions-3.7_%7C_3.8_%7C_3.9_%7C_3.10%7C_3.11-%23FFD43B)
+
+
+
 
 #
 
