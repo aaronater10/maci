@@ -22,15 +22,15 @@ The easy to use library for data serialization
 
 # install flavors
 
-### full --> maci, standard library, and 3rd-party packages
+#### full --> maci, standard library, and 3rd-party packages
 ```bash
 pip install maci
 ```
-### standard lib --> maci and standard library based packages only
+#### standard lib --> maci and standard library based packages only
 ```bash
 pip install maci-std
 ```
-### just maci --> maci package only
+#### just maci --> maci package only
 ```bash
 pip install maci-only
 ```
