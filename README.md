@@ -1,9 +1,16 @@
+[![Docs](https://raw.githubusercontent.com/aaronater10/maci/main/ext/maci_cover.png)](https://docs.macilib.org/)
+
 # maci
-The easy to use library for your data, configuration, and save files
+The easy to use library for data serialization
+
+[![QA-Testing](https://github.com/aaronater10/maci/actions/workflows/maci_qa.yml/badge.svg)](https://github.com/aaronater10/maci/actions/workflows/maci_qa.yml)
+
 
 ##### Latest Version: 0.6.2
 
 #
+
+maci is a python-styled serialization language & thin wrapper library that makes handling serialized data simple.
 
 Import or Export **custom**, or **industry-common**, data, config, and save files easily for your python program or script!
 
@@ -15,31 +22,17 @@ Use built-in features for easily formatting your data and other quick and easy t
 
 
 # Tutorials and Docs:
-**Quick Start Tutorial Video: [maci Docs](https://docs.macilib.org/watch/quick-start)**
+**Quick Start Tutorial Video: [maci docs](https://docs.macilib.org/watch/quick-start)**
 
-**Full Tutorial Videos: [maci Docs](https://docs.macilib.org/watch/full-training-series)**
+**Full Tutorial Videos: [maci docs](https://docs.macilib.org/watch/full-training-series)**
 
-**Official Docs: [maci Docs](https://docs.macilib.org/)**
+**Official Docs: [maci docs](https://docs.macilib.org/)**
 
-**Latest Updates: [maci Docs](https://docs.macilib.org/updates/current-version-updates)**
-
-**Changelog: [maci Docs](https://docs.macilib.org/updates/changelog)**
+**Changelog: [maci docs](https://docs.macilib.org/updates/changelog)**
 
 #
 
 ### Install
 ```bash
 pip install maci
-```
-
-### Cloning the repository
-
-Clone via HTTPS
-```bash
-git clone https://github.com/aaronater10/maci
-```
-
-Clone via SSH
-```bash
-git clone git@github.com:aaronater10/maci
 ```
