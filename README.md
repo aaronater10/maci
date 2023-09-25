@@ -40,3 +40,8 @@ pip install maci-only
 ```
 # performance
 (pending details)
+
+# testing & release
+A maci release is only deployed/released if all qa tests pass, and if the revision number is incremented.
+
+All coverage testing must be at 100% or test pipeline will fail (badge is not auto-updated, and just indicates confidence in testing at 100%).
