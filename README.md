@@ -15,13 +15,13 @@ The easy to use library for data serialization
 
 
 # tutorials & docs:
-**Quick Start Tutorial Video: [maci docs](https://docs.macilib.org/watch/quick-start)**
+**quick start: [tutorial video](https://docs.macilib.org/watch/quick-start)**
 
-**Full Tutorial Videos: [maci docs](https://docs.macilib.org/watch/full-training-series)**
+**full tutorials: [all videos](https://docs.macilib.org/watch/full-training-series)**
 
-**Official Docs: [maci docs](https://docs.macilib.org/)**
+**docs: [maci docs](https://docs.macilib.org/)**
 
-**Changelog: [maci docs](https://docs.macilib.org/updates/changelog)**
+**changelog: [update history](https://docs.macilib.org/updates/changelog)**
 
 
 # install flavors
