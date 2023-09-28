@@ -39,7 +39,64 @@ pip install maci-std
 pip install maci-only
 ```
 # performance
-(pending details)
+
+Performance tests are loading a total of **100,000 lines of data** testing each library in their pure and natural use
+
+Tests are done by loading a file with 100 lines of data 1000 times with the proper file syntax for each library. You may also consider this test about loading 1000 files within the time taken as well
+
+Results vary based on system spec, but you may simulate or prove the same test results for your needs form the "perf" dir in this repo. Results below is running the test 3 times consecutively
+
+**libs tested:** json, pyyaml, tomli, xmltodict, maci
+
+# 
+
+Notes:
+
+- XML ElementTree type and INI Configparser tests were left out for now
+
+- pyyaml loads much faster using it's c-based safe loader, but using the native methods/functions provided as tests for fairness
+
+
+
+[//]: <> (chose yml for nice color syntax)
+```yml
+$ python3 perf_load.py 
+Performance tests: "load" - loading file 1000 times with 100 lines of data
+
+xml: 0.225348
+json: 0.016725
+yaml: 3.625997
+toml: 0.23937
+maci: 0.807448
+
+$ python3 perf_load.py 
+Performance tests: "load" - loading file 1000 times with 100 lines of data
+
+xml: 0.22595
+json: 0.016566
+yaml: 3.652053
+toml: 0.242974
+maci: 0.806545
+
+$ python3 perf_load.py 
+Performance tests: "load" - loading file 1000 times with 100 lines of data
+
+xml: 0.225579
+json: 0.01695
+yaml: 3.611955
+toml: 0.239593
+maci: 0.802843
+```
+
+| place | lib |
+| ----- | --- |
+| 1st   | json |
+| 2nd   | xmltodict |
+| 3rd   | tomli |
+| 4th   | maci |
+| 5th   | pyyaml (4th if using c-loader) |
+
+These are the current differences in results for maci compared to popular or modern libraries. Looking to continually improve it's performance and update the results, but so far, not bad
 
 # testing & release
 A maci release is only deployed/released if all qa tests pass, and if the revision number is incremented.
