@@ -13,6 +13,7 @@ The easy to use library for data serialization
 
 (pending updated description)
 
+maci on it's own is a pure python-based library
 
 # tutorials & docs:
 **quick start: [tutorial video](https://docs.macilib.org/watch/quick-start)**
@@ -40,24 +41,24 @@ pip install maci-only
 ```
 # performance
 
-Performance tests are loading a total of **100,000 lines of data** testing each library in their pure and natural use
+Performance tests each library loading **100,000 lines of data** each in their natural usage
 
 Tests are done by loading a file with 100 lines of data 1000 times with the proper file syntax for each library. You may also consider this test about loading 1000 files within the time taken as well
 
-Results vary based on system spec, but you may simulate or prove the same test results for your needs form the "perf" dir in this repo. Results below is running the test 3 times consecutively
+Results vary based on system spec, but you may simulate or prove the same difference in test results for your needs from the "perf" dir in this repo. Results below is running the test 3 times consecutively
 
 **libs tested:** json, pyyaml, tomli, xmltodict, maci
 
-# 
+---
 
-Notes:
+**Notes**
 
-- XML ElementTree type and INI Configparser tests were left out for now
+*XML ElementTree type and INI Configparser tests were left out for now*
 
-- pyyaml loads much faster using it's c-based safe loader, but using the native methods/functions provided as tests for fairness
+*pyyaml loads much faster using it's c-based safe loader, but using the native methods/functions provided as tests for fairness and potential compatibility*
 
 
-
+---
 [//]: <> (chose yml for nice color syntax)
 ```yml
 $ python3 perf_load.py 
