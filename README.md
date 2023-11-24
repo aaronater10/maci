@@ -7,13 +7,13 @@ The easy to use library for data serialization
 ![maci-language-version](https://img.shields.io/badge/lang-v1.0.0-purple)
 [![qa-testing](https://github.com/aaronater10/maci/actions/workflows/maci_qa.yml/badge.svg)](https://github.com/aaronater10/maci/actions/workflows/maci_qa.yml)
 ![coverage](https://img.shields.io/badge/coverage-100%25-red)
-![py-versions](https://img.shields.io/badge/py_versions-3.7_%7C_3.8_%7C_3.9_%7C_3.10%7C_3.11-%23FFD43B)
+![py-versions](https://img.shields.io/badge/py_versions-3.7_%7C_3.8_%7C_3.9_%7C_3.10_%7C_3.11_%7C_3.12-%23FFD43B)
 
 #
 
 (pending updated description)
 
-maci on it's own is a pure python-based library
+maci itself is a pure Python-based library
 
 # tutorials & docs:
 **quick start: [tutorial video](https://docs.macilib.org/watch/quick-start)**
@@ -55,12 +55,13 @@ Results vary based on system spec, but you may simulate or prove the same differ
 
 *XML ElementTree type and INI Configparser tests were left out for now*
 
-*pyyaml loads much faster using it's c-based safe loader, but using the native methods/functions provided as tests for fairness and potential compatibility*
+*pyyaml loads much faster using its c-based safe loader, but using the native methods/functions provided as tests for fairness and potential compatibility issues*
 
 
 ---
 [//]: <> (chose yml for nice color syntax)
 ```yml
+# Test 1
 $ python3 perf_load.py 
 Performance tests: "load" - loading file 1000 times with 100 lines of data
 
@@ -70,6 +71,7 @@ yaml: 3.625997
 toml: 0.23937
 maci: 0.807448
 
+# Test 2
 $ python3 perf_load.py 
 Performance tests: "load" - loading file 1000 times with 100 lines of data
 
@@ -79,6 +81,7 @@ yaml: 3.652053
 toml: 0.242974
 maci: 0.806545
 
+# Test 3
 $ python3 perf_load.py 
 Performance tests: "load" - loading file 1000 times with 100 lines of data
 
@@ -97,7 +100,7 @@ maci: 0.802843
 | 4th   | maci |
 | 5th   | pyyaml (4th if using c-loader) |
 
-These are the current differences in results for maci compared to popular or modern libraries. Looking to continually improve it's performance and update the results, but so far, not bad
+These are the current differences in results for maci compared to popular or modern libraries. Looking to continually improve maci's performance and update the results, but so far, not bad for pure python
 
 # testing & release
 A maci release is only deployed/released if all qa tests pass, and if the revision number is incremented.
