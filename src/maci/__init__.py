@@ -1,5 +1,5 @@
 """
-maci - by aaronater10
+maci - by aaronater10 (flavor: maci)
 
 Python-styled Serialization Language & Thin Wrapper Library
 

@@ -1,6 +1,6 @@
 # stub file to document public api functions, errors, object types, and doc string comments
 """
-maci - by aaronater10 (flavor: just maci)
+maci - by aaronater10 (flavor: maci-only)
 
 Python-styled Serialization Language & Thin Wrapper Library
 
