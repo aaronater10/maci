@@ -10,6 +10,7 @@ Tutorials and docs: https://docs.macilib.org
 Source: https://github.com/aaronater10/maci
 """
 __version__ = '0.6.2'
+__lang_version__ = '1.0.0'
 
 #########################################################################################################
 # Imports

@@ -11,6 +11,7 @@ Tutorials and docs: https://docs.macilib.org
 Source: https://github.com/aaronater10/maci
 """
 __version__: str
+__lang_version__: str
 
 #########################################################################################################
 # Imports
