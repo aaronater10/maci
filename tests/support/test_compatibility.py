@@ -19,6 +19,7 @@ def test1_prior_function_names():
     with pytest.raises(maci.error.GeneralError):
         maci.appendfile # appendfile name not supported
     maci.savefile
+    maci.builddata
     # JSON
     maci.jsonimportfile
     maci.jsonimportstr
