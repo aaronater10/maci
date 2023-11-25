@@ -407,10 +407,12 @@ class _MaciDataObjConstructor:
                             self.__assignment_hard_locked_attribs.add(__var_token)
 
                     except (ValueError, SyntaxError) as _err_msg:
+                        _len_of_build_data = len(__build_data.splitlines())
                         _err_msg.lineno = None if isinstance(_err_msg, ValueError) else _err_msg.lineno  # set attr name to exist based on type to avoid attr exc
-                        set_line_num = _err_msg.lineno if bool(_err_msg.lineno) else _err_msg.args[0].partition('line')[2].lstrip()[0] if any(_err_msg.args) else line_num  # collect true line no. last resort is current count
+                        _set_line_num = (line_num - (_len_of_build_data - _err_msg.lineno)) if bool(_err_msg.lineno) else (line_num - (_len_of_build_data - int(_err_msg.args[0].partition('line')[2].lstrip()[0]))) if any(_err_msg.args) else line_num  # collect true line no. last resort is current count
+                        _set_line_num = line_num if (isinstance(_err_msg, SyntaxError)) and (any(_err_msg.args)) and ('was never closed' in _err_msg.args[0]) else _set_line_num  # ignore true line no if unterminated and use count line no for last found terminator
                         
-                        raise Load(py_syntax_err_msg, f'\nSupported Lang Version: <= {_lang_version} \nFile: {repr(filename)} \nLine: {set_line_num} \nAttr: {__var_token}')
+                        raise Load(py_syntax_err_msg, f'\nSupported Lang Version: <= {_lang_version} \nFile: {repr(filename)} \nLine: {_set_line_num} \nAttr: {__var_token}')
 
                     # Turn OFF/UPDATE Data Build Switches
                     __is_building_data_sw = False
