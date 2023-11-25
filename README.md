@@ -86,6 +86,8 @@ maci_data.data1 = 'my data'
 maci_data.data2 = [1,2,3]
 maci_data.data3 = 1.0
 ```
+
+### tools
 format nested data cleanly
 ```python
 str_data = maci.cleanformat([1,{'k1': 1, 'k2': 2},2])
