@@ -90,6 +90,7 @@ def __getattr__(attr_name: str) -> object:
     if attr_name == 'savefile': return dump
     if attr_name == 'exportfile': return dumpraw
     if attr_name == 'appendfile': raise error.GeneralError('"appendfile" no longer available. Use "dumpraw" with append=True option')
+    if attr_name == 'builddata': return build
     # JSON
     if attr_name == 'jsonimportfile': return jsonload
     if attr_name == 'jsonimportstr': return jsonloadstr
