@@ -1,0 +1,12 @@
+# List of files tested that contain required revision numbers to be updated for deployment
+
+# Src Files
+./src/maci/__init__.py
+./src/maci/__init__.pyi
+
+# Deploy Files
+./deploy/alt_dist/maci_only/__init__.py
+./deploy/alt_dist/maci_only/__init__.pyi
+./deploy/alt_dist/maci_std/__init__.py
+./deploy/alt_dist/maci_std/__init__.pyi
+./deploy/build_deploy_maci.py

@@ -4,7 +4,7 @@ maci - by aaronater10 (flavor: maci-std)
 
 Python-styled Serialization Language & Thin Wrapper Library
 
-Version 0.6.2
+Version 1.0.0
 
 Tutorials and docs: https://docs.macilib.org
 
