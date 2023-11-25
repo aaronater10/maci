@@ -39,6 +39,69 @@ pip install maci-std
 ```bash
 pip install maci-only
 ```
+
+# basic usage
+### maci
+
+load maci data from file
+```python
+maci_data = maci.load('my.file')
+```
+load raw data from file
+```python
+raw_data = maci.loadraw('my.file')
+```
+load attributes names and their values back into object from file
+```python
+maci.loadattrs('my.file', my_obj)
+```
+load as dict data from file
+```python
+dict_data = maci.loaddict('my.file')
+```
+load maci data from string
+```python
+maci_data = maci.loadstr('string = "data"')
+```
+load as dict data from string
+```python
+dict_data = maci.loadstrdict('string = "data"')
+```
+dump data to file
+```python
+maci.dump('my.file', maci_data or dict_data or my_obj)
+```
+dump raw data to file
+```python
+maci.dumpraw('my.file', 'my data')
+```
+dump data to string
+```python
+str_data = maci.dumpstr(maci_data or dict_data or my_obj)
+```
+build maci data
+```python
+maci_data = maci.build()
+maci_data.data1 = 'my data'
+maci_data.data2 = [1,2,3]
+maci_data.data3 = 1.0
+```
+format nested data cleanly
+```python
+str_data = maci.cleanformat([1,{'k1': 1, 'k2': 2},2])
+
+print(str_data)
+
+Output -->
+[
+    1,
+    {
+        'k1': 1,
+        'k2': 2,
+    },
+    2,
+]
+```
 # performance
 
 Performance tests each library loading **100,000 lines of data** each in their natural usage
@@ -106,3 +169,14 @@ These are the current differences in results for maci compared to popular or mod
 A maci release is only deployed/released if all qa tests pass, and if the revision number is incremented.
 
 All coverage testing must be at 100% or test pipeline will fail (badge is not auto-updated, and just indicates confidence in testing at 100%).
+
+# previous project support
+Project maci is derived from an older project called [sfcparse](https://github.com/aaronater10/sfcparse) that is no longer supported, and still provides forward ported support for most of the older API names as a courtesy. sfcparse uses the MIT license, and therefore, maci does not really need to associate itself with that older project, but out of notice for the reason of having the forward ported support is it being mentioned if desiring to migrate.
+
+Reason for sfcparse's deprecation was merely for desire of re-branding and scrapping the old to make usage simpler and anew, thus, maci.
+
+Though maci does support the older API names as a courtesy, some names being attempted to use may throw exceptions. Also, functionality in a lot of the forward connected API names may require different parameter positional args or kwargs. See these files for API matched names and where they point to
+
+function names: [\_\_init\_\_.py](https://github.com/aaronater10/maci/blob/main/src/maci/__init__.py) under \_\_getattr\_\_
+
+exception names: [error.py](https://github.com/aaronater10/maci/blob/main/src/maci/error.py) under \_\_getattr\_\_
