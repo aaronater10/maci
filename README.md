@@ -115,24 +115,27 @@ maci_data.data3 = 1
 maci_data.data4 = True
 ```
 #### In-File Language Features
+maci supports varying in-file features. Here are some examples:
+
 Lock an attr from re-assignment using a lock glyph
 ```python
-# Example maci data "my.file"
+# Example maci data in "my.file"
 data1 +l= 'my data'
 ```
 Hard Lock an attr from re-assignment, deletion, and unlocking using a hard lock glyph
 ```python
-# Example maci data "my.file"
+# Example maci data in "my.file"
 data1 +h= 'my data'
 ```
 Reference and follow another attr's value with an attr using a map glyph
 ```python
-# Example maci data "my.file"
+# Example maci data in "my.file"
 data1 = 'my data'
 data2 +m= data1
 ```
 Date and time parsing
 ```python
+# Example maci data in "my.file"
 # Multiple options -> returns datetime, date, or time object
 date_time1 = 2023-03-13 22:06:00
 date_time2 = 2023-03-13 22:06:00.50
@@ -145,13 +148,13 @@ date_time_iso8601 = 2023-03-13T22:06:00
 ```
 
 #### In-Code Language Features
-The in-file language features can also be done in code with a maci object
+The in-file language features can also be handled in code with a maci object
 ```python
 maci_data.lock_attr('data1')
 maci_data.hard_lock_attr('data2')
 maci_data.map_attr('data3', 'data4')
 ```
-You may also unlock attrs, unmap attrs, and much more with a maci object
+You may unlock attrs, unmap attrs, and much more with a maci object
 
 Note: if you dump your maci object back to a file, all language features will be retained and represented appropriately in the file
 
