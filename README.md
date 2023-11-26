@@ -51,6 +51,11 @@ data2 = 1
 data3 = [1,2,3]
 data4 = {'k1': 1}
 data5 = True
+data6 = (1,2,3)
+data7 = {1,2,3}
+data8 = 1.0
+data9 = None
+data10 = b'\ndata\n'
 ```
 #### Load
 load maci data from file
