@@ -115,7 +115,7 @@ maci_data.data3 = 1
 maci_data.data4 = True
 ```
 #### In-File Language Features
-maci supports varying in-file features. Here are some examples:
+maci supports varying in-file features. Here are some examples using a file named "my.file":
 
 Lock an attr from re-assignment using a lock glyph
 ```python
