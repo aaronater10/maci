@@ -62,7 +62,7 @@ load raw data from file
 ```python
 raw_data = maci.loadraw('my.file')  # returns string (default)
 ```
-load attributes names and their values back into object from file
+load attributes names and their values back into your object from file
 ```python
 maci.loadattrs('my.file', my_obj)  # loads in-place
 my_obj.data4  # access data in your object with attr name
@@ -74,17 +74,17 @@ dict_data['data3']  # access data as dict key name
 ```
 load maci data from string
 ```python
-maci_data = maci.loadstr('string = "data"')
+maci_data = maci.loadstr('data1 = "data"')
 maci_data.data1  # access data with attr name
 ```
 load as dict data from string
 ```python
-dict_data = maci.loadstrdict('string = "data"')
+dict_data = maci.loadstrdict('data3 = "data"')
 dict_data['data3']  # access data as dict key name
 ```
 
 #### Dump
-dump data to file
+dump data to file from maci object, dict, or your own object with attrs
 ```python
 maci.dump('my.file', maci_data or dict_data or my_obj)
 # creates new file with data formatted as maci syntax
@@ -94,7 +94,7 @@ dump raw data to file
 maci.dumpraw('my.file', 'my data')
 # creates new file with data raw as-is to file
 ```
-dump data to string
+dump data to string from maci object, dict, or your own object with attrs
 ```python
 str_data = maci.dumpstr(maci_data or dict_data or my_obj)
 # returns string with data formatted as maci syntax
@@ -106,7 +106,8 @@ build maci data in code
 maci_data = maci.build()
 maci_data.data1 = 'my data'
 maci_data.data2 = [1,2,3]
-maci_data.data3 = 1.0
+maci_data.data3 = 1
+maci_data.data4 = True
 ```
 #### In-File Language Features
 Lock an attr from re-assignment using a lock glyph
@@ -125,13 +126,25 @@ Reference and follow another attr's value with an attr using a map glyph
 data1 = 'my data'
 data2 +m= data1
 ```
+Date and time parsing
+```python
+# Multiple options -> returns datetime, date, or time object
+date_time1 = 2023-03-13 22:06:00
+date_time2 = 2023-03-13 22:06:00.50
+time_date1 = 22:06:00 2023-03-13
+time_date2 = 22:06:00.50 2023-03-13
+time1 = 22:06:00
+time2 = 22:06:00.50
+date = 2023-03-13
+date_time_iso8601 = 2023-03-13T22:06:00
+```
 
 #### In-Code Language Features
 The in-file language features can also be done in code with a maci object
 ```python
 maci_data.lock_attr('data1')
-maci_data.hard_lock_attr('data1')
-maci_data.map_attr('data2', 'data1')
+maci_data.hard_lock_attr('data2')
+maci_data.map_attr('data3', 'data4')
 ```
 You may also unlock attrs, unmap attrs, and much more with a maci object
 
@@ -182,7 +195,7 @@ data = maci.tomlload('file.toml')
 ```
 load toml data from string
 ```python
-data = maci.tomlloadstr('{"k1": "data"}')
+data = maci.tomlloadstr('data1 = "data1"')
 ```
 dump python data to file as toml data
 ```python
