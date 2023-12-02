@@ -24,6 +24,16 @@ maci itself is a pure Python-based library
 
 **changelog: [update history](https://docs.macilib.org/updates/changelog)**
 
+**readme**
+\
+[installing](#🍨-install-flavors)\
+[basic usage: maci](#📖-basic-usage)\
+[basic usage: thin libs](#📖-basic-usage-thin-libs)\
+[exceptions, hints, and built-in tools](#🪄-helpful-extras)\
+[performance](#⏳️-performance)\
+[testing & release](#🚀-testing--release)\
+[previous support](#⏪-previous-project-support)
+
 
 # 🍨 install flavors
 
@@ -39,6 +49,8 @@ pip install maci-std
 ```bash
 pip install maci-only
 ```
+
+[back to top](#maci)
 
 # 📖 basic usage
 ### maci
@@ -158,6 +170,8 @@ You may unlock attrs, unmap attrs, and much more with a maci object
 
 Note: if you dump your maci object back to a file, all language features will be retained and represented appropriately in the file
 
+[back to top](#maci)
+
 # 📖 basic usage: thin libs
 
 ### json -> based on [json standard library](https://docs.macilib.org/docs/json)
@@ -271,9 +285,12 @@ build element tree data manually
 ```python
 et_data = maci.xmlbuildmanual()
 ```
+
+[back to top](#maci)
+
 # 🪄 helpful extras
 ### exceptions
-All exceptions/errors thrown by maci and it's thin wrapper libraries are conveniently accessible here:
+All exceptions/errors thrown by maci and its thin wrapper libraries are conveniently accessible here:
 ```python
 maci.error
 ```
@@ -347,6 +364,8 @@ Create hash of data - default hash is sha256
 maci.createhash('data')  # returns string of hash
 ```
 
+[back to top](#maci)
+
 # ⏳️ performance
 
 Performance tests each library loading **100,000 lines of data** each in their natural usage
@@ -410,12 +429,16 @@ maci: 0.802843
 
 Current differences in results for maci compared to popular or modern libraries. Looking to continually improve maci's performance and update the results, but so far, not bad for pure python
 
+[back to top](#maci)
+
 # 🚀 testing & release
 ### 300+ tests and counting ⚡️
 
 A maci release is only deployed/released if all qa tests pass, and if the revision number is incremented.
 
 All coverage testing must be at 100% or test pipeline will fail (badge is not auto-updated, and just indicates confidence in testing at 100%).
+
+[back to top](#maci)
 
 # ⏪ previous project support
 Project maci is derived from an older project called [sfcparse](https://github.com/aaronater10/sfcparse) that is no longer supported, and still provides forward ported support for most of the older API names as a courtesy. sfcparse uses the MIT license, and therefore, maci does not really need to associate itself with that older project, but out of notice for the reason of having the forward ported support is it being mentioned if desiring to migrate.
@@ -427,3 +450,5 @@ Though maci does support the older API names as a courtesy, some names being att
 function names: [\_\_init\_\_.py](https://github.com/aaronater10/maci/blob/main/src/maci/__init__.py) under \_\_getattr\_\_
 
 exception names: [error.py](https://github.com/aaronater10/maci/blob/main/src/maci/error.py) under \_\_getattr\_\_
+
+[back to top](#maci)
