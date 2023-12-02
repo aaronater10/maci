@@ -30,7 +30,7 @@ maci itself is a pure Python-based library
 [basic usage: maci](#-basic-usage)\
 [basic usage: thin libs](#-basic-usage-thin-libs)\
 [exceptions, hints, and built-in tools](#-helpful-extras)\
-[performance](#⏳️-performance)\
+[performance](#%EF%B8%8F-performance)\
 [testing & release](#-testing--release)\
 [previous support](#-previous-project-support)
 
