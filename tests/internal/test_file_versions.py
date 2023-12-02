@@ -1,5 +1,6 @@
 # Internal File Versions - Tests
 import subprocess
+import json
 
 ################################################################
 # Tests
@@ -8,15 +9,17 @@ import subprocess
 def test_file_version_check_is_incremented():
     # Setup
     file_versions_list = './tests/internal/file_versions.list'
-    git_tag_cmd = ('git', 'tag', '-l')
+    api_endpoint = 'https://pypi.org/pypi/maci/json'
+    curl_request_cmd = ('curl', api_endpoint)
 
-    # Collect Latest Tag Number
-    command_response = subprocess.run(git_tag_cmd, capture_output=True, text=True, check=True)
-    latest_tag = command_response.stdout.splitlines()[-1].lstrip('v')
+    # Collect Latest Package Release Number from PyPI API
+    pkg_response_data = subprocess.run(curl_request_cmd, capture_output=True, text=True, check=True)
+    latest_pkg_version = json.loads(pkg_response_data.stdout)['info']['version']
+
     possible_variations_found = (
-        f"__version__ = '{latest_tag}'",
-        f"Version {latest_tag}",
-        f"MACI_VERSION = '{latest_tag}'"
+        f"__version__ = '{latest_pkg_version}'",
+        f"Version {latest_pkg_version}",
+        f"MACI_VERSION = '{latest_pkg_version}'"
     )
 
 
@@ -29,11 +32,11 @@ def test_file_version_check_is_incremented():
         # Skip comment lines or blanks
         if (filepath.startswith('#')) or (filepath.strip() == ''): continue
 
-        # Check file for version match against latest git tag
+        # Check file for version match against latest pkg version
         with open(filepath, 'r') as version_file:
             version_file_data = version_file.read()
             for version_variation in possible_variations_found:
                 if version_variation in version_file_data:
                     raise Exception(
-                        f'Required file has old version in it not incremented to a newer revision!\nFile: {filepath} \nIncorrect version found inside: {latest_tag} \nArea found: {version_variation}'
+                        f'Required file has old version in it not incremented to a newer revision!\nFile: {filepath} \nIncorrect version found inside: {latest_pkg_version} \nArea found: {version_variation}'
                     )
