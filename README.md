@@ -26,13 +26,13 @@ maci itself is a pure Python-based library
 
 **readme**
 \
-[installing](#🍨-install-flavors)\
-[basic usage: maci](#📖-basic-usage)\
-[basic usage: thin libs](#📖-basic-usage-thin-libs)\
-[exceptions, hints, and built-in tools](#🪄-helpful-extras)\
-[performance](#⏳️-performance)\
-[testing & release](#🚀-testing--release)\
-[previous support](#⏪-previous-project-support)
+[installing](#-install-flavors)\
+[basic usage: maci](#-basic-usage)\
+[basic usage: thin libs](#-basic-usage-thin-libs)\
+[exceptions, hints, and built-in tools](#-helpful-extras)\
+[performance](#-performance)\
+[testing & release](#-testing--release)\
+[previous support](#-previous-project-support)
 
 
 # 🍨 install flavors
