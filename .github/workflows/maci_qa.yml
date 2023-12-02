@@ -63,4 +63,4 @@ jobs:
           bandit -r src/
           echo ""
           echo === safety ===  # check dep vulns
-          safety check
+          safety check -r requirements-dev.txt -r ./deploy/requirements-deploy.txt
