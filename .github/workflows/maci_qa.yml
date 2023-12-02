@@ -48,7 +48,7 @@ jobs:
           python3 -m pip install -r "requirements-dev.txt"
       
       - name: Temp - check git
-        run: git tag -l | xargs echo
+        run: python3 -c 'import subprocess;subprocess.run(("git", "tag", "-l"))'
 
       - name: Run - test framework & coverage report
         run: |
