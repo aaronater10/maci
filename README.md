@@ -1,7 +1,7 @@
 [![Docs](https://raw.githubusercontent.com/aaronater10/maci/main/ext/maci_cover.png)](https://docs.macilib.org/)
 
 # maci
-The easy to use library for data serialization
+A Python-Styled Serialization Language & Thin Wrapper Library 
 
 ![maci-version](https://img.shields.io/pypi/v/maci.svg?label=maci&color=blue)
 ![maci-language-version](https://img.shields.io/badge/lang-v1.0.0-purple)
@@ -11,9 +11,9 @@ The easy to use library for data serialization
 
 #
 
-(pending updated description)
+maci is an easy to use library for data serialization. It can parse native python data types from any plain file, which is safer than using an executable .py file for your stored or configuration data. There are useful language features built-in like creating realistic constants for your name/value pairs by locking them, mapping a name to another to follow its value similar to a pointer, and much more.
 
-maci itself is a pure Python-based library
+Its focus is to reduce boilerplate by removing repetitive code implementation, like code written for common file handling, or common libraries used like JSON, YAML, TOML, etc. maci on its own is a pure Python-based library, and I've used a variation of this library on many projects for companies and decided I wanted make a public version. It has made common needs less painful, and has solved simplicity in many ways. Hope it helps you
 
 # 🎓 tutorials & docs:
 **quick start: [tutorial video](https://docs.macilib.org/watch/quick-start)**
@@ -427,7 +427,7 @@ maci: 0.802843
 | 4th   | maci - avg 0.805s |
 | 5th   | pyyaml - avg 3.630s (4th if using CLoader) |
 
-*Current differences in load time results for 100k lines of data from maci compared to popular or modern libraries.*
+*Current differences in load time results for 100k lines of data from maci compared to popular or modern libraries*
 
 Looking to continually improve maci's performance and update the results, but so far, not bad for pure python.
 
