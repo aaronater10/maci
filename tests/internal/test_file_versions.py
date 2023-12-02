@@ -1,5 +1,4 @@
 # Internal File Versions - Tests
-from src import maci
 import subprocess
 
 ################################################################
@@ -13,12 +12,14 @@ def test_file_version_check_is_incremented():
 
     # Collect Latest Tag Number
     command_response = subprocess.run(git_tag_cmd, capture_output=True, text=True, check=True)
+    raise SystemExit(f"{command_response.stderr=}", f"{command_response.stdout=}")
     latest_tag = command_response.stdout.splitlines()[-1].lstrip('v')
     possible_variations_found = (
         f"__version__ = '{latest_tag}'",
         f"Version {latest_tag}",
         f"MACI_VERSION = '{latest_tag}'"
     )
+
 
     # Collect File Paths
     with open(file_versions_list, 'r') as file_data:
