@@ -11,13 +11,13 @@
 
 
 # Workflow Name
-name: Publish-maci
+name: publish-maci
 
-# Trigger on "QA-Testing" workflow completion from "main" branch
+# Trigger on "qa-testing" workflow completion from "main" branch
 on:
   workflow_run:
     workflows:
-      - QA-Testing
+      - qa-testing
     types:
       - completed
     branches:

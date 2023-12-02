@@ -2,13 +2,13 @@
 
 # This workflow will install python and dependencies, and run tests with a range of supported Python versions against different operating systems.
 
-# Python versions being tested: 3.7 - 3.11
+# Python versions being tested: 3.7 - 3.12
 # OSes being tested: Windows2019-2022, MacOS11-12, Ubuntu20-22
 # Triggered by Push, PR, or Manual run against "main" or dev repo
 
 
 # Workflow Name
-name: QA-Testing
+name: qa-testing
 
 # Trigger on Push, PR, and Manual
 on:
@@ -28,7 +28,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.11", "3.10", "3.9", "3.8", "3.7"]
+        python-version: ["3.12", "3.11", "3.10", "3.9", "3.8", "3.7"]
         os: [ubuntu-20.04, ubuntu-22.04, windows-2019, windows-2022, macos-11, macos-12]
     
     runs-on: ${{ matrix.os }}
@@ -63,4 +63,4 @@ jobs:
           bandit -r src/
           echo ""
           echo === safety ===  # check dep vulns
-          safety check
+          safety check -r requirements-dev.txt -r ./deploy/requirements-deploy.txt

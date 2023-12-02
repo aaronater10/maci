@@ -1,16 +1,17 @@
 # stub file to document public api functions, errors, object types, and doc string comments
 """
-maci - by aaronater10
+maci - by aaronater10 (flavor: maci)
 
-A Pythonic Configuration Language & Thin Wrapper Library
+Python-styled Serialization Language & Thin Wrapper Library
 
-Version 0.6.2
+Version 1.0.0
 
 Tutorials and docs: https://docs.macilib.org
 
 Source: https://github.com/aaronater10/maci
 """
 __version__: str
+__lang_version__: str
 
 #########################################################################################################
 # Imports

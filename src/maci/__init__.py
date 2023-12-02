@@ -1,15 +1,16 @@
 """
-maci - by aaronater10
+maci - by aaronater10 (flavor: maci)
 
-A Pythonic Configuration Language & Thin Wrapper Library
+Python-styled Serialization Language & Thin Wrapper Library
 
-Version 0.6.2
+Version 1.0.0
 
 Tutorials and docs: https://docs.macilib.org
 
 Source: https://github.com/aaronater10/maci
 """
-__version__ = '0.6.2'
+__version__ = '1.0.0'
+__lang_version__ = '1.0.0'
 
 #########################################################################################################
 # Imports
@@ -90,6 +91,7 @@ def __getattr__(attr_name: str) -> object:
     if attr_name == 'savefile': return dump
     if attr_name == 'exportfile': return dumpraw
     if attr_name == 'appendfile': raise error.GeneralError('"appendfile" no longer available. Use "dumpraw" with append=True option')
+    if attr_name == 'builddata': return build
     # JSON
     if attr_name == 'jsonimportfile': return jsonload
     if attr_name == 'jsonimportstr': return jsonloadstr

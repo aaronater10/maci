@@ -3,6 +3,7 @@
 # Imports
 
 # MaciDataObj
+from . import __lang_version__ as _lang_version
 from ast import literal_eval as _literal_eval
 from datetime import datetime as _datetime
 from datetime import date as _datetime_date
@@ -278,7 +279,7 @@ class _MaciDataObjConstructor:
                 if (__skip_marker in __skip_markers) and (potential_name_char not in __skip_markers) and (__is_building_data_sw == False):
                     raise Load(
                             py_syntax_err_msg,
-                            f'\nFile: {repr(filename)} \nLine: {line_num} \nGot: {repr(__file_data_line)}'
+                            f'\nSupported Lang Version: <= {_lang_version} \nFile: {repr(filename)} \nLine: {line_num} \nGot: {repr(__file_data_line)}'
                         )
 
             # Skip Any Comments, Blanks, and New Lines. Do not skip during a muli-line build
@@ -321,7 +322,7 @@ class _MaciDataObjConstructor:
                     if __file_data_line.partition(__assignment_glyph)[2].strip() == '':
                         raise Load(
                             py_syntax_err_msg,
-                            f'\nFile: {repr(filename)} \nLine: {line_num} \nAttr: {__file_data_line.partition(__assignment_glyph)[0].strip()} \nGot: {repr(__file_data_line)}'
+                            f'\nSupported Lang Version: <= {_lang_version} \nFile: {repr(filename)} \nLine: {line_num} \nAttr: {__file_data_line.partition(__assignment_glyph)[0].strip()} \nGot: {repr(__file_data_line)}'
                         )
                     
                     __current_assignment_glyph = __assignment_glyph.lower()
@@ -370,7 +371,7 @@ class _MaciDataObjConstructor:
                     
                     # Check if starting a build with no remaining lines to read
                     if (len(file_data) == line_num):
-                        raise Load(py_syntax_err_msg, f'\nFile: {repr(filename)} \nLine: {line_num} \nAttr: {__var_token}')
+                        raise Load(py_syntax_err_msg, f'\nSupported Lang Version: <= {_lang_version} \nFile: {repr(filename)} \nLine: {line_num} \nAttr: {__var_token}')
                     
                     # Set First Value
                     __build_data = __value_token
@@ -405,7 +406,13 @@ class _MaciDataObjConstructor:
                         if __current_assignment_glyph in _assignment_glyphs_for_hard_lock_checks:
                             self.__assignment_hard_locked_attribs.add(__var_token)
 
-                    except (ValueError, SyntaxError): raise Load(py_syntax_err_msg, f'\nFile: {repr(filename)} \nLine: {line_num} \nAttr: {__var_token}')
+                    except (ValueError, SyntaxError) as _err_msg:
+                        _len_of_build_data = len(__build_data.splitlines())
+                        _err_msg.lineno = None if isinstance(_err_msg, ValueError) else _err_msg.lineno  # set attr name to exist based on type to avoid attr exc
+                        _set_line_num = (line_num - (_len_of_build_data - _err_msg.lineno)) if bool(_err_msg.lineno) else (line_num - (_len_of_build_data - int(_err_msg.args[0].partition('line')[2].lstrip()[0]))) if any(_err_msg.args) else line_num  # collect true line no. last resort is current count
+                        _set_line_num = line_num if (isinstance(_err_msg, SyntaxError)) and (any(_err_msg.args)) and ('was never closed' in _err_msg.args[0]) else _set_line_num  # ignore true line no if unterminated and use count line no for last found terminator
+                        
+                        raise Load(py_syntax_err_msg, f'\nSupported Lang Version: <= {_lang_version} \nFile: {repr(filename)} \nLine: {_set_line_num} \nAttr: {__var_token}')
 
                     # Turn OFF/UPDATE Data Build Switches
                     __is_building_data_sw = False
@@ -477,9 +484,9 @@ class _MaciDataObjConstructor:
                             # Assign Attr to datetime object
                             setattr(self, __var_token, datetime_format)
                         else:
-                            raise Load(py_syntax_err_msg, f'\nFile: {repr(filename)} \nLine: {line_num} \nAttr: {__var_token}')
+                            raise Load(py_syntax_err_msg, f'\nSupported Lang Version: <= {_lang_version} \nFile: {repr(filename)} \nLine: {line_num} \nAttr: {__var_token}')
 
-            else: raise Load(py_syntax_err_msg, f'\nFile: {repr(filename)} \nLine: {line_num}')
+            else: raise Load(py_syntax_err_msg, f'\nSupported Lang Version: <= {_lang_version} \nFile: {repr(filename)} \nLine: {line_num}')
     
 
 
