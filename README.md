@@ -15,7 +15,7 @@ The easy to use library for data serialization
 
 maci itself is a pure Python-based library
 
-# tutorials & docs:
+# 🎓 tutorials & docs:
 **quick start: [tutorial video](https://docs.macilib.org/watch/quick-start)**
 
 **full tutorials: [all videos](https://docs.macilib.org/watch/full-training-series)**
@@ -25,7 +25,7 @@ maci itself is a pure Python-based library
 **changelog: [update history](https://docs.macilib.org/updates/changelog)**
 
 
-# install flavors
+# 🍨 install flavors
 
 **full --> maci, standard library, and 3rd-party packages**
 ```bash
@@ -40,7 +40,7 @@ pip install maci-std
 pip install maci-only
 ```
 
-# basic usage
+# 📖 basic usage
 ### maci
 
 Example file "my.file" with maci (Python-styled) data
@@ -127,7 +127,7 @@ Hard Lock an attr from re-assignment, deletion, and unlocking using a hard lock 
 # Example maci data in "my.file"
 data1 +h= 'my data'
 ```
-Reference and follow another attr's value with an attr using a map glyph
+Reference and follow another attr's value with an attr (like a pointer) using a map glyph
 ```python
 # Example maci data in "my.file"
 data1 = 'my data'
@@ -158,7 +158,7 @@ You may unlock attrs, unmap attrs, and much more with a maci object
 
 Note: if you dump your maci object back to a file, all language features will be retained and represented appropriately in the file
 
-# basic usage: thin libs
+# 📖 basic usage: thin libs
 
 ### json -> based on [json standard library](https://docs.macilib.org/docs/json)
 load json data from file
@@ -184,7 +184,7 @@ data = maci.yamlload('file.yaml')
 ```
 load yaml data from string
 ```python
-data = maci.yamlloadstr('{"k1": "data"}')
+data = maci.yamlloadstr('k1: data')
 ```
 dump python data to file as yaml data
 ```python
@@ -248,7 +248,7 @@ maci.xmldumpdict('file.xml', dict_data)
 ```
 dump dict data to string as xml data
 ```python
-data = maci.xmldumpstrdict(dict_data)
+xml_data = maci.xmldumpstrdict(dict_data)
 ```
 #### ElementTree - learn more about [element tree objects](https://docs.python.org/3/library/xml.etree.elementtree.html)
 load xml data from file as element tree object
@@ -265,13 +265,13 @@ maci.xmldump('file.xml', et_data)
 ```
 dump element tree data to string as xml data
 ```python
-data = maci.xmldumpstr(et_data)
+xml_data = maci.xmldumpstr(et_data)
 ```
 build element tree data manually
 ```python
 et_data = maci.xmlbuildmanual()
 ```
-# helpful extras
+# 🪄 helpful extras
 ### exceptions
 All exceptions/errors thrown by maci and it's thin wrapper libraries are conveniently accessible here:
 ```python
@@ -289,7 +289,7 @@ To catch/suppress all maci exceptions, use its base exception
 maci.error.MaciError
 ```
 ### hinting
-For type hinting/annotations needs, you can conveniently access the respective object types here:
+For type hinting/annotation needs, you can conveniently access the respective object types here:
 ```python
 maci.hint
 ```
@@ -335,6 +335,7 @@ This is better than having your whole file having the ability to be unpickled, e
 Easily generate hash of a file and store hash - default hash is sha256
 ```python
 maci.createfilehash('my.data', 'my.data.hashed')
+# always returns string of file hash
 ```
 Now simply compare the hash of the source file to check integrity when needed
 ```python
@@ -346,7 +347,7 @@ Create hash of data - default hash is sha256
 maci.createhash('data')  # returns string of hash
 ```
 
-# performance
+# ⏳️ performance
 
 Performance tests each library loading **100,000 lines of data** each in their natural usage
 
@@ -401,20 +402,22 @@ maci: 0.802843
 
 | place | lib |
 | ----- | --- |
-| 1st   | json |
-| 2nd   | xmltodict |
-| 3rd   | tomli |
+| 🥇 1st   | json |
+| 🥈 2nd   | xmltodict |
+| 🥉 3rd   | tomli |
 | 4th   | maci |
 | 5th   | pyyaml (4th if using CLoader) |
 
-These are the current differences in results for maci compared to popular or modern libraries. Looking to continually improve maci's performance and update the results, but so far, not bad for pure python
+Current differences in results for maci compared to popular or modern libraries. Looking to continually improve maci's performance and update the results, but so far, not bad for pure python
 
-# testing & release
+# 🚀 testing & release
+### 300+ tests and counting ⚡️
+
 A maci release is only deployed/released if all qa tests pass, and if the revision number is incremented.
 
 All coverage testing must be at 100% or test pipeline will fail (badge is not auto-updated, and just indicates confidence in testing at 100%).
 
-# previous project support
+# ⏪ previous project support
 Project maci is derived from an older project called [sfcparse](https://github.com/aaronater10/sfcparse) that is no longer supported, and still provides forward ported support for most of the older API names as a courtesy. sfcparse uses the MIT license, and therefore, maci does not really need to associate itself with that older project, but out of notice for the reason of having the forward ported support is it being mentioned if desiring to migrate.
 
 Reason for sfcparse's deprecation was merely for desire of re-branding and scrapping the old to make usage simpler and anew, thus, maci.
