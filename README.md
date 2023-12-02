@@ -13,7 +13,7 @@ A Python-Styled Serialization Language & Thin Wrapper Library
 
 maci is an easy to use library for data serialization. It can parse native python data types from any plain file, which is safer than using an executable .py file for your stored or configuration data. There are useful language features built-in like creating realistic constants for your name/value pairs by locking them, mapping a name to another to follow its value similar to a pointer, and much more.
 
-Its focus is to reduce boilerplate by removing repetitive code implementation, like code written for common file handling, or common libraries used like JSON, YAML, TOML, etc. maci on its own is a pure Python-based library, and I've used a variation of this library on many projects for companies and decided I wanted make a robust and stable public version. It has made common needs less painful, and has solved simplicity in many ways. Hope it helps you
+Its focus is to reduce boilerplate by removing repetitive code implementation, like code written for common file handling, or common libraries used like JSON, YAML, TOML, etc. maci on its own is a pure Python-based library, and I've used a variation of this library on many projects for varying companies and decided I wanted to make a robust and stable public version. It has made common needs less painful, and has solved simplicity in many ways. Hope it helps you
 
 # 🎓 tutorials & docs:
 **quick start: [tutorial video](https://docs.macilib.org/watch/quick-start)**
