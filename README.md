@@ -421,13 +421,15 @@ maci: 0.802843
 
 | place | lib |
 | ----- | --- |
-| 🥇 1st   | json |
-| 🥈 2nd   | xmltodict |
-| 🥉 3rd   | tomli |
-| 4th   | maci |
-| 5th   | pyyaml (4th if using CLoader) |
+| 🥇 1st   | json - avg 0.016s |
+| 🥈 2nd   | xmltodict - avg 0.225s |
+| 🥉 3rd   | tomli - avg 0.240s |
+| 4th   | maci - avg 0.805s |
+| 5th   | pyyaml - avg 3.630s (4th if using CLoader) |
 
-Current differences in results for maci compared to popular or modern libraries. Looking to continually improve maci's performance and update the results, but so far, not bad for pure python
+*Current differences in load time results for 100k lines of data from maci compared to popular or modern libraries.*
+
+Looking to continually improve maci's performance and update the results, but so far, not bad for pure python.
 
 [back to top](#maci)
 
