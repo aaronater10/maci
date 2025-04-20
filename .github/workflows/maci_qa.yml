@@ -58,9 +58,11 @@ jobs:
           mypy tests/support/type_interfaces.py
       
       - name: Run - security checks
+        env:
+          SAFETY_API_SECRET: ${{ secrets.MACI_PKG_API_KEY_SAFETY }}
         run: |
           echo === bandit ===  # check code vulns
           bandit -r src/
           echo ""
           echo === safety ===  # check dep vulns
-          safety check -r requirements-dev.txt -r ./deploy/requirements-deploy.txt
+          SAFETY_API_KEY="${SAFETY_API_SECRET}" safety scan -r requirements-dev.txt -r ./deploy/requirements-deploy.txt
