@@ -7,7 +7,7 @@ A Python-Styled Serialization Language & Thin Wrapper Library
 ![maci-language-version](https://img.shields.io/badge/lang-v1.0.0-purple)
 [![qa-testing](https://github.com/aaronater10/maci/actions/workflows/maci_qa.yml/badge.svg)](https://github.com/aaronater10/maci/actions/workflows/maci_qa.yml)
 ![coverage](https://img.shields.io/badge/coverage-100%25-red)
-![py-versions](https://img.shields.io/badge/py_versions-3.8_%7C_3.9_%7C_3.10_%7C_3.11_%7C_3.12-%23FFD43B)
+![py-versions](https://img.shields.io/badge/py_versions-3.8_%7C_3.9_%7C_3.10_%7C_3.11_%7C_3.12_%7C_3.13-%23FFD43B)
 
 #
 
