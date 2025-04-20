@@ -22,27 +22,24 @@ on:
       - completed
     branches:
       - main
-  workflow_dispatch:
-    branches:
-      - '**'
 
 # Build environment, package, and deploy
 jobs:
 
   # PASS: Run jobs if QA tests pass
-  # on-tests-pass:
-  #   # Verify QA Tests PASSED and build to deploy, otherwise FAIL
-  #   if: ${{ github.event.workflow_run.conclusion == 'success' }}
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: Tests passed
-  #     run: echo "tests passed"
+  on-tests-pass:
+    # Verify QA Tests PASSED and build to deploy, otherwise FAIL
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Tests passed
+      run: echo "tests passed"
     
 
   # Deploy maci if on-tests-pass success
   deploy-maci:
-    # needs: on-tests-pass
-    # if: success()
+    needs: on-tests-pass
+    if: success()
 
     strategy:
       fail-fast: false
@@ -79,8 +76,8 @@ jobs:
   
   # Deploy maci-std if deploy-maci success
   deploy-maci-std:
-    #needs: ["deploy-maci", "on-tests-pass"]
-    #if: success()
+    needs: ["deploy-maci", "on-tests-pass"]
+    if: success()
 
     strategy:
       fail-fast: false
@@ -116,8 +113,8 @@ jobs:
 
   # Deploy maci-only if deploy-maci-std success
   deploy-maci-only:
-    #needs: ["deploy-maci", "on-tests-pass"]
-    #if: success()
+    needs: ["deploy-maci", "on-tests-pass"]
+    if: success()
 
     strategy:
       fail-fast: false
