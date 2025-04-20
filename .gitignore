@@ -21,6 +21,7 @@ temp_old/
 main.py
 test_perf*
 run_coverage.*
+file_line_count.bash
 
 # Local Tools
 const_test.cmd
