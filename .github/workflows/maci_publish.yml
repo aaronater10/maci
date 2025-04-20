@@ -39,7 +39,7 @@ jobs:
   # Deploy maci if on-tests-pass success
   deploy-maci:
     needs: on-tests-pass
-    if: failure()
+    if: success()
 
     strategy:
       fail-fast: false
@@ -76,8 +76,8 @@ jobs:
   
   # Deploy maci-std if deploy-maci success
   deploy-maci-std:
-    needs: ["deploy-maci", "on-tests-pass"]
-    if: failure()
+    #needs: ["deploy-maci", "on-tests-pass"]
+    #if: success()
 
     strategy:
       fail-fast: false
@@ -113,8 +113,8 @@ jobs:
 
   # Deploy maci-only if deploy-maci-std success
   deploy-maci-only:
-    needs: ["deploy-maci", "on-tests-pass"]
-    if: failure()
+    #needs: ["deploy-maci", "on-tests-pass"]
+    #if: success()
 
     strategy:
       fail-fast: false
