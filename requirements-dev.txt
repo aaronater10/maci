@@ -6,7 +6,7 @@ setuptools==75.3.2
 
 # Sec Test Reqs
 bandit
-safety
+safety==2.3.5
 
 # Lib Reqs
 pyyaml>=5.4.0 # py37-39 not affected by cython bug, but py310+ require pyyaml>=6.01
