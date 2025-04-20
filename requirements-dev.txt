@@ -2,7 +2,7 @@
 pytest==7.3.2
 mypy==1.4.1
 coverage==7.2.7
-setuptools==67.7.2
+setuptools==75.3.2
 
 # Sec Test Reqs
 bandit
