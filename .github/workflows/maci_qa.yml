@@ -49,7 +49,7 @@ jobs:
 
       - name: Run - test framework & coverage report
         run: |
-          coverage run --branch --source="src" -m pytest tests/ -v -k "not test_file_version_check_is_incremented"
+          coverage run --branch --source="src" -m pytest tests/ -v
           coverage report --show-missing --fail-under 100
       
       - name: Run - type checks
