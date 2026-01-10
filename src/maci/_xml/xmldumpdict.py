@@ -49,5 +49,5 @@ def xmldumpdict(filename: _Union[str, _PathObj], data: _Dict[str, _Any], *, appe
         with open(filename, write_mode) as file_data:
             if write_mode == 'a': _dumpraw(filename, '', append=True)
             _xmltodict.unparse(input_dict=data, output=file_data, pretty=pretty, full_document=full_doc)
-    except TypeError as err_msg: raise XmlDumpDict(err_msg, f'\nFile: {repr(filename)} \nGot: {repr(data)}')
+    except (TypeError, ValueError) as err_msg: raise XmlDumpDict(err_msg, f'\nFile: {repr(filename)} \nGot: {repr(data)}')
     except (FileNotFoundError, OSError) as err_msg: raise XmlDumpDict(err_msg, f'\nGot: {repr(filename)}')
