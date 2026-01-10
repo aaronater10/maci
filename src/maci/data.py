@@ -1560,7 +1560,7 @@ def __block_non_accepted_types(
     """
     Validates if value being written has primitive or accepted data types by testing the build str
     """
-    err_msg_type = "Only str|int|float|bool|list|dict|tuple|set|bytes|None|datetime are valid attribute value types to dump data"
+    err_msg_type = "Only str|int|float|bool|list|dict|tuple|set|bytes|None|datetime are valid attribute value types to dump data. Attribute names must also follow proper convention"
     
     # Syntax/Usage Error Messages
     __err_messages: _Any = {  # ignore type checker
