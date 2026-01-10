@@ -93,6 +93,8 @@ def test2_exceptions_xmldumpdict_opts_data():
         maci.xmldumpdict(filename='', data=xml_data)
     with pytest.raises(maci.error.XmlDumpDict):
         maci.xmldumpdict(filename=filepath, data={1.0: 1.0})
+    with pytest.raises(maci.error.XmlDumpDict):
+        maci.xmldumpdict(filename=filepath, data={"root1": 1, "root2": 2})
 
     # Remove Cache Test File
     time.sleep(file_delay_timer)
