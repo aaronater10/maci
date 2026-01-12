@@ -566,3 +566,14 @@ def test13_maciobj_methods_get_attrs():
     # Tests
     data_dict = maci_data.get_attrs()
     assert data_dict == {'data_str': 'data', 'data_int': 1}
+
+
+# 14. MaciDataObj - Protected Method Names Added/Removed: Test methods are getting added/removed from internal protect list
+def test14_maciobj_methods_check_method_names_protected():
+    # Build Data
+    maci_data = maci.build()
+    maci_methods = sorted(method for method in dir(maci_data) if not method.startswith("__"))
+    maci_protect_method_setlist = sorted(maci_data._MaciDataObjConstructor__internal_check_lists_setattr_maci_methods)
+
+    # Tests
+    assert maci_methods == maci_protect_method_setlist

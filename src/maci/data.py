@@ -158,6 +158,8 @@ class _MaciDataObjConstructor:
         'unlock_attr',
         'map_attr',
         'unmap_attr',
+        'load_attrs',
+        'get_attrs',
         'get_all_maps',
         'get_parent_maps',
         'get_child_maps',
