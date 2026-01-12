@@ -508,8 +508,8 @@ class _MaciDataObjConstructor:
         if hasattr(self, _name):
             self.__reference_deletion_check(_name, _src_ref_list=True)
 
-        # Protect Internal List/Reference Attrs and Methods from Re-Assignment
-        if hasattr(self, _name) and (_name in _MaciDataObjConstructor.__internal_check_lists_setattr_maci_names):
+        # Protect Internal List/Reference Attrs from Re-Assignment. Can be switched OFF by User
+        if hasattr(self, _name) and (_name in _MaciDataObjConstructor.__internal_check_lists_setattr_maci_names) and (not self.__ignore_internal_maci_attr_check):
             raise GeneralError('Cannot re-assign internal MaciDataObj attribute name!', f'\nAttr: {repr(_name)}')
         
         # Protect Internal Method Names from Re-Assignment. Can be switched OFF by User
