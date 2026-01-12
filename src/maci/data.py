@@ -236,6 +236,7 @@ class _MaciDataObjConstructor:
         __start_markers = {'[', '{', '(', "'''", '"""', "r'''", 'r"""'}
         __end_markers = {']', '}', ')', "'''", '"""'}
         __end_multistr_markers = {"'''", '"""'}
+        __ignore_nested_end_markers = {'],', '},', '),'}
         __end_markers_build = __end_markers
         __skip_markers = ('', ' ', '#', '\n')
         __eof_marker = file_data[-1] if file_data else ''
@@ -342,7 +343,7 @@ class _MaciDataObjConstructor:
                 # Collect End Token if in Build
                 if __is_building_data_sw:
                     try:
-                        if __file_data_line[0] in __end_markers:
+                        if (__file_data_line[0] in __end_markers) and (__file_data_line.replace(' ', '')[0:2] not in __ignore_nested_end_markers):
                             __end_token = __file_data_line[0]
                         elif __file_data_line[0:3] in __end_markers:
                             __end_token = __file_data_line[0:3]
