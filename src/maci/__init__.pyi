@@ -799,7 +799,7 @@ def xmldumpstrdict(data: _Dict[str, _Any], *, pretty: bool=True, full_doc: bool=
 
 def xmlbuildmanual() -> _ModuleType:
     """
-    Returns an empty xml ElementTree module object to manually build xml etree data
+    Returns a xml ElementTree module to manually build xml etree data
 
     Returns etree -> Module('xml')
 
