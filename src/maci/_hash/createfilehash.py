@@ -65,11 +65,21 @@ def createfilehash(file_to_hash: _Union[str, _PathObj], file_to_store_hash: _Uni
 
     # Read source file data and update hash
     _readbytes: _Any  # ignore type checker
+    encode_data = True
+
     try: _readbytes = _loadraw(file_to_hash)
     except LoadRaw as err_msg: raise CreateFileHash(err_msg)
+    except UnicodeDecodeError as err_msg:
+        exc_msg_reason = str(err_msg)
+        if "invalid start byte" in exc_msg_reason\
+        or "invalid continuation byte" in exc_msg_reason:  # attempt binary files
+            encode_data = False
+            _readbytes = _loadraw(file_to_hash, byte_data=True)
+        else: raise CreateFileHash(err_msg)
 
-    try: _readbytes = _readbytes.encode() if encoding is None else _readbytes.encode(encoding=encoding)
-    except LookupError: raise CreateFileHash(err_msg_str_encoding, f'\nGot: {repr(encoding)}')
+    if encode_data:
+        try: _readbytes = _readbytes.encode() if encoding is None else _readbytes.encode(encoding=encoding)
+        except LookupError: raise CreateFileHash(err_msg_str_encoding, f'\nGot: {repr(encoding)}')
     _hash_type.update(_readbytes)
     
     # Store hash to file

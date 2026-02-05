@@ -64,6 +64,7 @@ def test1_exceptions_createfilehash_types():
 def test2_exceptions_createfilehash_unsupported_opts_data():
     filepath_to_hash = test_file_path + 'exc_createfilehash.data'
     filepath_to_cache = test_file_path + '2_exc_createfilehash.cache'
+    filepath_to_hash_binary = test_file_path + 'exc_createfilehash_binary'
 
     # Remove Any Existing Cache Test File
     try: remove(filepath_to_cache)
@@ -81,6 +82,8 @@ def test2_exceptions_createfilehash_unsupported_opts_data():
         maci.createfilehash(filepath_to_hash, filepath_to_cache, hash_algorithm='')
     with pytest.raises(maci.error.CreateFileHash):
         maci.createfilehash(filepath_to_hash, filepath_to_cache, 'sha256', encoding='')
+    with pytest.raises(maci.error.CreateFileHash):
+        maci.createfilehash(filepath_to_hash_binary, None)
 
     # Remove Cache Test File
     time.sleep(file_delay_timer)
