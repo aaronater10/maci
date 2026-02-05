@@ -12,7 +12,7 @@ from ..data import MaciDataObj as _MaciDataObj
 
 #########################################################################################################
 # Import py Data from File
-def loaddict(filename: _Union[str, _PathObj], *, attr_name_dedup: bool=True, encoding: _Optional[str]=None) -> _Optional[dict]:
+def loaddict(filename: _Union[str, _PathObj], *, attr_name_dedup: bool=False, encoding: _Optional[str]=None) -> _Optional[dict]:
     """
     Loads maci (pythonic) data from a file
 
@@ -75,6 +75,7 @@ def loaddict(filename: _Union[str, _PathObj], *, attr_name_dedup: bool=True, enc
                 _is_load_request=True,
                 attr_name_dedup=attr_name_dedup,
                 encoding=encoding,
+                _ignore_internal_maci_attr_check=True,
                 **err_messages
             )))
     except Load as __err_msg: raise LoadDict(__err_msg) from None

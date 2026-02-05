@@ -64,7 +64,7 @@ def load(filename: _Union[str, _PathObj], *, attr_name_dedup: bool=True, encodin
     Maci docs: https://docs.macilib.org
     """
 
-def loaddict(filename: _Union[str, _PathObj], *, attr_name_dedup: bool=True, encoding: _Optional[str]=None) -> dict:
+def loaddict(filename: _Union[str, _PathObj], *, attr_name_dedup: bool=False, encoding: _Optional[str]=None) -> dict:
     """
     Loads maci (pythonic) data from a file
 

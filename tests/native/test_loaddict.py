@@ -41,15 +41,15 @@ def test2_loaddict_attr_dedup_off_on():
     filename = '2_loaddict_attr_dedup_off_on.data'
     filepath = test_file_path + filename
 
-    # ATTR DEDUP OFF: File Import
-    file_import = maci.loaddict(filepath, attr_name_dedup=False)
+    # ATTR DEDUP OFF (Default): File Import
+    file_import = maci.loaddict(filepath)
 
     # Test Data
     assert file_import['data_str'] == "changed data"
 
-     # ATTR DEDUP ON (Default): File Import
+     # ATTR DEDUP ON: File Import
     with pytest.raises(maci.error.LoadDict):
-        file_import = maci.loaddict(filepath)
+        file_import = maci.loaddict(filepath, attr_name_dedup=True)
 
 
 # 3. Encoding: Dict - Test some common encoding types
