@@ -96,7 +96,7 @@ def _rename_exc_name_to_user_object_name(method: _Callable[..., _Any]) -> _Calla
             return_data = method(*args, **kwargs)
         except exception_names_to_catch as exception:
             for exc_msg in exception.args:
-                if '_MaciDataObjConstructor' in exc_msg: # pragma: no cover  # py37-39 does not show obj name in msg
+                if search_name in exc_msg: # pragma: no cover  # py37-39 does not show obj name in msg
                     build_err_msg += exc_msg.replace(search_name, replace_name)
                     continue
                 build_err_msg += exc_msg # pragma: no cover  # hits as a catch-all for py37-39
