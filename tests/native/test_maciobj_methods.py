@@ -580,7 +580,7 @@ def test14_maciobj_methods_check_method_names_protected():
 
 
 # 15. MaciDataObj - Bool Op: Test object internal bool operator if object empty
-def test15_maciobj_methods_truthy_falsy():
+def test15_maciobj_methods_obj_truthy_falsy():
     # Build Data
     maci_data = maci.build()
 
@@ -592,3 +592,29 @@ def test15_maciobj_methods_truthy_falsy():
     # not empty
     maci_data.data = 'data'
     assert bool(maci_data) == True
+
+
+# 16. MaciDataObj - EQ Op: Test object internal equality operator if objects are equal
+def test16_maciobj_methods_obj_equality():
+    # Build Data
+    num_of_data = 10
+    src_data_1 = {'k_' + str(v):str(v*v) for v in range(num_of_data)}
+    src_data_2 = {'k_' + str(v):str(v*v) for v in range(num_of_data)}
+
+    maci_data_1 = maci.build()
+    maci_data_1.load_attrs(src_data_1)
+    maci_data_2 = maci.build()
+    maci_data_2.load_attrs(src_data_2)
+
+    # Tests
+
+    # is equal: initial, then del key and re-add should be equal still regardless of order
+    assert maci_data_1 == maci_data_2
+    
+    del maci_data_1.k_4
+    maci_data_1.k_4 = '16'
+    assert maci_data_1 == maci_data_2 
+
+    # not equal
+    maci_data_1.k_7 = 'changed'
+    assert maci_data_1 != maci_data_2 

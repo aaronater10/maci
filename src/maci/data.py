@@ -1076,8 +1076,11 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
         if not isinstance(other, MaciDataObj):
             return NotImplemented
         else:
-            # Compare str repr of maci objects, which contain actual attrs & values in strings
-            return str(self) == str(other)
+            skip_name_keys = ('_MaciDataObjConstructor', '__maci_obj_format_id')
+            
+            # Compare names/values of maci objects, removes internal names/values that can change
+            return {k:v for k,v in self.__dict__.items() if not k.startswith(skip_name_keys)}\
+                == {k:v for k,v in other.__dict__.items() if not k.startswith(skip_name_keys)}
 
     def __bool__(self) -> bool:
         if len(self.__dict__) > self._MaciDataObjConstructor__init_internal_name_count:
