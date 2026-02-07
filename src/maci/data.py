@@ -213,6 +213,9 @@ class _MaciDataObjConstructor:
         self.__assignment_locked_atrribs_err_msg = _assignment_locked_atrribs_err_msg
         self.__assignment_hard_locked_atrribs_err_msg = _assignment_hard_locked_atrribs_err_msg
 
+        # Get Count of all Initial Internal Names - always last to count all names
+        self.__init_internal_name_count = len(self.__dict__) + 1  # count itself
+
         # BUILD REQUEST: If this is an object build request,
         # then end the INIT here with above self.attributes intact
         if _is_build_request: return None
@@ -1077,8 +1080,7 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
             return str(self) == str(other)
 
     def __bool__(self) -> bool:
-        skip_name_keys = ('_MaciDataObjConstructor', '__maci_obj_format_id')
-        if [attr for attr in self.__dict__ if not attr.startswith(skip_name_keys)]:
+        if len(self.__dict__) > self._MaciDataObjConstructor__init_internal_name_count:
             return True
         return False
 

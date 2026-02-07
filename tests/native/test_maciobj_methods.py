@@ -577,3 +577,18 @@ def test14_maciobj_methods_check_method_names_protected():
 
     # Tests
     assert maci_methods == maci_protect_method_setlist
+
+
+# 15. MaciDataObj - Bool Op: Test object internal bool operator if object empty
+def test15_maciobj_methods_truthy_falsy():
+    # Build Data
+    maci_data = maci.build()
+
+    # Tests
+
+    # empty
+    assert bool(maci_data) == False
+
+    # not empty
+    maci_data.data = 'data'
+    assert bool(maci_data) == True
