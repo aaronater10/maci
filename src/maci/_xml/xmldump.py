@@ -11,7 +11,7 @@ from ..error import XmlDump, DumpRaw
 
 #########################################################################################################
 # Export xml file
-def xmldump(filename: _Union[str, _PathObj], data: _Union[_ElementTree, _Element], *, append: bool=False, encoding: _Union[str, None]=None) -> None:
+def xmldump(filename: _Union[str, _PathObj], data: _Union[_ElementTree, _Element], *, append: bool=False, pretty: bool=True, full_doc: bool=True, encoding: _Union[str, None]=None) -> None:
     """
     Dumps xml data to a file from xml etree ElementTree or Element object
     
@@ -44,6 +44,6 @@ def xmldump(filename: _Union[str, _PathObj], data: _Union[_ElementTree, _Element
         if isinstance(data, _ElementTree):
             data = data.getroot()
 
-        data_str = _xmldumpstr(data)
+        data_str = _xmldumpstr(data, pretty=pretty, full_doc=full_doc)
         _dumpraw(filename, data_str, encoding=encoding, append=append)
     except DumpRaw as err_msg: raise XmlDump(err_msg) from None

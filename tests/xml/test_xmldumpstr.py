@@ -32,6 +32,6 @@ def test1_xml_str_export():
     # Test exist, data and it's Type    
     assert path.exists(filepath)
     file_import = maci.xmlload(filepath)
-    xml_data_to_str = maci.xmldumpstr(file_import)
+    xml_data_to_str = maci.xmldumpstr(file_import, pretty=False, full_doc=False)
 
     assert (xml_data_to_str == xml_data_str_match) and (isinstance(xml_data_to_str, str))
