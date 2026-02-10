@@ -178,7 +178,10 @@ class _MaciDataObjConstructor:
             '_MaciDataObjConstructor__assigned_src_reference_attr_map',
             '_MaciDataObjConstructor__assigned_dst_reference_attr_map'
     }
+    # Defaults
+    MAX_CACHE_SIZE = 1
 
+    
     # Main Constructor
     def __init__(
         self,
@@ -805,6 +808,7 @@ class _MaciDataObjConstructor:
 
 
     @_rename_exc_name_to_user_object_name
+    @_lru_cache(maxsize=MAX_CACHE_SIZE)
     def get_locked_list(self) -> _List[str]:
         """
         General locked list
@@ -815,6 +819,7 @@ class _MaciDataObjConstructor:
 
 
     @_rename_exc_name_to_user_object_name
+    @_lru_cache(maxsize=MAX_CACHE_SIZE)
     def get_hard_locked_list(self) -> _List[str]:
         """
         Hard locked list
@@ -825,6 +830,7 @@ class _MaciDataObjConstructor:
 
 
     @_rename_exc_name_to_user_object_name
+    @_lru_cache(maxsize=MAX_CACHE_SIZE)
     def get_all_maps(self) -> _Dict[str, _Dict[str, _Any]]:
         """
         Get all Parent and Child Links
@@ -845,6 +851,7 @@ class _MaciDataObjConstructor:
 
 
     @_rename_exc_name_to_user_object_name
+    @_lru_cache(maxsize=MAX_CACHE_SIZE)
     def get_parent_maps(self) -> _Dict[str, _Dict[str, str]]:
         """
         Get all Parent Links
@@ -863,6 +870,7 @@ class _MaciDataObjConstructor:
 
 
     @_rename_exc_name_to_user_object_name
+    @_lru_cache(maxsize=MAX_CACHE_SIZE)
     def get_parent_map_chains(self, parent_attr: _Optional[str]=None, *, dup_link_check: bool=True) -> _Union[_Dict[str, _List[str]], _List[str]]:
         """
         Get Parent Map Chains
@@ -971,6 +979,7 @@ class _MaciDataObjConstructor:
 
 
     @_rename_exc_name_to_user_object_name
+    @_lru_cache(maxsize=MAX_CACHE_SIZE)
     def get_child_maps(self) -> _Dict[str, str]:
         """
         Get all Child Links
@@ -986,9 +995,10 @@ class _MaciDataObjConstructor:
         Child map will be -> {'attr_child': 'attr_parent'}
         """
         return _deepcopy(self.__assigned_src_reference_attr_map)
-    
+
 
     @_rename_exc_name_to_user_object_name
+    @_lru_cache(maxsize=MAX_CACHE_SIZE)
     def get_attrs(self) -> _Dict[str, _Any]:
         """
         Returns a dict copy of the MaciDataObj's current attribute names and values
