@@ -9,6 +9,8 @@ from datetime import datetime as _datetime
 from datetime import date as _datetime_date
 from datetime import time as _datetime_time
 from copy import deepcopy as _deepcopy
+from uuid import uuid4 as _uuid4
+from functools import lru_cache as _lru_cache
 from typing import Any as _Any
 from typing import Dict as _Dict
 from typing import List as _List
@@ -195,6 +197,7 @@ class _MaciDataObjConstructor:
         _ignore_internal_maci_attr_check: bool=False
     ) -> None:
         # Setup: Reference lists and maps should be first assignment
+        self.__inst_hash_id = _uuid4()
         self.__assignment_locked_attribs: _Set[str] = set()
         self.__assignment_hard_locked_attribs: _Set[str] = set()
         self.__assigned_src_reference_attr_map: _Dict[str, str] = {}
@@ -1039,7 +1042,8 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
         _is_load_request: bool=False,
         _is_build_request: bool=False,
         _ignore_internal_maci_attr_check: bool=False,
-    )-> None:
+    )-> None: 
+        # General Setup
         __constructor_locked = True
         __constructor_locked = False if (_is_load_request
                                         or _is_build_request
@@ -1072,6 +1076,9 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
                 _ignore_internal_maci_attr_check=_ignore_internal_maci_attr_check,
             )
 
+    def __hash__(self):
+        return hash(self._MaciDataObjConstructor__inst_hash_id)
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, MaciDataObj):
             return NotImplemented
@@ -1097,7 +1104,7 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
         default_attrs = list(name for name in dir(MaciDataObj) if not name.startswith(skip_name_keys))
         user_attrs = list(name for name in self.__dict__ if not name.startswith(skip_name_keys))
         return default_attrs + user_attrs
-
+    
 
 #########################################################################################################
 # Main Dump Function
