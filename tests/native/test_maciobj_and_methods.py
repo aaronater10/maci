@@ -11,7 +11,7 @@ file_delay_timer = 0.25
 # TESTS
 
 # 1. MaciDataObj - Test Integrity of Glyphs from Build -> Dump -> Load
-def test1_maciobj_methods_glyph_integrity():
+def test1_maciobj_and_methods_glyph_integrity():
     filename = '1_maciobj_methods_glyph_integrity.data'
     filepath = test_file_path + filename
 
@@ -69,7 +69,7 @@ def test1_maciobj_methods_glyph_integrity():
 
 
 # 2. MaciDataObj - MAP: Test Parent/Child map structure and data
-def test2_maciobj_methods_parent_child_map_structure():
+def test2_maciobj_and_methods_parent_child_map_structure():
     # Build Data
     maci_data = maci.build()
     maci_data.norm_data = 'data'
@@ -87,7 +87,7 @@ def test2_maciobj_methods_parent_child_map_structure():
 
 
 # 3. MaciDataObj - MAP: Test Parent/Child is their respective map types
-def test3_maciobj_methods_is_parent_child_map():
+def test3_maciobj_and_methods_is_parent_child_map():
     # Build Data
     maci_data = maci.build()
     maci_data.norm_data = 'data'
@@ -103,7 +103,7 @@ def test3_maciobj_methods_is_parent_child_map():
 
 
 # 4. MaciDataObj - MAP: Test Parent/Child large map structure, data, and sources
-def test4_maciobj_methods_parent_child_large_map_and_sources():
+def test4_maciobj_and_methods_parent_child_large_map_and_sources():
     # Build Data
     maci_data = maci.build()
     maci_data.norm_data1 = 'data1'
@@ -146,7 +146,7 @@ def test4_maciobj_methods_parent_child_large_map_and_sources():
 
 
 # 5. MaciDataObj - MAP: Test Parent Chain Data and Structure
-def test5_maciobj_methods_map_parent_chains():
+def test5_maciobj_and_methods_map_parent_chains():
     # Build Data
     maci_data = maci.build()
     maci_data.norm_data1 = 'data1'
@@ -236,7 +236,7 @@ def test5_maciobj_methods_map_parent_chains():
 
 
 # 6. MaciDataObj - MAP: Test children is following parent data properly
-def test6_maciobj_methods_map_data_followed():
+def test6_maciobj_and_methods_map_data_followed():
     # Build Data
     maci_data = maci.build()
     maci_data.norm_data1 = 'ring_data'
@@ -283,7 +283,7 @@ def test6_maciobj_methods_map_data_followed():
 
 
 # 7. MaciDataObj - UNMAP: Test Map being Unmapped Directly and Indirectly
-def test7_maciobj_methods_unmap_direct_indirect():
+def test7_maciobj_and_methods_unmap_direct_indirect():
     # Build Data
     maci_data = maci.build()
     maci_data.norm_data1 = 'data1'
@@ -364,7 +364,7 @@ def test7_maciobj_methods_unmap_direct_indirect():
 
 
 # 8. MaciDataObj - LOCK: Test general locking protection and indirect unlock
-def test8_maciobj_methods_lock():
+def test8_maciobj_and_methods_lock():
     # Build Data
     maci_data = maci.build()
     maci_data.lock_data = 'data'
@@ -398,7 +398,7 @@ def test8_maciobj_methods_lock():
 
 
 # 9. MaciDataObj - UNLOCK: Test general unlocking functionality and protection
-def test9_maciobj_methods_unlock():
+def test9_maciobj_and_methods_unlock():
     # Build Data
     maci_data = maci.build()
     maci_data.lock_data = 'data'
@@ -420,7 +420,7 @@ def test9_maciobj_methods_unlock():
 
 
 # 10. MaciDataObj - HARD LOCK: Test general hard locking functionality and protection
-def test10_maciobj_methods_hard_lock():
+def test10_maciobj_and_methods_hard_lock():
     # Build Data
     maci_data = maci.build()
     maci_data.hard_lock_data = 'data'
@@ -456,7 +456,7 @@ def test10_maciobj_methods_hard_lock():
 
 
 # 11. MaciDataObj - Mixed Concepts: Test general locking, hard locking, and mapping in different scenarios
-def test11_maciobj_methods_mixed_concepts():
+def test11_maciobj_and_methods_mixed_concepts():
     # Build Data
     maci_data = maci.build()
     maci_data.data_a0 = 'data_a'
@@ -545,7 +545,7 @@ def test11_maciobj_methods_mixed_concepts():
 
 
 # 12. MaciDataObj - Load Attrs: Test loading attrs into maci object from dict
-def test12_maciobj_methods_load_attrs():
+def test12_maciobj_and_methods_load_attrs():
     # Build Data
     dict_data = {'k1': 1, 'k2': 2}
     maci_data = maci.build()
@@ -557,7 +557,7 @@ def test12_maciobj_methods_load_attrs():
 
 
 # 13. MaciDataObj - Get Attrs: Test getting dict representation of attrs from maci object
-def test13_maciobj_methods_get_attrs():
+def test13_maciobj_and_methods_get_attrs():
     # Build Data
     maci_data = maci.build()
     maci_data.data_str = "data"
@@ -569,7 +569,7 @@ def test13_maciobj_methods_get_attrs():
 
 
 # 14. MaciDataObj - Protected Method Names Added/Removed: Test methods are getting added/removed from internal protect list
-def test14_maciobj_methods_check_method_names_protected():
+def test14_maciobj_and_methods_check_method_names_protected():
     # Build Data
     maci_data = maci.build()
     maci_methods = sorted(method for method in dir(maci_data) if not method.startswith("__"))
@@ -580,7 +580,7 @@ def test14_maciobj_methods_check_method_names_protected():
 
 
 # 15. MaciDataObj - Bool Op: Test object internal bool operator if object empty
-def test15_maciobj_methods_obj_truthy_falsy():
+def test15_maciobj_and_methods_obj_truthy_falsy():
     # Build Data
     maci_data = maci.build()
 
@@ -595,7 +595,7 @@ def test15_maciobj_methods_obj_truthy_falsy():
 
 
 # 16. MaciDataObj - EQ Op: Test object internal equality operator if objects are equal
-def test16_maciobj_methods_obj_equality():
+def test16_maciobj_and_methods_obj_equality():
     # Build Data
     num_of_data = 10
     src_data_1 = {'k_' + str(v):str(v*v) for v in range(num_of_data)}
@@ -618,3 +618,20 @@ def test16_maciobj_methods_obj_equality():
     # not equal
     maci_data_1.k_7 = 'changed'
     assert maci_data_1 != maci_data_2 
+
+
+# 17. MaciDataObj - Len: Test object internal len count - counts object's attrs
+def test17_maciobj_and_methods_obj_len_count():
+    # Build Data
+    maci_data = maci.build()
+
+    # Tests
+
+    # has 0
+    assert len(maci_data) == 0
+
+    # has 3 attrs
+    maci_data.data1 = 'data1'
+    maci_data.data2 = 'data2'
+    maci_data.data3 = 'data3'
+    assert len(maci_data) == 3

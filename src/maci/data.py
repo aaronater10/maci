@@ -1086,8 +1086,11 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
                 _ignore_internal_maci_attr_check=_ignore_internal_maci_attr_check,
             )
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash(self._MaciDataObjConstructor__inst_hash_id)
+
+    def __len__(self) -> int:
+        return len(self.__dict__) - self._MaciDataObjConstructor__init_internal_name_count
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, MaciDataObj):
@@ -1100,9 +1103,7 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
                 == {k:v for k,v in other.__dict__.items() if not k.startswith(skip_name_keys)}
 
     def __bool__(self) -> bool:
-        if len(self.__dict__) > self._MaciDataObjConstructor__init_internal_name_count:
-            return True
-        return False
+        return len(self.__dict__) > self._MaciDataObjConstructor__init_internal_name_count
 
     def __repr__(self) -> str:
         skip_name_keys = ('_MaciDataObjConstructor', '__maci_obj_format_id')
