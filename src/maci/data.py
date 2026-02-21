@@ -9,13 +9,14 @@ from datetime import datetime as _datetime
 from datetime import date as _datetime_date
 from datetime import time as _datetime_time
 from copy import deepcopy as _deepcopy
-from uuid import uuid4 as _uuid4
+from uuid import UUID as _UUID, uuid4 as _uuid4
 from functools import lru_cache as _lru_cache
 from typing import Any as _Any
 from typing import Dict as _Dict
 from typing import List as _List
 from typing import Union as _Union
 from typing import Optional as _Optional
+from typing import Tuple as _Tuple
 from typing import NamedTuple as _NamedTuple
 from typing import Set as _Set
 from typing import Callable as _Callable
@@ -179,7 +180,7 @@ class _MaciDataObjConstructor:
             '_MaciDataObjConstructor__assigned_dst_reference_attr_map'
     }
     # Defaults
-    MAX_CACHE_SIZE = 1
+    __MAX_CACHE_SIZE = 1
 
     
     # Main Constructor
@@ -200,7 +201,9 @@ class _MaciDataObjConstructor:
         _ignore_internal_maci_attr_check: bool=False
     ) -> None:
         # Setup: Reference lists and maps should be first assignment
-        self.__inst_hash_id = _uuid4()
+        self.__inst_hash_id: _UUID = _uuid4()
+        self.__assignment_tracker: _Dict = {}
+        self.__assignment_tracker_ignore_keys: _Tuple[str] = ('_MaciDataObjConstructor', '__maci_obj_format_id')  # must be initd after tracker
         self.__assignment_locked_attribs: _Set[str] = set()
         self.__assignment_hard_locked_attribs: _Set[str] = set()
         self.__assigned_src_reference_attr_map: _Dict[str, str] = {}
@@ -219,8 +222,6 @@ class _MaciDataObjConstructor:
         self.__assignment_locked_atrribs_err_msg = _assignment_locked_atrribs_err_msg
         self.__assignment_hard_locked_atrribs_err_msg = _assignment_hard_locked_atrribs_err_msg
 
-        # Get Count of all Initial Internal Names - always last to count all names
-        self.__init_internal_name_count = len(self.__dict__) + 1  # count itself
 
         # BUILD REQUEST: If this is an object build request,
         # then end the INIT here with above self.attributes intact
@@ -530,6 +531,11 @@ class _MaciDataObjConstructor:
         self.__dict__[_name] = _new_value
 
 
+        # Update Assignment Tracker
+        if hasattr(self, '_MaciDataObjConstructor__assignment_tracker_ignore_keys'):
+            if not _name.startswith(self.__assignment_tracker_ignore_keys):
+                self.__assignment_tracker[_name] = _new_value
+
         # If attr was added to lock/hard_lock list after first assignment, assign orig value back, and raise exception
         # Exception can be caught/bypassed, setting original value is vital to protect value
 
@@ -538,6 +544,7 @@ class _MaciDataObjConstructor:
             if _name in self.__assignment_locked_attribs:
                 # PROTECT ORIGINAL VALUE
                 self.__dict__[_name] = _orig_value
+                self.__assignment_tracker[_name] = _orig_value
                 # RAISE EXCEPTION
                 raise GeneralError(self.__assignment_locked_atrribs_err_msg, f'\nAttr: {repr(_name)}')
 
@@ -546,6 +553,7 @@ class _MaciDataObjConstructor:
             if _name in self.__assignment_hard_locked_attribs:
                 # PROTECT ORIGINAL VALUE
                 self.__dict__[_name] = _orig_value
+                self.__assignment_tracker[_name] = _orig_value
                 # RAISE EXCEPTION
                 raise GeneralError(self.__assignment_hard_locked_atrribs_err_msg, f'\nAttr: {repr(_name)}')
         
@@ -577,6 +585,7 @@ class _MaciDataObjConstructor:
 
                         # Update Reference(s) to New Value
                         self.__dict__[ref_name] = _new_value
+                        self.__assignment_tracker[ref_name] = _new_value
     
     
     def __delattr__(self, _name: str) -> None:
@@ -595,6 +604,7 @@ class _MaciDataObjConstructor:
 
         # Allow Normal Deletion
         super().__delattr__(_name)
+        del self.__assignment_tracker[_name]
 
 
     @_rename_exc_name_to_user_object_name
@@ -808,7 +818,7 @@ class _MaciDataObjConstructor:
 
 
     @_rename_exc_name_to_user_object_name
-    @_lru_cache(maxsize=MAX_CACHE_SIZE)
+    @_lru_cache(maxsize=__MAX_CACHE_SIZE)
     def get_locked_list(self) -> _List[str]:
         """
         General locked list
@@ -819,7 +829,7 @@ class _MaciDataObjConstructor:
 
 
     @_rename_exc_name_to_user_object_name
-    @_lru_cache(maxsize=MAX_CACHE_SIZE)
+    @_lru_cache(maxsize=__MAX_CACHE_SIZE)
     def get_hard_locked_list(self) -> _List[str]:
         """
         Hard locked list
@@ -830,7 +840,7 @@ class _MaciDataObjConstructor:
 
 
     @_rename_exc_name_to_user_object_name
-    @_lru_cache(maxsize=MAX_CACHE_SIZE)
+    @_lru_cache(maxsize=__MAX_CACHE_SIZE)
     def get_all_maps(self) -> _Dict[str, _Dict[str, _Any]]:
         """
         Get all Parent and Child Links
@@ -851,7 +861,7 @@ class _MaciDataObjConstructor:
 
 
     @_rename_exc_name_to_user_object_name
-    @_lru_cache(maxsize=MAX_CACHE_SIZE)
+    @_lru_cache(maxsize=__MAX_CACHE_SIZE)
     def get_parent_maps(self) -> _Dict[str, _Dict[str, str]]:
         """
         Get all Parent Links
@@ -870,7 +880,7 @@ class _MaciDataObjConstructor:
 
 
     @_rename_exc_name_to_user_object_name
-    @_lru_cache(maxsize=MAX_CACHE_SIZE)
+    @_lru_cache(maxsize=__MAX_CACHE_SIZE)
     def get_parent_map_chains(self, parent_attr: _Optional[str]=None, *, dup_link_check: bool=True) -> _Union[_Dict[str, _List[str]], _List[str]]:
         """
         Get Parent Map Chains
@@ -979,7 +989,7 @@ class _MaciDataObjConstructor:
 
 
     @_rename_exc_name_to_user_object_name
-    @_lru_cache(maxsize=MAX_CACHE_SIZE)
+    @_lru_cache(maxsize=__MAX_CACHE_SIZE)
     def get_child_maps(self) -> _Dict[str, str]:
         """
         Get all Child Links
@@ -998,13 +1008,12 @@ class _MaciDataObjConstructor:
 
 
     @_rename_exc_name_to_user_object_name
-    @_lru_cache(maxsize=MAX_CACHE_SIZE)
+    @_lru_cache(maxsize=__MAX_CACHE_SIZE)
     def get_attrs(self) -> _Dict[str, _Any]:
         """
         Returns a dict copy of the MaciDataObj's current attribute names and values
         """
-        skip_name_keys = ('_MaciDataObjConstructor', '__maci_obj_format_id')
-        return {name:value for name,value in self.__dict__.items() if not name.startswith(skip_name_keys)}
+        return self._MaciDataObjConstructor__assignment_tracker.copy()
     
 
     @_rename_exc_name_to_user_object_name
@@ -1090,30 +1099,24 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
         return hash(self._MaciDataObjConstructor__inst_hash_id)
 
     def __len__(self) -> int:
-        return len(self.__dict__) - self._MaciDataObjConstructor__init_internal_name_count
+        return len(self._MaciDataObjConstructor__assignment_tracker)
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, MaciDataObj):
             return NotImplemented
-        else:
-            skip_name_keys = ('_MaciDataObjConstructor', '__maci_obj_format_id')
-            
-            # Compare names/values of maci objects, removes internal names/values that can change
-            return {k:v for k,v in self.__dict__.items() if not k.startswith(skip_name_keys)}\
-                == {k:v for k,v in other.__dict__.items() if not k.startswith(skip_name_keys)}
+        else:            
+            return self._MaciDataObjConstructor__assignment_tracker == other._MaciDataObjConstructor__assignment_tracker
 
     def __bool__(self) -> bool:
-        return len(self.__dict__) > self._MaciDataObjConstructor__init_internal_name_count
+        return bool(self._MaciDataObjConstructor__assignment_tracker)
 
     def __repr__(self) -> str:
-        skip_name_keys = ('_MaciDataObjConstructor', '__maci_obj_format_id')
-        build_repr = ', '.join(f"{name}={value!r}" for name,value in self.__dict__.items() if not name.startswith(skip_name_keys))
+        build_repr = ', '.join(f"{name}={value!r}" for name,value in self._MaciDataObjConstructor__assignment_tracker.items())
         return f"{type(self).__name__}({build_repr})"
-    
+
     def __dir__(self) -> _List[str]:
-        skip_name_keys = ('_MaciDataObjConstructor', '__maci_obj_format_id')
-        default_attrs = list(name for name in dir(MaciDataObj) if not name.startswith(skip_name_keys))
-        user_attrs = list(name for name in self.__dict__ if not name.startswith(skip_name_keys))
+        default_attrs = list(name for name in dir(MaciDataObj) if not name.startswith(self._MaciDataObjConstructor__assignment_tracker_ignore_keys))
+        user_attrs = list(self._MaciDataObjConstructor__assignment_tracker)
         return default_attrs + user_attrs
     
 
