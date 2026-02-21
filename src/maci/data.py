@@ -10,7 +10,7 @@ from datetime import date as _datetime_date
 from datetime import time as _datetime_time
 from copy import deepcopy as _deepcopy
 from uuid import UUID as _UUID, uuid4 as _uuid4
-from functools import lru_cache as _lru_cache
+from collections import OrderedDict as _OrderedDict
 from typing import Any as _Any
 from typing import Dict as _Dict
 from typing import List as _List
@@ -106,6 +106,7 @@ def _rename_exc_name_to_user_object_name(method: _Callable[..., _Any]) -> _Calla
             # Raise with final message and original Exception Type. Remove Double-Trace as it is a Duplicate
             raise type(exception)(build_err_msg) from None
         return return_data
+    wrapper.__name__ = method.__name__
     return wrapper
 
 
@@ -204,6 +205,7 @@ class _MaciDataObjConstructor:
         self.__inst_hash_id: _UUID = _uuid4()
         self.__assignment_tracker: _Dict = {}
         self.__assignment_tracker_ignore_keys: _Tuple[str] = ('_MaciDataObjConstructor', '__maci_obj_format_id')  # must be initd after tracker
+        self.__internal_cache: _Dict[str, _OrderedDict[int, _Any]] = {}
         self.__assignment_locked_attribs: _Set[str] = set()
         self.__assignment_hard_locked_attribs: _Set[str] = set()
         self.__assigned_src_reference_attr_map: _Dict[str, str] = {}
@@ -607,6 +609,48 @@ class _MaciDataObjConstructor:
         del self.__assignment_tracker[_name]
 
 
+    # This should be declared before any other object helper methods
+    def __internal_cacher(method: _Callable) -> _Callable:
+        """
+        Checks if hash of value already exists in cache and returns immediately,
+        otherwise stores value in cache. Uses FIFO concept
+
+        Cacher is more custom to where it performs operations on a specific method name
+        in order to collect input that may not be passed in.
+
+        This replaces the well known lru_cache as it causes a memory leak due to cache
+        holding onto object to where GC cannot collect it. 
+        """
+        def wrapper(*args, **kwargs) -> _Any:
+            # setup: collect method's cache, else create one
+            self = args[0]
+            method_cache = self.__internal_cache.setdefault(method.__name__, _OrderedDict())
+
+            # hash specific method input to get key
+            if method.__name__ == 'get_all_maps':
+                hash_key = hash(f"{self.__assigned_dst_reference_attr_map}{self.__assigned_src_reference_attr_map}")
+            elif method.__name__ == 'get_parent_maps':
+                hash_key = hash(f"{self.__assigned_dst_reference_attr_map}")
+            elif method.__name__ == 'get_child_maps':
+                hash_key = hash(f"{self.__assigned_src_reference_attr_map}")
+
+            # check if already in cache and return value
+            if hash_key in method_cache:
+                return method_cache[hash_key]
+        
+            # rotate cache if exceeding limit
+            if len(method_cache) >= self.__MAX_CACHE_SIZE:
+                _,_ = method_cache.popitem(last=False)  # removes first entry
+
+            # create cache entry
+            value = method(*args, **kwargs)
+            method_cache[hash_key] = value
+            return value
+
+        wrapper.__name__ = method.__name__
+        return wrapper
+
+
     @_rename_exc_name_to_user_object_name
     def hard_lock_attr(self, attr_name: str) -> None:
         """
@@ -818,7 +862,6 @@ class _MaciDataObjConstructor:
 
 
     @_rename_exc_name_to_user_object_name
-    @_lru_cache(maxsize=__MAX_CACHE_SIZE)
     def get_locked_list(self) -> _List[str]:
         """
         General locked list
@@ -829,7 +872,6 @@ class _MaciDataObjConstructor:
 
 
     @_rename_exc_name_to_user_object_name
-    @_lru_cache(maxsize=__MAX_CACHE_SIZE)
     def get_hard_locked_list(self) -> _List[str]:
         """
         Hard locked list
@@ -840,7 +882,7 @@ class _MaciDataObjConstructor:
 
 
     @_rename_exc_name_to_user_object_name
-    @_lru_cache(maxsize=__MAX_CACHE_SIZE)
+    @__internal_cacher
     def get_all_maps(self) -> _Dict[str, _Dict[str, _Any]]:
         """
         Get all Parent and Child Links
@@ -861,7 +903,7 @@ class _MaciDataObjConstructor:
 
 
     @_rename_exc_name_to_user_object_name
-    @_lru_cache(maxsize=__MAX_CACHE_SIZE)
+    @__internal_cacher
     def get_parent_maps(self) -> _Dict[str, _Dict[str, str]]:
         """
         Get all Parent Links
@@ -880,7 +922,6 @@ class _MaciDataObjConstructor:
 
 
     @_rename_exc_name_to_user_object_name
-    @_lru_cache(maxsize=__MAX_CACHE_SIZE)
     def get_parent_map_chains(self, parent_attr: _Optional[str]=None, *, dup_link_check: bool=True) -> _Union[_Dict[str, _List[str]], _List[str]]:
         """
         Get Parent Map Chains
@@ -989,7 +1030,7 @@ class _MaciDataObjConstructor:
 
 
     @_rename_exc_name_to_user_object_name
-    @_lru_cache(maxsize=__MAX_CACHE_SIZE)
+    @__internal_cacher
     def get_child_maps(self) -> _Dict[str, str]:
         """
         Get all Child Links
@@ -1006,14 +1047,13 @@ class _MaciDataObjConstructor:
         """
         return _deepcopy(self.__assigned_src_reference_attr_map)
 
-
+    
     @_rename_exc_name_to_user_object_name
-    @_lru_cache(maxsize=__MAX_CACHE_SIZE)
     def get_attrs(self) -> _Dict[str, _Any]:
         """
         Returns a dict copy of the MaciDataObj's current attribute names and values
         """
-        return self._MaciDataObjConstructor__assignment_tracker.copy()
+        return self.__assignment_tracker.copy()
     
 
     @_rename_exc_name_to_user_object_name
@@ -1118,7 +1158,7 @@ class MaciDataObj(_MaciDataObjConstructor, metaclass=__MaciDataObj):
         default_attrs = list(name for name in dir(MaciDataObj) if not name.startswith(self._MaciDataObjConstructor__assignment_tracker_ignore_keys))
         user_attrs = list(self._MaciDataObjConstructor__assignment_tracker)
         return default_attrs + user_attrs
-    
+
 
 #########################################################################################################
 # Main Dump Function

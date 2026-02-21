@@ -567,6 +567,9 @@ def test13_maciobj_and_methods_get_attrs():
     data_dict = maci_data.get_attrs()
     assert data_dict == {'data_str': 'data', 'data_int': 1}
 
+    # ensure not same object
+    assert maci_data.get_attrs() is not maci_data._MaciDataObjConstructor__assignment_tracker
+
 
 # 14. MaciDataObj - Protected Method Names Added/Removed: Test methods are getting added/removed from internal protect list
 def test14_maciobj_and_methods_check_method_names_protected():
