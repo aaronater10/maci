@@ -98,7 +98,7 @@ def loadstr(maci_str_data: str, *, attr_name_dedup: bool=True) -> _MaciDataObj:
     Maci docs: https://docs.macilib.org
     """
 
-def loadstrdict(maci_str_data: str, *, attr_name_dedup: bool=True) -> dict:
+def loadstrdict(maci_str_data: str, *, attr_name_dedup: bool=False) -> dict:
     """
     Loads maci (pythonic) data from a string
 

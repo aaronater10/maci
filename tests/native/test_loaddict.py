@@ -3,6 +3,7 @@ from src import maci
 import pytest
 from os import path, remove
 import time
+import datetime
 
 test_file_path = './tests/test_files/native/loaddict_files/'
 file_delay_timer = 0.25
@@ -16,11 +17,41 @@ def test1_loaddict_file_imports():
     filename_empty = '1_loaddict_file_import_empty.data'
     filepath = test_file_path + filename
     filepath_empty = test_file_path + filename_empty
+    matched_data = {
+        'data_str': 'data',
+        'data_int': 1,
+        'data_float': 1.0,
+        'data_bool': True,
+        'data_list': [
+            1,
+            2,
+            3,
+        ],
+        'data_dict': {
+            'k1': 1,
+            'k2': 2,
+            'k3': 3,
+        },
+        'data_tuple': (
+            1,
+            2,
+            3,
+        ),
+        'data_set': {
+            1,
+            2,
+            3,
+        },
+        'data_none': None,
+        'data_bytes': b'data',
+        'data_datetime': datetime.datetime(2023, 3, 13, 22, 6),
+    }
 
     # File Import
     file_import = maci.loaddict(filepath)
 
     # Test Data
+    assert matched_data == file_import
     assert file_import['data_str'] == "data"
     assert file_import['data_int'] == 1
     assert file_import['data_float'] == 1.0
@@ -35,6 +66,9 @@ def test1_loaddict_file_imports():
 
     ### Empty Import ###
     assert maci.loaddict(filename=filepath_empty) == dict()
+
+    # Unique Objects
+    assert maci.loaddict(filepath) is not maci.loaddict(filepath)
 
 # 2. Load Dict: Attr Dedup - Test Attr Dedup OFF/ON
 def test2_loaddict_attr_dedup_off_on():
