@@ -737,7 +737,7 @@ def xmlloadstrdict(xml_str_data: str) -> _OrderedDict[str, _Any]:
     Maci docs: https://docs.macilib.org
     """    
 
-def xmldump(filename: _Union[str, _PathObj], data: _Union[_ElementTree, _Element], *, append: bool=False, encoding: _Union[str, None]=None) -> None:
+def xmldump(filename: _Union[str, _PathObj], data: _Union[_ElementTree, _Element], *, append: bool=False, pretty: bool=True, full_doc: bool=True, encoding: _Union[str, None]=None) -> None:
     """
     Dumps xml data to a file from xml etree ElementTree or Element object
     
@@ -765,7 +765,7 @@ def xmldumpdict(filename: _Union[str, _PathObj], data: _Dict[str, _Any], *, appe
     Maci docs: https://docs.macilib.org
     """
 
-def xmldumpstr(data: _Element, *, encoding: str='utf-8') -> str:
+def xmldumpstr(data: _Element, *, pretty: bool=True, full_doc: bool=True, encoding: str='utf-8') -> str:
     """
     Dumps xml data to a string from xml etree Element object
 

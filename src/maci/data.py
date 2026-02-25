@@ -631,7 +631,7 @@ class _MaciDataObjConstructor:
                 hash_key = hash(f"{self.__assigned_dst_reference_attr_map}{self.__assigned_src_reference_attr_map}")
             elif method.__name__ == 'get_parent_maps':
                 hash_key = hash(f"{self.__assigned_dst_reference_attr_map}")
-            elif method.__name__ == 'get_child_maps':
+            elif method.__name__ == 'get_child_maps':  # pragma: no cover  # branching is intentional
                 hash_key = hash(f"{self.__assigned_src_reference_attr_map}")
 
             # check if already in cache and return value

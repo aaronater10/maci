@@ -638,3 +638,19 @@ def test17_maciobj_and_methods_obj_len_count():
     maci_data.data2 = 'data2'
     maci_data.data3 = 'data3'
     assert len(maci_data) == 3
+
+
+# 18. MaciDataObj - Hashable: Test object is hashable - hash and use as key
+def test18_maciobj_and_methods_obj_hashable():
+    # Build Data
+    maci_data = maci.build()
+    nested_data = {}
+
+    # Tests
+
+    # does not raise TypeError
+    hash(maci_data)
+
+    # call as key
+    nested_data[maci_data] = {"data": True}
+    assert nested_data[maci_data]["data"] == True

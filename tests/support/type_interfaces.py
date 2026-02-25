@@ -282,6 +282,14 @@ maci.xmldump(  # Path obj
     append=False,
     encoding=None
 )
+maci.xmldump(  # pretty / full doc
+    filename=PathObj(''),
+    data=maci.xmlloadstr(''),
+    append=False,
+    pretty=False,
+    full_doc=False,
+    encoding=None
+)
 maci.xmldumpdict(  # str path
     filename='',
     data={},
@@ -295,6 +303,12 @@ maci.xmldumpdict(  # Path obj
     append=False,
     pretty=True,
     full_doc=True
+)
+maci.xmldumpstr(  # pretty / full doc
+    data=maci.xmlloadstr(''),
+    pretty=False,
+    full_doc=False,
+    encoding=''
 )
 xmldumpstr: str = maci.xmldumpstr(
     data=maci.xmlloadstr(''),
