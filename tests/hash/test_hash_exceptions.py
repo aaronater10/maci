@@ -51,8 +51,6 @@ def test1_exceptions_createfilehash_types():
         maci.createfilehash('', file_to_store_hash=1.0)
     with pytest.raises(maci.error.CreateFileHash):
         maci.createfilehash(filepath_to_hash, filepath_to_cache, hash_algorithm=1.0)
-    with pytest.raises(maci.error.CreateFileHash):
-        maci.createfilehash(filepath_to_hash, filepath_to_cache, 'sha256', encoding=1.0)
 
     # Remove Cache Test File
     time.sleep(file_delay_timer)
@@ -80,10 +78,6 @@ def test2_exceptions_createfilehash_unsupported_opts_data():
         maci.createfilehash(file_to_hash=filepath_to_hash, file_to_store_hash=False) # old way
     with pytest.raises(maci.error.CreateFileHash):
         maci.createfilehash(filepath_to_hash, filepath_to_cache, hash_algorithm='')
-    with pytest.raises(maci.error.CreateFileHash):
-        maci.createfilehash(filepath_to_hash, filepath_to_cache, 'sha256', encoding='')
-    with pytest.raises(maci.error.CreateFileHash):
-        maci.createfilehash(filepath_to_hash_binary, None)
 
     # Remove Cache Test File
     time.sleep(file_delay_timer)
@@ -110,8 +104,6 @@ def test1_exceptions_comparefilehash_types():
         maci.comparefilehash('', stored_hash_file=1.0)
     with pytest.raises(maci.error.CompareFileHash):
         maci.comparefilehash(filepath_to_hash, filepath_to_cache, hash_algorithm=1.0)
-    with pytest.raises(maci.error.CompareFileHash):
-        maci.comparefilehash(filepath_to_hash, filepath_to_cache, 'sha256', encoding=1.0)
 
     # Remove Cache Test File
     time.sleep(file_delay_timer)
@@ -136,8 +128,6 @@ def test2_exceptions_comparefilehash_unsupported_opts_data():
         maci.comparefilehash(file_to_hash=filepath_to_hash, stored_hash_file='')
     with pytest.raises(maci.error.CompareFileHash):
         maci.comparefilehash(filepath_to_hash, filepath_to_cache, hash_algorithm='')
-    with pytest.raises(maci.error.CompareFileHash):
-        maci.comparefilehash(filepath_to_hash, filepath_to_cache, 'sha256', encoding='')
 
     # Remove Cache Test File
     time.sleep(file_delay_timer)

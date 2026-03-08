@@ -11,7 +11,7 @@ from ..error import CreateFileHash, LoadRaw, DumpRaw
 
 #########################################################################################################
 # Create file hash
-def createfilehash(file_to_hash: _Union[str, _PathObj], file_to_store_hash: _Union[str, _PathObj, None], hash_algorithm: str='sha256', *, encoding: _Union[str, None]=None) -> str:
+def createfilehash(file_to_hash: _Union[str, _PathObj], file_to_store_hash: _Union[str, _PathObj, None], hash_algorithm: str='sha256') -> str:
     """
     Creates a hash of any file, and stores the hash data to a new created file
 
@@ -43,13 +43,11 @@ def createfilehash(file_to_hash: _Union[str, _PathObj], file_to_store_hash: _Uni
     err_msg_file_dst = f"Only str|None is allowed for 'file_to_store_hash'"
     err_msg_str_hash = f"Only str is allowed for 'hash_algorithm'"
     err_msg_hash = f"Invalid or no hash option chosen for 'hash_algorithm'"
-    err_msg_str_encoding = f"Only str|None or valid option is allowed for 'encoding'"
 
     if not isinstance(file_to_hash, (str, _PathObj)): raise CreateFileHash(err_msg_str_file_src, f'"{file_to_hash}"')
     if not isinstance(file_to_store_hash, (str, _PathObj, type(None))): raise CreateFileHash(err_msg_file_dst, f'"{file_to_store_hash}"')
     if not isinstance(hash_algorithm, str): raise CreateFileHash(err_msg_str_hash, f'"{hash_algorithm}"')
     if not hash_algorithm in ALGO_OPTIONS: raise CreateFileHash(err_msg_hash, f'"{hash_algorithm}"')
-    if not isinstance(encoding, (str, type(None))): raise CreateFileHash(err_msg_str_encoding, f'\nGot: {repr(encoding)}')
 
     # Convert filenames to str to catch Path objects
     file_to_hash = str(file_to_hash)
@@ -65,21 +63,10 @@ def createfilehash(file_to_hash: _Union[str, _PathObj], file_to_store_hash: _Uni
 
     # Read source file data and update hash
     _readbytes: _Any  # ignore type checker
-    encode_data = True
 
-    try: _readbytes = _loadraw(file_to_hash)
+    try: _readbytes = _loadraw(file_to_hash, byte_data=True)
     except LoadRaw as err_msg: raise CreateFileHash(err_msg)
-    except UnicodeDecodeError as err_msg:
-        exc_msg_reason = str(err_msg)
-        if "invalid start byte" in exc_msg_reason\
-        or "invalid continuation byte" in exc_msg_reason:  # attempt binary files
-            encode_data = False
-            _readbytes = _loadraw(file_to_hash, byte_data=True)
-        else: raise CreateFileHash(err_msg)
 
-    if encode_data:
-        try: _readbytes = _readbytes.encode() if encoding is None else _readbytes.encode(encoding=encoding)
-        except LookupError: raise CreateFileHash(err_msg_str_encoding, f'\nGot: {repr(encoding)}')
     _hash_type.update(_readbytes)
     
     # Store hash to file
@@ -87,7 +74,7 @@ def createfilehash(file_to_hash: _Union[str, _PathObj], file_to_store_hash: _Uni
 
     try:
         if isinstance(file_to_store_hash, str):
-            _dumpraw(file_to_store_hash, f'hash_data = "{_hash_type}"', encoding=encoding)
+            _dumpraw(file_to_store_hash, f'hash_data = "{_hash_type}"')
     except DumpRaw as err_msg: raise CreateFileHash(err_msg)
 
     # Return hash data also

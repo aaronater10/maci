@@ -278,7 +278,7 @@ def build() -> _MaciDataObj:
 
 
 ### Hash Lib ###
-def createfilehash(file_to_hash: _Union[str, _PathObj], file_to_store_hash: _Union[str, _PathObj, None], hash_algorithm: str='sha256', *, encoding: _Union[str, None]=None) -> str:
+def createfilehash(file_to_hash: _Union[str, _PathObj], file_to_store_hash: _Union[str, _PathObj, None], hash_algorithm: str='sha256') -> str:
     """
     Creates a hash of any file, and stores the hash data to a new created file
 
@@ -304,7 +304,7 @@ def createfilehash(file_to_hash: _Union[str, _PathObj], file_to_store_hash: _Uni
     Maci docs: https://docs.macilib.org
     """
 
-def comparefilehash(file_to_hash: _Union[str, _PathObj], stored_hash_file: _Union[str, _PathObj], hash_algorithm: str='sha256', *, encoding: _Union[str, None]=None) -> bool:
+def comparefilehash(file_to_hash: _Union[str, _PathObj], stored_hash_file: _Union[str, _PathObj], hash_algorithm: str='sha256') -> bool:
     """
     Compares a hash of any file by comparing the previously created file with hash data stored from using the "createfilehash" partner function
 
