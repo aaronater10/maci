@@ -156,26 +156,22 @@ cleanformat: str = maci.cleanformat(
 comparefilehash_str: bool = maci.comparefilehash(  # str path
     file_to_hash='',
     stored_hash_file='',
-    hash_algorithm='',
-    encoding=None
+    hash_algorithm=''
 )
 comparefilehash_path: bool = maci.comparefilehash(  # Path obj
     file_to_hash=PathObj(''),
     stored_hash_file=PathObj(''),
-    hash_algorithm='',
-    encoding=None
+    hash_algorithm=''
 )
 createfilehash_str: str = maci.createfilehash(  # str path
     file_to_hash='',
     file_to_store_hash='',
-    hash_algorithm='',
-    encoding=None
+    hash_algorithm=''
 )
 createfilehash_path: str = maci.createfilehash(  # Path obj
     file_to_hash=PathObj(''),
     file_to_store_hash=PathObj(''),
-    hash_algorithm='',
-    encoding=None
+    hash_algorithm=''
 )
 createhash: str = maci.createhash(
     data_to_hash='',
