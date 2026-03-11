@@ -2,8 +2,6 @@
 
 # This workflow will install python and dependencies, and run tests with a range of supported Python versions against different operating systems.
 
-# Python versions being tested: 3.8 - 3.13
-# OSes being tested: Windows2019-2022, MacOS11-12, Ubuntu20-22
 # Triggered by Push, PR, or Manual run against "main" or dev repo
 
 
@@ -15,9 +13,11 @@ on:
   push:
     branches:
       - main
+      - dev-1.1.1
   pull_request:
     branches:
       - main
+      - dev-1.1.1
   workflow_dispatch:
     branches:
       - '**'
@@ -35,10 +35,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
 

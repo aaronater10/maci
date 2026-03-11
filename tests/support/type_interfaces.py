@@ -156,26 +156,22 @@ cleanformat: str = maci.cleanformat(
 comparefilehash_str: bool = maci.comparefilehash(  # str path
     file_to_hash='',
     stored_hash_file='',
-    hash_algorithm='',
-    encoding=None
+    hash_algorithm=''
 )
 comparefilehash_path: bool = maci.comparefilehash(  # Path obj
     file_to_hash=PathObj(''),
     stored_hash_file=PathObj(''),
-    hash_algorithm='',
-    encoding=None
+    hash_algorithm=''
 )
 createfilehash_str: str = maci.createfilehash(  # str path
     file_to_hash='',
     file_to_store_hash='',
-    hash_algorithm='',
-    encoding=None
+    hash_algorithm=''
 )
 createfilehash_path: str = maci.createfilehash(  # Path obj
     file_to_hash=PathObj(''),
     file_to_store_hash=PathObj(''),
-    hash_algorithm='',
-    encoding=None
+    hash_algorithm=''
 )
 createhash: str = maci.createhash(
     data_to_hash='',
@@ -282,6 +278,14 @@ maci.xmldump(  # Path obj
     append=False,
     encoding=None
 )
+maci.xmldump(  # pretty / full doc
+    filename=PathObj(''),
+    data=maci.xmlloadstr(''),
+    append=False,
+    pretty=False,
+    full_doc=False,
+    encoding=None
+)
 maci.xmldumpdict(  # str path
     filename='',
     data={},
@@ -295,6 +299,12 @@ maci.xmldumpdict(  # Path obj
     append=False,
     pretty=True,
     full_doc=True
+)
+maci.xmldumpstr(  # pretty / full doc
+    data=maci.xmlloadstr(''),
+    pretty=False,
+    full_doc=False,
+    encoding=''
 )
 xmldumpstr: str = maci.xmldumpstr(
     data=maci.xmlloadstr(''),

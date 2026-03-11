@@ -2,3 +2,4 @@ data_str = "data"
 map_attr = [1,2,3]
 lock_attr = [1,2,3]
 data_int = 1
+_MaciDataObjConstructor__assignment_hard_locked_attribs = "data"

@@ -36,4 +36,4 @@ def xmldumpstrdict(data: _Dict[str, _Any], *, pretty: bool=True, full_doc: bool=
     try:
         # Dump data to xml string
         return _xmltodict.unparse(input_dict=data, output=None, pretty=pretty, full_document=full_doc)        
-    except TypeError as err_msg: raise XmlDumpStrDict(err_msg, f'\nGot: {repr(data)}')
+    except (TypeError, ValueError) as err_msg: raise XmlDumpStrDict(err_msg, f'\nGot: {repr(data)}')

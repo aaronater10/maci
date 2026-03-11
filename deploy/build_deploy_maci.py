@@ -5,7 +5,7 @@ from glob import glob
 
 
 # Setup
-MACI_VERSION = '1.1.0'
+MACI_VERSION = '1.1.1'
 DEPLOY_TYPE = f"{sys.argv[1]}"
 DEPLOY_API_TOKEN = f"{sys.argv[2]}"
 DEPLOY_SSH_KEY = f"{sys.argv[3]}" if len(sys.argv) == 4 else None
@@ -100,8 +100,11 @@ try:
 
 
     # Build Wheel from Setup, then Publish to PyPI
-    subprocess.run(('python3', '-B', 'setup.py', MACI_VERSION, 'sdist', 'bdist_wheel')).check_returncode()
-    subprocess.run(('python3', '-B', '-m', 'twine', 'upload', '--repository', DEPLOY_TYPE, *glob('dist/*'), '--verbose')).check_returncode()
+    cmd_output = subprocess.run(('python3', '-B', 'setup.py', MACI_VERSION, 'sdist', 'bdist_wheel'), capture_output=True)
+    cmd_output.check_returncode()
+
+    cmd_output = subprocess.run(('python3', '-B', '-m', 'twine', 'upload', '--repository', DEPLOY_TYPE, *glob('dist/*'), '--verbose'), capture_output=True)
+    cmd_output.check_returncode()
     print('SUCCESS: maci deployment')
 
     
@@ -109,10 +112,16 @@ try:
 
     # Clone and Tag New Release Number if required
     if DEPLOY_TYPE not in ignore_github_deploy_list:
-        subprocess.run(('git', 'clone', GITHUB_MACI_REPO, './maci_tag')).check_returncode()
+        cmd_output = subprocess.run(('git', 'clone', GITHUB_MACI_REPO, './maci_tag'), capture_output=True)
+        cmd_output.check_returncode()
+
         os.chdir('maci_tag/')
-        subprocess.run(('git', 'tag', f'v{MACI_VERSION}', '-m', f"Release v{MACI_VERSION}")).check_returncode()
-        subprocess.run(('git', 'push', 'origin', f'v{MACI_VERSION}')).check_returncode()
+
+        cmd_output = subprocess.run(('git', 'tag', f'v{MACI_VERSION}', '-m', f"Release v{MACI_VERSION}"), capture_output=True)
+        cmd_output.check_returncode()
+
+        cmd_output = subprocess.run(('git', 'push', 'origin', f'v{MACI_VERSION}'), capture_output=True)
+        cmd_output.check_returncode()
         os.chdir('..')
 
     # Return to root code dir
@@ -120,7 +129,7 @@ try:
 
 except BaseException as err_msg:
     print('FAILED: maci deployment step...')
-    raise SystemExit(f'OUTPUT: {err_msg}')  # exits 1
+    raise SystemExit(f'OUTPUT: {err_msg}\n{cmd_output.stderr.decode()}\n{cmd_output.stdout.decode()}')  # exits 1
 
 finally:
     try:

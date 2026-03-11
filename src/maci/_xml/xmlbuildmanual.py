@@ -8,7 +8,7 @@ from types import ModuleType as _ModuleType
 # Build manual xml data
 def xmlbuildmanual() -> _ModuleType:
     """
-    Returns an empty xml ElementTree module object to manually build xml etree data
+    Returns a xml ElementTree module to manually build xml etree data
 
     Returns etree -> Module('xml')
 

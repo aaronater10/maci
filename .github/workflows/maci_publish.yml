@@ -2,8 +2,8 @@
 
 # This workflow will build and publish the primary source maci library contents to pypi.
 
-# Python version being used: 3.10
-# OS being used to deploy: Ubuntu-20
+# Python version being used: 3.12
+# OS being used to deploy: Ubuntu-24
 # Triggered by all 3 Following Conditions being met:
 #  - Run if QA Testing Workflow Finishes
 #  - QA Testing completion must complete from "main" branch
@@ -44,7 +44,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.10"]
+        python-version: ["3.12"]
         os: [ubuntu-24.04]
   
     runs-on: ${{ matrix.os }}

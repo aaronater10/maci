@@ -10,7 +10,7 @@ from ..error import CompareFileHash, CreateFileHash, Load
 
 #########################################################################################################
 # Compare file hashes
-def comparefilehash(file_to_hash: _Union[str, _PathObj], stored_hash_file: _Union[str, _PathObj], hash_algorithm: str='sha256', *, encoding: _Union[str, None]=None) -> bool:
+def comparefilehash(file_to_hash: _Union[str, _PathObj], stored_hash_file: _Union[str, _PathObj], hash_algorithm: str='sha256') -> bool:
     """
     Compares a hash of any file by comparing the previously created file with hash data stored from using the "createfilehash" partner function
 
@@ -40,25 +40,23 @@ def comparefilehash(file_to_hash: _Union[str, _PathObj], stored_hash_file: _Unio
     err_msg_hash_file = f"Only str is allowed for 'stored_hash_file'"
     err_msg_str_hash = f"Only str is allowed for 'hash_algorithm'"
     err_msg_hash = f"Invalid or no hash option chosen for 'hash_algorithm'"
-    err_msg_str_encoding = f"Only str|None or valid option is allowed for 'encoding'"
 
     if not isinstance(file_to_hash, (str, _PathObj)): raise CompareFileHash(err_msg_str_file_src, f'"{file_to_hash}"')
     if not isinstance(stored_hash_file, (str, _PathObj)): raise CompareFileHash(err_msg_hash_file, f'"{stored_hash_file}"')
     if not isinstance(hash_algorithm, str): raise CompareFileHash(err_msg_str_hash, f'"{hash_algorithm}"')
     if not hash_algorithm in ALGO_OPTIONS: raise CompareFileHash(err_msg_hash, f'"{hash_algorithm}"')
-    if not isinstance(encoding, (str, type(None))): raise CompareFileHash(err_msg_str_encoding, f'\nGot: {repr(encoding)}')
 
     # Convert filenames to str to catch Path objects
     file_to_hash = str(file_to_hash)
     stored_hash_file = str(stored_hash_file)
 
     # Collect hash data, then return result
-    try: _hash_data = _createfilehash(file_to_hash, None, hash_algorithm, encoding=encoding)
+    try: _hash_data = _createfilehash(file_to_hash, None, hash_algorithm)
     except CreateFileHash as err_msg: raise CompareFileHash(err_msg)
 
     try:
         _stored_hash_data: _Any  # ignore type checker
-        _stored_hash_data = _load(stored_hash_file, encoding=encoding)
+        _stored_hash_data = _load(stored_hash_file)
     except Load as err_msg: raise CompareFileHash(err_msg)
 
     return (_hash_data == _stored_hash_data.hash_data)
