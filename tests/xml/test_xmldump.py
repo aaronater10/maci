@@ -2,6 +2,7 @@
 from src import maci
 from os import remove, path
 import time
+import sys
 import xml.etree.ElementTree as __xml_etree
 
 test_file_path = './tests/test_files/xml/'
@@ -58,6 +59,71 @@ def test1_xml_file_export():
         i += 1
         assert (element.text == f"Dummy Name {i}") and isinstance(element, __xml_etree.Element)
     assert i == valid_sub_element_count
+
+    # Remove Test File
+    time.sleep(file_delay_timer)
+    try: remove(filepath)
+    except: pass
+
+
+# 2. XML Dump Pretty/Declaration - Exporting xml data with default/changed settings for pretty and declaration output
+def test2_xmldump_pretty_declare():
+    filename = '2_xmldump_pretty_declare.xml'
+    filepath = test_file_path + filename
+    xml_data_str_match_default = """\
+<?xml version='1.0' encoding='utf-8'?>
+<test_root>
+    <dummy_data>
+        <data1>Dummy Name 1</data1>
+        <data2>Dummy Name 2</data2>
+        <data3>Dummy Name 3</data3>
+    </dummy_data>
+</test_root>"""
+    xml_data_str_match_pretty = """\
+<test_root>
+    <dummy_data>
+        <data1>Dummy Name 1</data1>
+        <data2>Dummy Name 2</data2>
+        <data3>Dummy Name 3</data3>
+    </dummy_data>
+</test_root>"""
+    xml_data_str_match_declare = """\
+<?xml version='1.0' encoding='utf-8'?>
+<test_root><dummy_data><data1>Dummy Name 1</data1><data2>Dummy Name 2</data2><data3>Dummy Name 3</data3></dummy_data></test_root>"""
+    
+    xml_data_str_match_plain= "<test_root><dummy_data><data1>Dummy Name 1</data1><data2>Dummy Name 2</data2><data3>Dummy Name 3</data3></dummy_data></test_root>"
+    
+    # remove any existing test file
+    try: remove(filepath)
+    except: pass
+    time.sleep(file_delay_timer)
+
+    # Tests
+
+    if (sys.version_info >= (3, 9)): # etree indent only supported py39+
+        # declaration and pretty
+        xml_data_build = maci.xmlloadstr(xml_data_str_match_plain)
+        maci.xmldump(filepath, xml_data_build)
+        assert xml_data_str_match_default == maci.loadraw(filepath)
+        time.sleep(file_delay_timer)
+
+        # # pretty only
+        xml_data_build = maci.xmlloadstr(xml_data_str_match_plain)
+        maci.xmldump(filepath, xml_data_build, full_doc=False)
+        assert xml_data_str_match_pretty == maci.loadraw(filepath)
+        time.sleep(file_delay_timer)
+
+        # # declaration only
+        xml_data_build = maci.xmlloadstr(xml_data_str_match_plain)
+        maci.xmldump(filepath, xml_data_build, pretty=False)
+        assert xml_data_str_match_declare == maci.loadraw(filepath)
+        time.sleep(file_delay_timer)
+
+        # # no declaration or pretty
+        xml_data_build = maci.xmlloadstr(xml_data_str_match_plain)
+        maci.xmldump(filepath, xml_data_build, pretty=False, full_doc=False)
+        assert xml_data_str_match_plain == maci.loadraw(filepath)
+        time.sleep(file_delay_timer)
 
     # Remove Test File
     time.sleep(file_delay_timer)

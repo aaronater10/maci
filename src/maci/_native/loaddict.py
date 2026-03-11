@@ -12,7 +12,7 @@ from ..data import MaciDataObj as _MaciDataObj
 
 #########################################################################################################
 # Import py Data from File
-def loaddict(filename: _Union[str, _PathObj], *, attr_name_dedup: bool=True, encoding: _Optional[str]=None) -> _Optional[dict]:
+def loaddict(filename: _Union[str, _PathObj], *, attr_name_dedup: bool=False, encoding: _Optional[str]=None) -> _Optional[dict]:
     """
     Loads maci (pythonic) data from a file
 
@@ -55,35 +55,20 @@ def loaddict(filename: _Union[str, _PathObj], *, attr_name_dedup: bool=True, enc
         '_assignment_hard_locked_atrribs_err_msg': "Attribute Name Hard Locked! Cannot be reassigned, deleted, or unlocked"
     }
 
-    # Internal Key List to Remove from Dict
-    internal_remove_key_list = {
-        '_MaciDataObjConstructor__assignment_locked_attribs',
-        '_MaciDataObjConstructor__assignment_hard_locked_attribs' ,
-        '_MaciDataObjConstructor__assigned_src_reference_attr_map',
-        '_MaciDataObjConstructor__assigned_dst_reference_attr_map',
-        '_MaciDataObjConstructor__attrib_name_dedup',
-        '__maci_obj_format_id__',
-        '_MaciDataObjConstructor__assignment_locked_atrribs_err_msg',
-        '_MaciDataObjConstructor__assignment_hard_locked_atrribs_err_msg',
-        '_MaciDataObjConstructor__ignore_internal_maci_attr_check',
-    }
-
     # Generate Dict as a Fresh Copy
     try: 
-        dict_data = _deepcopy(vars(_MaciDataObj(
+        maci_data = _MaciDataObj(
                 filename,
                 _is_load_request=True,
                 attr_name_dedup=attr_name_dedup,
                 encoding=encoding,
+                _ignore_internal_maci_attr_check=True,
                 **err_messages
-            )))
+            )
     except Load as __err_msg: raise LoadDict(__err_msg) from None
     except LookupError: raise LoadDict(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
 
-    # Remove any Internal Keys
-    for remove_key in internal_remove_key_list:
-        if remove_key in dict_data: # pragma: no branch
-            del dict_data[remove_key]
-
-    # Return Final Import
+    # Return Import
+    dict_data = _deepcopy(maci_data._MaciDataObjConstructor__assignment_tracker)
+    del maci_data
     return dict_data

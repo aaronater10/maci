@@ -64,7 +64,7 @@ def load(filename: _Union[str, _PathObj], *, attr_name_dedup: bool=True, encodin
     Maci docs: https://docs.macilib.org
     """
 
-def loaddict(filename: _Union[str, _PathObj], *, attr_name_dedup: bool=True, encoding: _Optional[str]=None) -> dict:
+def loaddict(filename: _Union[str, _PathObj], *, attr_name_dedup: bool=False, encoding: _Optional[str]=None) -> dict:
     """
     Loads maci (pythonic) data from a file
 
@@ -98,7 +98,7 @@ def loadstr(maci_str_data: str, *, attr_name_dedup: bool=True) -> _MaciDataObj:
     Maci docs: https://docs.macilib.org
     """
 
-def loadstrdict(maci_str_data: str, *, attr_name_dedup: bool=True) -> dict:
+def loadstrdict(maci_str_data: str, *, attr_name_dedup: bool=False) -> dict:
     """
     Loads maci (pythonic) data from a string
 
@@ -278,7 +278,7 @@ def build() -> _MaciDataObj:
 
 
 ### Hash Lib ###
-def createfilehash(file_to_hash: _Union[str, _PathObj], file_to_store_hash: _Union[str, _PathObj, None], hash_algorithm: str='sha256', *, encoding: _Union[str, None]=None) -> str:
+def createfilehash(file_to_hash: _Union[str, _PathObj], file_to_store_hash: _Union[str, _PathObj, None], hash_algorithm: str='sha256') -> str:
     """
     Creates a hash of any file, and stores the hash data to a new created file
 
@@ -304,7 +304,7 @@ def createfilehash(file_to_hash: _Union[str, _PathObj], file_to_store_hash: _Uni
     Maci docs: https://docs.macilib.org
     """
 
-def comparefilehash(file_to_hash: _Union[str, _PathObj], stored_hash_file: _Union[str, _PathObj], hash_algorithm: str='sha256', *, encoding: _Union[str, None]=None) -> bool:
+def comparefilehash(file_to_hash: _Union[str, _PathObj], stored_hash_file: _Union[str, _PathObj], hash_algorithm: str='sha256') -> bool:
     """
     Compares a hash of any file by comparing the previously created file with hash data stored from using the "createfilehash" partner function
 
@@ -737,7 +737,7 @@ def xmlloadstrdict(xml_str_data: str) -> _OrderedDict[str, _Any]:
     Maci docs: https://docs.macilib.org
     """    
 
-def xmldump(filename: _Union[str, _PathObj], data: _Union[_ElementTree, _Element], *, append: bool=False, encoding: _Union[str, None]=None) -> None:
+def xmldump(filename: _Union[str, _PathObj], data: _Union[_ElementTree, _Element], *, append: bool=False, pretty: bool=True, full_doc: bool=True, encoding: _Union[str, None]=None) -> None:
     """
     Dumps xml data to a file from xml etree ElementTree or Element object
     
@@ -765,7 +765,7 @@ def xmldumpdict(filename: _Union[str, _PathObj], data: _Dict[str, _Any], *, appe
     Maci docs: https://docs.macilib.org
     """
 
-def xmldumpstr(data: _Element, *, encoding: str='utf-8') -> str:
+def xmldumpstr(data: _Element, *, pretty: bool=True, full_doc: bool=True, encoding: str='utf-8') -> str:
     """
     Dumps xml data to a string from xml etree Element object
 
@@ -799,7 +799,7 @@ def xmldumpstrdict(data: _Dict[str, _Any], *, pretty: bool=True, full_doc: bool=
 
 def xmlbuildmanual() -> _ModuleType:
     """
-    Returns an empty xml ElementTree module object to manually build xml etree data
+    Returns a xml ElementTree module to manually build xml etree data
 
     Returns etree -> Module('xml')
 

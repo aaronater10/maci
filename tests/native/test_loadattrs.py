@@ -28,6 +28,7 @@ class TestLoadAttrs(unittest.TestCase):
     def test1_import_attrs_class(self):
         filename = '1_import_attrs_class.data'
         filepath = test_file_path + filename
+        matched_data = {'data_list': [1, 2, 3], 'data_bool': True, 'data_int': 1}
 
         # Test Data Custom Class
         class TemplateData:
@@ -49,6 +50,7 @@ class TestLoadAttrs(unittest.TestCase):
         maci.loadattrs(filepath, class_data)
 
         # Test Imported Data of their Original Values Stored
+        self.assertEqual(vars(class_data), matched_data)
         self.assertEqual(class_data.data_list, [1,2,3])
         self.assertEqual(class_data.data_bool, True)
         self.assertEqual(class_data.data_int, 1)

@@ -13,8 +13,9 @@ def test_file_version_check_is_incremented():
     curl_request_cmd = ('curl', api_endpoint)
 
     # Collect Latest Package Release Number from PyPI API
-    pkg_response_data = subprocess.run(curl_request_cmd, capture_output=True, text=True, check=True)
-    latest_pkg_version = json.loads(pkg_response_data.stdout)['info']['version']
+    pkg_response_data = subprocess.run(curl_request_cmd, capture_output=True, check=True)
+    pkg_response_data = pkg_response_data.stdout.decode()
+    latest_pkg_version = json.loads(pkg_response_data)['info']['version']
 
     possible_variations_found = (
         f"__version__ = '{latest_pkg_version}'",

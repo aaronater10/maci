@@ -523,8 +523,8 @@ def test22_date_time_syntax():
 
 
 # 23. Check behavior of internal method check - Test with it ON/OFF
-def test23_load_internal_method_check_off_on():
-    filename = '23_internal_method_check.data'
+def test23_load_internal_names_and_methods_check_off_on():
+    filename = '23_internal_names_methods_check.data'
     filepath = test_file_path + filename
 
     # OFF: File Import - All Attrs Import
@@ -535,6 +535,7 @@ def test23_load_internal_method_check_off_on():
     assert file_import.lock_attr == [1,2,3]
     assert file_import.data_str == 'data'
     assert file_import.data_int == 1
+    assert file_import._MaciDataObjConstructor__assignment_hard_locked_attribs == "data"
 
     # ON: File Import (ON by Default) - Raise Exception
     with pytest.raises(maci.error.Load):

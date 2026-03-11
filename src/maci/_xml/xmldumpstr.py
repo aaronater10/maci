@@ -1,12 +1,13 @@
 # xmldumpstr
 #########################################################################################################
 # Imports
+import sys
 import xml.etree.ElementTree as _xml_etree  # nosec: B405  # ignore sec checker - upto dev discretion to run provided maci._defuse_xml_stdlib()
 from ..error import XmlDumpStr
 
 #########################################################################################################
 # Export xml str
-def xmldumpstr(data: _xml_etree.Element, *, encoding: str='utf-8') -> str:
+def xmldumpstr(data: _xml_etree.Element, *, pretty: bool=True, full_doc: bool=True, encoding: str='utf-8') -> str:
     """
     Dumps xml data to a string from xml etree Element object
 
@@ -29,5 +30,12 @@ def xmldumpstr(data: _xml_etree.Element, *, encoding: str='utf-8') -> str:
     if not isinstance(encoding, (str, type(None))): raise XmlDumpStr(err_msg_type_encoding, f'\nGot: {repr(encoding)}')
 
     # Export Data
-    try: return _xml_etree.tostring(data).decode(encoding=encoding)
+    if (sys.version_info >= (3, 9)) and pretty:  # pragma: no cover  # etree indent only supported py39+
+        space_level = 4
+        _xml_etree.indent(data, space=" "*space_level)
+    
+    encoding = sys.getdefaultencoding() if encoding is None else encoding
+
+    try:
+        return _xml_etree.tostring(data, encoding=encoding, xml_declaration=full_doc).decode(encoding=encoding)
     except LookupError: raise XmlDumpStr(err_msg_type_encoding, f'\nGot: {repr(encoding)}')

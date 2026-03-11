@@ -266,6 +266,7 @@ def test2_dump_file_indentation_maciobj():
     # Build Data
     file_data = maci.build()
     file_data.data_list = [1,2,3]
+    file_data.data_nested_list = [1,[1,2,3],3]
     file_data.data_tuple = (1,2,3)
     file_data.data_set = {1,2,3}
 
@@ -274,6 +275,7 @@ def test2_dump_file_indentation_maciobj():
     file_import = maci.load(filepath)
 
     assert file_import.data_list == [1,2,3]
+    assert file_import.data_nested_list == [1,[1,2,3],3]
     assert file_import.data_tuple == (1,2,3)
     assert file_import.data_set == {1,2,3}
 
