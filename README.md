@@ -24,6 +24,14 @@ Its focus is to reduce boilerplate by removing repetitive code implementation, l
 
 **changelog: [update history](https://docs.macilib.org/updates/changelog)**
 
+**contributing:**
+
+Fork the repo and submit a feature branch PR to the latest dev-x.x.x branch
+
+All tests must pass before approval consideration and code review
+
+Official release is when dev branch gets merged into mainline branch and if pre-release test env deployments pass: https://github.com/aaronater10/test-maci
+
 **readme**
 \
 [installing](#-install-flavors)\
