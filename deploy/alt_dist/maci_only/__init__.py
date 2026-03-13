@@ -3,13 +3,13 @@ maci - by aaronater10 (flavor: maci-only)
 
 Python-styled Serialization Language & Thin Wrapper Library
 
-Version 1.1.1
+Version 1.2.0
 
 Tutorials and docs: https://docs.macilib.org
 
 Source: https://github.com/aaronater10/maci
 """
-__version__ = '1.1.1'
+__version__ = '1.2.0'
 __lang_version__ = '1.0.0'
 
 #########################################################################################################

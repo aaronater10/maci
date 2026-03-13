@@ -13,11 +13,11 @@ on:
   push:
     branches:
       - main
-      - dev-1.1.1
+      - dev-1.2.0
   pull_request:
     branches:
       - main
-      - dev-1.1.1
+      - dev-1.2.0
   workflow_dispatch:
     branches:
       - '**'
